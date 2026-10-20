@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FFF4E5;
+  --foreground: #083952;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-poppins);
+  --font-poppins: var(--font-poppins);
+  --font-manrope: var(--font-manrope);
+  --font-montserrat: var(--font-montserrat);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FFF4E5;
+  color: #083952;
+  font-family: var(--font-poppins), sans-serif;
+  min-height: 100vh;
+}
+
+/*
+ * Resolves the next/font Poppins family exposed via --font-poppins.
+ * Prefer this over Tailwind's `font-['Poppins']`, which emits
+ * `font-family: Poppins` and falls back to a serif face.
+ */
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+/* Keyframe animations for rotating concentric orbit rings around the 3D Pyramid */
+@keyframes spinClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinCounterClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-orbit-1 {
+  animation: spinClockwise 20s linear infinite;
+  transform-origin: center;
+}
+
+.animate-orbit-2 {
+  animation: spinCounterClockwise 15s linear infinite;
+  transform-origin: center;
+}
+
+.animate-orbit-3 {
+  animation: spinClockwise 25s linear infinite;
+  transform-origin: center;
 }

@@ -1,0 +1,37 @@
+// FAQ data contracts matching the backend `GET /api/faqs` response shape.
+// The backend `id` field is intentionally omitted: the UI never surfaces it.
+
+/** A single question/answer pair. */
+export interface FaqItem {
+  question: string;
+  answer: string;
+  displayOrder: number;
+}
+
+/** Paged envelope returned by the backend. */
+export interface FaqPage {
+  items: FaqItem[];
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+/** Full backend envelope: `{ success, isSuccess, message, data, errors }`. */
+export interface FaqResponse {
+  success: boolean;
+  isSuccess: boolean;
+  message: string | null;
+  data: FaqPage;
+  errors: unknown | null;
+}
+
+/** Supported query string parameters. */
+export interface FaqQueryParams {
+  language?: string;
+  search?: string;
+  pageNumber?: number;
+  pageSize?: number;
+}

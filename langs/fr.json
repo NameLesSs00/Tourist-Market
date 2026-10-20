@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "tagline": "DÉCOUVREZ DES",
+    "headline": "DESTINATIONS",
+    "description": "Planifiez votre escapade parfaite. Des merveilles antiques aux côtes immaculées, découvrez des hôtels et des loisirs incomparables.",
+    "buttons": {
+      "hotelDeliveries": "Livraisons à l'hôtel",
+      "exploreServices": "Explorer les services"
+    }
+  },
+  "nav": {
+    "home": "Accueil",
+    "exploreServices": "Explorer les services",
+    "hotelDeliveries": "Livraisons à l'hôtel",
+    "blogs": "Blogs",
+    "faq": "FAQ",
+    "about": "À propos",
+    "contact": "Contactez-nous"
+  },
+  "faq": {
+    "titlePrefix": "Questions",
+    "titleAccent": "Fréquentes",
+    "subtitle": "Trouvez les réponses à tout ce dont vous avez besoin",
+    "helpTitle": "Besoin encore d'aide ?",
+    "helpButton": "Contactez-nous"
+  }
+}

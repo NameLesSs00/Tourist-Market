@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "tagline": "ENTDECKEN SIE",
+    "headline": "REISEZIELE",
+    "description": "Planen Sie Ihre perfekte Auszeit. Von antiken Wundern bis hin zu unberührten Küsten – entdecken Sie erstklassige Hotels und Erlebnisse.",
+    "buttons": {
+      "hotelDeliveries": "Hotellieferungen",
+      "exploreServices": "Services erkunden"
+    }
+  },
+  "nav": {
+    "home": "Startseite",
+    "exploreServices": "Services erkunden",
+    "hotelDeliveries": "Hotellieferungen",
+    "blogs": "Blogs",
+    "faq": "FAQ",
+    "about": "Über uns",
+    "contact": "Kontakt"
+  },
+  "faq": {
+    "titlePrefix": "Häufig gestellte",
+    "titleAccent": "Fragen",
+    "subtitle": "Finden Sie Antworten auf alles, was Sie wissen möchten",
+    "helpTitle": "Brauchen Sie noch Hilfe ?",
+    "helpButton": "Kontakt"
+  }
+}

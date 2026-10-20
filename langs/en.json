@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "tagline": "UNVEIL AMAZING",
+    "headline": "DESTINATIONS",
+    "description": "Plan your perfect escape. From ancient wonders to pristine coasts, discover unparalleled hotels, landmarks, and modern entertainment.",
+    "buttons": {
+      "hotelDeliveries": "Hotel Deliveries",
+      "exploreServices": "Explore Services"
+    }
+  },
+  "nav": {
+    "home": "Home",
+    "exploreServices": "Explore Services",
+    "hotelDeliveries": "Hotel Deliveries",
+    "blogs": "Blogs",
+    "faq": "FAQ",
+    "about": "About Us",
+    "contact": "Contact Us"
+  },
+  "faq": {
+    "titlePrefix": "Frequently Asked",
+    "titleAccent": "Questions",
+    "subtitle": "Find answers to everything you need",
+    "helpTitle": "Still need A Help ?",
+    "helpButton": "Contact Us"
+  }
+}
