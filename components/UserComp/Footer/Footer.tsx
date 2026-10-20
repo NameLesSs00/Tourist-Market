@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
@@ -11,6 +12,11 @@ interface FooterProps {
 }
 
 export function Footer({ currentLocale = "en" }: FooterProps) {
+  const pathname = usePathname();
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
   const quickLinks = [
     { label: "Home", href: `/${currentLocale}` },
     { label: "Services", href: `/${currentLocale}/services` },
@@ -44,7 +50,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
   ];
 
   return (
-    <footer className="w-full bg-[#0E4A68] text-white">
+    <footer className="w-full bg-[#0E4A68] text-white font-poppins">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5">
           {/* Column 1: Logo & Tagline */}
@@ -58,7 +64,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
                 className="h-14 w-auto object-contain"
               />
             </Link>
-            <p className="font-['Manrope'] text-[14px] font-normal leading-relaxed text-[#FFFFFFD9]">
+            <p className="font-poppins text-[14px] font-normal leading-relaxed text-[#FFFFFFD9]">
               Enjoy your vacation in Egypt with creative services that take care of your comfort,
               time, and budget.
             </p>
@@ -66,23 +72,23 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
 
           {/* Column 2: Quick Links */}
           <div>
-            <h3 className="font-['Manrope'] text-[20px] font-extrabold leading-[20px] text-white">
+            <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Quick Links
             </h3>
             <div
-              className="mt-2.5 mb-3 w-10"
+              className="mt-2.5 mb-5 w-10"
               style={{
                 borderBottom: "2px solid",
                 borderImageSource: "linear-gradient(90deg, #D48C28 0%, #FFFFFF 100%)",
                 borderImageSlice: 1,
               }}
             />
-            <ul className="flex flex-col">
+            <ul className="flex flex-col gap-4">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="font-['Manrope'] text-[14px] font-semibold leading-[42px] text-white transition-colors hover:text-[#F4DAB6]"
+                    className="font-poppins-semibold-16 text-white transition-colors hover:text-[#F4DAB6]"
                   >
                     {link.label}
                   </Link>
@@ -93,23 +99,23 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
 
           {/* Column 3: Our Services */}
           <div>
-            <h3 className="font-['Manrope'] text-[20px] font-extrabold leading-[20px] text-white">
+            <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Our services
             </h3>
             <div
-              className="mt-2.5 mb-3 w-10"
+              className="mt-2.5 mb-5 w-10"
               style={{
                 borderBottom: "2px solid",
                 borderImageSource: "linear-gradient(90deg, #D48C28 0%, #FFFFFF 100%)",
                 borderImageSlice: 1,
               }}
             />
-            <ul className="flex flex-col">
+            <ul className="flex flex-col gap-4">
               {services.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="font-['Manrope'] text-[14px] font-semibold leading-[42px] text-white transition-colors hover:text-[#F4DAB6]"
+                    className="font-poppins-semibold-16 text-white transition-colors hover:text-[#F4DAB6]"
                   >
                     {item.label}
                   </Link>
@@ -120,23 +126,23 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
 
           {/* Column 4: Contact Us */}
           <div>
-            <h3 className="font-['Manrope'] text-[20px] font-extrabold leading-[20px] text-white">
+            <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Contact Us
             </h3>
             <div
-              className="mt-2.5 mb-3 w-10"
+              className="mt-2.5 mb-5 w-10"
               style={{
                 borderBottom: "2px solid",
                 borderImageSource: "linear-gradient(90deg, #D48C28 0%, #FFFFFF 100%)",
                 borderImageSlice: 1,
               }}
             />
-            <ul className="flex flex-col">
+            <ul className="flex flex-col gap-4">
               {contactItems.map((item) => (
                 <li key={item.label}>
                   <a
                     href={item.href}
-                    className="font-['Manrope'] text-[14px] font-semibold leading-[42px] text-white transition-colors hover:text-[#F4DAB6]"
+                    className="font-poppins-semibold-16 text-white transition-colors hover:text-[#F4DAB6]"
                   >
                     {item.label}
                   </a>
@@ -147,7 +153,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
 
           {/* Column 5: Follow Us */}
           <div>
-            <h3 className="font-['Manrope'] text-[20px] font-extrabold leading-[20px] text-white">
+            <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Follow Us
             </h3>
             <div className="mt-5 flex items-center gap-3">

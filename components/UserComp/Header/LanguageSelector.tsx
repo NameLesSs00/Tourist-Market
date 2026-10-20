@@ -38,7 +38,7 @@ export function LanguageSelector() {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-['Poppins'] text-[16px] font-semibold leading-[100%] align-middle text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none"
+        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-poppins-semibold-16 text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none"
       >
         <span className="relative flex h-4 w-5 shrink-0 overflow-hidden rounded-xs border border-[#08395226]">
           <Image
@@ -75,9 +75,9 @@ export function LanguageSelector() {
                   setSelected(lang);
                   setIsOpen(false);
                 }}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2 font-['Poppins'] text-[15px] font-medium transition-colors ${
+                className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 font-poppins-semibold-16 transition-colors ${
                   isCurrent
-                    ? "bg-[#F4DAB6] text-[#083952] font-semibold"
+                    ? "bg-[#F4DAB6] text-[#083952]"
                     : "text-[#083952] hover:bg-[#F4DAB666]"
                 }`}
               >

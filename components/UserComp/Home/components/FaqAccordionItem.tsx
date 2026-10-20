@@ -55,14 +55,10 @@ export function FaqAccordionItem({ item, isOpen, onToggle, className = "" }: Faq
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
-        // items-start + a fixed min-height: the question sits on the same
-        // top line whether it wraps to one or two lines, so clicking a row
-        // never changes any row's height and nothing below it shifts.
-        className="flex min-h-[76px] w-full items-start gap-3 rounded-[10px] border border-[#0E4A68] bg-[#FFF4E5] py-4 pl-9 pr-3 text-left transition-colors hover:bg-[#FFF9F0] focus:outline-none lg:min-h-[92px] lg:gap-5 lg:py-5 lg:pl-[74px] lg:pr-4"
+        className="relative flex min-h-[76px] w-full items-center gap-3 rounded-[10px] border border-[#0E4A68] bg-[#FFF4E5] py-4 pl-[56px] pr-3 text-left transition-colors hover:bg-[#FFF9F0] focus:outline-none lg:min-h-[92px] lg:gap-5 lg:py-5 lg:pl-[64px] lg:pr-4 flex-center"
       >
-        {/* Question badge: #FFF8EF keeps it visually separate from the
-            #FFF4E5 question box, and it is sized to overhang the edge. */}
-        <span className="absolute left-0 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-[#0E4A68] bg-[#FFF8EF] lg:h-[64px] lg:w-[64px]">
+        {/* Question badge: centered on the left edge, overhanging naturally */}
+        <span className="absolute left-0 top-4 -translate-x-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-[#0E4A68] bg-[#FFF8EF] lg:top-5 lg:h-[64px] lg:w-[64px]">
           <Image
             src="/homepage/Faq/mark.svg"
             alt=""
@@ -79,16 +75,18 @@ export function FaqAccordionItem({ item, isOpen, onToggle, className = "" }: Faq
         <span className="mt-[3px] shrink-0 lg:mt-[6px]">{isOpen ? <CrossIcon /> : <PlusIcon />}</span>
       </button>
 
-      {/* Mobile: answer expands inline under the question */}
+      {/* Mobile: answer expands inline under the question with a clean bg box */}
       <div
         className={`grid overflow-hidden transition-all duration-300 ease-out lg:hidden ${
           isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
         <div className="min-h-0">
-          <p className="py-3 pl-9 pr-3 font-poppins text-[13px] font-normal leading-[21px] text-[#000000] lg:pl-[74px]">
-            {item.answer}
-          </p>
+          <div className="mt-2 rounded-[10px] border border-[#0E4A68] bg-[#FFF4E5] p-4">
+            <p className="font-poppins text-[13px] font-normal leading-[21px] text-[#000000]">
+              {item.answer}
+            </p>
+          </div>
         </div>
       </div>
     </div>

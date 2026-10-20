@@ -38,7 +38,7 @@ export function NavLinks({
   ];
 
   const navItemClass =
-    "font-['Poppins'] text-[16px] font-semibold leading-[100%] align-middle text-[#083952] transition-colors hover:text-[#D9943B]";
+    "font-poppins-semibold-16 text-[#083952] transition-colors hover:text-[#D9943B]";
 
   return (
     <nav className={`flex items-center gap-7 lg:gap-8 ${className}`}>
@@ -70,7 +70,7 @@ export function NavLinks({
 
         {isServicesOpen && (
           <div className="absolute left-0 mt-3 w-64 rounded-2xl border border-[#08395226] bg-[#FFF9F2] p-2 shadow-xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-3 py-1.5 font-['Poppins'] text-[12px] font-semibold uppercase tracking-wider text-[#08395280]">
+            <div className="px-3 py-1.5 font-poppins text-[12px] font-semibold uppercase tracking-wider text-[#08395280]">
               Market Services
             </div>
             {serviceCategories.map((item) => (
@@ -81,7 +81,7 @@ export function NavLinks({
                   setIsServicesOpen(false);
                   onNavigate?.();
                 }}
-                className="block rounded-lg px-3 py-2 font-['Poppins'] text-[14px] font-semibold text-[#083952] transition-colors hover:bg-[#F4DAB666] hover:text-[#D9943B]"
+                className="block rounded-lg px-3 py-2 font-poppins-semibold-16 text-[#083952] transition-colors hover:bg-[#F4DAB666] hover:text-[#D9943B]"
               >
                 {item.title}
               </Link>

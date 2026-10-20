@@ -7,7 +7,30 @@ const DEFAULT_LOCALE = "en";
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Check if pathname starts with any supported locale
+  // 1. Admin Authentication Route Guard
+  if (pathname.startsWith("/admin")) {
+    const adminToken = request.cookies.get("admin_token")?.value;
+    const isLoginPage = pathname === "/admin/login" || pathname === "/admin/login/";
+
+    // If already authenticated with token, prevent access to login page -> redirect to dashboard
+    if (isLoginPage && adminToken) {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    }
+
+    // If unauthenticated, prevent access to dashboard or admin subpages -> redirect to login
+    if (!isLoginPage && !adminToken) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+
+    // If navigating to root /admin with token -> redirect to dashboard
+    if (pathname === "/admin" || pathname === "/admin/") {
+      return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+    }
+
+    return NextResponse.next();
+  }
+
+  // 2. Public / Client Route Locale Handling
   const pathnameHasLocale = SUPPORTED_LOCALES.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
@@ -48,9 +71,9 @@ export const config = {
      * Match all request paths except for:
      * - _next/static, _next/image, _next/data
      * - icon.svg, favicon.ico
-     * - public assets (/flags, /homepage, /shared)
-     * - admin routes (/admin)
+     * - public assets (/flags, /homepage, /shared, /admin/*.png)
+     * - files with extensions (.*\\..*)
      */
-    "/((?!_next|flags|homepage|shared|icon\\.svg|favicon\\.ico|admin|.*\\..*).*)",
+    "/((?!_next|flags|homepage|shared|icon\\.svg|favicon\\.ico|.*\\..*).*)",
   ],
 };

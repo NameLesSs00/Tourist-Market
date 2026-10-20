@@ -3,6 +3,7 @@ import { Poppins, Manrope, Montserrat } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/UserComp/Header";
 import { Footer } from "@/components/UserComp/Footer";
+import { QueryProvider } from "@/shared/providers/QueryProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -37,10 +38,12 @@ export default function RootLayout({
       lang="en"
       className={`${poppins.variable} ${manrope.variable} ${montserrat.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#FFF4E5] text-[#083952]">
-        <Header />
-        <main className="flex-1 -mt-20">{children}</main>
-        <Footer />
+      <body className={`${poppins.className} min-h-full flex flex-col bg-[#FFF4E5] text-[#083952]`}>
+        <QueryProvider>
+          <Header />
+          <main className="flex-1 -mt-20">{children}</main>
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   );

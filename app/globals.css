@@ -27,7 +27,27 @@ body {
  * `font-family: Poppins` and falls back to a serif face.
  */
 .font-poppins {
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+}
+
+.font-poppins-semibold-16 {
+  font-family: var(--font-poppins), "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+}
+
+.font-\[\'Poppins\'\] {
+  font-family: var(--font-poppins), "Poppins", sans-serif !important;
+}
+
+header a,
+header button,
+footer a,
+footer button {
+  font-family: var(--font-poppins), "Poppins", sans-serif;
 }
 
 /* Keyframe animations for rotating concentric orbit rings around the 3D Pyramid */
