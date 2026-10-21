@@ -50,6 +50,16 @@ footer button {
   font-family: var(--font-poppins), "Poppins", sans-serif;
 }
 
+/* Indeterminate progress bar used by the admin DataTable while refetching */
+@keyframes tableProgress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+
 /* Keyframe animations for rotating concentric orbit rings around the 3D Pyramid */
 @keyframes spinClockwise {
   from {

@@ -5,6 +5,8 @@ import useAuthStore from "./authStore";
 import { LoginRequest, ChangePasswordRequest } from "@/models/auth";
 import axios from "axios";
 
+import { toast } from "sonner";
+
 export function useLoginMutation() {
   const router = useRouter();
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -14,8 +16,14 @@ export function useLoginMutation() {
     onSuccess: (response) => {
       if (response.success && response.data) {
         setAuth(response.data);
+        toast.success(response.message || "Logged in successfully!");
         router.push("/admin/dashboard");
+      } else {
+        toast.error(response.message || "Login failed.");
       }
+    },
+    onError: (err) => {
+      toast.error(extractErrorMessage(err));
     },
   });
 }

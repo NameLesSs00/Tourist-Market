@@ -17,10 +17,6 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -35,6 +31,11 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Must come after all hooks to keep hook order stable across routes.
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <header

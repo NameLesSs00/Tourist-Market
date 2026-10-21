@@ -35,3 +35,55 @@ export interface FaqQueryParams {
   pageNumber?: number;
   pageSize?: number;
 }
+
+// ---------------------------------------------------------------------------
+// Admin contracts
+// ---------------------------------------------------------------------------
+
+export type LangCode = "en" | "ru" | "de" | "fr";
+
+export const LANGS: LangCode[] = ["en", "ru", "de", "fr"];
+
+export const LANG_LABELS: Record<LangCode, string> = {
+  en: "English",
+  ru: "Русский",
+  de: "Deutsch",
+  fr: "Français",
+};
+
+export const LANG_FLAGS: Record<LangCode, string> = {
+  en: "/flags/gb.svg",
+  ru: "/flags/ru.svg",
+  de: "/flags/de.svg",
+  fr: "/flags/fr.svg",
+};
+
+export type LocalizedText = Record<LangCode, string>;
+
+/**
+ * FAQ as returned by admin endpoints. `id` is kept for edit/delete calls
+ * but must never be rendered in the UI.
+ */
+export interface AdminFaq {
+  id: string;
+  question: string;
+  answer: string;
+  displayOrder: number;
+}
+
+export interface AdminFaqPage {
+  items: AdminFaq[];
+  pageNumber: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
+/** Body for `POST /faqs` and `PUT /faqs/{id}`. */
+export interface FaqUpsertRequest {
+  question: LocalizedText;
+  answer: LocalizedText;
+  displayOrder: number;
+}

@@ -1,5 +1,15 @@
-import { API_BASE_URL } from "./apiConfig";
-import type { FaqQueryParams, FaqResponse } from "@/models/faq";
+import { API_BASE_URL, apiClient } from "./apiConfig";
+import type { ApiResponse } from "@/models/auth";
+import {
+  LANGS,
+  type AdminFaq,
+  type AdminFaqPage,
+  type FaqQueryParams,
+  type FaqResponse,
+  type FaqUpsertRequest,
+  type LangCode,
+  type LocalizedText,
+} from "@/models/faq";
 
 /**
  * Builds the `/faqs` query string, omitting empty values so the backend
@@ -39,4 +49,71 @@ export async function fetchFaqs(params: FaqQueryParams = {}): Promise<FaqRespons
   }
 
   return payload;
+}
+
+// ---------------------------------------------------------------------------
+// Admin endpoints (authenticated through the shared axios client)
+// ---------------------------------------------------------------------------
+
+export async function getAdminFaqs(
+  params: FaqQueryParams = {}
+): Promise<ApiResponse<AdminFaqPage>> {
+  const { data } = await apiClient.get<ApiResponse<AdminFaqPage>>("/faqs", {
+    params: {
+      language: params.language || undefined,
+      search: params.search || undefined,
+      pageNumber: params.pageNumber,
+      pageSize: params.pageSize,
+    },
+  });
+  return data;
+}
+
+export async function getFaqById(
+  id: string,
+  language: LangCode
+): Promise<ApiResponse<AdminFaq>> {
+  const { data } = await apiClient.get<ApiResponse<AdminFaq>>(`/faqs/${id}`, {
+    params: { language },
+  });
+  return data;
+}
+
+/**
+ * The backend returns one language per GET, but PUT needs all four.
+ * Fetch every language in parallel and merge into an upsert-shaped object.
+ */
+export async function getFaqAllLanguages(id: string): Promise<FaqUpsertRequest> {
+  const responses = await Promise.all(LANGS.map((lang) => getFaqById(id, lang)));
+
+  const question = {} as LocalizedText;
+  const answer = {} as LocalizedText;
+  LANGS.forEach((lang, i) => {
+    question[lang] = responses[i].data?.question ?? "";
+    answer[lang] = responses[i].data?.answer ?? "";
+  });
+
+  return {
+    question,
+    answer,
+    displayOrder: responses[0].data?.displayOrder ?? 0,
+  };
+}
+
+export async function createFaq(body: FaqUpsertRequest): Promise<ApiResponse<AdminFaq>> {
+  const { data } = await apiClient.post<ApiResponse<AdminFaq>>("/faqs", body);
+  return data;
+}
+
+export async function updateFaq(
+  id: string,
+  body: FaqUpsertRequest
+): Promise<ApiResponse<AdminFaq>> {
+  const { data } = await apiClient.put<ApiResponse<AdminFaq>>(`/faqs/${id}`, body);
+  return data;
+}
+
+export async function deleteFaq(id: string): Promise<ApiResponse<null>> {
+  const { data } = await apiClient.delete<ApiResponse<null>>(`/faqs/${id}`);
+  return data;
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Admin Portal | Egypt Tourist Market",
@@ -11,8 +12,10 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative w-full min-h-screen bg-[#F8FAFC] text-[#0F172A] pt-20 -mb-20">
+    // Fixed full-viewport layer so the public layout's offsets (main -mt-20) don't affect admin pages.
+    <div className="fixed inset-0 z-40 overflow-y-auto bg-[#F8FAFC] text-[#0F172A]">
       {children}
+      <Toaster richColors closeButton position="top-right" toastOptions={{ className: "font-poppins" }} />
     </div>
   );
 }

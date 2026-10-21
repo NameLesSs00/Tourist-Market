@@ -36,8 +36,7 @@ export function AdminLoginHero() {
 
       {/* 4. Bottom Hero Copy & Value Badges */}
       <div className="relative z-10 max-w-xl space-y-6">
-        <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 backdrop-blur-md border border-white/15">
-          <span className="h-2 w-2 rounded-full bg-[#D48C28] animate-pulse" />
+        <div className="inline-flex items-center rounded-full bg-white/10 px-4 py-1.5 backdrop-blur-md border border-white/15">
           <span className="font-['Poppins'] text-xs font-medium tracking-wide text-white/90">
             Control Center & Platform Management
           </span>

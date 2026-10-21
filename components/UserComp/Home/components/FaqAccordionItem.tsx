@@ -55,7 +55,7 @@ export function FaqAccordionItem({ item, isOpen, onToggle, className = "" }: Faq
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="relative flex min-h-[76px] w-full items-center gap-3 rounded-[10px] border border-[#0E4A68] bg-[#FFF4E5] py-4 pl-[56px] pr-3 text-left transition-colors hover:bg-[#FFF9F0] focus:outline-none lg:min-h-[92px] lg:gap-5 lg:py-5 lg:pl-[64px] lg:pr-4 flex-center"
+        className="relative flex min-h-[76px] w-full items-center   gap-3 rounded-[10px] border border-[#0E4A68] bg-[#FFF4E5] py-4 pl-[56px] pr-3 text-left transition-colors hover:bg-[#FFF9F0] focus:outline-none lg:min-h-[92px] lg:gap-5 lg:py-5 lg:pl-[64px] lg:pr-4 flex-center"
       >
         {/* Question badge: centered on the left edge, overhanging naturally */}
         <span className="absolute left-0 top-4 -translate-x-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-[#0E4A68] bg-[#FFF8EF] lg:top-5 lg:h-[64px] lg:w-[64px]">
