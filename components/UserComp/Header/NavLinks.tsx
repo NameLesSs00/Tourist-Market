@@ -100,22 +100,22 @@ export function NavLinks({
       </Link>
 
       {/* Blogs */}
-      <Link href={`/${currentLocale}/blogs`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/Blogs`} onClick={onNavigate} className={navItemClass}>
         Blogs
       </Link>
 
       {/* FAQ */}
-      <Link href={`/${currentLocale}/faq`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/FAQ`} onClick={onNavigate} className={navItemClass}>
         FAQ
       </Link>
 
       {/* About Us */}
-      <Link href={`/${currentLocale}/about`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/About`} onClick={onNavigate} className={navItemClass}>
         About Us
       </Link>
 
       {/* Contact Us */}
-      <Link href={`/${currentLocale}/contact`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/Contact`} onClick={onNavigate} className={navItemClass}>
         Contact Us
       </Link>
     </nav>
