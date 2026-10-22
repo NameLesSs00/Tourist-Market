@@ -23,7 +23,7 @@ import {
   useExcursionCategoriesQuery,
   useUpdateExcursionCategoryMutation,
 } from "@/features/excursionCategories/useExcursionCategoryAdmin";
-import { LANG_FLAGS } from "@/models/faq";
+import { LANG_FLAGS } from "@/models/localization";
 import type {
   ExcursionCategoryCreateRequest,
   ExcursionCategoryItem,

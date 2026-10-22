@@ -22,7 +22,7 @@ import {
   useProductCategoriesQuery,
   useUpdateProductCategoryMutation,
 } from "@/features/productCategories/useProductCategoryAdmin";
-import { LANG_FLAGS } from "@/models/faq";
+import { LANG_FLAGS } from "@/models/localization";
 import type {
   ProductCategoryItem,
   ProductCategoryUpsertRequest,

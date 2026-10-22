@@ -1,4 +1,4 @@
-import type { LangCode, LocalizedText } from "./faq";
+import type { LangCode, LocalizedText } from "./localization";
 
 /**
  * A single section within a Blog.

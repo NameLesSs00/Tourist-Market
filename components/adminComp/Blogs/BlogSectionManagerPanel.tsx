@@ -18,7 +18,7 @@ import {
   useDeleteBlogSectionMutation,
   useUpdateBlogSectionMutation,
 } from "@/features/blogs/useBlogAdmin";
-import { LANG_FLAGS } from "@/models/faq";
+import { LANG_FLAGS } from "@/models/localization";
 import type {
   BlogItem,
   BlogSectionCreateRequest,

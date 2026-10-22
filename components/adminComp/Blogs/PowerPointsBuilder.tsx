@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { FiPlus, FiTrash2 } from "react-icons/fi";
-import { LANG_FLAGS, LANG_LABELS, type LangCode } from "@/models/faq";
+import { LANG_FLAGS, LANG_LABELS, type LangCode } from "@/models/localization";
 import type { PowerPointPair } from "@/models/blog";
 
 interface PowerPointsBuilderProps {

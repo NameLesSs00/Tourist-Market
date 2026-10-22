@@ -17,7 +17,7 @@ import {
   LANGS,
   type LangCode,
   type LocalizedText,
-} from "@/models/faq";
+} from "@/models/localization";
 import type { BlogItem, BlogUpsertRequest } from "@/models/blog";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 

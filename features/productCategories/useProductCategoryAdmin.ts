@@ -9,7 +9,7 @@ import {
   updateProductCategory,
   uploadProductCategoryImage,
 } from "@/api/productCategoryApi";
-import { LANGS, type LocalizedText } from "@/models/faq";
+import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   ProductCategoryQueryParams,
   ProductCategoryUpsertRequest,
@@ -44,6 +44,30 @@ export function useProductCategoriesQuery(
       const res = await getProductCategories(params);
       return res.data;
     },
+  });
+}
+
+/**
+ * Query hook to fetch all product categories (for parent pickers and table name lookups).
+ */
+export function useAllProductCategoriesQuery() {
+  return useQuery({
+    queryKey: ["admin", "product-categories", "all-categories"],
+    queryFn: async () => {
+      const res = await getProductCategories({
+        pageNumber: 1,
+        pageSize: 100,
+        lang: "en",
+        language: "en",
+      });
+      const raw: any = res;
+      if (Array.isArray(raw?.data?.items)) return raw.data.items;
+      if (Array.isArray(raw?.items)) return raw.items;
+      if (Array.isArray(raw?.data)) return raw.data;
+      if (Array.isArray(raw)) return raw;
+      return [];
+    },
+    staleTime: 60 * 1000,
   });
 }
 

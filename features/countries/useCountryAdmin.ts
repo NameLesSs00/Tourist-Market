@@ -13,7 +13,7 @@ import {
   updateCountry,
 } from "@/api/countryApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
-import { LANGS, type LocalizedText } from "@/models/faq";
+import { LANGS, type LocalizedText } from "@/models/localization";
 import type { CountryUpsertRequest } from "@/models/country";
 
 export const COUNTRIES_KEY = ["countries"] as const;

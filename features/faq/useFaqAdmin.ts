@@ -13,11 +13,10 @@ import {
   updateFaq,
 } from "@/api/faqApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
-import {
-  LANGS,
-  type FaqQueryParams,
-  type FaqUpsertRequest,
-  type LocalizedText,
+import { LANGS, type LocalizedText } from "@/models/localization";
+import type {
+  FaqQueryParams,
+  FaqUpsertRequest,
 } from "@/models/faq";
 
 export const ADMIN_FAQS_KEY = ["admin", "faqs"] as const;

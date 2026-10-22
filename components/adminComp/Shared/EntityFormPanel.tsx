@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FiAlertCircle, FiLoader } from "react-icons/fi";
 import { toast } from "sonner";
 import { SlidePanel } from "./SlidePanel";
-import { LANGS, LANG_LABELS, LANG_FLAGS, type LangCode, type LocalizedText } from "@/models/faq";
+import { LANGS, LANG_LABELS, LANG_FLAGS, type LangCode, type LocalizedText } from "@/models/localization";
 
 export type FieldValue = string | number | LocalizedText;
 export type FormValues = Record<string, FieldValue>;

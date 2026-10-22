@@ -1,5 +1,5 @@
 import apiClient from "./apiConfig";
-import { LANGS, type LangCode, type LocalizedText } from "@/models/faq";
+import { LANGS, type LangCode, type LocalizedText } from "@/models/localization";
 import type {
   CountryItem,
   CountryLocalizedDetail,

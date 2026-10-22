@@ -19,7 +19,7 @@ import {
   uploadBlogImage,
 } from "@/api/blogApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
-import { LANGS, type LocalizedText } from "@/models/faq";
+import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   BlogQueryParams,
   BlogSectionCreateRequest,

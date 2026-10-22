@@ -23,7 +23,8 @@ import {
   useUpdateFaq,
 } from "@/features/faq/useFaqAdmin";
 import { extractErrorMessage } from "@/features/auth/useAuth";
-import { LANG_FLAGS, type AdminFaq, type FaqUpsertRequest, type LocalizedText } from "@/models/faq";
+import { LANG_FLAGS, type LocalizedText } from "@/models/localization";
+import type { AdminFaq, FaqUpsertRequest } from "@/models/faq";
 
 const PAGE_SIZE = 10;
 

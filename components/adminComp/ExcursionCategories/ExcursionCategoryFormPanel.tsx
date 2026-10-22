@@ -12,7 +12,7 @@ import {
   LANGS,
   type LangCode,
   type LocalizedText,
-} from "@/models/faq";
+} from "@/models/localization";
 import type {
   ExcursionCategoryCreateRequest,
   ExcursionCategoryItem,

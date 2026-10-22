@@ -1,4 +1,4 @@
-import type { LocalizedText } from "./faq";
+import type { LocalizedText } from "./localization";
 
 export interface ProductCategoryItem {
   id: number;

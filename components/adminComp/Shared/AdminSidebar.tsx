@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { IconType } from "react-icons";
-import { FiBookOpen, FiCompass, FiGlobe, FiGrid, FiHelpCircle, FiKey, FiLayers, FiLogOut, FiShield, FiX } from "react-icons/fi";
+import { FiBookOpen, FiBriefcase, FiClipboard, FiCompass, FiDollarSign, FiGlobe, FiGrid, FiHelpCircle, FiKey, FiLayers, FiLogOut, FiMapPin, FiMessageSquare, FiNavigation, FiPackage, FiRepeat, FiShield, FiShoppingBag, FiSliders, FiStar, FiTag, FiX } from "react-icons/fi";
 import type { AdminUser } from "@/models/auth";
 import { isSuperAdmin } from "@/models/admin";
 
@@ -22,8 +22,21 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { label: "FAQs", href: "/admin/dashboard/faqs", icon: FiHelpCircle },
   { label: "Blogs", href: "/admin/dashboard/blogs", icon: FiBookOpen },
   { label: "Excursion Categories", href: "/admin/dashboard/excursion-categories", icon: FiCompass },
+  { label: "Excursion Services", href: "/admin/dashboard/excursion-services", icon: FiPackage },
+  { label: "Attractions", href: "/admin/dashboard/attractions", icon: FiMapPin },
+  { label: "Private Excursions", href: "/admin/dashboard/private-excursions", icon: FiNavigation },
+  { label: "Excursion Reviews", href: "/admin/dashboard/excursion-reviews", icon: FiStar },
   { label: "Product Categories", href: "/admin/dashboard/product-categories", icon: FiLayers },
+  { label: "Product Subcategories", href: "/admin/dashboard/product-subcategories", icon: FiTag },
+  { label: "Products", href: "/admin/dashboard/products", icon: FiShoppingBag },
+  { label: "Product Reviews", href: "/admin/dashboard/product-reviews", icon: FiStar },
+  { label: "Product Bookings", href: "/admin/dashboard/product-bookings", icon: FiClipboard },
+  { label: "Site Services", href: "/admin/dashboard/site-services", icon: FiBriefcase },
+  { label: "Site Service Items", href: "/admin/dashboard/site-service-items", icon: FiSliders },
+  { label: "Site Service Item Reviews", href: "/admin/dashboard/site-service-item-reviews", icon: FiMessageSquare },
+  { label: "Transfer Locations", href: "/admin/dashboard/transfer-locations", icon: FiRepeat },
   { label: "Countries", href: "/admin/dashboard/countries", icon: FiGlobe },
+  { label: "Currencies", href: "/admin/dashboard/currencies", icon: FiDollarSign },
   { label: "Admins", href: "/admin/dashboard/admins", icon: FiShield, superAdminOnly: true },
 ];
 
@@ -52,8 +65,10 @@ export function AdminSidebar({
     setMounted(true);
   }, []);
 
-  const isActive = (href: string) =>
-    href === "/admin/dashboard" ? pathname === href : pathname?.startsWith(href);
+  const isActive = (href: string) => {
+    if (!mounted || !pathname) return false;
+    return href === "/admin/dashboard" ? pathname === href : pathname.startsWith(href);
+  };
 
   const displayName =
     mounted && user?.firstName
@@ -61,6 +76,11 @@ export function AdminSidebar({
       : mounted && user?.userName
       ? user.userName
       : "Admin";
+
+  const isSuper = mounted && isSuperAdmin(user);
+  const visibleNavItems = ADMIN_NAV_ITEMS.filter(
+    (item) => !item.superAdminOnly || isSuper
+  );
 
   return (
     <div className="flex h-full flex-col bg-gradient-to-b from-[#0E4A68] to-[#062A3D] text-[#FFFFFF]">
@@ -89,14 +109,12 @@ export function AdminSidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-4">
+      <nav className="flex-1 overflow-y-auto px-4" suppressHydrationWarning>
         <p className="px-3 pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#FFFFFF73]">
           Management
         </p>
-        <ul className="space-y-1">
-          {ADMIN_NAV_ITEMS.filter(
-            (item) => !item.superAdminOnly || isSuperAdmin(user)
-          ).map((item) => {
+        <ul className="space-y-1" suppressHydrationWarning>
+          {visibleNavItems.map((item) => {
             const active = isActive(item.href);
             const Icon = item.icon;
             return (

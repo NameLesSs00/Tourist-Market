@@ -1,6 +1,6 @@
 import apiClient from "./apiConfig";
 import type { ApiResponse } from "@/models/auth";
-import { LANGS, type LangCode, type LocalizedText } from "@/models/faq";
+import { LANGS, type LangCode, type LocalizedText } from "@/models/localization";
 import type {
   ExcursionCategoryCreateRequest,
   ExcursionCategoryItem,

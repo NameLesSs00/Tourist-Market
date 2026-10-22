@@ -66,3 +66,4 @@ tourist-market/
 5. **Features & Shared**:
    - Encapsulate TanStack Query queries/mutations and Zustand stores inside `features/`.
    - Place cross-cutting providers (e.g. QueryClientProvider) and common utilities in `shared/`.
+do not ever commit to main unless i tell you

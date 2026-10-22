@@ -27,7 +27,7 @@ import {
   useUpdateBlogMutation,
 } from "@/features/blogs/useBlogAdmin";
 import { extractErrorMessage } from "@/features/auth/useAuth";
-import { LANG_FLAGS } from "@/models/faq";
+import { LANG_FLAGS } from "@/models/localization";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 import type { BlogItem, BlogUpsertRequest } from "@/models/blog";
 

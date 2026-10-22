@@ -1,4 +1,4 @@
-import type { LocalizedText } from "./faq";
+import type { LocalizedText } from "./localization";
 
 /**
  * Summary of an Excursion Category returned in the paged list or detail view.

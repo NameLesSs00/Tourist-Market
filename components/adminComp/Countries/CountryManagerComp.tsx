@@ -18,7 +18,7 @@ import {
   useDeleteCountryMutation,
   useUpdateCountryMutation,
 } from "@/features/countries/useCountryAdmin";
-import { LANG_FLAGS } from "@/models/faq";
+import { LANG_FLAGS } from "@/models/localization";
 import type { CountryItem, CountryUpsertRequest } from "@/models/country";
 
 const PAGE_SIZE = 10;

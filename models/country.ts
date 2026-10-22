@@ -1,4 +1,4 @@
-import type { LangCode, LocalizedText } from "./faq";
+import type { LangCode, LocalizedText } from "./localization";
 
 /**
  * A single country entity returned by GET /api/countries.

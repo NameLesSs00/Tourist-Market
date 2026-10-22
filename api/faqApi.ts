@@ -1,14 +1,12 @@
 import { API_BASE_URL, apiClient } from "./apiConfig";
 import type { ApiResponse } from "@/models/auth";
-import {
-  LANGS,
-  type AdminFaq,
-  type AdminFaqPage,
-  type FaqQueryParams,
-  type FaqResponse,
-  type FaqUpsertRequest,
-  type LangCode,
-  type LocalizedText,
+import { LANGS, type LangCode, type LocalizedText } from "@/models/localization";
+import type {
+  AdminFaq,
+  AdminFaqPage,
+  FaqQueryParams,
+  FaqResponse,
+  FaqUpsertRequest,
 } from "@/models/faq";
 
 /**
