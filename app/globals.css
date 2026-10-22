@@ -65,6 +65,7 @@ footer button {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -74,6 +75,7 @@ footer button {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(-360deg);
   }
@@ -92,4 +94,91 @@ footer button {
 .animate-orbit-3 {
   animation: spinClockwise 25s linear infinite;
   transform-origin: center;
+}
+
+/*
+ * Blog Card Smooth Animated Border
+ * Matches PromptsUi/blogsanimation.png specification:
+ * - angle: 16 deg (-16deg in LTR / +16deg in RTL)
+ * - opacity: 1 (animated from 0 to 1 on hover)
+ * - border-radius: 30px
+ * - border: 1px solid #888888
+ */
+.blog-card-animated-border {
+  border: 1px solid #888888;
+  border-radius: 30px;
+  opacity: 0;
+  transform: rotate(0deg) scale(0.96);
+  transform-origin: center center;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+.group:hover .blog-card-animated-border,
+.group:focus-within .blog-card-animated-border {
+  opacity: 1;
+  transform: rotate(-16deg) scale(1);
+}
+
+[dir="rtl"] .group:hover .blog-card-animated-border,
+[dir="rtl"] .group:focus-within .blog-card-animated-border,
+.group[data-rtl="true"]:hover .blog-card-animated-border,
+.group[data-rtl="true"]:focus-within .blog-card-animated-border {
+  transform: rotate(16deg) scale(1);
+}
+
+/* ─── Scrollbar utilities ────────────────────────────────────────────── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* ─── Services Carousel Panel Background & Curve Shadow ────────────────────────── */
+.services-carousel-panel {
+  position: relative;
+  isolation: isolate;
+}
+
+/* The white card panel with inward semicircular cutouts and continuous drop shadow */
+.services-carousel-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #F7F7F7;
+  border-radius: 32px;
+  -webkit-mask-image:
+    radial-gradient(circle 30px at 0% 50%, transparent 98%, black 100%),
+    radial-gradient(circle 30px at 100% 50%, transparent 98%, black 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  filter: drop-shadow(0px 4px 20px rgba(0, 0, 0, 0.06));
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .services-carousel-panel::before {
+    border-radius: 40px;
+    -webkit-mask-image:
+      radial-gradient(circle 36px at 0% 50%, transparent 98%, black 100%),
+      radial-gradient(circle 36px at 100% 50%, transparent 98%, black 100%);
+    filter: drop-shadow(0px 4px 25px rgba(0, 0, 0, 0.07));
+  }
+}
+
+@media (min-width: 1024px) {
+  .services-carousel-panel::before {
+    -webkit-mask-image:
+      radial-gradient(circle 44px at 0% 50%, transparent 98%, black 100%),
+      radial-gradient(circle 44px at 100% 50%, transparent 98%, black 100%);
+    filter: drop-shadow(0px 4px 30px rgba(0, 0, 0, 0.08));
+  }
 }
