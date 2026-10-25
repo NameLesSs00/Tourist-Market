@@ -1,7 +1,15 @@
 export { PrivateExcursionLocalizedFields } from "./PrivateExcursionLocalizedFields";
-export { PrivateExcursionSpecsPricing } from "./PrivateExcursionSpecsPricing";
+export { PrivateExcursionSpecs } from "./PrivateExcursionSpecs";
 export { PrivateExcursionAttractionPicker } from "./PrivateExcursionAttractionPicker";
 export { PrivateExcursionServicePicker } from "./PrivateExcursionServicePicker";
 export { PrivateExcursionAvailabilityBadge } from "./PrivateExcursionAvailabilityBadge";
 export { PrivateExcursionAvailabilityPanel } from "./PrivateExcursionAvailabilityPanel";
+export { ExcursionImagesPanel } from "./ExcursionImagesPanel";
+export { ExcursionFaqsPanel } from "./ExcursionFaqsPanel";
+export { ExcursionFaqForm } from "./ExcursionFaqForm";
 export { buildPrivateExcursionColumns } from "./PrivateExcursionColumns";
+export { PrivateExcursionVehiclePricingPanel } from "./PrivateExcursionVehiclePricingPanel";
+export { VehiclePricingTierFormDrawer } from "./VehiclePricingTierFormDrawer";
+export { ExcursionDetailsPanel } from "./ExcursionDetailsPanel";
+export { ExcursionDetailsListSection } from "./ExcursionDetailsListSection";
+export { ExcursionDetailsLiterallySection } from "./ExcursionDetailsLiterallySection";

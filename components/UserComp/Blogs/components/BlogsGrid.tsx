@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import { BlogPost } from "../types";
+import type { BlogItem } from "@/models/blog";
 import { BlogCard } from "./BlogCard";
 
 interface BlogsGridProps {
-  blogs: BlogPost[];
+  blogs: BlogItem[];
   isLoading?: boolean;
   locale?: string;
 }

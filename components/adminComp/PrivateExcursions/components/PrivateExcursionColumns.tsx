@@ -1,40 +1,61 @@
 "use client";
 
 import React from "react";
-import { FiCalendar, FiClock, FiMapPin, FiStar } from "react-icons/fi";
+import { FaCar } from "react-icons/fa6";
+import { FiCalendar, FiClock, FiFileText, FiImage, FiMapPin, FiStar } from "react-icons/fi";
 import type { DataTableColumn } from "@/components/adminComp/Shared";
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
 import { PrivateExcursionAvailabilityBadge } from "./PrivateExcursionAvailabilityBadge";
 
 interface BuildColumnsOptions {
   onManageAvailability: (item: PrivateExcursionListItem) => void;
+  onManageVehiclePricing: (item: PrivateExcursionListItem) => void;
+  onManageDetails: (item: PrivateExcursionListItem) => void;
+  onManagePhotos: (item: PrivateExcursionListItem) => void;
 }
+
+const formatThumbnailUrl = (url?: string | null) => {
+  if (!url) return "";
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  const base = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") || "https://touristtt.runasp.net";
+  return `${base}${url.startsWith("/") ? "" : "/"}${url}`;
+};
 
 export function buildPrivateExcursionColumns({
   onManageAvailability,
+  onManageVehiclePricing,
+  onManageDetails,
+  onManagePhotos,
 }: BuildColumnsOptions): DataTableColumn<PrivateExcursionListItem>[] {
   return [
     {
       key: "excursion",
       header: "Private Excursion",
       render: (item) => (
-        <div className="space-y-0.5">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-[#083952]">{item.title}</span>
-            {item.isFeatured && (
-              <span className="inline-flex items-center gap-1 rounded-md bg-[#D48C2815] px-1.5 py-0.5 text-[10px] font-semibold text-[#D48C28]">
-                <FiStar className="h-2.5 w-2.5 fill-current" /> Featured
-              </span>
+        <div className="flex items-center gap-3">
+          <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-gray-100 shadow-2xs">
+            {item.primaryImageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={formatThumbnailUrl(item.primaryImageUrl)}
+                alt={item.title}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-gray-400">
+                <FiImage className="h-4 w-4" />
+              </div>
             )}
           </div>
-          {item.subtitle && (
-            <p className="text-xs text-[#64748B] line-clamp-1">{item.subtitle}</p>
-          )}
-          <div className="flex items-center gap-2 text-[11px] text-[#94A3B8]">
-            <span className="rounded bg-[#F1F5F9] px-1.5 py-0.5 font-medium text-[#475569]">
-              {item.excursionType || "Private Tour"}
-            </span>
-            <span>/{item.slug}</span>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-[#083952] line-clamp-2">{item.title}</span>
+              {item.isFeatured && (
+                <span className="shrink-0 inline-flex items-center gap-1 rounded-md bg-[#D48C2815] px-1.5 py-0.5 text-[10px] font-semibold text-[#D48C28]">
+                  <FiStar className="h-2.5 w-2.5 fill-current" /> Featured
+                </span>
+              )}
+            </div>
           </div>
         </div>
       ),
@@ -44,7 +65,7 @@ export function buildPrivateExcursionColumns({
       header: "Category",
       render: (item) => (
         <span className="rounded-lg bg-[#0E4A680D] px-2.5 py-1 text-xs font-semibold text-[#0E4A68]">
-          {item.categoryTitle || "Excursion"}
+          {item.category?.categoryTitle || item.categoryTitle || "Excursion"}
         </span>
       ),
     },
@@ -65,22 +86,21 @@ export function buildPrivateExcursionColumns({
       ),
     },
     {
-      key: "prices",
-      header: "Prices (USD)",
-      render: (item) => {
-        const p = item.prices?.[0];
-        return (
-          <div className="space-y-0.5 text-xs">
-            <div className="font-semibold text-[#0F172A]">
-              ${p?.adultPrice ?? 0}{" "}
-              <span className="text-[10px] font-normal text-[#64748B]">adult</span>
-            </div>
-            <div className="text-[11px] text-[#64748B]">
-              ${p?.childPrice ?? 0} child · ${p?.infantPrice ?? 0} inf
-            </div>
-          </div>
-        );
-      },
+      key: "vehicleRates",
+      header: "Vehicle Rates",
+      render: (item) => (
+        <div className="space-y-1">
+          <button
+            type="button"
+            onClick={() => onManageVehiclePricing(item)}
+            title="Configure Vehicle Transfer Rates"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[#0E4A6833] bg-[#0E4A680C] px-2.5 py-1 text-xs font-semibold text-[#0E4A68] hover:bg-[#0E4A6818] transition cursor-pointer shadow-2xs"
+          >
+            <FaCar className="h-3.5 w-3.5 text-[#0E4A68]" />
+            <span>Vehicle Rates</span>
+          </button>
+        </div>
+      ),
     },
     {
       key: "availability",
@@ -102,5 +122,33 @@ export function buildPrivateExcursionColumns({
         </div>
       ),
     },
+    {
+      key: "actions",
+      header: "Media & Details",
+      render: (item) => (
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => onManagePhotos(item)}
+            title="Manage Photos & Hero Image"
+            className="inline-flex items-center gap-1 rounded-lg border border-[#0E4A6833] bg-[#0E4A680C] px-2 py-1 text-xs font-semibold text-[#0E4A68] hover:bg-[#0E4A6818] transition cursor-pointer shadow-2xs"
+          >
+            <FiImage className="h-3 w-3 text-[#0E4A68]" />
+            <span>Photos</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onManageDetails(item)}
+            title="Configure Itinerary, Highlights, Inclusions & Policies"
+            className="inline-flex items-center gap-1 rounded-lg border border-[#D48C2833] bg-[#D48C280C] px-2 py-1 text-xs font-semibold text-[#D48C28] hover:bg-[#D48C2818] transition cursor-pointer shadow-2xs"
+          >
+            <FiFileText className="h-3 w-3 text-[#D48C28]" />
+            <span>Details</span>
+          </button>
+        </div>
+      ),
+    },
   ];
 }
+
+export default buildPrivateExcursionColumns;

@@ -16,7 +16,15 @@ const LANGUAGES: LanguageOption[] = [
   { code: "ru", name: "Русский", flagSrc: "/flags/ru.svg" },
 ];
 
-export function LanguageSelector() {
+export interface LanguageSelectorProps {
+  className?: string;
+  dropdownDirection?: "up" | "down";
+}
+
+export function LanguageSelector({
+  className = "",
+  dropdownDirection = "down",
+}: LanguageSelectorProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<LanguageOption>(LANGUAGES[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -32,13 +40,13 @@ export function LanguageSelector() {
   }, []);
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-poppins-semibold-16 text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none"
+        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-poppins-semibold-16 text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer"
       >
         <span className="relative flex h-4 w-5 shrink-0 overflow-hidden rounded-xs border border-[#08395226]">
           <Image
@@ -64,7 +72,11 @@ export function LanguageSelector() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 origin-top-right rounded-xl border border-[#08395226] bg-[#FFF9F2] p-1.5 shadow-lg backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
+        <div
+          className={`absolute right-0 w-40 rounded-xl border border-[#08395226] bg-[#FFF9F2] p-1.5 shadow-lg backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150 ${
+            dropdownDirection === "up" ? "bottom-full mb-2 origin-bottom-right" : "mt-2 origin-top-right"
+          }`}
+        >
           {LANGUAGES.map((lang) => {
             const isCurrent = lang.code === selected.code;
             return (

@@ -19,6 +19,9 @@ export interface ExcursionServiceItem {
   heroImage?: string | null;
   displayOrder: number;
   basePriceUSD: number;
+  adultPriceUsd: number;
+  childPriceUsd: number;
+  infantPriceUsd: number;
   basePrice?: number;
   displayedPrice?: number;
   currency?: string;
@@ -28,7 +31,9 @@ export interface ExcursionServiceItem {
 }
 
 export interface ExcursionServiceUpsertRequest {
-  basePriceUSD: number;
+  adultPriceUsd: number;
+  childPriceUsd: number;
+  infantPriceUsd: number;
   displayOrder: number;
   title: LocalizedText;
   description: LocalizedText;

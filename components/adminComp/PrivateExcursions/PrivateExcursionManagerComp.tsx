@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import {
   ConfirmDialog,
   DataTable,
+  ExcursionImagesPanel,
   PageHeader,
   SearchInput,
 } from "@/components/adminComp/Shared";
@@ -17,7 +18,9 @@ import {
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
 import {
   buildPrivateExcursionColumns,
+  ExcursionDetailsPanel,
   PrivateExcursionAvailabilityPanel,
+  PrivateExcursionVehiclePricingPanel,
 } from "./components";
 import { PrivateExcursionFormPanel } from "./PrivateExcursionFormPanel";
 
@@ -44,6 +47,9 @@ export function PrivateExcursionManagerComp() {
   const [formTarget, setFormTarget] = useState<PrivateExcursionListItem | null | undefined>(undefined);
   const [deleteTarget, setDeleteTarget] = useState<PrivateExcursionListItem | null>(null);
   const [availabilityTarget, setAvailabilityTarget] = useState<PrivateExcursionListItem | null>(null);
+  const [vehiclePricingTarget, setVehiclePricingTarget] = useState<PrivateExcursionListItem | null>(null);
+  const [detailsTarget, setDetailsTarget] = useState<{ id: string; title: string } | null>(null);
+  const [photosTarget, setPhotosTarget] = useState<PrivateExcursionListItem | null>(null);
 
   const rawItems = listQuery.data?.data?.items ?? [];
 
@@ -66,6 +72,9 @@ export function PrivateExcursionManagerComp() {
     () =>
       buildPrivateExcursionColumns({
         onManageAvailability: (item) => setAvailabilityTarget(item),
+        onManageVehiclePricing: (item) => setVehiclePricingTarget(item),
+        onManageDetails: (item) => setDetailsTarget({ id: item.id, title: item.title }),
+        onManagePhotos: (item) => setPhotosTarget(item),
       }),
     []
   );
@@ -74,35 +83,26 @@ export function PrivateExcursionManagerComp() {
     <div className="space-y-6 p-6 sm:p-8">
       <PageHeader
         title="Private Excursions"
-        description="Create and manage exclusive tailor-made private tours, operating schedules, attractions and extra services."
+        description="Create and manage exclusive tailor-made private tours, operating schedules, vehicle pricing tiers, attractions and extra services."
         actionLabel="New Private Excursion"
         onAction={() => setFormTarget(null)}
       />
 
-      {/* Filter toolbar */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-col gap-3 sm:flex-row sm:items-center">
           <SearchInput
             value={search}
-            onChange={(val) => {
-              setSearch(val);
-              setPage(1);
-            }}
+            onChange={(val) => { setSearch(val); setPage(1); }}
             placeholder="Search by title, excursion type, or slug..."
           />
           <select
             value={categoryFilter}
-            onChange={(e) => {
-              setCategoryFilter(e.target.value);
-              setPage(1);
-            }}
+            onChange={(e) => { setCategoryFilter(e.target.value); setPage(1); }}
             className="rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2.5 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
           >
             <option value="">All Excursion Categories</option>
             {categoryList.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
         </div>
@@ -114,13 +114,13 @@ export function PrivateExcursionManagerComp() {
       <DataTable<PrivateExcursionListItem>
         columns={columns}
         rows={displayedItems}
-        getRowKey={(item: PrivateExcursionListItem) => item.id}
+        getRowKey={(item) => item.id}
         isLoading={listQuery.isLoading}
         isFetching={listQuery.isFetching}
         emptyTitle={search.trim() ? `No excursions match "${search}"` : "No private excursions found"}
         emptyDescription="Try another keyword or create your first private excursion."
-        onEdit={(item: PrivateExcursionListItem) => setFormTarget(item)}
-        onDelete={(item: PrivateExcursionListItem) => setDeleteTarget(item)}
+        onEdit={(item) => setFormTarget(item)}
+        onDelete={(item) => setDeleteTarget(item)}
         pagination={{
           pageNumber: page,
           pageSize: PAGE_SIZE,
@@ -128,7 +128,7 @@ export function PrivateExcursionManagerComp() {
           totalCount,
           hasPreviousPage: page > 1,
           hasNextPage: page < totalPages,
-          onPageChange: setPage,
+          onPageChange: (newPage) => setPage(newPage),
         }}
       />
 
@@ -138,13 +138,17 @@ export function PrivateExcursionManagerComp() {
         excursion={formTarget}
         onSubmitCreate={(data) => {
           createMutation.mutate(data, {
-            onSuccess: () => setFormTarget(undefined),
+            onSuccess: (res) => {
+              setFormTarget(undefined);
+              const createdId = res?.data?.id || (res as any)?.id || (res as any)?.data?.id;
+              if (createdId) {
+                setDetailsTarget({ id: createdId, title: data.body.title.en || "New Excursion" });
+              }
+            },
           });
         }}
         onSubmitUpdate={(data) => {
-          updateMutation.mutate(data, {
-            onSuccess: () => setFormTarget(undefined),
-          });
+          updateMutation.mutate(data, { onSuccess: () => setFormTarget(undefined) });
         }}
         isSubmitting={createMutation.isPending || updateMutation.isPending}
       />
@@ -155,6 +159,24 @@ export function PrivateExcursionManagerComp() {
         onClose={() => setAvailabilityTarget(null)}
       />
 
+      <PrivateExcursionVehiclePricingPanel
+        open={Boolean(vehiclePricingTarget)}
+        excursion={vehiclePricingTarget}
+        onClose={() => setVehiclePricingTarget(null)}
+      />
+
+      <ExcursionDetailsPanel
+        open={Boolean(detailsTarget)}
+        excursion={detailsTarget}
+        onClose={() => setDetailsTarget(null)}
+      />
+
+      <ExcursionImagesPanel
+        open={Boolean(photosTarget)}
+        excursion={photosTarget}
+        onClose={() => setPhotosTarget(null)}
+      />
+
       <ConfirmDialog
         open={Boolean(deleteTarget)}
         title="Delete Private Excursion"
@@ -163,9 +185,7 @@ export function PrivateExcursionManagerComp() {
         isLoading={deleteMutation.isPending}
         onConfirm={() => {
           if (deleteTarget) {
-            deleteMutation.mutate(deleteTarget.id, {
-              onSuccess: () => setDeleteTarget(null),
-            });
+            deleteMutation.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) });
           }
         }}
         onCancel={() => setDeleteTarget(null)}

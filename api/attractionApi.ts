@@ -27,10 +27,10 @@ export async function getAttractions(
   queryParams.pageNumber = page;
   queryParams.pageSize = pageSize;
 
-  const { data } = await apiClient.get<PagedAttractionsResult>("/attractions", {
+  const { data } = await apiClient.get<any>("/attractions", {
     params: queryParams,
   });
-  return data;
+  return (data?.data ?? data) as PagedAttractionsResult;
 }
 
 /**
@@ -41,10 +41,10 @@ export async function getAttractionById(
   lang: string = "en",
   currency: string = "USD"
 ): Promise<AttractionItem> {
-  const { data } = await apiClient.get<AttractionItem>(`/attractions/${id}`, {
+  const { data } = await apiClient.get<any>(`/attractions/${id}`, {
     params: { lang, currency },
   });
-  return data;
+  return (data?.data ?? data) as AttractionItem;
 }
 
 /**
@@ -91,8 +91,8 @@ export async function getAttractionAllLanguages(
 export async function createAttraction(
   body: AttractionUpsertRequest
 ): Promise<AttractionItem> {
-  const { data } = await apiClient.post<AttractionItem>("/attractions", body);
-  return data;
+  const { data } = await apiClient.post<any>("/attractions", body);
+  return (data?.data ?? data) as AttractionItem;
 }
 
 /**
@@ -102,8 +102,8 @@ export async function updateAttraction(
   id: string,
   body: AttractionUpsertRequest
 ): Promise<AttractionItem> {
-  const { data } = await apiClient.put<AttractionItem>(`/attractions/${id}`, body);
-  return data;
+  const { data } = await apiClient.put<any>(`/attractions/${id}`, body);
+  return (data?.data ?? data) as AttractionItem;
 }
 
 /**

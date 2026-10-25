@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Poppins, Manrope, Montserrat } from "next/font/google";
 import "./globals.css";
@@ -40,7 +41,9 @@ export default function RootLayout({
     >
       <body className={`${poppins.className} min-h-full flex flex-col bg-[#FFF4E5] text-[#083952]`}>
         <QueryProvider>
-          <Header />
+          <Suspense fallback={<div className="h-20 w-full" />}>
+            <Header />
+          </Suspense>
           <main className="flex-1 -mt-20">{children}</main>
           <Footer />
         </QueryProvider>

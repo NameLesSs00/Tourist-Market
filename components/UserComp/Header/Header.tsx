@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CurrencySelector } from "./CurrencySelector";
 import { LanguageSelector } from "./LanguageSelector";
+import { MobileMenu } from "./MobileMenu";
 import { NavLinks } from "./NavLinks";
 
 interface HeaderProps {
@@ -65,43 +66,33 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
           <NavLinks currentLocale={currentLocale} />
         </div>
 
-        {/* Right: Currency & Language Selectors */}
-        <div className="hidden md:flex md:items-center md:gap-3">
+        {/* Right: Desktop Currency & Language Selectors */}
+        <div className="hidden lg:flex lg:items-center lg:gap-3">
           <CurrencySelector />
           <LanguageSelector />
         </div>
 
-        {/* Mobile Hamburger Menu Button */}
-        <div className="flex items-center gap-2 md:hidden">
-          <CurrencySelector />
-          <LanguageSelector />
+        {/* Mobile & Tablet Hamburger Menu Button */}
+        <div className="flex items-center lg:hidden">
           <button
             type="button"
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-            aria-label="Toggle Navigation Menu"
-            className="rounded-lg p-2 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(true)}
+            aria-label="Open Navigation Menu"
+            className="rounded-xl p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer"
           >
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              )}
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {isMobileMenuOpen && (
-        <div className="border-t border-[#0839521A] bg-[#F4DAB6FA] px-4 py-6 shadow-lg backdrop-blur-lg lg:hidden">
-          <NavLinks
-            currentLocale={currentLocale}
-            onNavigate={() => setIsMobileMenuOpen(false)}
-            className="flex flex-col items-start gap-4"
-          />
-        </div>
-      )}
+      {/* Full-Screen Mobile & Tablet Menu Overlay */}
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        currentLocale={currentLocale}
+      />
     </header>
   );
 }

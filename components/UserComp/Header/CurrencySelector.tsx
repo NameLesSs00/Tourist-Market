@@ -14,7 +14,15 @@ const CURRENCIES: CurrencyOption[] = [
   { code: "GBP", symbol: "£", label: "GBP" },
 ];
 
-export function CurrencySelector() {
+export interface CurrencySelectorProps {
+  className?: string;
+  dropdownDirection?: "up" | "down";
+}
+
+export function CurrencySelector({
+  className = "",
+  dropdownDirection = "down",
+}: CurrencySelectorProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<CurrencyOption>(CURRENCIES[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -30,13 +38,13 @@ export function CurrencySelector() {
   }, []);
 
   return (
-    <div className="relative inline-block text-left" ref={dropdownRef}>
+    <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-poppins-semibold-16 text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none"
+        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-poppins-semibold-16 text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer"
       >
         <span className="font-bold">{selected.symbol}</span>
         <span>{selected.label}</span>
@@ -54,7 +62,11 @@ export function CurrencySelector() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-36 origin-top-right rounded-xl border border-[#08395226] bg-[#FFF9F2] p-1.5 shadow-lg backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
+        <div
+          className={`absolute right-0 w-36 rounded-xl border border-[#08395226] bg-[#FFF9F2] p-1.5 shadow-lg backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150 ${
+            dropdownDirection === "up" ? "bottom-full mb-2 origin-bottom-right" : "mt-2 origin-top-right"
+          }`}
+        >
           {CURRENCIES.map((currency) => {
             const isCurrent = currency.code === selected.code;
             return (

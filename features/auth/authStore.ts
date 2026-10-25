@@ -5,7 +5,7 @@ import { AdminUser, LoginResponseData } from "@/models/auth";
 interface AuthState {
   token: string | null;
   user: AdminUser | null;
-  expiresAt: number | null; // Timestamp in milliseconds (1 hour lifespan)
+  expiresAt: number | null; // Timestamp in milliseconds (12 hours / 720 minutes lifespan)
   isAuthenticated: boolean;
   
   // Actions
@@ -24,15 +24,23 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
 
       setAuth: (data: LoginResponseData) => {
-        // Backend expiresAt is unreliable; set exactly 1 hour from creation
-        const oneHourMs = 60 * 60 * 1000;
-        const expiresAt = Date.now() + oneHourMs;
+        // Token lifespan is 12 hours (720 minutes = 43,200,000 ms)
+        const twelveHoursMs = 12 * 60 * 60 * 1000;
+        let expiresAt = Date.now() + twelveHoursMs;
+        if (data.expiresAt) {
+          const parsed = new Date(data.expiresAt).getTime();
+          if (!isNaN(parsed) && parsed > Date.now()) {
+            expiresAt = parsed;
+          }
+        }
+
+        const maxAgeSeconds = Math.max(60, Math.floor((expiresAt - Date.now()) / 1000));
 
         // Synchronize browser storage
         if (typeof window !== "undefined") {
           localStorage.setItem("admin_token", data.token);
-          // Set cookie for Next.js proxy route protection (3600 seconds = 1 hour)
-          document.cookie = `admin_token=${data.token}; path=/; max-age=3600; SameSite=Lax`;
+          // Set cookie for Next.js proxy route protection (12 hours = 43200 seconds)
+          document.cookie = `admin_token=${data.token}; path=/; max-age=${maxAgeSeconds}; SameSite=Lax`;
         }
 
         set({

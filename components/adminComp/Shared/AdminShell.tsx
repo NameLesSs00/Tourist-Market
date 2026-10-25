@@ -13,7 +13,7 @@ import { ChangePasswordPanel } from "./ChangePasswordPanel";
 
 /**
  * Admin chrome: fixed sidebar on desktop, slide-in drawer on mobile.
- * Also owns the session guard (1h local expiry) and logout.
+ * Also owns the session guard (12h / 720m local expiry) and logout.
  */
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -23,7 +23,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
-  const [minutesRemaining, setMinutesRemaining] = useState(60);
+  const [minutesRemaining, setMinutesRemaining] = useState(720);
 
   const endSession = useCallback(
     (reason: "logout" | "expired") => {

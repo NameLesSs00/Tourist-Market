@@ -1,13 +1,13 @@
 import React from "react";
 import type { Metadata } from "next";
-import { TransferLocationManagerComp } from "@/components/adminComp/TransferLocations";
+import { TransferServicesManagerComp } from "@/components/adminComp/TransferServices";
 
 export const metadata: Metadata = {
-  title: "Transfer Locations | Admin Portal",
+  title: "Transfer Services | Admin Portal",
   description:
-    "Manage pickup (departure) and destination (drop-off) points for transfer routes.",
+    "Manage transfer route pricing rules, pickup locations, and destination points.",
 };
 
 export default function AdminTransferLocationsPage() {
-  return <TransferLocationManagerComp />;
+  return <TransferServicesManagerComp defaultTab="from" />;
 }

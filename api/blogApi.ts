@@ -1,22 +1,11 @@
 import apiClient from "./apiConfig";
 import type { ApiResponse } from "@/models/auth";
 import type {
-  BlogItem,
-  BlogQueryParams,
-  BlogSectionCreateRequest,
-  BlogSectionItem,
-  BlogSectionUpdateRequest,
-  BlogUpsertRequest,
-  PagedBlogsResult,
+  BlogItem, BlogQueryParams, BlogSectionCreateRequest, BlogSectionItem,
+  BlogSectionUpdateRequest, BlogUpsertRequest, PagedBlogsResult,
 } from "@/models/blog";
 
-// ---------------------------------------------------------------------------
 // Blogs Endpoints
-// ---------------------------------------------------------------------------
-
-/**
- * Fetches paged list of blogs.
- */
 export async function getAdminBlogs(
   params: BlogQueryParams = {}
 ): Promise<ApiResponse<PagedBlogsResult>> {
@@ -30,10 +19,34 @@ export async function getAdminBlogs(
 }
 
 /**
+ * Fetches localized paged list of blogs for client visitors.
+ */
+export async function getPublicBlogs(
+  params: BlogQueryParams = {},
+  locale: string = "en"
+): Promise<ApiResponse<PagedBlogsResult>> {
+  const { data } = await apiClient.get<ApiResponse<PagedBlogsResult>>("/blogs", {
+    params: {
+      pageNumber: params.pageNumber ?? 1,
+      pageSize: params.pageSize ?? 12,
+    },
+    headers: { "Accept-Language": locale },
+  });
+  return data;
+}
+
+/**
  * Fetches a single blog by ID with its sections and image.
  */
-export async function getBlogById(id: string): Promise<ApiResponse<BlogItem>> {
-  const { data } = await apiClient.get<ApiResponse<BlogItem>>(`/blogs/${id}`);
+export async function getBlogById(
+  id: string,
+  locale?: string
+): Promise<ApiResponse<BlogItem>> {
+  const headers: Record<string, string> = {};
+  if (locale) headers["Accept-Language"] = locale;
+  const { data } = await apiClient.get<ApiResponse<BlogItem>>(`/blogs/${id}`, {
+    headers,
+  });
   return data;
 }
 
@@ -165,6 +178,7 @@ export async function deleteBlogSection(
 
 const blogApi = {
   getAdminBlogs,
+  getPublicBlogs,
   getBlogById,
   createBlog,
   updateBlog,

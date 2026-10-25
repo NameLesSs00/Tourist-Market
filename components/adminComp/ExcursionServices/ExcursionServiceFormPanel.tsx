@@ -63,7 +63,9 @@ export function ExcursionServiceFormPanel({
 
   const [title, setTitle] = useState<LocalizedText>(emptyLocalized());
   const [description, setDescription] = useState<LocalizedText>(emptyLocalized());
-  const [basePriceUSD, setBasePriceUSD] = useState<number>(0);
+  const [adultPriceUsd, setAdultPriceUsd] = useState<number>(0);
+  const [childPriceUsd, setChildPriceUsd] = useState<number>(0);
+  const [infantPriceUsd, setInfantPriceUsd] = useState<number>(0);
   const [displayOrder, setDisplayOrder] = useState<number>(0);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -84,7 +86,9 @@ export function ExcursionServiceFormPanel({
         setTitle(detailQuery.data.titleLocalized || emptyLocalized());
         setDescription(detailQuery.data.descriptionLocalized || emptyLocalized());
         setDisplayOrder(detailQuery.data.displayOrder ?? 0);
-        setBasePriceUSD(detailQuery.data.basePriceUSD ?? 0);
+        setAdultPriceUsd(detailQuery.data.adultPriceUsd ?? 0);
+        setChildPriceUsd(detailQuery.data.childPriceUsd ?? 0);
+        setInfantPriceUsd(detailQuery.data.infantPriceUsd ?? 0);
         setExistingGallery(detailQuery.data.images ?? []);
       } else {
         setTitle({
@@ -100,7 +104,9 @@ export function ExcursionServiceFormPanel({
           fr: "",
         });
         setDisplayOrder(serviceItem.displayOrder ?? 0);
-        setBasePriceUSD(serviceItem.basePriceUSD ?? 0);
+        setAdultPriceUsd(serviceItem.adultPriceUsd ?? 0);
+        setChildPriceUsd(serviceItem.childPriceUsd ?? 0);
+        setInfantPriceUsd(serviceItem.infantPriceUsd ?? 0);
         setExistingGallery(serviceItem.images ?? []);
       }
       setHeroFile(null);
@@ -114,7 +120,9 @@ export function ExcursionServiceFormPanel({
       setTitle(emptyLocalized());
       setDescription(emptyLocalized());
       setDisplayOrder(0);
-      setBasePriceUSD(0);
+      setAdultPriceUsd(0);
+      setChildPriceUsd(0);
+      setInfantPriceUsd(0);
       setExistingGallery([]);
       setDeletedGalleryIds([]);
       setHeroFile(null);
@@ -205,8 +213,16 @@ export function ExcursionServiceFormPanel({
       newErrors["description.en"] = "English description is required.";
     }
 
-    if (basePriceUSD < 0) {
-      newErrors.basePriceUSD = "Base price cannot be negative.";
+    if (adultPriceUsd < 0) {
+      newErrors.adultPriceUsd = "Adult price cannot be negative.";
+    }
+
+    if (childPriceUsd < 0) {
+      newErrors.childPriceUsd = "Child price cannot be negative.";
+    }
+
+    if (infantPriceUsd < 0) {
+      newErrors.infantPriceUsd = "Infant price cannot be negative.";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -219,7 +235,9 @@ export function ExcursionServiceFormPanel({
       title,
       description,
       displayOrder: Number(displayOrder) || 0,
-      basePriceUSD: Number(basePriceUSD) || 0,
+      adultPriceUsd: Number(adultPriceUsd) || 0,
+      childPriceUsd: Number(childPriceUsd) || 0,
+      infantPriceUsd: Number(infantPriceUsd) || 0,
     };
 
     if (isEdit && serviceItem) {
@@ -315,15 +333,37 @@ export function ExcursionServiceFormPanel({
 
         {/* Pricing & Order Subcomponent */}
         <ExcursionServicePricingFields
-          basePriceUSD={basePriceUSD}
+          adultPriceUsd={adultPriceUsd}
+          childPriceUsd={childPriceUsd}
+          infantPriceUsd={infantPriceUsd}
           displayOrder={displayOrder}
           errors={errors}
-          onBasePriceUSDChange={(val) => {
-            setBasePriceUSD(val);
-            if (errors.basePriceUSD) {
+          onAdultPriceUsdChange={(val) => {
+            setAdultPriceUsd(val);
+            if (errors.adultPriceUsd) {
               setErrors((prev) => {
                 const next = { ...prev };
-                delete next.basePriceUSD;
+                delete next.adultPriceUsd;
+                return next;
+              });
+            }
+          }}
+          onChildPriceUsdChange={(val) => {
+            setChildPriceUsd(val);
+            if (errors.childPriceUsd) {
+              setErrors((prev) => {
+                const next = { ...prev };
+                delete next.childPriceUsd;
+                return next;
+              });
+            }
+          }}
+          onInfantPriceUsdChange={(val) => {
+            setInfantPriceUsd(val);
+            if (errors.infantPriceUsd) {
+              setErrors((prev) => {
+                const next = { ...prev };
+                delete next.infantPriceUsd;
                 return next;
               });
             }

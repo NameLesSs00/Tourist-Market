@@ -1,17 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BlogPost } from "../types";
+import type { BlogItem } from "@/models/blog";
+import {
+  DEFAULT_BLOG_FALLBACK_IMAGE,
+  getBlogImageUrl,
+} from "../utils/blogImage";
 
 interface BlogCardProps {
-  blog: BlogPost;
+  blog: BlogItem;
   locale?: string;
 }
 
 export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
   const isRTL = locale === "ar";
+  const [imgSrc, setImgSrc] = useState(() => getBlogImageUrl(blog.imageUrl));
 
   return (
     <div
@@ -32,39 +37,42 @@ export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
       <article
         style={{
           borderRadius: "20px",
-          backgroundColor: "#0E4A68",
         }}
         className="relative z-10 flex flex-col w-full h-full overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
       >
         {/* Top: Blog Image */}
-        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] overflow-hidden bg-[#0A384F]">
+        <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] overflow-hidden rounded-t-[20px]">
           <Image
-            src={blog.image}
-            alt={blog.title}
+            src={imgSrc}
+            alt={blog.title || "Egypt travel story"}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            onError={() => setImgSrc(DEFAULT_BLOG_FALLBACK_IMAGE)}
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
         </div>
 
         {/* Bottom: Card Body */}
-        <div className="flex flex-col flex-1 justify-between p-5 sm:p-6 lg:p-7 text-white">
+        <div
+          style={{ backgroundColor: "#0E4A68" }}
+          className="flex flex-col flex-1 justify-between p-5 sm:p-6 lg:p-7 text-white rounded-b-[20px]"
+        >
           <div>
             {/* Card Title */}
             <h3 className="font-['Poppins'] text-[18px] sm:text-[20px] font-bold leading-snug tracking-tight text-white line-clamp-1">
               {blog.title}
             </h3>
 
-            {/* Card Excerpt */}
+            {/* Card Description */}
             <p className="mt-2.5 font-['Poppins'] text-[13px] sm:text-[14px] leading-[1.6] text-white/90 line-clamp-3">
-              {blog.excerpt}
+              {blog.description}
             </p>
           </div>
 
           {/* Card Button ("Read article") */}
           <div className="mt-6 flex justify-center w-full">
             <Link
-              href={`/${locale}/blogs/${blog.slug}`}
+              href={`/${locale}/Blogs/${blog.id}`}
               style={{
                 backgroundColor: "#FFFFFFEB",
                 color: "#000000",

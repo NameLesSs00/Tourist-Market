@@ -7,6 +7,12 @@ export interface PrivateExcursionPriceItem {
   infantPrice: number;
 }
 
+export interface PrivateExcursionCategoryRef {
+  id: string;
+  categoryTitle?: string;
+  slug?: string;
+}
+
 export interface PrivateExcursionListItem {
   id: string;
   slug: string;
@@ -18,11 +24,13 @@ export interface PrivateExcursionListItem {
   stars: string;
   maxAttractions: number;
   primaryImageUrl: string | null;
-  categorySlug: string;
-  categoryTitle: string;
+  category?: PrivateExcursionCategoryRef | null;
+  categoryId?: string | null;
+  categorySlug?: string | null;
+  categoryTitle?: string;
   isFeatured: boolean;
   rating: number;
-  prices: PrivateExcursionPriceItem[];
+  prices?: PrivateExcursionPriceItem[];
 }
 
 export interface PrivateExcursionDetail extends PrivateExcursionListItem {
@@ -55,9 +63,6 @@ export interface PrivateExcursionDetail extends PrivateExcursionListItem {
 export interface PrivateExcursionUpsertRequest {
   slug: string;
   categoryId: string;
-  adultPriceUsd: number;
-  childPriceUsd: number;
-  infantPriceUsd: number;
   stars: string;
   maxAttractions: number;
   durationHours: number;
@@ -75,9 +80,6 @@ export interface PrivateExcursionAllLanguagesDetail {
   id: string;
   slug: string;
   categoryId: string;
-  adultPriceUsd: number;
-  childPriceUsd: number;
-  infantPriceUsd: number;
   stars: string;
   maxAttractions: number;
   durationHours: number;

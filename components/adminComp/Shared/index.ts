@@ -4,5 +4,8 @@ export * from "./ChangePasswordPanel";
 export * from "./ConfirmDialog";
 export * from "./DataTable";
 export * from "./EntityFormPanel";
+export * from "./ExcursionGalleryCard";
+export * from "./ExcursionHeroSection";
+export * from "./ExcursionImagesPanel";
 export * from "./PageHeader";
 export * from "./SlidePanel";

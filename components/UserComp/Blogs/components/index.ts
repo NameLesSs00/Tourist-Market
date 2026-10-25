@@ -3,3 +3,7 @@ export { BlogsFilter } from "./BlogsFilter";
 export { BlogCard } from "./BlogCard";
 export { BlogsGrid } from "./BlogsGrid";
 export { BlogsPagination } from "./BlogsPagination";
+export { BlogDetailHero } from "./BlogDetailHero";
+export { BlogDetailShare } from "./BlogDetailShare";
+export { BlogDetailSectionItem } from "./BlogDetailSectionItem";
+export { BlogDetailRelated } from "./BlogDetailRelated";

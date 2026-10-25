@@ -22,22 +22,16 @@ export interface ExcursionServiceLocalizedDetail extends ExcursionServiceItem {
 export async function getExcursionServices(
   params: ExcursionServiceListParams = {}
 ): Promise<ExcursionServiceListResponse> {
-  const queryParams: Record<string, string | number> = {};
-
+  const queryParams: Record<string, string | number> = {
+    lang: params.lang || "en",
+    currency: params.currency || "USD",
+    page: params.page ?? 1,
+    pageSize: params.pageSize ?? 10,
+  };
   if (params.excursionId?.trim()) queryParams.excursionId = params.excursionId.trim();
-  queryParams.lang = params.lang || "en";
-  queryParams.currency = params.currency || "USD";
 
-  const page = params.page ?? 1;
-  const pageSize = params.pageSize ?? 10;
-  queryParams.page = page;
-  queryParams.pageSize = pageSize;
-
-  const { data } = await apiClient.get<ExcursionServiceListResponse>(
-    "/ExcursionServices/options",
-    { params: queryParams }
-  );
-  return data;
+  const { data } = await apiClient.get<any>("/ExcursionServices/options", { params: queryParams });
+  return (data?.data ?? data) as ExcursionServiceListResponse;
 }
 
 /**
@@ -48,11 +42,10 @@ export async function getExcursionServiceById(
   lang: string = "en",
   currency: string = "USD"
 ): Promise<ExcursionServiceItem> {
-  const { data } = await apiClient.get<ExcursionServiceItem>(
-    `/ExcursionServices/options/${id}`,
-    { params: { lang, currency } }
-  );
-  return data;
+  const { data } = await apiClient.get<any>(`/ExcursionServices/options/${id}`, {
+    params: { lang, currency },
+  });
+  return (data?.data ?? data) as ExcursionServiceItem;
 }
 
 /**
@@ -75,9 +68,7 @@ export async function getExcursionServiceAllLanguages(
   for (const res of results) {
     if (res.status === "fulfilled") {
       const { lang, item } = res.value;
-      if (!baseItem || lang === "en") {
-        baseItem = item;
-      }
+      if (!baseItem || lang === "en") baseItem = item;
       if (item.title) titleLocalized[lang] = item.title;
       if (item.description) descriptionLocalized[lang] = item.description;
     }
@@ -87,11 +78,7 @@ export async function getExcursionServiceAllLanguages(
     throw new Error(`Failed to load excursion service ${id} in any language`);
   }
 
-  return {
-    ...baseItem,
-    titleLocalized,
-    descriptionLocalized,
-  };
+  return { ...baseItem, titleLocalized, descriptionLocalized };
 }
 
 /**
@@ -105,12 +92,8 @@ export async function createExcursionService(
     title: fillMissingExcursionServiceLanguages(body.title),
     description: fillMissingExcursionServiceLanguages(body.description),
   };
-
-  const { data } = await apiClient.post<ExcursionServiceItem>(
-    "/ExcursionServices/options",
-    payload
-  );
-  return data;
+  const { data } = await apiClient.post<any>("/ExcursionServices/options", payload);
+  return (data?.data ?? data) as ExcursionServiceItem;
 }
 
 /**
@@ -125,23 +108,15 @@ export async function updateExcursionService(
     title: fillMissingExcursionServiceLanguages(body.title),
     description: fillMissingExcursionServiceLanguages(body.description),
   };
-
-  const { data } = await apiClient.put<ExcursionServiceItem>(
-    `/ExcursionServices/options/${id}`,
-    payload
-  );
-  return data;
+  const { data } = await apiClient.put<any>(`/ExcursionServices/options/${id}`, payload);
+  return (data?.data ?? data) as ExcursionServiceItem;
 }
 
 /**
  * Deletes an excursion service option.
  */
-export async function deleteExcursionService(
-  id: string
-): Promise<ExcursionServiceActionResponse> {
-  const { data } = await apiClient.delete<ExcursionServiceActionResponse>(
-    `/ExcursionServices/options/${id}`
-  );
+export async function deleteExcursionService(id: string): Promise<ExcursionServiceActionResponse> {
+  const { data } = await apiClient.delete<ExcursionServiceActionResponse>(`/ExcursionServices/options/${id}`);
   return data ?? { success: true };
 }
 
@@ -154,69 +129,46 @@ export async function uploadExcursionServiceHero(
 ): Promise<ExcursionServiceHeroUploadResponse> {
   const formData = new FormData();
   formData.append("file", file);
-
-  const { data } = await apiClient.post<ExcursionServiceHeroUploadResponse>(
-    `/ExcursionServices/options/${optionId}/hero`,
-    formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
-  );
-  return data;
+  const { data } = await apiClient.post<any>(`/ExcursionServices/options/${optionId}/hero`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return (data?.data ?? data) as ExcursionServiceHeroUploadResponse;
 }
 
 /**
  * Gets the hero image URL of a service option.
  */
-export async function getExcursionServiceHero(
-  optionId: string
-): Promise<ExcursionServiceHeroUploadResponse> {
-  const { data } = await apiClient.get<ExcursionServiceHeroUploadResponse>(
-    `/ExcursionServices/options/${optionId}/hero`
-  );
-  return data;
+export async function getExcursionServiceHero(optionId: string): Promise<ExcursionServiceHeroUploadResponse> {
+  const { data } = await apiClient.get<any>(`/ExcursionServices/options/${optionId}/hero`);
+  return (data?.data ?? data) as ExcursionServiceHeroUploadResponse;
 }
 
 /**
  * Deletes the hero cover image of a service option.
  */
-export async function deleteExcursionServiceHero(
-  optionId: string
-): Promise<ExcursionServiceActionResponse> {
-  const { data } = await apiClient.delete<ExcursionServiceActionResponse>(
-    `/ExcursionServices/options/${optionId}/hero`
-  );
+export async function deleteExcursionServiceHero(optionId: string): Promise<ExcursionServiceActionResponse> {
+  const { data } = await apiClient.delete<ExcursionServiceActionResponse>(`/ExcursionServices/options/${optionId}/hero`);
   return data ?? { success: true };
 }
 
 /**
  * Uploads multiple gallery photos for a service option.
  */
-export async function uploadExcursionServiceImages(
-  optionId: string,
-  files: File[]
-): Promise<unknown> {
+export async function uploadExcursionServiceImages(optionId: string, files: File[]): Promise<unknown> {
   const formData = new FormData();
-  files.forEach((file) => {
-    formData.append("files", file);
+  files.forEach((file) => formData.append("files", file));
+  const { data } = await apiClient.post(`/ExcursionServices/options/${optionId}/images`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
-
-  const { data } = await apiClient.post(
-    `/ExcursionServices/options/${optionId}/images`,
-    formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
-  );
   return data;
 }
 
 /**
  * Gets the gallery images list of a service option.
  */
-export async function getExcursionServiceImages(
-  optionId: string
-): Promise<ExcursionServiceImage[]> {
-  const { data } = await apiClient.get<ExcursionServiceImage[]>(
-    `/ExcursionServices/options/${optionId}/images`
-  );
-  return data;
+export async function getExcursionServiceImages(optionId: string): Promise<ExcursionServiceImage[]> {
+  const { data } = await apiClient.get<any>(`/ExcursionServices/options/${optionId}/images`);
+  return Array.isArray(data?.data) ? data.data : Array.isArray(data) ? data : [];
 }
 
 /**

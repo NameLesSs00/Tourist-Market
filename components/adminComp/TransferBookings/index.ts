@@ -1,0 +1,1 @@
+export { TransferBookingManagerComp } from "./TransferBookingManagerComp";

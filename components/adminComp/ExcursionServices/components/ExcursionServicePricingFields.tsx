@@ -4,44 +4,102 @@ import React from "react";
 import { FiDollarSign, FiHash } from "react-icons/fi";
 
 interface ExcursionServicePricingFieldsProps {
-  basePriceUSD: number;
+  adultPriceUsd: number;
+  childPriceUsd: number;
+  infantPriceUsd: number;
   displayOrder: number;
   errors?: Record<string, string>;
-  onBasePriceUSDChange: (value: number) => void;
+  onAdultPriceUsdChange: (value: number) => void;
+  onChildPriceUsdChange: (value: number) => void;
+  onInfantPriceUsdChange: (value: number) => void;
   onDisplayOrderChange: (value: number) => void;
 }
 
 export function ExcursionServicePricingFields({
-  basePriceUSD,
+  adultPriceUsd,
+  childPriceUsd,
+  infantPriceUsd,
   displayOrder,
   errors,
-  onBasePriceUSDChange,
+  onAdultPriceUsdChange,
+  onChildPriceUsdChange,
+  onInfantPriceUsdChange,
   onDisplayOrderChange,
 }: ExcursionServicePricingFieldsProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      {/* Base Price in USD */}
+      {/* Adult Price in USD */}
       <div className="space-y-1.5">
         <label className="flex items-center gap-1.5 text-xs font-semibold text-[#083952]">
           <FiDollarSign className="h-3.5 w-3.5 text-[#0E4A68]" />
-          <span>Base Price (USD)</span>
+          <span>Adult Price (USD)</span>
         </label>
         <div className="relative">
           <input
             type="number"
             min={0}
             step="0.5"
-            value={basePriceUSD}
-            onChange={(e) => onBasePriceUSDChange(parseFloat(e.target.value) || 0)}
+            value={adultPriceUsd}
+            onChange={(e) => onAdultPriceUsdChange(parseFloat(e.target.value) || 0)}
             className={`w-full rounded-xl border bg-white px-3.5 py-2 text-xs font-mono font-semibold text-[#083952] shadow-2xs transition-colors focus:outline-none focus:ring-2 ${
-              errors?.basePriceUSD
+              errors?.adultPriceUsd
                 ? "border-[#EF4444] focus:border-[#EF4444] focus:ring-[#EF4444]/20"
                 : "border-[#CBD5E1] focus:border-[#0E4A68] focus:ring-[#0E4A68]/20"
             }`}
           />
         </div>
-        {errors?.basePriceUSD && (
-          <p className="text-[11px] text-[#EF4444]">{errors.basePriceUSD}</p>
+        {errors?.adultPriceUsd && (
+          <p className="text-[11px] text-[#EF4444]">{errors.adultPriceUsd}</p>
+        )}
+      </div>
+
+      {/* Child Price in USD */}
+      <div className="space-y-1.5">
+        <label className="flex items-center gap-1.5 text-xs font-semibold text-[#083952]">
+          <FiDollarSign className="h-3.5 w-3.5 text-[#0E4A68]" />
+          <span>Child Price (USD)</span>
+        </label>
+        <div className="relative">
+          <input
+            type="number"
+            min={0}
+            step="0.5"
+            value={childPriceUsd}
+            onChange={(e) => onChildPriceUsdChange(parseFloat(e.target.value) || 0)}
+            className={`w-full rounded-xl border bg-white px-3.5 py-2 text-xs font-mono font-semibold text-[#083952] shadow-2xs transition-colors focus:outline-none focus:ring-2 ${
+              errors?.childPriceUsd
+                ? "border-[#EF4444] focus:border-[#EF4444] focus:ring-[#EF4444]/20"
+                : "border-[#CBD5E1] focus:border-[#0E4A68] focus:ring-[#0E4A68]/20"
+            }`}
+          />
+        </div>
+        {errors?.childPriceUsd && (
+          <p className="text-[11px] text-[#EF4444]">{errors.childPriceUsd}</p>
+        )}
+      </div>
+
+      {/* Infant Price in USD */}
+      <div className="space-y-1.5">
+        <label className="flex items-center gap-1.5 text-xs font-semibold text-[#083952]">
+          <FiDollarSign className="h-3.5 w-3.5 text-[#0E4A68]" />
+          <span>Infant Price (USD)</span>
+        </label>
+        <div className="relative">
+          <input
+            type="number"
+            min={0}
+            step="0.5"
+            value={infantPriceUsd}
+            onChange={(e) => onInfantPriceUsdChange(parseFloat(e.target.value) || 0)}
+            className={`w-full rounded-xl border bg-white px-3.5 py-2 text-xs font-mono font-semibold text-[#083952] shadow-2xs transition-colors focus:outline-none focus:ring-2 ${
+              errors?.infantPriceUsd
+                ? "border-[#EF4444] focus:border-[#EF4444] focus:ring-[#EF4444]/20"
+                : "border-[#CBD5E1] focus:border-[#0E4A68] focus:ring-[#0E4A68]/20"
+            }`}
+          />
+        </div>
+        {errors?.infantPriceUsd && (
+          <p className="text-[11px] text-[#EF4444]">{errors.infantPriceUsd}</p>
         )}
       </div>
 
@@ -63,3 +121,5 @@ export function ExcursionServicePricingFields({
     </div>
   );
 }
+
+export default ExcursionServicePricingFields;

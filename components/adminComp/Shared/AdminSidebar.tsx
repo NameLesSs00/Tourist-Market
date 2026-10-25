@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { IconType } from "react-icons";
-import { FiBookOpen, FiBriefcase, FiClipboard, FiCompass, FiDollarSign, FiGlobe, FiGrid, FiHelpCircle, FiKey, FiLayers, FiLogOut, FiMapPin, FiMessageSquare, FiNavigation, FiPackage, FiRepeat, FiShield, FiShoppingBag, FiSliders, FiStar, FiTag, FiX } from "react-icons/fi";
+import { FaCar } from "react-icons/fa6";
+import { FiBookOpen, FiBriefcase, FiCalendar, FiClipboard, FiClock, FiCompass, FiDollarSign, FiGlobe, FiGrid, FiHelpCircle, FiKey, FiLayers, FiLogOut, FiMapPin, FiMessageSquare, FiNavigation, FiPackage, FiRepeat, FiShield, FiShoppingBag, FiSliders, FiStar, FiTag, FiUsers, FiX } from "react-icons/fi";
 import type { AdminUser } from "@/models/auth";
 import { isSuperAdmin } from "@/models/admin";
 
@@ -25,6 +26,9 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { label: "Excursion Services", href: "/admin/dashboard/excursion-services", icon: FiPackage },
   { label: "Attractions", href: "/admin/dashboard/attractions", icon: FiMapPin },
   { label: "Private Excursions", href: "/admin/dashboard/private-excursions", icon: FiNavigation },
+  { label: "Group Excursions", href: "/admin/dashboard/group-excursions", icon: FiUsers },
+  { label: "Group Bookings", href: "/admin/dashboard/group-bookings", icon: FiCalendar },
+  { label: "Vehicle Private", href: "/admin/dashboard/vehicle-private", icon: FaCar },
   { label: "Excursion Reviews", href: "/admin/dashboard/excursion-reviews", icon: FiStar },
   { label: "Product Categories", href: "/admin/dashboard/product-categories", icon: FiLayers },
   { label: "Product Subcategories", href: "/admin/dashboard/product-subcategories", icon: FiTag },
@@ -33,8 +37,10 @@ export const ADMIN_NAV_ITEMS: AdminNavItem[] = [
   { label: "Product Bookings", href: "/admin/dashboard/product-bookings", icon: FiClipboard },
   { label: "Site Services", href: "/admin/dashboard/site-services", icon: FiBriefcase },
   { label: "Site Service Items", href: "/admin/dashboard/site-service-items", icon: FiSliders },
+  { label: "Services Bookings", href: "/admin/dashboard/services-bookings", icon: FiCalendar },
   { label: "Site Service Item Reviews", href: "/admin/dashboard/site-service-item-reviews", icon: FiMessageSquare },
-  { label: "Transfer Locations", href: "/admin/dashboard/transfer-locations", icon: FiRepeat },
+  { label: "Transfer Services", href: "/admin/dashboard/transfer-services", icon: FiRepeat },
+  { label: "Transfer Bookings", href: "/admin/dashboard/transfer-bookings", icon: FiClock },
   { label: "Countries", href: "/admin/dashboard/countries", icon: FiGlobe },
   { label: "Currencies", href: "/admin/dashboard/currencies", icon: FiDollarSign },
   { label: "Admins", href: "/admin/dashboard/admins", icon: FiShield, superAdminOnly: true },
@@ -66,7 +72,10 @@ export function AdminSidebar({
   }, []);
 
   const isActive = (href: string) => {
-    if (!mounted || !pathname) return false;
+    if (!pathname) return false;
+    if (href === "/admin/dashboard/transfer-services" && pathname.startsWith("/admin/dashboard/transfer-locations")) {
+      return true;
+    }
     return href === "/admin/dashboard" ? pathname === href : pathname.startsWith(href);
   };
 
@@ -123,6 +132,7 @@ export function AdminSidebar({
                   href={item.href}
                   onClick={onNavigate}
                   aria-current={active ? "page" : undefined}
+                  suppressHydrationWarning
                   className={`group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                     active
                       ? "bg-[#FFFFFF] text-[#0E4A68] shadow-md"
@@ -149,8 +159,11 @@ export function AdminSidebar({
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">{displayName}</p>
-            <p className="truncate text-[11px] text-[#FFFFFF99]">
-              {user?.roles?.[0] || "Admin"} · ~{minutesRemaining}m left
+            <p className="truncate text-[11px] text-[#FFFFFF99]" suppressHydrationWarning>
+              {user?.roles?.[0] || "Admin"} ·{" "}
+              {minutesRemaining >= 60
+                ? `~${Math.floor(minutesRemaining / 60)}h ${minutesRemaining % 60 > 0 ? `${minutesRemaining % 60}m ` : ""}left`
+                : `~${minutesRemaining}m left`}
             </p>
           </div>
         </div>

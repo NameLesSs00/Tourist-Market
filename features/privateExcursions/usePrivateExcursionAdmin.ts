@@ -1,9 +1,4 @@
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   assignPrivateExcursionAttractions,
@@ -20,31 +15,17 @@ import {
 } from "@/api/privateExcursionApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
-import type {
-  PrivateExcursionQueryParams,
-  PrivateExcursionUpsertRequest,
-} from "@/models/privateExcursion";
+import type { PrivateExcursionQueryParams, PrivateExcursionUpsertRequest } from "@/models/privateExcursion";
 
 export const PRIVATE_EXCURSIONS_KEY = ["admin", "private-excursions"] as const;
 
-/**
- * Fallback helper: fills any missing language with the English translation
- * to satisfy backend validation without 400 errors.
- */
-export function fillMissingPrivateExcursionLanguages(
-  body: PrivateExcursionUpsertRequest
-): PrivateExcursionUpsertRequest {
+export function fillMissingPrivateExcursionLanguages(body: PrivateExcursionUpsertRequest): PrivateExcursionUpsertRequest {
   const fillText = (text: LocalizedText): LocalizedText => {
     const out = { ...text };
     const fallback = text.en?.trim() || "";
-    LANGS.forEach((lang) => {
-      if (!out[lang]?.trim()) {
-        out[lang] = fallback;
-      }
-    });
+    LANGS.forEach((lang) => { if (!out[lang]?.trim()) out[lang] = fallback; });
     return out;
   };
-
   return {
     ...body,
     title: fillText(body.title),
@@ -55,12 +36,7 @@ export function fillMissingPrivateExcursionLanguages(
   };
 }
 
-/**
- * Query hook for paginated private excursions list.
- */
-export function usePrivateExcursionsQuery(
-  params: PrivateExcursionQueryParams = {}
-) {
+export function usePrivateExcursionsQuery(params: PrivateExcursionQueryParams = {}) {
   return useQuery({
     queryKey: [...PRIVATE_EXCURSIONS_KEY, "list", params],
     queryFn: () => getPrivateExcursions(params),
@@ -68,9 +44,6 @@ export function usePrivateExcursionsQuery(
   });
 }
 
-/**
- * Query hook for multi-language detail view.
- */
 export function usePrivateExcursionAllLanguagesQuery(id?: string | null) {
   return useQuery({
     queryKey: [...PRIVATE_EXCURSIONS_KEY, "all-languages", id],
@@ -79,9 +52,6 @@ export function usePrivateExcursionAllLanguagesQuery(id?: string | null) {
   });
 }
 
-/**
- * Query hook for assigned attractions.
- */
 export function usePrivateExcursionAttractionsQuery(id?: string | null) {
   return useQuery({
     queryKey: [...PRIVATE_EXCURSIONS_KEY, "attractions", id],
@@ -90,9 +60,6 @@ export function usePrivateExcursionAttractionsQuery(id?: string | null) {
   });
 }
 
-/**
- * Query hook for assigned services.
- */
 export function usePrivateExcursionServicesQuery(id?: string | null) {
   return useQuery({
     queryKey: [...PRIVATE_EXCURSIONS_KEY, "services", id],
@@ -101,16 +68,11 @@ export function usePrivateExcursionServicesQuery(id?: string | null) {
   });
 }
 
-/**
- * Mutation hook for creating private excursion.
- */
 export function useCreatePrivateExcursionMutation() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      body,
-      attractionIds,
-      serviceIds,
+      body, attractionIds, serviceIds,
     }: {
       body: PrivateExcursionUpsertRequest;
       attractionIds?: string[];
@@ -118,69 +80,69 @@ export function useCreatePrivateExcursionMutation() {
     }) => {
       const sanitized = fillMissingPrivateExcursionLanguages(body);
       const res = await createPrivateExcursion(sanitized);
-      const createdId = res.data?.id;
+      const createdId = res.data?.id || (res as any)?.id || (res as any)?.data?.id;
 
-      if (createdId && attractionIds && attractionIds.length > 0) {
-        try {
-          await assignPrivateExcursionAttractions(createdId, attractionIds);
-        } catch {
-          // ignore relation assignment warning
+      if (createdId) {
+        if (attractionIds && attractionIds.length > 0) {
+          try { await assignPrivateExcursionAttractions(createdId, attractionIds); }
+          catch (e) { console.error(e); toast.error("Excursion created, but assigning attractions failed."); }
+        }
+        if (serviceIds && serviceIds.length > 0) {
+          try { await assignPrivateExcursionServices(createdId, serviceIds); }
+          catch (e) { console.error(e); toast.error("Excursion created, but assigning extra services failed."); }
         }
       }
-
-      if (createdId && serviceIds && serviceIds.length > 0) {
-        try {
-          await assignPrivateExcursionServices(createdId, serviceIds);
-        } catch {
-          // ignore relation assignment warning
-        }
-      }
-
       return res;
     },
     onSuccess: () => {
       toast.success("Private excursion created successfully.");
       qc.invalidateQueries({ queryKey: [...PRIVATE_EXCURSIONS_KEY] });
     },
-    onError: (err) => {
-      toast.error(extractErrorMessage(err));
-    },
+    onError: (err) => toast.error(extractErrorMessage(err)),
   });
 }
 
-/**
- * Mutation hook for updating private excursion.
- */
 export function useUpdatePrivateExcursionMutation() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      id,
-      body,
-      attractionIds,
-      serviceIds,
+      id, body, attractionIds, serviceIds, previousAttractionIds, previousServiceIds,
     }: {
       id: string;
       body: PrivateExcursionUpsertRequest;
       attractionIds?: string[];
       serviceIds?: string[];
+      previousAttractionIds?: string[];
+      previousServiceIds?: string[];
     }) => {
       const sanitized = fillMissingPrivateExcursionLanguages(body);
       const res = await updatePrivateExcursion(id, sanitized);
 
-      if (attractionIds && attractionIds.length > 0) {
-        try {
-          await assignPrivateExcursionAttractions(id, attractionIds);
-        } catch {
-          // ignore relation warning
+      // Delta sync attractions
+      if (attractionIds !== undefined) {
+        const prev = previousAttractionIds ?? [];
+        const toAdd = attractionIds.filter((aid) => !prev.includes(aid));
+        const toRemove = prev.filter((aid) => !attractionIds.includes(aid));
+        if (toAdd.length > 0) {
+          try { await assignPrivateExcursionAttractions(id, toAdd); }
+          catch (e) { console.error(e); toast.error("Failed to assign new attractions."); }
+        }
+        for (const remId of toRemove) {
+          try { await removePrivateExcursionAttraction(id, remId); } catch (e) { console.error(e); }
         }
       }
 
-      if (serviceIds && serviceIds.length > 0) {
-        try {
-          await assignPrivateExcursionServices(id, serviceIds);
-        } catch {
-          // ignore relation warning
+      // Delta sync services
+      if (serviceIds !== undefined) {
+        const prev = previousServiceIds ?? [];
+        const toAdd = serviceIds.filter((sid) => !prev.includes(sid));
+        const toRemove = prev.filter((sid) => !serviceIds.includes(sid));
+        if (toAdd.length > 0) {
+          try { await assignPrivateExcursionServices(id, toAdd); }
+          catch (e) { console.error(e); toast.error("Failed to assign new extra services."); }
+        }
+        for (const remId of toRemove) {
+          try { await removePrivateExcursionService(id, remId); } catch (e) { console.error(e); }
         }
       }
 
@@ -190,15 +152,10 @@ export function useUpdatePrivateExcursionMutation() {
       toast.success("Private excursion updated successfully.");
       qc.invalidateQueries({ queryKey: [...PRIVATE_EXCURSIONS_KEY] });
     },
-    onError: (err) => {
-      toast.error(extractErrorMessage(err));
-    },
+    onError: (err) => toast.error(extractErrorMessage(err)),
   });
 }
 
-/**
- * Mutation hook for deleting private excursion.
- */
 export function useDeletePrivateExcursionMutation() {
   const qc = useQueryClient();
   return useMutation({
@@ -207,8 +164,6 @@ export function useDeletePrivateExcursionMutation() {
       toast.success("Private excursion deleted successfully.");
       qc.invalidateQueries({ queryKey: [...PRIVATE_EXCURSIONS_KEY] });
     },
-    onError: (err) => {
-      toast.error(extractErrorMessage(err));
-    },
+    onError: (err) => toast.error(extractErrorMessage(err)),
   });
 }

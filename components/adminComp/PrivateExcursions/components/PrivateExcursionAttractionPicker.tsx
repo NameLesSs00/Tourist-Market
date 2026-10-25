@@ -23,7 +23,9 @@ export function PrivateExcursionAttractionPicker({
   onRemoveAttraction,
 }: PrivateExcursionAttractionPickerProps) {
   const attractionsQuery = useAttractionsQuery({ pageSize: 100 });
-  const allAttractions = attractionsQuery.data?.items ?? [];
+  const rawData = attractionsQuery.data as any;
+  const allAttractions: AttractionItemDisplay[] =
+    rawData?.items ?? rawData?.data?.items ?? (Array.isArray(rawData) ? rawData : []);
   const [selectedId, setSelectedId] = useState("");
 
   const selectedIds = new Set(selectedAttractions.map((a) => a.id));
@@ -38,8 +40,6 @@ export function PrivateExcursionAttractionPicker({
     }
   };
 
-  const isLimitReached = maxAttractions > 0 && selectedAttractions.length >= maxAttractions;
-
   return (
     <div className="space-y-3 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-4">
       <div className="flex items-center justify-between">
@@ -48,7 +48,8 @@ export function PrivateExcursionAttractionPicker({
           Assigned Attractions (From Attractions)
         </label>
         <span className="text-[11px] font-medium text-[#64748B]">
-          {selectedAttractions.length} / {maxAttractions || "∞"} selected
+          {selectedAttractions.length} assigned
+          {maxAttractions > 0 && ` · Customer picks up to ${maxAttractions}`}
         </span>
       </div>
 
@@ -56,13 +57,13 @@ export function PrivateExcursionAttractionPicker({
       <div className="flex items-center gap-2">
         <select
           value={selectedId}
-          disabled={isLimitReached || availableAttractions.length === 0}
+          disabled={attractionsQuery.isLoading || availableAttractions.length === 0}
           onChange={(e) => setSelectedId(e.target.value)}
           className="flex-1 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68] disabled:bg-[#F1F5F9]"
         >
           <option value="">
-            {isLimitReached
-              ? "Max attractions limit reached"
+            {attractionsQuery.isLoading
+              ? "Loading attractions..."
               : availableAttractions.length === 0
               ? "No more attractions available"
               : "Choose an attraction to include..."}
@@ -76,7 +77,7 @@ export function PrivateExcursionAttractionPicker({
         <button
           type="button"
           onClick={handleAdd}
-          disabled={!selectedId || isLimitReached}
+          disabled={!selectedId}
           className="flex items-center gap-1 rounded-xl bg-[#0E4A68] px-3 py-2 text-xs font-medium text-[#FFFFFF] transition hover:bg-[#0A374E] disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
         >
           <FiPlus className="h-3.5 w-3.5" />

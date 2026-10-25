@@ -21,7 +21,9 @@ export function PrivateExcursionServicePicker({
   onRemoveService,
 }: PrivateExcursionServicePickerProps) {
   const servicesQuery = useExcursionServicesQuery({ pageSize: 100 });
-  const allServices = servicesQuery.data?.items ?? [];
+  const rawData = servicesQuery.data as any;
+  const allServices: ServiceItemDisplay[] =
+    rawData?.items ?? rawData?.data?.items ?? (Array.isArray(rawData) ? rawData : []);
   const [selectedId, setSelectedId] = useState("");
 
   const selectedIds = new Set(selectedServices.map((s) => s.id));
@@ -52,12 +54,14 @@ export function PrivateExcursionServicePicker({
       <div className="flex items-center gap-2">
         <select
           value={selectedId}
-          disabled={availableServices.length === 0}
+          disabled={servicesQuery.isLoading || availableServices.length === 0}
           onChange={(e) => setSelectedId(e.target.value)}
           className="flex-1 rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68] disabled:bg-[#F1F5F9]"
         >
           <option value="">
-            {availableServices.length === 0
+            {servicesQuery.isLoading
+              ? "Loading extra services..."
+              : availableServices.length === 0
               ? "No more extra services available"
               : "Choose an extra service to include..."}
           </option>
