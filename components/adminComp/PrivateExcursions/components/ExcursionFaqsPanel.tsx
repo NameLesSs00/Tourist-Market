@@ -12,23 +12,28 @@ import {
   useExcursionFaqsQuery,
   useUpdateExcursionFaqMutation,
 } from "@/features/privateExcursions/useExcursionFaqsAdmin";
-import { LANG_FLAGS } from "@/models/localization";
+import { LANG_FLAGS, LANG_LABELS, LANGS, type LangCode } from "@/models/localization";
 import type { ExcursionFaqItem, ExcursionFaqUpsertRequest } from "@/models/excursionDetails";
-import type { PrivateExcursionListItem } from "@/models/privateExcursion";
 import { ExcursionFaqForm } from "./ExcursionFaqForm";
+
+export interface ExcursionFaqTarget {
+  id: string;
+  title: string;
+}
 
 interface ExcursionFaqsPanelProps {
   open: boolean;
   onClose: () => void;
-  excursion: PrivateExcursionListItem | null;
+  excursion: ExcursionFaqTarget | null;
 }
 
 export function ExcursionFaqsPanel({ open, onClose, excursion }: ExcursionFaqsPanelProps) {
   const [showForm, setShowForm] = useState(false);
   const [editingFaqId, setEditingFaqId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<ExcursionFaqItem | null>(null);
+  const [selectedLang, setSelectedLang] = useState<LangCode>("en");
 
-  const faqsQuery = useExcursionFaqsQuery(open ? excursion?.id : null, "en");
+  const faqsQuery = useExcursionFaqsQuery(open ? excursion?.id : null, selectedLang);
   const detailQuery = useExcursionFaqAllLanguagesQuery(excursion?.id, editingFaqId);
   const createMutation = useCreateExcursionFaqMutation();
   const updateMutation = useUpdateExcursionFaqMutation();
@@ -60,18 +65,31 @@ export function ExcursionFaqsPanel({ open, onClose, excursion }: ExcursionFaqsPa
       widthClassName="max-w-2xl"
     >
       <div className="space-y-4">
-        {/* Header action bar without tabs */}
-        <div className="flex items-center justify-between">
+        {/* Header action bar with language switcher */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gray-100 pb-3">
           <div className="flex items-center gap-2">
-            <p className="text-xs font-semibold text-[#083952]">
+            <span className="text-xs font-semibold text-[#083952]">
               {faqs.length} {faqs.length === 1 ? "FAQ" : "FAQs"}
-            </p>
-            <span className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-0.5 text-[11px] font-medium text-gray-600">
-              <span className="relative flex h-2.5 w-3.5 shrink-0 overflow-hidden rounded-xs border border-gray-300">
-                <Image src={LANG_FLAGS.en} alt="English" fill className="object-cover" sizes="14px" />
-              </span>
-              English
             </span>
+            <div className="flex items-center gap-1">
+              {LANGS.map((lang) => (
+                <button
+                  key={lang}
+                  type="button"
+                  onClick={() => setSelectedLang(lang)}
+                  className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium transition cursor-pointer ${
+                    selectedLang === lang
+                      ? "border-[#0E4A68] bg-[#0E4A68] text-white"
+                      : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                  }`}
+                >
+                  <span className="relative flex h-2.5 w-3.5 shrink-0 overflow-hidden rounded-xs border border-gray-300">
+                    <Image src={LANG_FLAGS[lang]} alt={LANG_LABELS[lang]} fill className="object-cover" sizes="14px" />
+                  </span>
+                  {lang.toUpperCase()}
+                </button>
+              ))}
+            </div>
           </div>
 
           {!showForm && (

@@ -80,8 +80,20 @@ export function AdminLoginHero() {
       </div>
 
       {/* 5. Bottom Copyright Notice */}
-      <div className="relative z-10 text-xs text-white/50 font-['Poppins']">
-        © 2026 Egypt Tourist Market. All rights reserved.
+      <div className="relative z-10 flex flex-wrap items-center gap-1.5 text-xs text-white/60 font-['Poppins']">
+        <span>© 2026 Egypt Tourist Market. All rights reserved.</span>
+        <span>·</span>
+        <span>
+          Powered by{" "}
+          <a
+            href="https://tech-gear.net/en"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold text-[#D48C28] hover:underline transition-colors"
+          >
+            Tech Gear Solutions
+          </a>
+        </span>
       </div>
     </div>
   );

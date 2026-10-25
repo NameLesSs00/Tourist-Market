@@ -54,6 +54,7 @@ export function useCreateExcursionFaqMutation() {
         queryKey: [...EXCURSION_FAQS_KEY, variables.excursionId],
       });
       qc.invalidateQueries({ queryKey: ["admin", "private-excursions"] });
+      qc.invalidateQueries({ queryKey: ["admin", "group-excursions"] });
     },
     onError: (err) => {
       toast.error(extractErrorMessage(err));
@@ -80,6 +81,7 @@ export function useUpdateExcursionFaqMutation() {
         queryKey: [...EXCURSION_FAQS_KEY, variables.excursionId],
       });
       qc.invalidateQueries({ queryKey: ["admin", "private-excursions"] });
+      qc.invalidateQueries({ queryKey: ["admin", "group-excursions"] });
     },
     onError: (err) => {
       toast.error(extractErrorMessage(err));
@@ -104,6 +106,7 @@ export function useDeleteExcursionFaqMutation() {
         queryKey: [...EXCURSION_FAQS_KEY, variables.excursionId],
       });
       qc.invalidateQueries({ queryKey: ["admin", "private-excursions"] });
+      qc.invalidateQueries({ queryKey: ["admin", "group-excursions"] });
     },
     onError: (err) => {
       toast.error(extractErrorMessage(err));

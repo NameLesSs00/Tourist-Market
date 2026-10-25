@@ -2,16 +2,16 @@
 
 import React from "react";
 import { FaCar } from "react-icons/fa6";
-import { FiCalendar, FiClock, FiFileText, FiImage, FiMapPin, FiStar } from "react-icons/fi";
+import { FiCalendar, FiClock, FiFileText, FiHelpCircle, FiImage, FiMapPin, FiStar } from "react-icons/fi";
 import type { DataTableColumn } from "@/components/adminComp/Shared";
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
-import { PrivateExcursionAvailabilityBadge } from "./PrivateExcursionAvailabilityBadge";
 
 interface BuildColumnsOptions {
-  onManageAvailability: (item: PrivateExcursionListItem) => void;
-  onManageVehiclePricing: (item: PrivateExcursionListItem) => void;
-  onManageDetails: (item: PrivateExcursionListItem) => void;
-  onManagePhotos: (item: PrivateExcursionListItem) => void;
+  onManageAvailability?: (item: PrivateExcursionListItem) => void;
+  onManageVehiclePricing?: (item: PrivateExcursionListItem) => void;
+  onManageDetails?: (item: PrivateExcursionListItem) => void;
+  onManagePhotos?: (item: PrivateExcursionListItem) => void;
+  onManageFaqs?: (item: PrivateExcursionListItem) => void;
 }
 
 const formatThumbnailUrl = (url?: string | null) => {
@@ -26,7 +26,8 @@ export function buildPrivateExcursionColumns({
   onManageVehiclePricing,
   onManageDetails,
   onManagePhotos,
-}: BuildColumnsOptions): DataTableColumn<PrivateExcursionListItem>[] {
+  onManageFaqs,
+}: BuildColumnsOptions = {}): DataTableColumn<PrivateExcursionListItem>[] {
   return [
     {
       key: "excursion",
@@ -92,32 +93,12 @@ export function buildPrivateExcursionColumns({
         <div className="space-y-1">
           <button
             type="button"
-            onClick={() => onManageVehiclePricing(item)}
+            onClick={() => onManageVehiclePricing?.(item)}
             title="Configure Vehicle Transfer Rates"
             className="inline-flex items-center gap-1.5 rounded-lg border border-[#0E4A6833] bg-[#0E4A680C] px-2.5 py-1 text-xs font-semibold text-[#0E4A68] hover:bg-[#0E4A6818] transition cursor-pointer shadow-2xs"
           >
             <FaCar className="h-3.5 w-3.5 text-[#0E4A68]" />
             <span>Vehicle Rates</span>
-          </button>
-        </div>
-      ),
-    },
-    {
-      key: "availability",
-      header: "Operating Days",
-      render: (item) => (
-        <div className="flex items-center gap-1.5">
-          <PrivateExcursionAvailabilityBadge
-            excursionId={item.id}
-            onClick={() => onManageAvailability(item)}
-          />
-          <button
-            type="button"
-            onClick={() => onManageAvailability(item)}
-            title="Configure Weekly Schedule"
-            className="rounded-lg p-1 text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#0E4A68] transition-colors cursor-pointer"
-          >
-            <FiCalendar className="h-3.5 w-3.5" />
           </button>
         </div>
       ),
@@ -129,7 +110,7 @@ export function buildPrivateExcursionColumns({
         <div className="flex items-center gap-1.5">
           <button
             type="button"
-            onClick={() => onManagePhotos(item)}
+            onClick={() => onManagePhotos?.(item)}
             title="Manage Photos & Hero Image"
             className="inline-flex items-center gap-1 rounded-lg border border-[#0E4A6833] bg-[#0E4A680C] px-2 py-1 text-xs font-semibold text-[#0E4A68] hover:bg-[#0E4A6818] transition cursor-pointer shadow-2xs"
           >
@@ -138,12 +119,30 @@ export function buildPrivateExcursionColumns({
           </button>
           <button
             type="button"
-            onClick={() => onManageDetails(item)}
+            onClick={() => onManageDetails?.(item)}
             title="Configure Itinerary, Highlights, Inclusions & Policies"
             className="inline-flex items-center gap-1 rounded-lg border border-[#D48C2833] bg-[#D48C280C] px-2 py-1 text-xs font-semibold text-[#D48C28] hover:bg-[#D48C2818] transition cursor-pointer shadow-2xs"
           >
             <FiFileText className="h-3 w-3 text-[#D48C28]" />
             <span>Details</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onManageFaqs?.(item)}
+            title="Manage Frequently Asked Questions"
+            className="inline-flex items-center gap-1 rounded-lg border border-[#6366F133] bg-[#6366F10C] px-2 py-1 text-xs font-semibold text-[#4F46E5] hover:bg-[#6366F118] transition cursor-pointer shadow-2xs"
+          >
+            <FiHelpCircle className="h-3 w-3 text-[#4F46E5]" />
+            <span>FAQs</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => onManageAvailability?.(item)}
+            title="Configure Weekly Operating Days"
+            className="inline-flex items-center gap-1 rounded-lg border border-[#16A34A33] bg-[#16A34A0C] px-2 py-1 text-xs font-semibold text-[#16A34A] hover:bg-[#16A34A18] transition cursor-pointer shadow-2xs"
+          >
+            <FiCalendar className="h-3 w-3 text-[#16A34A]" />
+            <span>Days</span>
           </button>
         </div>
       ),

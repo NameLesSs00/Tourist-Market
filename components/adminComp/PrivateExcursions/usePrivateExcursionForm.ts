@@ -131,8 +131,10 @@ export function usePrivateExcursionForm({
     e.preventDefault();
     const newErrors: Record<string, string> = {};
     if (!title.en?.trim()) newErrors["title.en"] = "English title is required";
-    if (!slug?.trim()) newErrors.slug = "Slug is required";
     if (!categoryId?.trim()) newErrors.categoryId = "Category selection is required";
+
+    const autoSlug = (slug || title.en.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")).trim();
+    if (!autoSlug) newErrors["title.en"] = "English title is required to generate slug";
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -141,8 +143,8 @@ export function usePrivateExcursionForm({
     }
 
     const body: PrivateExcursionUpsertRequest = {
-      slug: slug.trim(), categoryId: categoryId.trim(), stars: stars.trim() || "5",
-      maxAttractions, durationHours, videoUrl: videoUrl.trim(), isFeatured, isActive,
+      slug: autoSlug, categoryId: categoryId.trim(), stars: String(stars).trim() || "5",
+      maxAttractions, durationHours, videoUrl: videoUrl.trim() || "", isFeatured, isActive,
       title, subtitle, excursionType, shortDescription, fullProgram,
     };
 

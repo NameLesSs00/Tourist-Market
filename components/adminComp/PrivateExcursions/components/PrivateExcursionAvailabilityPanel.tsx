@@ -11,7 +11,7 @@ import { WEEK_DAYS, type UpdateDayAvailabilityItem } from "@/models/excursionAva
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
 
 interface PrivateExcursionAvailabilityPanelProps {
-  excursion: PrivateExcursionListItem | null;
+  excursion: { id: string; title: string } | null;
   open: boolean;
   onClose: () => void;
 }

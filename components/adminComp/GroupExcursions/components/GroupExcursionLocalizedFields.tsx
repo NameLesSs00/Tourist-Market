@@ -1,8 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { LANG_FLAGS, LANG_LABELS, LANGS, type LangCode, type LocalizedText } from "@/models/localization";
+import {
+  LANG_FLAGS,
+  LANG_LABELS,
+  LANGS,
+  type LangCode,
+  type LocalizedText,
+} from "@/models/localization";
 
 interface GroupExcursionLocalizedFieldsProps {
   title: LocalizedText;
@@ -31,114 +37,118 @@ export function GroupExcursionLocalizedFields({
   onShortDescriptionChange,
   onFullProgramChange,
 }: GroupExcursionLocalizedFieldsProps) {
-  const [activeLang, setActiveLang] = useState<LangCode>("en");
-
   return (
-    <div className="space-y-4 rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-5">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-[#0E4A68]">
-          Multilingual Content & Program
-        </h3>
-        {/* Language Tabs */}
-        <div className="flex items-center gap-1 rounded-xl bg-[#F8FAFC] p-1 border border-[#E2E8F0]">
-          {LANGS.map((lang) => {
-            const active = activeLang === lang;
-            return (
-              <button
-                key={lang}
-                type="button"
-                onClick={() => setActiveLang(lang)}
-                className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition cursor-pointer ${
-                  active
-                    ? "bg-[#FFFFFF] text-[#0E4A68] shadow-2xs"
-                    : "text-[#64748B] hover:text-[#0E4A68]"
-                }`}
-              >
-                <span className="relative flex h-3 w-4 shrink-0 overflow-hidden rounded-2xs border border-[#CBD5E1]">
-                  <Image src={LANG_FLAGS[lang]} alt={LANG_LABELS[lang]} fill className="object-cover" sizes="16px" />
-                </span>
-                <span>{lang.toUpperCase()}</span>
-                {lang === "en" && <span className="text-red-500 font-bold">*</span>}
-              </button>
-            );
-          })}
-        </div>
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <h3 className="text-sm font-semibold text-[#083952]">Multilingual Content & Program</h3>
+        <span className="text-[11px] text-[#64748B]">Languages stacked sequentially</span>
       </div>
 
-      <div className="space-y-3">
-        {/* Title */}
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            Title ({activeLang.toUpperCase()}) {activeLang === "en" && <span className="text-red-500">*</span>}
-          </label>
-          <input
-            type="text"
-            value={title[activeLang] || ""}
-            onChange={(e) => onTitleChange(activeLang, e.target.value)}
-            placeholder="e.g. Orange Bay Island Full-Day Snorkeling Trip"
-            className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-          />
-          {activeLang === "en" && errors["title.en"] && (
-            <p className="mt-1 text-[11px] text-red-500">{errors["title.en"]}</p>
-          )}
-        </div>
+      <div className="space-y-4">
+        {LANGS.map((lang) => {
+          const isEn = lang === "en";
+          const err = errors[`title.${lang}`];
 
-        {/* Subtitle & Excursion Type */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-[#334155]">
-              Subtitle ({activeLang.toUpperCase()})
-            </label>
-            <input
-              type="text"
-              value={subtitle[activeLang] || ""}
-              onChange={(e) => onSubtitleChange(activeLang, e.target.value)}
-              placeholder="e.g. Crystal-clear waters and white sandy beaches"
-              className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-            />
-          </div>
+          return (
+            <div
+              key={lang}
+              className={`rounded-2xl border p-4 sm:p-5 transition space-y-3.5 ${
+                isEn
+                  ? "border-[#0E4A6830] bg-[#FFFFFF] shadow-2xs"
+                  : "border-[#E2E8F0] bg-[#F8FAFC]"
+              }`}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between border-b border-[#F1F5F9] pb-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="relative flex h-3.5 w-5 shrink-0 overflow-hidden rounded-2xs border border-[#CBD5E1]">
+                    <Image src={LANG_FLAGS[lang]} alt={lang} fill className="object-cover" sizes="20px" />
+                  </span>
+                  <span className="text-xs font-bold text-[#083952] uppercase tracking-wider">
+                    {LANG_LABELS[lang]}
+                  </span>
+                  {isEn && <span className="text-xs font-bold text-[#DC2626]">* Primary</span>}
+                </div>
+                {!isEn && !title[lang]?.trim() && title.en?.trim() && (
+                  <span className="text-[10px] text-[#94A3B8]">Falls back to English if empty</span>
+                )}
+              </div>
 
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-[#334155]">
-              Excursion Type Tag ({activeLang.toUpperCase()})
-            </label>
-            <input
-              type="text"
-              value={excursionType[activeLang] || ""}
-              onChange={(e) => onExcursionTypeChange(activeLang, e.target.value)}
-              placeholder="e.g. Boat Trip & Island Tour"
-              className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-            />
-          </div>
-        </div>
+              {/* Title */}
+              <div>
+                <label className="mb-1 block text-xs font-semibold text-[#334155]">
+                  Title ({lang.toUpperCase()}) {isEn && <span className="text-red-500">*</span>}
+                </label>
+                <input
+                  type="text"
+                  value={title[lang] || ""}
+                  onChange={(e) => onTitleChange(lang, e.target.value)}
+                  placeholder={`e.g. Orange Bay Island Full-Day Snorkeling Trip (${lang.toUpperCase()})`}
+                  className={`w-full rounded-xl border bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:ring-2 ${
+                    err ? "border-red-500 focus:ring-red-100" : "border-[#E2E8F0] focus:border-[#0E4A68] focus:ring-[#0E4A6815]"
+                  }`}
+                />
+                {err && <p className="mt-1 text-[11px] text-red-500">{err}</p>}
+              </div>
 
-        {/* Short Description */}
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            Short Description ({activeLang.toUpperCase()})
-          </label>
-          <textarea
-            rows={2}
-            value={shortDescription[activeLang] || ""}
-            onChange={(e) => onShortDescriptionChange(activeLang, e.target.value)}
-            placeholder="Concise summary for cards and overview..."
-            className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-          />
-        </div>
+              {/* Subtitle & Excursion Type */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-[#334155]">
+                    Subtitle ({lang.toUpperCase()})
+                  </label>
+                  <input
+                    type="text"
+                    value={subtitle[lang] || ""}
+                    onChange={(e) => onSubtitleChange(lang, e.target.value)}
+                    placeholder="Short tagline..."
+                    className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block text-xs font-semibold text-[#334155]">
+                    Excursion Type Tag ({lang.toUpperCase()})
+                  </label>
+                  <input
+                    type="text"
+                    value={excursionType[lang] || ""}
+                    onChange={(e) => onExcursionTypeChange(lang, e.target.value)}
+                    placeholder="e.g. Boat Trip & Island Tour"
+                    className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
+                  />
+                </div>
+              </div>
 
-        {/* Full Program */}
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            Full Program Schedule ({activeLang.toUpperCase()})
-          </label>
-          <textarea
-            rows={4}
-            value={fullProgram[activeLang] || ""}
-            onChange={(e) => onFullProgramChange(activeLang, e.target.value)}
-            placeholder="Detailed timeline: departure, snorkeling stops, lunch, return..."
-            className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-          />
-        </div>
+              {/* Short Description */}
+              <div>
+                <label className="mb-1 block text-xs font-semibold text-[#334155]">
+                  Short Description ({lang.toUpperCase()})
+                </label>
+                <textarea
+                  rows={2}
+                  value={shortDescription[lang] || ""}
+                  onChange={(e) => onShortDescriptionChange(lang, e.target.value)}
+                  placeholder="Overview summary for cards..."
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
+                />
+              </div>
+
+              {/* Full Program */}
+              <div>
+                <label className="mb-1 block text-xs font-semibold text-[#334155]">
+                  Full Program Schedule ({lang.toUpperCase()})
+                </label>
+                <textarea
+                  rows={3}
+                  value={fullProgram[lang] || ""}
+                  onChange={(e) => onFullProgramChange(lang, e.target.value)}
+                  placeholder="Detailed tour itinerary..."
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

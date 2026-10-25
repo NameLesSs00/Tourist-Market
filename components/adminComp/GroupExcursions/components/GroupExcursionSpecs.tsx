@@ -1,41 +1,37 @@
 "use client";
 
 import React from "react";
-import { FiCheck, FiSliders } from "react-icons/fi";
+import { FiCheck, FiClock, FiLayers, FiSliders, FiStar } from "react-icons/fi";
 import { useExcursionCategoriesQuery } from "@/features/excursionCategories/useExcursionCategoryAdmin";
 
 interface GroupExcursionSpecsProps {
   categoryId: string;
-  slug: string;
+  slug?: string;
   stars: string;
   durationHours: number;
-  videoUrl: string;
+  videoUrl?: string;
   isFeatured: boolean;
   isActive: boolean;
   errors: Record<string, string>;
   onCategoryIdChange: (val: string) => void;
-  onSlugChange: (val: string) => void;
+  onSlugChange?: (val: string) => void;
   onStarsChange: (val: string) => void;
   onDurationHoursChange: (val: number) => void;
-  onVideoUrlChange: (val: string) => void;
+  onVideoUrlChange?: (val: string) => void;
   onIsFeaturedChange: (val: boolean) => void;
   onIsActiveChange: (val: boolean) => void;
 }
 
 export function GroupExcursionSpecs({
   categoryId,
-  slug,
   stars,
   durationHours,
-  videoUrl,
   isFeatured,
   isActive,
   errors,
   onCategoryIdChange,
-  onSlugChange,
   onStarsChange,
   onDurationHoursChange,
-  onVideoUrlChange,
   onIsFeaturedChange,
   onIsActiveChange,
 }: GroupExcursionSpecsProps) {
@@ -53,11 +49,12 @@ export function GroupExcursionSpecs({
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Category */}
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            Excursion Category <span className="text-red-500">*</span>
+        <div className="sm:col-span-1">
+          <label className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-[#334155]">
+            <FiLayers className="h-3.5 w-3.5 text-[#0E4A68]" />
+            Category <span className="text-red-500">*</span>
           </label>
           <select
             value={categoryId}
@@ -74,27 +71,10 @@ export function GroupExcursionSpecs({
           )}
         </div>
 
-        {/* Slug */}
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            URL Slug <span className="text-red-500">*</span>
-          </label>
-          <input
-            type="text"
-            value={slug}
-            onChange={(e) => onSlugChange(e.target.value)}
-            placeholder="orange-bay-island-snorkeling"
-            className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-          />
-          {errors.slug && (
-            <p className="mt-1 text-[11px] text-red-500">{errors.slug}</p>
-          )}
-        </div>
-
         {/* Duration */}
         <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            Duration (Hours)
+          <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-[#334155]">
+            <FiClock className="h-3.5 w-3.5 text-[#0E4A68]" /> Duration (Hours)
           </label>
           <input
             type="number"
@@ -109,35 +89,20 @@ export function GroupExcursionSpecs({
 
         {/* Stars */}
         <div>
-          <label className="mb-1 block text-xs font-semibold text-[#334155]">
-            Stars Rating
+          <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-[#334155]">
+            <FiStar className="h-3.5 w-3.5 text-[#D48C28]" /> Stars Rating
           </label>
-          <select
+          <input
+            type="number"
+            min="1"
+            max="5"
+            step="0.1"
             value={stars}
             onChange={(e) => onStarsChange(e.target.value)}
+            placeholder="e.g. 5 or 4.8"
             className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-          >
-            <option value="5">5 Stars</option>
-            <option value="4.5">4.5 Stars</option>
-            <option value="4">4 Stars</option>
-            <option value="3.5">3.5 Stars</option>
-            <option value="3">3 Stars</option>
-          </select>
+          />
         </div>
-      </div>
-
-      {/* Video URL */}
-      <div>
-        <label className="mb-1 block text-xs font-semibold text-[#334155]">
-          Promotional Video URL (YouTube / Vimeo)
-        </label>
-        <input
-          type="url"
-          value={videoUrl}
-          onChange={(e) => onVideoUrlChange(e.target.value)}
-          placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
-        />
       </div>
 
       {/* Toggles */}

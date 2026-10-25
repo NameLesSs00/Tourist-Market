@@ -75,14 +75,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Quick Links
             </h3>
-            <div
-              className="mt-2.5 mb-5 w-10"
-              style={{
-                borderBottom: "2px solid",
-                borderImageSource: "linear-gradient(90deg, #D48C28 0%, #FFFFFF 100%)",
-                borderImageSlice: 1,
-              }}
-            />
+            <div className="mt-2.5 mb-5 h-[2px] w-10 bg-gradient-to-r from-[#D48C28] to-white" />
             <ul className="flex flex-col gap-4">
               {quickLinks.map((link) => (
                 <li key={link.label}>
@@ -102,14 +95,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Our services
             </h3>
-            <div
-              className="mt-2.5 mb-5 w-10"
-              style={{
-                borderBottom: "2px solid",
-                borderImageSource: "linear-gradient(90deg, #D48C28 0%, #FFFFFF 100%)",
-                borderImageSlice: 1,
-              }}
-            />
+            <div className="mt-2.5 mb-5 h-[2px] w-10 bg-gradient-to-r from-[#D48C28] to-white" />
             <ul className="flex flex-col gap-4">
               {services.map((item) => (
                 <li key={item.label}>
@@ -129,14 +115,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Contact Us
             </h3>
-            <div
-              className="mt-2.5 mb-5 w-10"
-              style={{
-                borderBottom: "2px solid",
-                borderImageSource: "linear-gradient(90deg, #D48C28 0%, #FFFFFF 100%)",
-                borderImageSlice: 1,
-              }}
-            />
+            <div className="mt-2.5 mb-5 h-[2px] w-10 bg-gradient-to-r from-[#D48C28] to-white" />
             <ul className="flex flex-col gap-4">
               {contactItems.map((item) => (
                 <li key={item.label}>
@@ -170,6 +149,25 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
                 </a>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar: Copyright & Powered by Tech Gear Solutions */}
+        <div className="mt-12 border-t border-white/15 pt-8 text-center text-xs text-white/75">
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
+            <span>© 2026 Egypt Tourist Market. All rights reserved.</span>
+            <span>·</span>
+            <span>
+              Powered by{" "}
+              <a
+                href="https://tech-gear.net/en"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#D48C28] hover:underline transition-colors"
+              >
+                Tech Gear Solutions
+              </a>
+            </span>
           </div>
         </div>
       </div>

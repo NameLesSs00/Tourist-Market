@@ -67,7 +67,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen w-full bg-[#F1F5F9] font-poppins">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-80 lg:block">
         <AdminSidebar {...sidebarProps} />
       </aside>
 
@@ -83,7 +83,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               onClick={() => setIsDrawerOpen(false)}
             />
             <motion.aside
-              className="relative h-full w-72 shadow-2xl"
+              className="relative h-full w-80 shadow-2xl"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -100,7 +100,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
 
       {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col lg:pl-72">
+      <div className="flex min-w-0 flex-1 flex-col lg:pl-80">
         {/* Mobile-only menu trigger (no header on desktop) */}
         <div className="sticky top-0 z-20 flex items-center px-4 pt-4 lg:hidden">
           <button
@@ -116,6 +116,25 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <main className="w-full flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           {children}
         </main>
+
+        {/* Admin Footer */}
+        <footer className="w-full border-t border-[#E2E8F0] bg-white/60 px-4 py-4 text-center text-xs text-[#64748B] sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center gap-1.5">
+            <span>© 2026 Egypt Tourist Market. All rights reserved.</span>
+            <span>·</span>
+            <span>
+              Powered by{" "}
+              <a
+                href="https://tech-gear.net/en"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-[#0E4A68] hover:text-[#D48C28] transition-colors underline"
+              >
+                Tech Gear Solutions
+              </a>
+            </span>
+          </div>
+        </footer>
       </div>
 
       <ChangePasswordPanel open={isPasswordOpen} onClose={() => setIsPasswordOpen(false)} />

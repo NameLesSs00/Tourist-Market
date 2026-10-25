@@ -28,7 +28,6 @@ export function useGroupExcursionForm({
 }: UseGroupExcursionFormOptions) {
   const [categoryId, setCategoryId] = useState("");
   const [slug, setSlug] = useState("");
-  const [isSlugManual, setIsSlugManual] = useState(false);
   const [adultPriceUsd, setAdultPriceUsd] = useState(0);
   const [childPriceUsd, setChildPriceUsd] = useState(0);
   const [infantPriceUsd, setInfantPriceUsd] = useState(0);
@@ -92,7 +91,7 @@ export function useGroupExcursionForm({
 
   const handleTitleChange = (lang: LangCode, val: string) => {
     setTitle((prev) => ({ ...prev, [lang]: val }));
-    if (lang === "en" && !isEdit && !isSlugManual) {
+    if (lang === "en" && !isEdit) {
       setSlug(val.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""));
     }
   };
@@ -101,7 +100,6 @@ export function useGroupExcursionForm({
     const errs: Record<string, string> = {};
     if (!title.en?.trim()) errs["title.en"] = "English Title is required.";
     if (!categoryId.trim()) errs.categoryId = "Category is required.";
-    if (!slug.trim()) errs.slug = "Slug is required.";
     if (adultPriceUsd <= 0) errs.adultPriceUsd = "Adult price must be greater than 0.";
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -111,20 +109,22 @@ export function useGroupExcursionForm({
     e.preventDefault();
     if (!validate()) return;
 
+    const autoSlug = (slug || title.en.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")).trim();
+
     if (isEdit && excursion) {
       onSubmitUpdate({
         id: excursion.id,
         body: {
-          slug: slug.trim(),
+          slug: autoSlug,
           categoryId,
           excursionType: excursionType.en || "",
           adultPriceUsd,
           childPriceUsd,
           infantPriceUsd,
-          stars,
+          stars: String(stars).trim() || "5",
           maxAttractions: 0,
           durationHours,
-          videoUrl: videoUrl.trim(),
+          videoUrl: videoUrl.trim() || "",
           isFeatured,
           isActive,
           translations: { title, subtitle, excursionType, shortDescription, fullProgram },
@@ -132,14 +132,14 @@ export function useGroupExcursionForm({
       });
     } else {
       onSubmitCreate({
-        slug: slug.trim(),
+        slug: autoSlug,
         categoryId,
         adultPriceUsd,
         childPriceUsd,
         infantPriceUsd,
-        stars,
+        stars: String(stars).trim() || "5",
         durationHours,
-        videoUrl: videoUrl.trim(),
+        videoUrl: videoUrl.trim() || "",
         isFeatured,
         isActive,
         title,
@@ -169,7 +169,7 @@ export function useGroupExcursionForm({
     fullProgram,
     errors,
     setCategoryId,
-    setSlug: (val: string) => { setIsSlugManual(true); setSlug(val); },
+    setSlug,
     setAdultPriceUsd,
     setChildPriceUsd,
     setInfantPriceUsd,

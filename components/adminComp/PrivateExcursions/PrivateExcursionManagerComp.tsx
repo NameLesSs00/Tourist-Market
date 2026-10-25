@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import {
   ConfirmDialog,
   DataTable,
+  ExcursionFaqsPanel,
   ExcursionImagesPanel,
   PageHeader,
   SearchInput,
@@ -50,6 +51,7 @@ export function PrivateExcursionManagerComp() {
   const [vehiclePricingTarget, setVehiclePricingTarget] = useState<PrivateExcursionListItem | null>(null);
   const [detailsTarget, setDetailsTarget] = useState<{ id: string; title: string } | null>(null);
   const [photosTarget, setPhotosTarget] = useState<PrivateExcursionListItem | null>(null);
+  const [faqsTarget, setFaqsTarget] = useState<PrivateExcursionListItem | null>(null);
 
   const rawItems = listQuery.data?.data?.items ?? [];
 
@@ -75,8 +77,9 @@ export function PrivateExcursionManagerComp() {
         onManageVehiclePricing: (item) => setVehiclePricingTarget(item),
         onManageDetails: (item) => setDetailsTarget({ id: item.id, title: item.title }),
         onManagePhotos: (item) => setPhotosTarget(item),
+        onManageFaqs: (item) => setFaqsTarget(item),
       }),
-    []
+    [setAvailabilityTarget, setVehiclePricingTarget, setDetailsTarget, setPhotosTarget, setFaqsTarget]
   );
 
   return (
@@ -153,41 +156,18 @@ export function PrivateExcursionManagerComp() {
         isSubmitting={createMutation.isPending || updateMutation.isPending}
       />
 
-      <PrivateExcursionAvailabilityPanel
-        open={Boolean(availabilityTarget)}
-        excursion={availabilityTarget}
-        onClose={() => setAvailabilityTarget(null)}
-      />
-
-      <PrivateExcursionVehiclePricingPanel
-        open={Boolean(vehiclePricingTarget)}
-        excursion={vehiclePricingTarget}
-        onClose={() => setVehiclePricingTarget(null)}
-      />
-
-      <ExcursionDetailsPanel
-        open={Boolean(detailsTarget)}
-        excursion={detailsTarget}
-        onClose={() => setDetailsTarget(null)}
-      />
-
-      <ExcursionImagesPanel
-        open={Boolean(photosTarget)}
-        excursion={photosTarget}
-        onClose={() => setPhotosTarget(null)}
-      />
-
+      <PrivateExcursionAvailabilityPanel open={Boolean(availabilityTarget)} excursion={availabilityTarget} onClose={() => setAvailabilityTarget(null)} />
+      <PrivateExcursionVehiclePricingPanel open={Boolean(vehiclePricingTarget)} excursion={vehiclePricingTarget} onClose={() => setVehiclePricingTarget(null)} />
+      <ExcursionDetailsPanel open={Boolean(detailsTarget)} excursion={detailsTarget} onClose={() => setDetailsTarget(null)} />
+      <ExcursionImagesPanel open={Boolean(photosTarget)} excursion={photosTarget} onClose={() => setPhotosTarget(null)} />
+      <ExcursionFaqsPanel open={Boolean(faqsTarget)} excursion={faqsTarget} onClose={() => setFaqsTarget(null)} />
       <ConfirmDialog
         open={Boolean(deleteTarget)}
         title="Delete Private Excursion"
         description={`Are you sure you want to delete "${deleteTarget?.title}"? This action cannot be undone.`}
         confirmLabel="Delete Excursion"
         isLoading={deleteMutation.isPending}
-        onConfirm={() => {
-          if (deleteTarget) {
-            deleteMutation.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) });
-          }
-        }}
+        onConfirm={() => deleteTarget && deleteMutation.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) })}
         onCancel={() => setDeleteTarget(null)}
       />
     </div>

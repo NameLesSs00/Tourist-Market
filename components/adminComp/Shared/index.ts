@@ -9,3 +9,6 @@ export * from "./ExcursionHeroSection";
 export * from "./ExcursionImagesPanel";
 export * from "./PageHeader";
 export * from "./SlidePanel";
+export * from "./AdminNavSection";
+export * from "./adminNavConfig";
+export { ExcursionFaqsPanel } from "@/components/adminComp/PrivateExcursions/components/ExcursionFaqsPanel";

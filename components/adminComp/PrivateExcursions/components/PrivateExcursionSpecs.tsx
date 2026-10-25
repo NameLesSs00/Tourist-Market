@@ -1,26 +1,25 @@
 "use client";
 
 import React from "react";
-import { FaCar } from "react-icons/fa6";
-import { FiClock, FiLayers, FiStar, FiVideo } from "react-icons/fi";
+import { FiClock, FiLayers, FiStar } from "react-icons/fi";
 import { useExcursionCategoriesQuery } from "@/features/excursionCategories/useExcursionCategoryAdmin";
 
 interface PrivateExcursionSpecsProps {
   categoryId: string;
-  slug: string;
+  slug?: string;
   stars: string;
   maxAttractions: number;
   durationHours: number;
-  videoUrl: string;
+  videoUrl?: string;
   isFeatured: boolean;
   isActive: boolean;
   errors: Record<string, string>;
   onCategoryIdChange: (val: string) => void;
-  onSlugChange: (val: string) => void;
+  onSlugChange?: (val: string) => void;
   onStarsChange: (val: string) => void;
   onMaxAttractionsChange: (val: number) => void;
   onDurationHoursChange: (val: number) => void;
-  onVideoUrlChange: (val: string) => void;
+  onVideoUrlChange?: (val: string) => void;
   onIsFeaturedChange: (val: boolean) => void;
   onIsActiveChange: (val: boolean) => void;
 }
@@ -28,20 +27,16 @@ interface PrivateExcursionSpecsProps {
 export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
   const {
     categoryId,
-    slug,
     stars,
     maxAttractions,
     durationHours,
-    videoUrl,
     isFeatured,
     isActive,
     errors,
     onCategoryIdChange,
-    onSlugChange,
     onStarsChange,
     onMaxAttractionsChange,
     onDurationHoursChange,
-    onVideoUrlChange,
     onIsFeaturedChange,
     onIsActiveChange,
   } = props;
@@ -50,68 +45,34 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
   const categoryList = categoriesQuery.data?.items ?? [];
 
   return (
-    <div className="space-y-5 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 sm:p-5">
+    <div className="space-y-4 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-4 sm:p-5">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-[#083952]">Configuration & Specifications</h3>
-        <span className="rounded-full bg-[#0E4A680F] px-2.5 py-0.5 text-[11px] font-medium text-[#0E4A68]">
-          Vehicle-Based Pricing
-        </span>
       </div>
 
-      {/* Category & Slug */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className="space-y-1">
-          <label className="flex items-center gap-1.5 text-xs font-semibold text-[#083952]">
-            <FiLayers className="h-3.5 w-3.5 text-[#0E4A68]" />
-            Excursion Category <span className="text-[#DC2626]">*</span>
-          </label>
-          <select
-            value={categoryId}
-            onChange={(e) => onCategoryIdChange(e.target.value)}
-            className={`w-full rounded-xl border bg-[#FFFFFF] px-3.5 py-2 text-sm text-[#0F172A] outline-none transition focus:ring-2 ${
-              errors.categoryId
-                ? "border-[#EF4444] focus:ring-[#EF444420]"
-                : "border-[#E2E8F0] focus:border-[#0E4A68] focus:ring-[#0E4A6815]"
-            }`}
-          >
-            <option value="">Select Category...</option>
-            {categoryList.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-          {errors.categoryId && <p className="text-[11px] text-[#EF4444]">{errors.categoryId}</p>}
-        </div>
-
-        <div className="space-y-1">
-          <label className="text-xs font-semibold text-[#083952]">
-            URL Slug <span className="text-[#DC2626]">*</span>
-          </label>
-          <input
-            type="text"
-            value={slug}
-            onChange={(e) => onSlugChange(e.target.value)}
-            placeholder="e.g. private-dolphin-house-trip"
-            className={`w-full rounded-xl border bg-[#FFFFFF] px-3.5 py-2 text-sm text-[#0F172A] outline-none transition focus:ring-2 ${
-              errors.slug
-                ? "border-[#EF4444] focus:ring-[#EF444420]"
-                : "border-[#E2E8F0] focus:border-[#0E4A68] focus:ring-[#0E4A6815]"
-            }`}
-          />
-          {errors.slug && <p className="text-[11px] text-[#EF4444]">{errors.slug}</p>}
-        </div>
-      </div>
-
-      {/* Vehicle-based pricing information callout */}
-      <div className="flex items-center gap-3 rounded-xl border border-sky-200 bg-sky-50/80 p-3.5 text-xs text-sky-900 shadow-2xs">
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#0E4A6815] text-[#0E4A68]">
-          <FaCar className="h-4 w-4" />
-        </div>
-        <p className="leading-relaxed">
-          Pricing for private excursions is configured exclusively per vehicle group size. Configure rates
-          via the <strong>Vehicle Rates</strong> button in the excursion table.
-        </p>
+      {/* Category */}
+      <div className="space-y-1">
+        <label className="flex items-center gap-1.5 text-xs font-semibold text-[#083952]">
+          <FiLayers className="h-3.5 w-3.5 text-[#0E4A68]" />
+          Excursion Category <span className="text-[#DC2626]">*</span>
+        </label>
+        <select
+          value={categoryId}
+          onChange={(e) => onCategoryIdChange(e.target.value)}
+          className={`w-full rounded-xl border bg-[#FFFFFF] px-3.5 py-2 text-sm text-[#0F172A] outline-none transition focus:ring-2 ${
+            errors.categoryId
+              ? "border-[#EF4444] focus:ring-[#EF444420]"
+              : "border-[#E2E8F0] focus:border-[#0E4A68] focus:ring-[#0E4A6815]"
+          }`}
+        >
+          <option value="">Select Category...</option>
+          {categoryList.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+        {errors.categoryId && <p className="text-[11px] text-[#EF4444]">{errors.categoryId}</p>}
       </div>
 
       {/* Specifications */}
@@ -123,6 +84,7 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
           <input
             type="number"
             min={0}
+            step="0.5"
             value={durationHours}
             onChange={(e) => onDurationHoursChange(Math.max(0, Number(e.target.value)))}
             className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-sm text-[#0F172A] outline-none focus:border-[#0E4A68]"
@@ -133,10 +95,13 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
             <FiStar className="h-3 w-3 text-[#D48C28]" /> Stars Rating
           </label>
           <input
-            type="text"
+            type="number"
+            min={1}
+            max={5}
+            step="0.1"
             value={stars}
             onChange={(e) => onStarsChange(e.target.value)}
-            placeholder="e.g. 5 or 4.5"
+            placeholder="e.g. 5 or 4.8"
             className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-sm text-[#0F172A] outline-none focus:border-[#0E4A68]"
           />
         </div>
@@ -150,20 +115,6 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
             className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-sm text-[#0F172A] outline-none focus:border-[#0E4A68]"
           />
         </div>
-      </div>
-
-      {/* Video URL */}
-      <div className="space-y-1">
-        <label className="flex items-center gap-1 text-xs font-medium text-[#334155]">
-          <FiVideo className="h-3 w-3 text-[#0E4A68]" /> Video URL (YouTube / Vimeo)
-        </label>
-        <input
-          type="url"
-          value={videoUrl}
-          onChange={(e) => onVideoUrlChange(e.target.value)}
-          placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3.5 py-2 text-sm text-[#0F172A] outline-none focus:border-[#0E4A68]"
-        />
       </div>
 
       {/* Toggles */}
@@ -190,3 +141,5 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
     </div>
   );
 }
+
+export default PrivateExcursionSpecs;

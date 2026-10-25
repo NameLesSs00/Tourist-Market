@@ -4,6 +4,7 @@ import React, { useMemo, useState } from "react";
 import {
   ConfirmDialog,
   DataTable,
+  ExcursionFaqsPanel,
   ExcursionImagesPanel,
   PageHeader,
   SearchInput,
@@ -16,7 +17,7 @@ import {
   useUpdateGroupExcursionMutation,
 } from "@/features/groupExcursions/useGroupExcursionAdmin";
 import type { GroupExcursionListItem } from "@/models/groupExcursion";
-import { ExcursionDetailsPanel } from "@/components/adminComp/PrivateExcursions/components";
+import { ExcursionDetailsPanel, PrivateExcursionAvailabilityPanel } from "@/components/adminComp/PrivateExcursions/components";
 import { buildGroupExcursionColumns } from "./components";
 import { GroupExcursionFormPanel } from "./GroupExcursionFormPanel";
 
@@ -44,6 +45,8 @@ export function GroupExcursionManagerComp() {
   const [deleteTarget, setDeleteTarget] = useState<GroupExcursionListItem | null>(null);
   const [detailsTarget, setDetailsTarget] = useState<{ id: string; title: string } | null>(null);
   const [photosTarget, setPhotosTarget] = useState<GroupExcursionListItem | null>(null);
+  const [availabilityTarget, setAvailabilityTarget] = useState<GroupExcursionListItem | null>(null);
+  const [faqsTarget, setFaqsTarget] = useState<GroupExcursionListItem | null>(null);
 
   const rawItems = listQuery.data?.items ?? [];
 
@@ -67,8 +70,10 @@ export function GroupExcursionManagerComp() {
       buildGroupExcursionColumns({
         onManageDetails: (item) => setDetailsTarget({ id: item.id, title: item.title }),
         onManagePhotos: (item) => setPhotosTarget(item),
+        onManageAvailability: (item) => setAvailabilityTarget(item),
+        onManageFaqs: (item) => setFaqsTarget(item),
       }),
-    []
+    [setDetailsTarget, setPhotosTarget, setAvailabilityTarget, setFaqsTarget]
   );
 
   return (
@@ -145,29 +150,17 @@ export function GroupExcursionManagerComp() {
         isSubmitting={createMutation.isPending || updateMutation.isPending}
       />
 
-      <ExcursionDetailsPanel
-        open={Boolean(detailsTarget)}
-        excursion={detailsTarget}
-        onClose={() => setDetailsTarget(null)}
-      />
-
-      <ExcursionImagesPanel
-        open={Boolean(photosTarget)}
-        excursion={photosTarget}
-        onClose={() => setPhotosTarget(null)}
-      />
-
+      <ExcursionDetailsPanel open={Boolean(detailsTarget)} excursion={detailsTarget} onClose={() => setDetailsTarget(null)} />
+      <PrivateExcursionAvailabilityPanel open={Boolean(availabilityTarget)} excursion={availabilityTarget} onClose={() => setAvailabilityTarget(null)} />
+      <ExcursionImagesPanel open={Boolean(photosTarget)} excursion={photosTarget} onClose={() => setPhotosTarget(null)} />
+      <ExcursionFaqsPanel open={Boolean(faqsTarget)} excursion={faqsTarget} onClose={() => setFaqsTarget(null)} />
       <ConfirmDialog
         open={Boolean(deleteTarget)}
         title="Delete Group Excursion"
         description={`Are you sure you want to delete "${deleteTarget?.title}"? This action cannot be undone.`}
         confirmLabel="Delete Excursion"
         isLoading={deleteMutation.isPending}
-        onConfirm={() => {
-          if (deleteTarget) {
-            deleteMutation.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) });
-          }
-        }}
+        onConfirm={() => deleteTarget && deleteMutation.mutate(deleteTarget.id, { onSuccess: () => setDeleteTarget(null) })}
         onCancel={() => setDeleteTarget(null)}
       />
     </div>

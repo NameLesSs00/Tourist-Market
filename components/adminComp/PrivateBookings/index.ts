@@ -1,0 +1,1 @@
+export { PrivateBookingManagerComp } from "./PrivateBookingManagerComp";
