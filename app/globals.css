@@ -1,8 +1,13 @@
 @import "tailwindcss";
 
+
 :root {
   --background: #FFF4E5;
   --foreground: #083952;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-manrope: 'Manrope', sans-serif;
+  --font-montserrat: 'Montserrat', sans-serif;
+  --font-caveat: 'Caveat', cursive;
 }
 
 @theme inline {
@@ -12,6 +17,7 @@
   --font-poppins: var(--font-poppins);
   --font-manrope: var(--font-manrope);
   --font-montserrat: var(--font-montserrat);
+  --font-caveat: var(--font-caveat);
 }
 
 body {
@@ -55,6 +61,10 @@ svg {
 
 .font-\[\'Poppins\'\] {
   font-family: var(--font-poppins), "Poppins", sans-serif !important;
+}
+
+.font-caveat {
+  font-family: var(--font-caveat), 'Caveat', cursive !important;
 }
 
 header a,
