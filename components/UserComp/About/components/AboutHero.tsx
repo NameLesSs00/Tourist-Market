@@ -3,12 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Caveat } from "next/font/google";
-
-const caveat = Caveat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
 
 interface AboutHeroProps {
   locale?: string;
@@ -104,7 +98,7 @@ export function AboutHero({ locale = "en" }: AboutHeroProps) {
                 }}
               >
                 <p
-                  className={`${caveat.className} font-caveat text-[#0E4A68] text-[36px] xl:text-[42px] leading-[1.08] tracking-tight whitespace-pre text-left`}
+                  className="font-caveat text-[#0E4A68] text-[36px] xl:text-[42px] leading-[1.08] tracking-tight whitespace-pre text-left"
                 >
                   {`Travel\nConnects\nPeople`}
                 </p>
@@ -189,7 +183,7 @@ export function AboutHero({ locale = "en" }: AboutHeroProps) {
                 }}
               >
                 <p
-                  className={`${caveat.className} font-caveat text-[#0E4A68] text-[24px] sm:text-[28px]  leading-[1.06] tracking-tight whitespace-pre text-left`}
+                  className="font-caveat text-[#0E4A68] text-[24px] sm:text-[28px] leading-[1.06] tracking-tight whitespace-pre text-left"
                 >
                   {`Travel\nConnects\nPeople`}
                 </p>
