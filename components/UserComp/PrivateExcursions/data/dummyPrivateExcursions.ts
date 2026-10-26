@@ -2,6 +2,33 @@ import { PrivateExcursion } from "../types";
 
 export const DUMMY_PRIVATE_EXCURSIONS: PrivateExcursion[] = [
   {
+    id: "private-hurghada-city-tour",
+    slug: "private-hurghada-city-tour",
+    title: "PRIVATE HURGHADA CITY TOUR",
+    subtitle: "Private exclusive exploration of the historic El Dahar square, Marina & Grand Mosque",
+    shortDescription:
+      "Experience the highlights of Hurghada on an exclusive private tour exploring the traditional markets, harbor, and picturesque coastline.",
+    excursionType: "Private Tour",
+    duration: "4 hours",
+    durationHours: 4,
+    stars: "5",
+    rating: 4.9,
+    category: "Historical",
+    categorySlug: "historical",
+    badge: "Top Rated",
+    imageUrl: "/PrivateExcursions/Privatedetails/7b777cbdc9da0fa5b151e67b42e2d3da14ee38aa.png",
+    isFeatured: true,
+    currency: "$",
+    adultPrice: 10.0,
+    childPrice: 5.0,
+    infantPrice: 0.0,
+    prices: [
+      { currencyCode: "USD", adultPrice: 10.0, childPrice: 5.0, infantPrice: 0.0 },
+      { currencyCode: "EUR", adultPrice: 9.0, childPrice: 4.5, infantPrice: 0.0 },
+      { currencyCode: "GBP", adultPrice: 8.0, childPrice: 4.0, infantPrice: 0.0 },
+    ],
+  },
+  {
     id: "private-cairo-full-day-1",
     slug: "one-day-trip-to-cairo-full-program-private-1",
     title: "ONE DAY TRIP TO CAIRO (FULL PROGRAM)",

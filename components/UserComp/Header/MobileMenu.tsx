@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiChevronDown, FiX } from "react-icons/fi";
 import { MobileMenuSelectors } from "./MobileMenuSelectors";
+import { getHeaderServicesData } from "./headerServicesData";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -14,6 +15,7 @@ interface MobileMenuProps {
 
 export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenuProps) {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const categories = getHeaderServicesData(currentLocale);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,13 +29,6 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
   }, [isOpen]);
 
   if (!isOpen) return null;
-
-  const serviceCategories = [
-    { title: "Guided Market Tours", href: `/${currentLocale}/services/tours` },
-    { title: "Artisan Handicrafts & Souvenirs", href: `/${currentLocale}/services/crafts` },
-    { title: "Authentic Culinary Tastings", href: `/${currentLocale}/services/food` },
-    { title: "Local Transportation & Guides", href: `/${currentLocale}/services/guides` },
-  ];
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-[#FFF4E5] text-[#083952] lg:hidden animate-in fade-in duration-200">
@@ -69,11 +64,12 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
             Home
           </Link>
 
-          {/* Explore Services Accordion */}
+          {/* Explore Services Accordion matching Filter.png grouping */}
           <div>
             <button
               type="button"
               onClick={() => setIsServicesOpen((prev) => !prev)}
+              aria-expanded={isServicesOpen}
               className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B] cursor-pointer"
             >
               <span>Explore Services</span>
@@ -84,16 +80,42 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
               />
             </button>
             {isServicesOpen && (
-              <div className="mt-1 ml-3 flex flex-col space-y-1.5 border-l-2 border-[#D48C2840] pl-3 py-1">
-                {serviceCategories.map((item) => (
-                  <Link
-                    key={item.title}
-                    href={item.href}
-                    onClick={onClose}
-                    className="rounded-lg px-2.5 py-1.5 text-sm font-medium text-[#083952CC] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
-                  >
-                    {item.title}
-                  </Link>
+              <div className="mt-2 ml-1 flex flex-col space-y-4 rounded-2xl bg-[#FFFEEF] p-4 border border-[#08395215] shadow-sm">
+                {categories.map((category) => (
+                  <div key={category.id} className="flex flex-col">
+                    {/* Category Header with Icon and Underline */}
+                    <div className="inline-flex flex-col pb-1">
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 relative flex-shrink-0 flex items-center justify-center">
+                          <Image
+                            src={category.iconSrc}
+                            alt={category.iconAlt}
+                            width={16}
+                            height={16}
+                            className="w-auto h-auto object-contain max-h-4 max-w-4"
+                          />
+                        </div>
+                        <h5 className="font-poppins font-bold text-[#0A354A] text-sm tracking-tight">
+                          {category.title}
+                        </h5>
+                      </div>
+                      <div className="mt-1 h-[1.5px] bg-[#0A354A] w-full rounded-full" />
+                    </div>
+
+                    {/* Category Links */}
+                    <div className="mt-2 flex flex-col space-y-1 pl-1">
+                      {category.items.map((item) => (
+                        <Link
+                          key={item.title}
+                          href={item.href}
+                          onClick={onClose}
+                          className="rounded-lg px-2 py-1.5 text-[13.5px] font-semibold text-[#083952CC] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
+                        >
+                          {item.title}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             )}

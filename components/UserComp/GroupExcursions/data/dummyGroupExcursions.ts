@@ -41,7 +41,7 @@ export const DUMMY_GROUP_EXCURSIONS: GroupExcursion[] = [
     slug: "one-day-trip-to-luxor-full-program-1",
     title: "ONE DAY TRIP TO LUXOR (FULL PROGRAM)",
     description:
-      "Visiting Cairo, the modern capital of Egypt, on a one-day trip from Hurghada, is essential to explore its rich historical treasures.",
+      "Visiting Luxor, the ancient capital of Egypt, on a one-day trip from Hurghada, to explore the Valley of the Kings, Karnak Temple, and ancient treasures.",
     badge: "Historical",
     category: "Historical",
     duration: "20 hours",
@@ -94,7 +94,7 @@ export const DUMMY_GROUP_EXCURSIONS: GroupExcursion[] = [
     slug: "one-day-trip-to-luxor-full-program-2",
     title: "ONE DAY TRIP TO LUXOR (FULL PROGRAM)",
     description:
-      "Visiting Cairo, the modern capital of Egypt, on a one-day trip from Hurghada, is essential to explore its rich historical treasures.",
+      "Visiting Luxor, the ancient capital of Egypt, on a one-day trip from Hurghada, to explore the Valley of the Kings, Karnak Temple, and ancient treasures.",
     badge: "Historical",
     category: "Historical",
     duration: "20 hours",
@@ -147,7 +147,7 @@ export const DUMMY_GROUP_EXCURSIONS: GroupExcursion[] = [
     slug: "one-day-trip-to-luxor-full-program-3",
     title: "ONE DAY TRIP TO LUXOR (FULL PROGRAM)",
     description:
-      "Visiting Cairo, the modern capital of Egypt, on a one-day trip from Hurghada, is essential to explore its rich historical treasures.",
+      "Visiting Luxor, the ancient capital of Egypt, on a one-day trip from Hurghada, to explore the Valley of the Kings, Karnak Temple, and ancient treasures.",
     badge: "Historical",
     category: "Historical",
     duration: "20 hours",
@@ -200,7 +200,7 @@ export const DUMMY_GROUP_EXCURSIONS: GroupExcursion[] = [
     slug: "one-day-trip-to-luxor-full-program-4",
     title: "ONE DAY TRIP TO LUXOR (FULL PROGRAM)",
     description:
-      "Visiting Cairo, the modern capital of Egypt, on a one-day trip from Hurghada, is essential to explore its rich historical treasures.",
+      "Visiting Luxor, the ancient capital of Egypt, on a one-day trip from Hurghada, to explore the Valley of the Kings, Karnak Temple, and ancient treasures.",
     badge: "Historical",
     category: "Historical",
     duration: "20 hours",

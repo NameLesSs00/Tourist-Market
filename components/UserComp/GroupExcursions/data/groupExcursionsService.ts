@@ -95,8 +95,25 @@ export async function getGroupExcursionBySlug(
   slug: string
 ): Promise<import("../types").GroupExcursionDetail | null> {
   const { DUMMY_GROUP_EXCURSION_DETAIL } = await import("./dummyGroupDetails");
-  // In real backend, this will call `apiClient.get('/api/excursions/group/' + slug)`
   if (!slug) return DUMMY_GROUP_EXCURSION_DETAIL;
+
+  const match = DUMMY_GROUP_EXCURSIONS.find((e) => e.slug === slug);
+  if (match) {
+    return {
+      ...DUMMY_GROUP_EXCURSION_DETAIL,
+      slug,
+      title: match.title,
+      description: match.description,
+      badge: match.badge,
+      duration: match.duration,
+      durationHours: match.durationHours,
+      rating: match.rating,
+      adultPrice: match.adultPrice,
+      childPrice: match.childPrice,
+      infantPrice: match.infantPrice,
+    };
+  }
+
   return {
     ...DUMMY_GROUP_EXCURSION_DETAIL,
     slug,

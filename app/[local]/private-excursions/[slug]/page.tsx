@@ -7,16 +7,17 @@ export const instant = false;
 export const metadata: Metadata = {
   title: "Private Hurghada City Tour | Egypt Tourist Market",
   description:
-    "Discover the timeless wonders of Cairo & Hurghada — stand before the Great Pyramids, explore the Sphinx, and dive into the treasures of the Egyptian Museum.",
+    "Experience the vibrant highlights of Hurghada on an exclusive private tour — explore the historic El Dahar square, the Marina, and the Grand Mosque.",
 };
 
 export function generateStaticParams() {
-  return [
-    { local: "en", slug: "private-hurghada-city-tour" },
-    { local: "fr", slug: "private-hurghada-city-tour" },
-    { local: "de", slug: "private-hurghada-city-tour" },
-    { local: "ru", slug: "private-hurghada-city-tour" },
+  const locales = ["en", "fr", "de", "ru"];
+  const slugs = [
+    "private-hurghada-city-tour",
+    "one-day-trip-to-cairo-full-program-private-1",
+    "hurghada-grand-aquarium-private-1",
   ];
+  return locales.flatMap((local) => slugs.map((slug) => ({ local, slug })));
 }
 
 interface PageProps {

@@ -5,6 +5,7 @@ import {
   dummyPrivateExcursionDetail,
   dummyRelatedPrivateExcursions,
 } from "../data/dummyPrivateDetails";
+import { DUMMY_PRIVATE_EXCURSIONS } from "../data/dummyPrivateExcursions";
 import { PrivateDetailsHero } from "./PrivateDetailsHero";
 import { PrivateDetailsGallery } from "./PrivateDetailsGallery";
 import { PrivateDetailsTabs } from "./PrivateDetailsTabs";
@@ -24,9 +25,24 @@ export function PrivateDetailsSection({
   slug,
   locale = "en",
 }: PrivateDetailsSectionProps) {
-  // Use dummy detail data ready for backend API connection
-  const detail = dummyPrivateExcursionDetail;
-  const currentTitle = slug ? detail.title : detail.title;
+  const matched = slug
+    ? DUMMY_PRIVATE_EXCURSIONS.find((item) => item.slug === slug)
+    : null;
+  const detail = matched
+    ? {
+        ...dummyPrivateExcursionDetail,
+        slug: matched.slug,
+        title: matched.title,
+        subtitle: matched.subtitle || dummyPrivateExcursionDetail.subtitle,
+        shortDescription:
+          matched.shortDescription || dummyPrivateExcursionDetail.shortDescription,
+        badge: matched.badge || dummyPrivateExcursionDetail.badge,
+        adultPrice: matched.adultPrice,
+        childPrice: matched.childPrice,
+        infantPrice: matched.infantPrice,
+        imageUrl: matched.imageUrl || dummyPrivateExcursionDetail.imageUrl,
+      }
+    : dummyPrivateExcursionDetail;
 
   // Selected attractions (default to first 2 to match Figma mockup)
   const [selectedAttractionIds, setSelectedAttractionIds] = useState<string[]>([
@@ -69,7 +85,7 @@ export function PrivateDetailsSection({
     <div className="w-full min-h-screen bg-[#FFF8ED] text-[#083952] font-poppins pb-16">
       {/* ─── 1. HERO SECTION ─── */}
       <PrivateDetailsHero
-        title={currentTitle}
+        title={detail.title}
         subtitle={detail.subtitle}
         duration={detail.duration}
         pickup="From Your Hotel"

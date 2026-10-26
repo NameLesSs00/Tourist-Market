@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { ServicesMegaMenu } from "./ServicesMegaMenu";
+import { getHeaderServicesData } from "./headerServicesData";
 
 interface NavLinksProps {
   currentLocale?: string;
@@ -15,27 +17,43 @@ export function NavLinks({
   className = "",
 }: NavLinksProps) {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
-  const servicesDropdownRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const servicesCategories = getHeaderServicesData(currentLocale);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    setIsServicesOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    timeoutRef.current = setTimeout(() => {
+      setIsServicesOpen(false);
+    }, 150);
+  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
-        servicesDropdownRef.current &&
-        !servicesDropdownRef.current.contains(event.target as Node)
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
       ) {
         setIsServicesOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
   }, []);
-
-  const serviceCategories = [
-    { title: "Guided Market Tours", href: `/${currentLocale}/services/tours` },
-    { title: "Artisan Handicrafts & Souvenirs", href: `/${currentLocale}/services/crafts` },
-    { title: "Authentic Culinary Tastings", href: `/${currentLocale}/services/food` },
-    { title: "Local Transportation & Guides", href: `/${currentLocale}/services/guides` },
-  ];
 
   const navItemClass =
     "font-poppins-semibold-16 text-[#083952] transition-colors hover:text-[#D9943B] text-[13.5px] xl:text-[15px] 2xl:text-base whitespace-nowrap";
@@ -47,17 +65,26 @@ export function NavLinks({
         Home
       </Link>
 
-      {/* Explore Services Dropdown */}
-      <div className="relative" ref={servicesDropdownRef}>
+      {/* Explore Services Dropdown with Hover & Click */}
+      <div
+        className="relative"
+        ref={containerRef}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <button
           type="button"
           onClick={() => setIsServicesOpen((prev) => !prev)}
-          className={`flex items-center gap-1.5 focus:outline-none ${navItemClass}`}
+          aria-expanded={isServicesOpen}
+          aria-haspopup="true"
+          className={`flex items-center gap-1.5 focus:outline-none cursor-pointer py-2 ${navItemClass} ${
+            isServicesOpen ? "text-[#D9943B]" : ""
+          }`}
         >
           <span>Explore Services</span>
           <svg
             className={`h-3.5 w-3.5 transition-transform duration-200 ${
-              isServicesOpen ? "rotate-180" : ""
+              isServicesOpen ? "rotate-180 text-[#D9943B]" : ""
             }`}
             fill="none"
             stroke="currentColor"
@@ -68,26 +95,17 @@ export function NavLinks({
           </svg>
         </button>
 
-        {isServicesOpen && (
-          <div className="absolute left-0 mt-3 w-64 rounded-2xl border border-[#08395226] bg-[#FFF9F2] p-2 shadow-xl backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-3 py-1.5 font-poppins text-[12px] font-semibold uppercase tracking-wider text-[#08395280]">
-              Market Services
-            </div>
-            {serviceCategories.map((item) => (
-              <Link
-                key={item.title}
-                href={item.href}
-                onClick={() => {
-                  setIsServicesOpen(false);
-                  onNavigate?.();
-                }}
-                className="block rounded-lg px-3 py-2 font-poppins-semibold-16 text-[#083952] transition-colors hover:bg-[#F4DAB666] hover:text-[#D9943B]"
-              >
-                {item.title}
-              </Link>
-            ))}
-          </div>
-        )}
+        {/* 3-Column Services Mega Menu matching Filter.png */}
+        <ServicesMegaMenu
+          categories={servicesCategories}
+          isOpen={isServicesOpen}
+          onClose={() => {
+            setIsServicesOpen(false);
+            onNavigate?.();
+          }}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
       </div>
 
       {/* Hotel Deliveries */}

@@ -5,9 +5,9 @@ export const dummyPrivateExcursionDetail: PrivateExcursionDetail = {
   slug: "private-hurghada-city-tour",
   title: "PRIVATE HURGHADA CITY TOUR",
   subtitle:
-    "Discover the timeless wonders of Cairo — stand before the Great Pyramids, explore the Sphinx, and dive into the treasures of the Egyptian Museum.",
+    "Discover the vibrant charm of Hurghada — explore the historic El Dahar square, the Marina, and the Grand Mosque.",
   shortDescription:
-    "Visiting Cairo, the modern capital of Egypt, on a one-day trip from Hurghada, is essential to explore its rich historical treasures.",
+    "Experience the highlights of Hurghada on an exclusive private tour exploring the traditional markets, harbor, and picturesque coastline.",
   excursionType: "Private",
   duration: "20 hours",
   durationHours: 20,

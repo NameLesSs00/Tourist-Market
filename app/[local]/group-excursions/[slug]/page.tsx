@@ -11,12 +11,13 @@ export const metadata: Metadata = {
 };
 
 export function generateStaticParams() {
-  return [
-    { local: "en", slug: "one-day-trip-to-cairo-full-program-1" },
-    { local: "fr", slug: "one-day-trip-to-cairo-full-program-1" },
-    { local: "de", slug: "one-day-trip-to-cairo-full-program-1" },
-    { local: "ru", slug: "one-day-trip-to-cairo-full-program-1" },
+  const locales = ["en", "fr", "de", "ru"];
+  const slugs = [
+    "one-day-trip-to-cairo-full-program-1",
+    "hurghada-grand-aquarium-1",
+    "one-day-trip-to-luxor-full-program-1",
   ];
+  return locales.flatMap((local) => slugs.map((slug) => ({ local, slug })));
 }
 
 interface PageProps {

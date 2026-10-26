@@ -1,5 +1,10 @@
 import { Suspense } from "react";
-import { HeroSection, Services, FaqSection } from "@/components/UserComp/Home";
+import {
+  HeroSection,
+  GroupExcursionsHomeSection,
+  Services,
+  FaqSection,
+} from "@/components/UserComp/Home";
 
 export const instant = false;
 
@@ -23,6 +28,7 @@ async function HomeResolved({ params }: PageProps) {
   return (
     <>
       <HeroSection locale={local} />
+      <GroupExcursionsHomeSection locale={local} />
       <Services locale={local} />
       <FaqSection locale={local} />
     </>
