@@ -116,14 +116,6 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
           </Link>
 
           <Link
-            href={`/${currentLocale}/FAQ`}
-            onClick={onClose}
-            className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
-          >
-            FAQ
-          </Link>
-
-          <Link
             href={`/${currentLocale}/About`}
             onClick={onClose}
             className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"

@@ -6,7 +6,7 @@ import { Pyramid3DVisual } from "./Pyramid3DVisual";
 
 export function DesktopHexGrid() {
   return (
-    <div className="relative hidden lg:block w-[822px] xl:w-[904px] h-[742px] xl:h-[814px] select-none shrink-0 -mr-16 xl:-mr-24">
+    <div className="relative hidden lg:block w-[822px] xl:w-[904px] h-[742px] xl:h-[814px] select-none shrink-0 origin-right scale-[0.78] xl:scale-[0.92] 2xl:scale-100 -mr-10 xl:-mr-16 2xl:-mr-24 transition-transform duration-300">
       {/* 1. West Centerpiece: 3D Pyramid filling the blue polygon with 3 #939393 orbit rings */}
       <div className="absolute left-0 top-[202px] xl:top-[220px] z-30">
         <Pyramid3DVisual size="lg" />

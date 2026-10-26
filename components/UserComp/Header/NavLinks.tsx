@@ -38,10 +38,10 @@ export function NavLinks({
   ];
 
   const navItemClass =
-    "font-poppins-semibold-16 text-[#083952] transition-colors hover:text-[#D9943B]";
+    "font-poppins-semibold-16 text-[#083952] transition-colors hover:text-[#D9943B] text-[13.5px] xl:text-[15px] 2xl:text-base whitespace-nowrap";
 
   return (
-    <nav className={`flex items-center gap-7 lg:gap-8 ${className}`}>
+    <nav className={`flex items-center gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 ${className}`}>
       {/* Home */}
       <Link href={`/${currentLocale}`} onClick={onNavigate} className={navItemClass}>
         Home
@@ -102,11 +102,6 @@ export function NavLinks({
       {/* Blogs */}
       <Link href={`/${currentLocale}/Blogs`} onClick={onNavigate} className={navItemClass}>
         Blogs
-      </Link>
-
-      {/* FAQ */}
-      <Link href={`/${currentLocale}/FAQ`} onClick={onNavigate} className={navItemClass}>
-        FAQ
       </Link>
 
       {/* About Us */}

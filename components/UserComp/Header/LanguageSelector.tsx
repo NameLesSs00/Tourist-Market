@@ -46,7 +46,7 @@ export function LanguageSelector({
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="flex items-center gap-2 rounded-full border border-[#08395240] bg-transparent px-4 py-2 font-poppins-semibold-16 text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer"
+        className="flex items-center gap-1.5 xl:gap-2 rounded-full border border-[#08395240] bg-transparent px-2.5 py-1.5 xl:px-4 xl:py-2 text-xs xl:text-sm 2xl:text-base font-semibold text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer whitespace-nowrap"
       >
         <span className="relative flex h-4 w-5 shrink-0 overflow-hidden rounded-xs border border-[#08395226]">
           <Image

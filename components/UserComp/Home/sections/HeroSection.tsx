@@ -25,7 +25,7 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
       <HeroBackground />
 
       {/* 2. Main Content Container */}
-      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-6 sm:px-10 lg:pl-12 xl:pl-16 lg:pr-0">
+      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-6 sm:px-10 lg:pl-8 xl:pl-12 2xl:pl-16 lg:pr-0 overflow-hidden">
         {/* Desktop View: Side-by-Side Flex Layout Matching Master Design */}
         <div className="hidden lg:flex items-center justify-between gap-6 xl:gap-8">
           {/* Left Column: Big, Lively Headline, Description & Action Buttons */}

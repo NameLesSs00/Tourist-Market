@@ -23,7 +23,7 @@ async function HomeResolved({ params }: PageProps) {
   return (
     <>
       <HeroSection locale={local} />
-      <Services />
+      <Services locale={local} />
       <FaqSection locale={local} />
     </>
   );

@@ -72,7 +72,7 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
           </div>
 
           {/* Centered Help Card below questions */}
-          <div className="mt-12 flex justify-center">
+          <div className="mt-6 sm:mt-8 flex justify-center">
             <FaqHelpCard dict={dict} currentLocale={locale} isMobile />
           </div>
         </div>

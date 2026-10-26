@@ -14,16 +14,36 @@ export function FaqHelpCard({ dict, currentLocale, isMobile = false }: FaqHelpCa
 
   if (isMobile) {
     return (
-      <div className="relative mx-auto flex w-full max-w-[360px] flex-col items-center justify-center rounded-3xl border border-[#0E4A6826] bg-[#FFF8EF] p-8 text-center shadow-xs">
-        <h3 className="whitespace-nowrap font-poppins text-xl font-bold text-[#0E4A68] sm:text-2xl">
-          {faq.helpTitle}
-        </h3>
-        <Link
-          href={`/${currentLocale}/contact`}
-          className="mt-6 inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-8 py-3.5 font-poppins text-base font-semibold text-white shadow-md transition-all duration-300 hover:bg-[#083952] hover:scale-105 cursor-pointer"
-        >
-          {faq.helpButton}
-        </Link>
+      <div className="relative mx-auto flex h-[195px] sm:h-[220px] w-full max-w-[320px] sm:max-w-[360px] shrink-0 flex-col items-center justify-start text-center">
+        {/* Mobile Downward Curve Asset (rotated 90deg clockwise so arc points down and centered to the left) */}
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-visible">
+          <div className="-translate-x-7 sm:-translate-x-2">
+            <div className="relative h-[270px] w-[180px] rotate-90 sm:h-[300px] sm:w-[200px]">
+              <Image
+                src="/homepage/Faq/curve.png"
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 640px) 270px, 300px"
+                className="object-contain"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Content: Title on the top between curve tips, button centered inside the cradle */}
+        <div className="relative z-10 flex flex-col items-center justify-start pt-5 sm:pt-6 gap-3 sm:gap-3.5">
+          <h3 className="whitespace-nowrap font-poppins text-lg sm:text-xl font-bold tracking-tight text-[#0E4A68]">
+            {faq.helpTitle}
+          </h3>
+
+          <Link
+            href={`/${currentLocale}/contact`}
+            className="inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-7 py-2.5 sm:px-8 sm:py-3 font-poppins text-xs sm:text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-[#083952] hover:scale-105 cursor-pointer"
+          >
+            {faq.helpButton}
+          </Link>
+        </div>
       </div>
     );
   }
