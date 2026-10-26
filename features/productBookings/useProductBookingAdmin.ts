@@ -5,7 +5,7 @@ import {
   getProductBookingById,
   getProductBookings,
   updateProductBookingStatus,
-} from "@/api/productBookingApi";
+} from "@/clientApi/productBookingApi";
 import type {
   BookingStatus,
   ProductBookingQueryParams,

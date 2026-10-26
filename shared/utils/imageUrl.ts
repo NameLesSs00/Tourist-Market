@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/api/apiConfig";
+import { API_BASE_URL } from "@/clientApi/apiConfig";
 
 /**
  * Root origin for the backend server where uploads and static assets are hosted.

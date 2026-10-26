@@ -6,7 +6,7 @@ import {
   getGroupExcursionAllLanguages,
   getGroupExcursions,
   updateGroupExcursion,
-} from "@/api/groupExcursionApi";
+} from "@/clientApi/groupExcursionApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {

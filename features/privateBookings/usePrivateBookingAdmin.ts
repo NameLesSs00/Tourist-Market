@@ -5,7 +5,7 @@ import {
   getPrivateBookingById,
   getPrivateBookings,
   updatePrivateBookingStatus,
-} from "@/api/privateBookingApi";
+} from "@/clientApi/privateBookingApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import type {
   CreatePrivateBookingRequest,

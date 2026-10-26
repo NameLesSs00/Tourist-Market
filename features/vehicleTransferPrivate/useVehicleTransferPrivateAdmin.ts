@@ -6,7 +6,7 @@ import {
   getVehicleTransferPrivates,
   matchVehicleTransferPrivate,
   updateVehicleTransferPrivate,
-} from "@/api/vehicleTransferPrivateApi";
+} from "@/clientApi/vehicleTransferPrivateApi";
 import type {
   VehicleTransferMatchParams,
   VehicleTransferPrivateCreateRequest,

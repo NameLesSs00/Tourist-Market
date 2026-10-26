@@ -11,7 +11,7 @@ import {
   getAdminById,
   getAdmins,
   updateAdmin,
-} from "@/api/adminApi";
+} from "@/clientApi/adminApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import type {
   AdminCreateRequest,

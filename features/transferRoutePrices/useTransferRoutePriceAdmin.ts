@@ -6,7 +6,7 @@ import {
   getTransferRoutePriceById,
   getTransferRoutePrices,
   updateTransferRoutePrice,
-} from "@/api/transferRoutePriceApi";
+} from "@/clientApi/transferRoutePriceApi";
 import type {
   TransferRoutePriceQueryParams,
   TransferRoutePriceUpsertRequest,

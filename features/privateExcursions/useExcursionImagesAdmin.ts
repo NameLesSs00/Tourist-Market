@@ -7,7 +7,7 @@ import {
   setExcursionPrimaryImage,
   uploadExcursionHeroImage,
   uploadExcursionImage,
-} from "@/api/excursionImageApi";
+} from "@/clientApi/excursionImageApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 
 export const EXCURSION_IMAGES_KEY = ["admin", "excursion-images"] as const;

@@ -11,7 +11,7 @@ import {
   updateExcursionService,
   uploadExcursionServiceHero,
   uploadExcursionServiceImages,
-} from "@/api/excursionServiceApi";
+} from "@/clientApi/excursionServiceApi";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   ExcursionServiceListParams,

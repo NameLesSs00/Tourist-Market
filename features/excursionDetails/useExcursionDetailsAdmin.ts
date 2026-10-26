@@ -5,7 +5,7 @@ import {
   deleteExcursionDetails,
   getExcursionDetailsAllLanguages,
   updateExcursionDetails,
-} from "@/api/excursionDetailsApi";
+} from "@/clientApi/excursionDetailsApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import type { ExcursionDetailsUpsertRequest } from "@/models/excursionDetails";
 

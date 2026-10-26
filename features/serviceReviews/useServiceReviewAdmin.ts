@@ -7,7 +7,7 @@ import {
   markServiceReviewHelpful,
   publishServiceReview,
   unpublishServiceReview,
-} from "@/api/serviceReviewApi";
+} from "@/clientApi/serviceReviewApi";
 import type { ServiceReviewQueryParams } from "@/models/serviceReview";
 
 export const SERVICE_REVIEWS_QUERY_KEY = ["admin", "service-reviews"] as const;

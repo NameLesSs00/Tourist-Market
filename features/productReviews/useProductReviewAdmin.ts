@@ -7,7 +7,7 @@ import {
   markProductReviewHelpful,
   publishProductReview,
   unpublishProductReview,
-} from "@/api/productReviewApi";
+} from "@/clientApi/productReviewApi";
 import type { ProductReviewQueryParams } from "@/models/productReview";
 
 export const PRODUCT_REVIEWS_QUERY_KEY = ["admin", "product-reviews"] as const;

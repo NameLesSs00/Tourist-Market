@@ -37,7 +37,7 @@ tourist-market/
 │       ├── Login/            # Components used on Admin Login
 │       └── Dashboard/        # Components used on Admin Dashboard
 │
-├── api/                      # BACKEND & HTTP CLIENT CONFIGURATION
+├── clientApi/                # BACKEND & HTTP CLIENT CONFIGURATION (Renamed from api/ to avoid Vercel serverless function misdetection)
 │   ├── apiConfig.ts          # Central Axios configuration, baseURL switcher (sandbox/temp/prod)
 │   └── ...api modules        # Domain-specific endpoint calls
 │
@@ -60,7 +60,7 @@ tourist-market/
    - Client/public facing UI belongs in `components/UserComp/<FeatureName>/`.
    - Admin facing UI belongs in `components/adminComp/<FeatureName>/`.
 3. **API & Config**:
-   - All network requests must flow through `api/` using the centralized configuration in `api/apiConfig.ts`. Never hardcode raw endpoint URLs in components or hooks.
+   - All network requests must flow through `clientApi/` using the centralized configuration in `clientApi/apiConfig.ts`. Never hardcode raw endpoint URLs in components or hooks.
 4. **Data Models**:
    - All backend data structures, DTOs, and schema interfaces belong in `models/`.
 5. **Features & Shared**:

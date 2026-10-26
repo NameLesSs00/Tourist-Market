@@ -11,7 +11,7 @@ import {
   getExcursionCategories,
   getExcursionCategoryAllLanguages,
   updateExcursionCategory,
-} from "@/api/excursionCategoryApi";
+} from "@/clientApi/excursionCategoryApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {

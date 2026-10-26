@@ -11,7 +11,7 @@ import {
   getTransferToLocations,
   updateTransferFromLocation,
   updateTransferToLocation,
-} from "@/api/transferLocationApi";
+} from "@/clientApi/transferLocationApi";
 import type {
   TransferLocationQueryParams,
   TransferLocationUpsertRequest,

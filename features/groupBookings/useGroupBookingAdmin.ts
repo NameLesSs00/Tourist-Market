@@ -4,7 +4,7 @@ import {
   getGroupBookingById,
   getGroupBookings,
   updateGroupBookingStatus,
-} from "@/api/groupBookingApi";
+} from "@/clientApi/groupBookingApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import type {
   GroupBookingQueryParams,

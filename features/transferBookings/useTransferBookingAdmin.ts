@@ -4,7 +4,7 @@ import {
   getTransferBookingById,
   getTransferBookings,
   updateTransferBookingStatus,
-} from "@/api/transferBookingApi";
+} from "@/clientApi/transferBookingApi";
 import type { TransferBookingStatus } from "@/models/transferBooking";
 
 export const transferBookingKeys = {

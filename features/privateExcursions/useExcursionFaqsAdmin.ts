@@ -6,7 +6,7 @@ import {
   getExcursionFaqAllLanguages,
   getExcursionFaqs,
   updateExcursionFaq,
-} from "@/api/excursionFaqApi";
+} from "@/clientApi/excursionFaqApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import type { ExcursionFaqUpsertRequest } from "@/models/excursionDetails";
 

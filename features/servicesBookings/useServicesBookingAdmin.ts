@@ -4,7 +4,7 @@ import {
   getServicesBookingById,
   getServicesBookingsByType,
   updateServicesBookingStatus,
-} from "@/api/servicesBookingApi";
+} from "@/clientApi/servicesBookingApi";
 import type {
   ServicesBookingQueryParams,
   ServicesBookingType,

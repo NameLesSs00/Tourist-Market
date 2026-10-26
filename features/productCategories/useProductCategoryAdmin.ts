@@ -8,7 +8,7 @@ import {
   getProductCategoryAllLanguages,
   updateProductCategory,
   uploadProductCategoryImage,
-} from "@/api/productCategoryApi";
+} from "@/clientApi/productCategoryApi";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   ProductCategoryQueryParams,

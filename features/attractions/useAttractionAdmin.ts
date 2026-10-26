@@ -10,7 +10,7 @@ import {
   updateAttraction,
   uploadAttractionHero,
   uploadAttractionImages,
-} from "@/api/attractionApi";
+} from "@/clientApi/attractionApi";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   AttractionQueryParams,

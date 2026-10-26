@@ -12,7 +12,7 @@ import {
   removePrivateExcursionAttraction,
   removePrivateExcursionService,
   updatePrivateExcursion,
-} from "@/api/privateExcursionApi";
+} from "@/clientApi/privateExcursionApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type { PrivateExcursionQueryParams, PrivateExcursionUpsertRequest } from "@/models/privateExcursion";

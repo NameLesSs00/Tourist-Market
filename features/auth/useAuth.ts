@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import authApi from "@/api/authApi";
+import authApi from "@/clientApi/authApi";
 import useAuthStore from "./authStore";
 import { LoginRequest, ChangePasswordRequest } from "@/models/auth";
 import axios from "axios";

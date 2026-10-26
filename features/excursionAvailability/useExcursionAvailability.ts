@@ -5,7 +5,7 @@ import {
   getExcursionAvailability,
   updateExcursionAvailabilityDay,
   updateWeeklyAvailability,
-} from "@/api/excursionAvailabilityApi";
+} from "@/clientApi/excursionAvailabilityApi";
 import type {
   UpdateDayAvailabilityItem,
   UpdateWeeklyAvailabilityRequest,

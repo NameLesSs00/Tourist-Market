@@ -7,7 +7,7 @@ import {
   markExcursionReviewHelpful,
   publishExcursionReview,
   unpublishExcursionReview,
-} from "@/api/excursionReviewApi";
+} from "@/clientApi/excursionReviewApi";
 import type { ExcursionReviewQueryParams } from "@/models/excursionReview";
 
 export const EXCURSION_REVIEWS_QUERY_KEY = ["admin", "excursion-reviews"] as const;

@@ -6,7 +6,7 @@ import {
   getVehiclePrivateAllLanguages,
   getVehiclePrivates,
   updateVehiclePrivate,
-} from "@/api/vehiclePrivateApi";
+} from "@/clientApi/vehiclePrivateApi";
 import type {
   VehiclePrivateQueryParams,
   VehiclePrivateUpsertRequest,

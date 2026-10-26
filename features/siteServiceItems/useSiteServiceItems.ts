@@ -8,7 +8,7 @@ import {
   getSiteServiceSubItems,
   updateSiteServiceSubItem,
   uploadSiteServiceItemImages,
-} from "@/api/siteServiceItemApi";
+} from "@/clientApi/siteServiceItemApi";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   SiteServiceSubItemQueryParams,

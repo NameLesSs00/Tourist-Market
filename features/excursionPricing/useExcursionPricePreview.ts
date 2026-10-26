@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { excursionPricePreviewApi } from "@/api/excursionPricePreviewApi";
+import { excursionPricePreviewApi } from "@/clientApi/excursionPricePreviewApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import type {
   PreviewGroupPriceRequest,

@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { getBlogById, getPublicBlogs } from "@/api/blogApi";
+import { getBlogById, getPublicBlogs } from "@/clientApi/blogApi";
 import type { BlogItem, BlogQueryParams } from "@/models/blog";
 
 export const CLIENT_BLOGS_KEY = ["client", "blogs"] as const;

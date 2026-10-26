@@ -11,7 +11,7 @@ import {
   getCountries,
   getCountryAllLanguages,
   updateCountry,
-} from "@/api/countryApi";
+} from "@/clientApi/countryApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type { CountryUpsertRequest } from "@/models/country";

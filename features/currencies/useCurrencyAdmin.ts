@@ -6,7 +6,7 @@ import {
   getActiveCurrencies,
   getCurrencies,
   updateCurrency,
-} from "@/api/currencyApi";
+} from "@/clientApi/currencyApi";
 import type {
   CurrencyQueryParams,
   CurrencyUpsertRequest,

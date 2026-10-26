@@ -9,7 +9,7 @@ import {
   reorderProductSubcategories,
   updateProductSubcategory,
   uploadProductSubcategoryImage,
-} from "@/api/productSubcategoryApi";
+} from "@/clientApi/productSubcategoryApi";
 import type {
   ProductSubcategoryQueryParams,
   ProductSubcategoryReorderItem,

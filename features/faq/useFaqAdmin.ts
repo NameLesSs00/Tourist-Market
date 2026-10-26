@@ -11,7 +11,7 @@ import {
   getAdminFaqs,
   getFaqAllLanguages,
   updateFaq,
-} from "@/api/faqApi";
+} from "@/clientApi/faqApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {

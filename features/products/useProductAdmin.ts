@@ -10,7 +10,7 @@ import {
   reorderProductImages,
   updateProduct,
   uploadProductImages,
-} from "@/api/productApi";
+} from "@/clientApi/productApi";
 import type {
   ProductImageReorderItem,
   ProductQueryParams,

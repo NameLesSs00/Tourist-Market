@@ -8,7 +8,7 @@ import {
   getSiteServices,
   updateSiteService,
   uploadSiteServiceImage,
-} from "@/api/siteServiceApi";
+} from "@/clientApi/siteServiceApi";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
   SiteServiceQueryParams,

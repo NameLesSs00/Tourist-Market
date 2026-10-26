@@ -17,7 +17,7 @@ import {
   updateBlog,
   updateBlogSection,
   uploadBlogImage,
-} from "@/api/blogApi";
+} from "@/clientApi/blogApi";
 import { extractErrorMessage } from "@/features/auth/useAuth";
 import { LANGS, type LocalizedText } from "@/models/localization";
 import type {
