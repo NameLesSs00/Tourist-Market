@@ -1,4 +1,5 @@
 import type { LocalizedText } from "./localization";
+import type { ExcursionFaqItem, ExcursionImageItem } from "./excursionDetails";
 
 export interface GroupExcursionPrice {
   currencyCode: string;
@@ -50,6 +51,7 @@ export interface GroupExcursionQueryParams {
   currency?: string;
   page?: number;
   pageSize?: number;
+  search?: string;
 }
 
 export interface GroupExcursionCreateRequest {
@@ -106,6 +108,11 @@ export interface GroupExcursionDetailItem {
   maxAttractions: number;
   primaryImageUrl: string | null;
   heroImageUrl: string | null;
+  heroImage?: string | null;
+  imageList?: ExcursionImageItem[];
+  faqs?: ExcursionFaqItem[];
+  attractions?: Array<{ id: string; title: string }>;
+  services?: Array<{ id: string; title: string }>;
   category?: ExcursionCategoryRef | null;
   categoryId?: string | null;
   categorySlug?: string | null;

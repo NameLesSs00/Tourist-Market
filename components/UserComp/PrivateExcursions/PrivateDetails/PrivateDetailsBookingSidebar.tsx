@@ -291,7 +291,10 @@ export function PrivateDetailsBookingSidebar({
               style={{ border: "0.6px solid #DE7423" }}
             >
               <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#0E4A68]">
-                <span>📍</span>
+                <svg className="w-4 h-4 text-[#DE7423]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                  <circle cx="12" cy="9" r="2.5" />
+                </svg>
                 <span>Attractions :</span>
               </div>
               {selectedAttractions.length === 0 ? (
@@ -375,7 +378,11 @@ export function PrivateDetailsBookingSidebar({
               style={{ border: "0.6px solid #DE7423" }}
             >
               <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#0E4A68]">
-                <span>🚗</span>
+                <svg className="w-4 h-4 text-[#DE7423]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M5 11l2-5h10l2 5M3 13v6h2v-2h14v2h2v-6l-2-2H5l-2 2z" />
+                  <circle cx="7.5" cy="14.5" r="1.5" />
+                  <circle cx="16.5" cy="14.5" r="1.5" />
+                </svg>
                 <span>Vehicle :</span>
               </div>
               <div className="pl-5 flex items-center justify-between text-[12px] text-[#444444]">

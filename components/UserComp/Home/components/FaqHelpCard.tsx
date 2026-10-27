@@ -7,17 +7,23 @@ interface FaqHelpCardProps {
   dict: Dictionary;
   currentLocale: string;
   isMobile?: boolean;
+  className?: string;
 }
 
-export function FaqHelpCard({ dict, currentLocale, isMobile = false }: FaqHelpCardProps) {
+export function FaqHelpCard({
+  dict,
+  currentLocale,
+  isMobile = false,
+  className = "",
+}: FaqHelpCardProps) {
   const { faq } = dict;
 
   if (isMobile) {
     return (
       <div className="relative mx-auto flex h-[195px] sm:h-[220px] w-full max-w-[320px] sm:max-w-[360px] shrink-0 flex-col items-center justify-start text-center">
-        {/* Mobile Downward Curve Asset (rotated 90deg clockwise so arc points down and centered to the left) */}
+        {/* Mobile Downward Curve Asset (rotated 90deg clockwise so arc points down and is centered) */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-visible">
-          <div className="-translate-x-7 sm:-translate-x-2">
+          <div className="translate-x-0">
             <div className="relative h-[270px] w-[180px] rotate-90 sm:h-[300px] sm:w-[200px]">
               <Image
                 src="/homepage/Faq/curve.png"
@@ -49,7 +55,9 @@ export function FaqHelpCard({ dict, currentLocale, isMobile = false }: FaqHelpCa
   }
 
   return (
-    <div className="relative mx-auto flex h-[460px] w-full max-w-[380px] shrink-0 items-center justify-center text-center">
+    <div
+      className={`relative mx-auto flex h-[460px] w-full max-w-[380px] shrink-0 items-center justify-center text-center mt-7 sm:mt-8 xl:mt-10 2xl:mt-12 ${className}`}
+    >
       {/* Original High-Res Curve Asset with Soft Blur/Shadow matching FAQDesktop.png */}
       <div className="pointer-events-none absolute inset-0">
         <Image

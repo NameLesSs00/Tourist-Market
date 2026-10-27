@@ -5,6 +5,14 @@ export type BlogCategory =
   | "Live Style"
   | "Adventure";
 
+export const BLOG_CATEGORIES: BlogCategory[] = [
+  "All",
+  "Destination",
+  "Travel Tips",
+  "Live Style",
+  "Adventure",
+];
+
 export interface BlogPost {
   id: string;
   slug: string;

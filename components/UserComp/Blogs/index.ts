@@ -3,5 +3,3 @@ export { BlogDetailSection } from "./sections/BlogDetailSection";
 export * from "./components";
 export * from "./types";
 export * from "./utils/blogImage";
-export * from "./data/dummyBlogs";
-export * from "./data/blogsService";

@@ -33,10 +33,10 @@ export function GroupDetailsRelated({
   };
 
   return (
-    <section className="w-full pt-12 sm:pt-16 pb-16 sm:pb-24">
+    <section className="w-full pt-8 sm:pt-12 lg:pt-16 pb-12 sm:pb-16 lg:pb-24">
       {/* Title */}
-      <div className="mb-8">
-        <h2 className="font-poppins text-2xl sm:text-3xl font-extrabold text-[#0E4A68] tracking-tight uppercase">
+      <div className="mb-6 sm:mb-8">
+        <h2 className="font-poppins text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#0E4A68] tracking-tight uppercase">
           EXPLORE RELATED TRIPS
         </h2>
       </div>
@@ -56,14 +56,15 @@ export function GroupDetailsRelated({
         </button>
 
         {/* 3 Related Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-7">
           {(displayedTrips.length > 0 ? displayedTrips : relatedTrips.slice(0, 3)).map(
             (trip) => (
-              <GroupExcursionCard
-                key={trip.id}
-                excursion={trip}
-                locale={locale}
-              />
+              <div key={trip.id} className="w-full max-w-[360px] sm:max-w-none mx-auto h-full">
+                <GroupExcursionCard
+                  excursion={trip}
+                  locale={locale}
+                />
+              </div>
             )
           )}
         </div>

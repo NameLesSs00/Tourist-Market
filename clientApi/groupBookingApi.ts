@@ -1,10 +1,23 @@
 import { apiClient } from "./apiConfig";
 import type {
+  CreateGroupBookingRequest,
+  CreateGroupBookingResponse,
   GroupBookingItem,
   GroupBookingQueryParams,
   GroupBookingStatusUpdateRequest,
   PagedGroupBookingsResult,
 } from "@/models/groupBooking";
+
+export async function createGroupBooking(
+  body: CreateGroupBookingRequest
+): Promise<CreateGroupBookingResponse> {
+  const { data } = await apiClient.post<CreateGroupBookingResponse>(
+    "/bookings/excursions/group",
+    body
+  );
+  const raw = data as any;
+  return (raw?.data || raw) as CreateGroupBookingResponse;
+}
 
 export async function getGroupBookings(
   params: GroupBookingQueryParams = {}

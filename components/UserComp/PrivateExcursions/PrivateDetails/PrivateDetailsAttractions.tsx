@@ -215,7 +215,7 @@ function AttractionCard({
                     : "bg-[#DE7423] text-white hover:bg-[#C9641B]"
                 }`}
               >
-                {isSelected ? "Selected ✓" : "Select"}
+                {isSelected ? "Selected" : "Select"}
               </button>
             </div>
           </div>

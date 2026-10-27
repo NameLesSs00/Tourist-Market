@@ -12,9 +12,14 @@ export const GROUP_BOOKING_STATUS_LABELS: Record<GroupBookingStatus, string> = {
   [GroupBookingStatus.Cancelled]: "Cancelled",
 };
 
-export const GROUP_PAYMENT_METHOD_LABELS: Record<number, string> = {
-  1: "Cash on Arrival",
-  2: "Credit Card / Online",
+export enum GroupPaymentMethod {
+  CashOnArrival = 1,
+  WhatsAppDirect = 2,
+}
+
+export const GROUP_PAYMENT_METHOD_LABELS: Record<GroupPaymentMethod | number, string> = {
+  [GroupPaymentMethod.CashOnArrival]: "Cash on Arrival",
+  [GroupPaymentMethod.WhatsAppDirect]: "WhatsApp Direct",
 };
 
 export interface GroupBookingExcursionLineItem {
@@ -71,4 +76,31 @@ export interface PagedGroupBookingsResult {
 
 export interface GroupBookingStatusUpdateRequest {
   status: GroupBookingStatus;
+}
+
+export interface CreateGroupBookingExcursionItem {
+  excursionId: string;
+  excursionDate: string;
+  adultsCount: number;
+  childrenCount: number;
+  infantsCount: number;
+}
+
+export interface CreateGroupBookingRequest {
+  customerName: string;
+  phone: string;
+  whatsApp: string;
+  hotelName: string;
+  roomNumber: string;
+  paymentMethod: number;
+  notes?: string;
+  excursions: CreateGroupBookingExcursionItem[];
+}
+
+export interface CreateGroupBookingResponse {
+  bookingId: string;
+  bookingReference: string;
+  totalPrice: number;
+  currency: string;
+  message: string;
 }

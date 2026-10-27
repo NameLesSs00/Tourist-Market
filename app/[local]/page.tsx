@@ -2,7 +2,9 @@ import { Suspense } from "react";
 import {
   HeroSection,
   GroupExcursionsHomeSection,
+  PrivateExcursionsHomeSection,
   Services,
+  BlogsHomeSection,
   FaqSection,
 } from "@/components/UserComp/Home";
 
@@ -29,7 +31,9 @@ async function HomeResolved({ params }: PageProps) {
     <>
       <HeroSection locale={local} />
       <GroupExcursionsHomeSection locale={local} />
+      <PrivateExcursionsHomeSection locale={local} />
       <Services locale={local} />
+      <BlogsHomeSection locale={local} />
       <FaqSection locale={local} />
     </>
   );

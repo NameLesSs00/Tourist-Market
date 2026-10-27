@@ -1,0 +1,200 @@
+{
+  "GET /admin/excursions/group": {
+    "items": [
+      {
+        "id": "292df7dc-f7b7-4056-bc9b-3b368717ad2d",
+        "slug": "orange-bay-island-snorkeling-1792914191",
+        "title": "Orange Bay Island Full-Day Snorkeling Trip",
+        "subtitle": "Crystal-clear waters and white sandy beaches",
+        "shortDescription": "Sail to Orange Bay Island with snorkeling",
+        "excursionType": "Boat Trip & Island Tour",
+        "durationHours": 8,
+        "stars": "5",
+        "maxAttractions": 0,
+        "primaryImageUrl": "/uploads/executions/54cd43394d1f47f0b1788cc74ee3659c.webp",
+        "heroImageUrl": null,
+        "categorySlug": "boat-trips-and-snorkeling",
+        "categoryTitle": "Boat Trips & Snorkeling",
+        "isFeatured": true,
+        "rating": 5,
+        "price": {
+          "currencyCode": "USD",
+          "adultPrice": 45,
+          "childPrice": 25,
+          "infantPrice": 0
+        }
+      }
+    ],
+    "pageNumber": 1,
+    "pageSize": 10,
+    "totalCount": 9,
+    "totalPages": 1,
+    "hasPreviousPage": false,
+    "hasNextPage": false
+  },
+
+  "GET /admin/excursions/{id}": {
+    "fullProgram": "Two snorkeling stops, open-buffet lunch",
+    "videoUrl": "https://www.youtube.com/watch?v=orangebay",
+    "heroImage": null,
+    "primaryImageUrl": "/uploads/executions/c68b41e3623b41499a4ba728f9ebdb76.webp",
+    "imageList": [
+      {
+        "id": "c5f7ac1b-34ca-4257-9532-4ccb3c89cf54",
+        "excursionId": "292df7dc-f7b7-4056-bc9b-3b368717ad2d",
+        "imageUrl": "/uploads/executions/c68b41e3623b41499a4ba728f9ebdb76.webp",
+        "isPrimary": false
+      }
+    ],
+    "faqs": [
+      {
+        "id": "22222222-0001-0001-0001-000000000001",
+        "question": "What time is hotel pickup in Hurghada?",
+        "answer": "Hotel pickup is between 4:00 AM and 4:30 AM.",
+        "displayOrder": 1,
+        "isActive": true,
+        "languageCode": "en"
+      }
+    ],
+    "attractions": [],
+    "services": [],
+    "id": "292df7dc-f7b7-4056-bc9b-3b368717ad2d",
+    "slug": "orange-bay-island-snorkeling-1792914191",
+    "title": "Luxor Full Day Tour from Hurghada",
+    "subtitle": "Explore Ancient Egyptian History",
+    "shortDescription": "Experience the wonders of ancient Thebes with expert Egyptologist guide",
+    "excursionType": "Historical Day Tour",
+    "durationHours": 14,
+    "stars": "4.5",
+    "maxAttractions": 0,
+    "heroImageUrl": null,
+    "categorySlug": null,
+    "categoryTitle": "Historical Tours",
+    "isFeatured": true,
+    "rating": 0,
+    "price": {
+      "currencyCode": "USD",
+      "adultPrice": 45,
+      "childPrice": 25,
+      "infantPrice": 0
+    },
+    "category": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "slug": "boat-trips-and-snorkeling",
+      "title": "Boat Trips & Snorkeling"
+    }
+  },
+
+  "GET /excursions-details/excursion/{id}": {
+    "id": "26217727-dc4f-441c-91df-00a575bca858",
+    "excursionId": "292df7dc-f7b7-4056-bc9b-3b368717ad2d",
+    "languageCode": "en",
+    "highlights": [
+      "Valley of the Kings - 3 royal tombs",
+      "Karnak Temple - Largest religious site in the world"
+    ],
+    "excludes": [
+      "Tutankhamun's Tomb (extra 300 EGP)",
+      "Hot air balloon ride (optional 95)"
+    ],
+    "includes": [
+      {
+        "title": "Hotel Pick-Up and Drop-Off",
+        "description": "Round-trip transportation from Hurghada hotels in air-conditioned vehicle"
+      }
+    ],
+    "whatToBring": [
+      "Sunscreen (high SPF)",
+      "Plenty of drinking water"
+    ],
+    "cancellationPolicy": "Free cancellation up to 24 hours before the experience.",
+    "literally": [
+      { "key": "Departure Time", "value": "04:00 AM" },
+      { "key": "Return Time", "value": "08:00 PM (approximately)" },
+      { "key": "Duration", "value": "Full Day (14-16 hours)" },
+      { "key": "Group Size", "value": "Maximum 45 passengers" },
+      { "key": "Languages Available", "value": "English, German, Russian, French" },
+      { "key": "Pickup Location", "value": "All Hurghada hotels" },
+      { "key": "Best Season", "value": "October to April" },
+      { "key": "Difficulty Level", "value": "Easy to Moderate" },
+      { "key": "Distance to Luxor", "value": "Approximately 280 km (4 hours drive)" },
+      { "key": "Age Restriction", "value": "Suitable for all ages" }
+    ]
+  },
+
+  "GET /excursions/{id}/availability": {
+    "success": true,
+    "isSuccess": true,
+    "message": "success",
+    "data": {
+      "excursionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "days": [
+        { "dayNo": 1, "dayName": "Sunday", "isAvailable": true },
+        { "dayNo": 2, "dayName": "Monday", "isAvailable": false },
+        { "dayNo": 3, "dayName": "Tuesday", "isAvailable": true },
+        { "dayNo": 4, "dayName": "Wednesday", "isAvailable": true },
+        { "dayNo": 5, "dayName": "Thursday", "isAvailable": true },
+        { "dayNo": 6, "dayName": "Friday", "isAvailable": true },
+        { "dayNo": 7, "dayName": "Saturday", "isAvailable": true }
+      ]
+    },
+    "errors": null
+  },
+
+  "GET /excursion-reviews?excursionId={id}": {
+    "items": [
+      {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "excursionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "customerName": "string",
+        "customerEmail": "user@example.com",
+        "rating": 0,
+        "title": "string",
+        "comment": "string",
+        "helpfulCount": 0,
+        "isPublished": true,
+        "createdAt": "2026-10-27T00:00:00Z"
+      }
+    ],
+    "pageNumber": 1,
+    "pageSize": 20,
+    "totalCount": 0,
+    "totalPages": 0,
+    "hasPreviousPage": false,
+    "hasNextPage": false
+  },
+
+  "POST /excursions/{id}/group-price-preview": {
+    "excursionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "excursionType": "string",
+    "currency": "USD",
+    "adults": 2,
+    "children": 1,
+    "infants": 0,
+    "totalPassengers": 3,
+    "adultPricePerPerson": 0,
+    "childPricePerPerson": 0,
+    "infantPricePerPerson": 0,
+    "finalPrice": 0
+  },
+
+  "GET /admin/excursions/{id}/images": [
+    {
+      "id": "c5f7ac1b-34ca-4257-9532-4ccb3c89cf54",
+      "excursionId": "292df7dc-f7b7-4056-bc9b-3b368717ad2d",
+      "imageUrl": "/uploads/executions/c68b41e3623b41499a4ba728f9ebdb76.webp",
+      "isPrimary": false
+    }
+  ],
+
+  "GET /admin/excursions/{id}/faqs": [
+    {
+      "id": "22222222-0001-0001-0001-000000000001",
+      "question": "What time is hotel pickup in Hurghada?",
+      "answer": "Hotel pickup is between 4:00 AM and 4:30 AM.",
+      "displayOrder": 1,
+      "isActive": true,
+      "languageCode": "en"
+    }
+  ]
+}

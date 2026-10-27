@@ -13,8 +13,12 @@ export function GroupExcursionsHero({}: GroupExcursionsHeroProps) {
       <div className="mx-auto w-full max-w-[1340px] px-4 sm:px-6 lg:px-8">
         {/* Header Title & Subtitle */}
         <div className="text-center mb-8 sm:mb-10">
-          <h1 className="font-poppins text-3xl sm:text-4xl md:text-[44px] font-bold text-[#0E4A68] tracking-tight leading-tight">
-            Group Excursions
+          <h1
+            className="font-poppins font-semibold text-[32px] sm:text-[36px] md:text-[40px] text-center tracking-normal align-middle"
+            style={{ lineHeight: "42px" }}
+          >
+            <span className="text-[#003D5B]">Group</span>{" "}
+            <span className="text-[#D48C28]">Excursions</span>
           </h1>
           <p className="font-poppins text-sm sm:text-base md:text-[18px] text-[#646464] mt-2 sm:mt-3 max-w-3xl mx-auto">
             Discover amazing Group excursions in the Red Sea with the best prices and services

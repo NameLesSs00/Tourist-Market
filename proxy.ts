@@ -70,10 +70,11 @@ export const config = {
     /*
      * Match all request paths except for:
      * - _next/static, _next/image, _next/data
+     * - api routes (/api/*)
      * - icon.svg, favicon.ico
      * - public assets (/flags, /homepage, /shared, /admin/*.png)
      * - files with extensions (.*\\..*)
      */
-    "/((?!_next|flags|homepage|shared|icon\\.svg|favicon\\.ico|.*\\..*).*)",
+    "/((?!api|_next|flags|homepage|shared|icon\\.svg|favicon\\.ico|.*\\..*).*)",
   ],
 };

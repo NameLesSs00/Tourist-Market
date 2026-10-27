@@ -43,6 +43,42 @@ svg {
   -webkit-user-select: none;
 }
 
+/* Prevent text dragging and selection inside select-none elements */
+.select-none,
+.select-none * {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* Custom smooth scrollbar for FAQ scrollable container */
+.faq-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #0E4A68 rgba(14, 74, 104, 0.08);
+}
+
+.faq-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.faq-scrollbar::-webkit-scrollbar-track {
+  background: rgba(14, 74, 104, 0.08);
+  border-radius: 9999px;
+}
+
+.faq-scrollbar::-webkit-scrollbar-thumb {
+  background: #0E4A68;
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+.faq-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #D48C28;
+}
+
 /*
  * Resolves the next/font Poppins family exposed via --font-poppins.
  * Prefer this over Tailwind's `font-['Poppins']`, which emits
@@ -157,6 +193,25 @@ footer button {
 .no-scrollbar {
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
+}
+
+/* ─── Custom FAQ scrollbar ────────────────────────────────────────────── */
+.faq-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(14, 74, 104, 0.35) transparent;
+}
+.faq-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.faq-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.faq-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(14, 74, 104, 0.3);
+  border-radius: 9999px;
+}
+.faq-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #D48C28;
 }
 
 /* ─── Services Carousel Panel Background & Curve Shadow ────────────────────────── */

@@ -4,6 +4,7 @@ import { LANGS, type LangCode, type LocalizedText } from "@/models/localization"
 import type {
   AdminFaq,
   AdminFaqPage,
+  FaqPage,
   FaqQueryParams,
   FaqResponse,
   FaqUpsertRequest,
@@ -26,10 +27,28 @@ function buildFaqsQuery(params: FaqQueryParams = {}): string {
 }
 
 /**
- * Fetches FAQs from the backend.
- *
- * Not wired into the UI yet — the FAQ section currently renders
- * placeholder data from `shared/utils/faqDummyData`.
+ * Fetches public / client FAQs using the centralized apiClient.
+ * Automatically handles envelope unwrapping and defaults.
+ */
+export async function getClientFaqs(
+  params: FaqQueryParams = {}
+): Promise<FaqPage> {
+  const { data } = await apiClient.get<ApiResponse<FaqPage>>("/faqs", {
+    params: {
+      language: params.language || undefined,
+      search: params.search || undefined,
+      pageNumber: params.pageNumber ?? 1,
+      pageSize: params.pageSize ?? 20,
+    },
+  });
+
+  const raw = data as any;
+  const page = (raw?.data || raw) as FaqPage;
+  return page;
+}
+
+/**
+ * Fetches FAQs from the backend using standard fetch.
  */
 export async function fetchFaqs(params: FaqQueryParams = {}): Promise<FaqResponse> {
   const response = await fetch(`${API_BASE_URL}/faqs${buildFaqsQuery(params)}`, {

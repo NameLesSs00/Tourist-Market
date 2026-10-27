@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { BlogCategory } from "../types";
-import { BLOG_CATEGORIES } from "../data/dummyBlogs";
+import { BlogCategory, BLOG_CATEGORIES } from "../types";
 
 interface BlogsFilterProps {
   activeCategory: BlogCategory;

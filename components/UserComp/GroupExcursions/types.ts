@@ -72,6 +72,16 @@ export interface ItineraryItem {
   description: string;
 }
 
+export interface GroupExcursionFaq {
+  question: string;
+  answer: string;
+}
+
+export interface TourInfoItem {
+  label: string;
+  value: string;
+}
+
 export interface PriceExcludeGroup {
   category: string;
   details: string[];
@@ -79,6 +89,7 @@ export interface PriceExcludeGroup {
 
 export interface GroupExcursionDetail extends GroupExcursion {
   subtitle: string;
+  shortDescription: string;
   heroImage: string;
   availability: string;
   pickup: string;
@@ -91,6 +102,8 @@ export interface GroupExcursionDetail extends GroupExcursion {
   highlights: string[];
   whatToBring: string[];
   cancellationPolicy: string[];
+  faqs: GroupExcursionFaq[];
+  tourInfo: TourInfoItem[];
   priceIncludes: string[];
   priceExcludes: {
     roundTripTransfer: string[];
@@ -101,4 +114,3 @@ export interface GroupExcursionDetail extends GroupExcursion {
   ratingDistribution: { star: number; count: number; percentage: number }[];
   comments: ReviewComment[];
 }
-

@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PrivateExcursion } from "../types";
+import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 
 interface PrivateExcursionCardProps {
   excursion: PrivateExcursion;
@@ -15,6 +16,7 @@ export function PrivateExcursionCard({
   locale = "en",
 }: PrivateExcursionCardProps) {
   const {
+    id,
     slug,
     title,
     shortDescription,
@@ -28,6 +30,19 @@ export function PrivateExcursionCard({
     infantPrice,
     currency,
   } = excursion;
+
+  const targetLink = `/${locale}/private-excursions/${slug || id}`;
+
+  const [imgSrc, setImgSrc] = useState<string>(
+    imageUrl || PRIVATE_EXCURSION_FALLBACK_IMAGE
+  );
+
+  if (imageUrl && imgSrc !== imageUrl && imgSrc !== PRIVATE_EXCURSION_FALLBACK_IMAGE) {
+    setImgSrc(imageUrl);
+  }
+
+  const isFallback =
+    !imgSrc || imgSrc === PRIVATE_EXCURSION_FALLBACK_IMAGE;
 
   // Rating stars: lime green #8CC63F matching reference
   const fullStars = Math.floor(rating);
@@ -43,13 +58,20 @@ export function PrivateExcursionCard({
       className="group relative w-full flex flex-col overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0px_8px_30px_rgba(0,0,0,0.25)]"
     >
       {/* 1. Excursion Image Banner with Pill Badge */}
-      <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden bg-slate-100">
+      <div className="relative w-full h-[220px] sm:h-[240px] overflow-hidden bg-slate-100 flex items-center justify-center">
         <Image
-          src={imageUrl}
+          src={imgSrc}
           alt={title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          onError={() => {
+            if (imgSrc !== PRIVATE_EXCURSION_FALLBACK_IMAGE) {
+              setImgSrc(PRIVATE_EXCURSION_FALLBACK_IMAGE);
+            }
+          }}
+          className={`transition-transform duration-500 group-hover:scale-105 ${
+            isFallback ? "object-contain p-6 opacity-60" : "object-cover"
+          }`}
         />
 
         {/* Category Pill Badge */}
@@ -119,13 +141,34 @@ export function PrivateExcursionCard({
         </p>
 
         {/* Pricing Row */}
-        <div className="pt-2 font-poppins text-xs sm:text-sm font-bold text-[#0E4A68] tracking-tight">
-          Adult: {adultPrice.toFixed(2)} {currency} | Child: {childPrice.toFixed(2)} {currency} | Infant: {infantPrice.toFixed(2)} {currency}
-        </div>
+        {(() => {
+          const priceItems = [
+            adultPrice > 0 ? { label: "Adult", value: adultPrice } : null,
+            childPrice > 0 ? { label: "Child", value: childPrice } : null,
+            infantPrice > 0 ? { label: "Infant", value: infantPrice } : null,
+          ].filter(Boolean) as { label: string; value: number }[];
+
+          if (priceItems.length === 0) return null;
+
+          return (
+            <div className="pt-2 font-poppins text-xs sm:text-sm font-bold text-[#0E4A68] tracking-tight flex items-center gap-2 flex-wrap">
+              {priceItems.map((item, idx) => (
+                <React.Fragment key={item.label}>
+                  <span>
+                    {item.label}: {item.value.toFixed(2)} {currency}
+                  </span>
+                  {idx < priceItems.length - 1 && (
+                    <span className="text-[#0E4A68]/40 select-none">|</span>
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          );
+        })()}
 
         {/* View Details Action Button */}
         <Link
-          href={`/${locale}/private-excursions/${slug}`}
+          href={targetLink}
           style={{
             backgroundColor: "#DE7423",
             border: "0.31px solid #DE7423",
@@ -140,7 +183,7 @@ export function PrivateExcursionCard({
 
       {/* Entire Card Clickable Overlay */}
       <Link
-        href={`/${locale}/private-excursions/${slug}`}
+        href={targetLink}
         aria-label={`View details for ${title}`}
         className="absolute inset-0 z-0 opacity-0"
         tabIndex={-1}

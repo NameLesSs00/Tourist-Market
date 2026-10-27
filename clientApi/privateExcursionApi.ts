@@ -4,6 +4,7 @@ import type {
   PagedPrivateExcursionsResult,
   PrivateExcursionAllLanguagesDetail,
   PrivateExcursionDetail,
+  PrivateExcursionListResponse,
   PrivateExcursionQueryParams,
   PrivateExcursionUpsertRequest,
 } from "@/models/privateExcursion";
@@ -20,6 +21,13 @@ export async function getPrivateExcursions(
   if (params.categoryId?.trim()) queryParams.categoryId = params.categoryId.trim();
   const { data } = await apiClient.get<PagedPrivateExcursionsResult>("/private-excursions", { params: queryParams });
   return data;
+}
+
+export async function getClientPrivateExcursions(
+  params: PrivateExcursionQueryParams = {}
+): Promise<PrivateExcursionListResponse> {
+  const response = await getPrivateExcursions(params);
+  return response.data;
 }
 
 export async function getPrivateExcursionById(

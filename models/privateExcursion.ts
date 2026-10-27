@@ -103,15 +103,21 @@ export interface PrivateExcursionQueryParams {
   pageSize?: number;
 }
 
+export interface PrivateExcursionListResponse {
+  items: PrivateExcursionListItem[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+  totalPages: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+}
+
 export interface PagedPrivateExcursionsResult {
   success: boolean;
   isSuccess: boolean;
   message: string | null;
-  data: {
-    items: PrivateExcursionListItem[];
-    totalCount: number;
-    page: number;
-    pageSize: number;
-    totalPages: number;
+  data: PrivateExcursionListResponse & {
+    page?: number;
   };
 }

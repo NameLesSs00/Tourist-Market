@@ -57,31 +57,33 @@ export function FaqAccordionItem({
   isDesktop = false,
 }: FaqAccordionItemProps) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative select-none ${className}`}>
       <button
         type="button"
         onClick={onToggle}
+        onDragStart={(e) => e.preventDefault()}
         aria-expanded={isOpen}
-        className={`relative flex min-h-[72px] sm:min-h-[82px] xl:min-h-[88px] 2xl:min-h-[92px] w-full items-center justify-between gap-3.5 rounded-[16px] sm:rounded-[18px] border border-[#0E4A68] bg-[#FFF4E5] py-4 sm:py-5 xl:py-5.5 pl-11 sm:pl-13 xl:pl-14 pr-4 sm:pr-5 text-left transition-all duration-200 hover:bg-[#FFF9F0] focus:outline-none cursor-pointer shadow-2xs ${
+        className={`relative flex min-h-[72px] sm:min-h-[82px] xl:min-h-[88px] 2xl:min-h-[92px] w-full items-center justify-between gap-3.5 rounded-[16px] sm:rounded-[18px] border border-[#0E4A68] bg-[#FFF4E5] py-4 sm:py-5 xl:py-5.5 pl-11 sm:pl-13 xl:pl-14 pr-4 sm:pr-5 text-left transition-all duration-200 hover:bg-[#FFF9F0] focus:outline-none cursor-pointer shadow-2xs select-none ${
           isOpen ? "ring-2 ring-[#0E4A6826] bg-[#FFF8EF]" : ""
         }`}
       >
         {/* Question badge: vertically centered on the left border */}
-        <span className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-12 sm:w-12 xl:h-[52px] xl:w-[52px] items-center justify-center rounded-full border border-[#0E4A68] bg-[#FFF8EF] shadow-2xs">
+        <span className="pointer-events-none select-none absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-10 w-10 sm:h-12 sm:w-12 xl:h-[52px] xl:w-[52px] items-center justify-center rounded-full border border-[#0E4A68] bg-[#FFF8EF] shadow-2xs">
           <Image
             src="/homepage/Faq/mark.svg"
             alt=""
             width={16}
             height={26}
-            className="h-4.5 w-auto sm:h-5.5 xl:h-[25px] xl:w-auto"
+            draggable={false}
+            className="h-4.5 w-auto sm:h-5.5 xl:h-[25px] xl:w-auto pointer-events-none select-none"
           />
         </span>
 
-        <span className="flex-1 font-poppins text-[15px] sm:text-[16.5px] xl:text-[17.5px] 2xl:text-[18px] font-semibold leading-snug text-[#0E4A68]">
+        <span className="flex-1 font-poppins text-[15px] sm:text-[16.5px] xl:text-[17.5px] 2xl:text-[18px] font-semibold leading-snug text-[#0E4A68] select-none pointer-events-none">
           {item.question}
         </span>
 
-        <span className="shrink-0 text-[#0E4A68]">
+        <span className="shrink-0 text-[#0E4A68] select-none pointer-events-none">
           {isOpen ? <CrossIcon /> : <PlusIcon />}
         </span>
       </button>

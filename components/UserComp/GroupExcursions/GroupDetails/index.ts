@@ -5,4 +5,5 @@ export * from "./GroupDetailsIncludes";
 export * from "./GroupDetailsReviews";
 export * from "./GroupDetailsBookingSidebar";
 export * from "./GroupDetailsRelated";
+export * from "./GroupBookingForm";
 export * from "./GroupDetailsSection";

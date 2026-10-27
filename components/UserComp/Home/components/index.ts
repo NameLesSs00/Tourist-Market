@@ -7,4 +7,5 @@ export { FaqHeader } from "./FaqHeader";
 export { FaqAccordionItem } from "./FaqAccordionItem";
 export { FaqAnswerPanel } from "./FaqAnswerPanel";
 export { FaqHelpCard } from "./FaqHelpCard";
+export { FaqSkeleton } from "./FaqSkeleton";
 export { ServiceCard } from "./ServiceCard";

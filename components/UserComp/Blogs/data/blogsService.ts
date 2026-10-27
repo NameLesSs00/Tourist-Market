@@ -1,5 +1,4 @@
 import { BlogFilterParams, BlogPaginationResponse, BlogPost } from "../types";
-import { DUMMY_BLOGS } from "./dummyBlogs";
 
 /**
  * Backend-ready blog service.
@@ -11,7 +10,7 @@ export async function getBlogs(
 ): Promise<BlogPaginationResponse> {
   const { category, page = 1, limit = 12, search } = params;
 
-  let filtered = [...DUMMY_BLOGS];
+  let filtered: BlogPost[] = [];
 
   // 1. Filter by category
   if (category && category !== "All") {

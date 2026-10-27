@@ -17,11 +17,11 @@ export function GroupExcursionsGrid({
 }: GroupExcursionsGridProps) {
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7 xl:gap-8">
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="animate-pulse bg-white rounded-[12px] border-[0.5px] border-[#888888] p-3 sm:p-3.5 space-y-3"
+            className="animate-pulse bg-white rounded-[12px] border-[0.5px] border-[#888888] p-3 sm:p-3.5 space-y-3 w-full max-w-[390px] sm:max-w-none mx-auto"
           >
             <div className="w-full aspect-[370/220] bg-slate-200 rounded-[10px]" />
             <div className="h-4 bg-slate-200 rounded w-1/2" />
@@ -52,13 +52,14 @@ export function GroupExcursionsGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 lg:gap-7 xl:gap-8">
       {excursions.map((excursion) => (
-        <GroupExcursionCard
-          key={excursion.id}
-          excursion={excursion}
-          locale={locale}
-        />
+        <div key={excursion.id} className="w-full max-w-[390px] sm:max-w-none mx-auto h-full">
+          <GroupExcursionCard
+            excursion={excursion}
+            locale={locale}
+          />
+        </div>
       ))}
     </div>
   );

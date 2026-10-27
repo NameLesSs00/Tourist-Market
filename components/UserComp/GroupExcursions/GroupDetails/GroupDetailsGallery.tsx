@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
 
 interface GroupDetailsGalleryProps {
   gallery: string[];
@@ -14,7 +15,8 @@ export function GroupDetailsGallery({
 }: GroupDetailsGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const images = gallery.length > 0 ? gallery : ["/GroupExcursions/GroupDetails/7b777cbdc9da0fa5b151e67b42e2d3da14ee38aa.png"];
+  const images =
+    gallery.length > 0 ? gallery : [GROUP_EXCURSION_FALLBACK_IMAGE];
   const total = images.length;
 
   const handlePrev = () => {
@@ -27,39 +29,44 @@ export function GroupDetailsGallery({
 
   // Thumbnail list (displaying up to 4 thumbnails as in screenshot)
   const thumbnails = images.slice(0, 4);
+  const isFallback = images[activeIndex] === GROUP_EXCURSION_FALLBACK_IMAGE;
 
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
         {/* Main Featured Image (col-span-9 / col-span-10) */}
-        <div className="md:col-span-9 lg:col-span-9 relative w-full aspect-[540/380] overflow-hidden rounded-[20px] border-[4px] border-[#FFFFFF] shadow-[0px_4px_25px_0px_rgba(0,0,0,0.25)] bg-slate-100">
+        <div className="md:col-span-9 lg:col-span-9 relative w-full aspect-[540/380] overflow-hidden rounded-[14px] sm:rounded-[20px] border-[2px] sm:border-[4px] border-[#FFFFFF] shadow-[0px_4px_25px_0px_rgba(0,0,0,0.18)] sm:shadow-[0px_4px_25px_0px_rgba(0,0,0,0.25)] bg-slate-100">
           <Image
             src={images[activeIndex]}
             alt={`Excursion gallery view ${activeIndex + 1}`}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 700px"
-            className="object-cover object-center transition-all duration-300"
+            className={`transition-all duration-300 ${
+              isFallback
+                ? "object-contain p-8 opacity-60"
+                : "object-cover object-center"
+            }`}
           />
 
           {/* Badge: Featured */}
           {badge && (
-            <div className="absolute top-4 left-4 z-10 bg-white/95 text-[#0E4A68] font-poppins text-xs font-semibold px-4 py-1 rounded-full shadow-sm">
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 bg-white/95 text-[#0E4A68] font-poppins text-[11px] sm:text-xs font-semibold px-3 sm:px-4 py-1 rounded-full shadow-sm">
               {badge}
             </div>
           )}
 
           {/* Bottom Navigation Controls Overlay */}
-          <div className="absolute bottom-4 inset-x-0 z-10 flex items-center justify-between px-4 sm:px-6 pointer-events-none">
+          <div className="absolute bottom-3 sm:bottom-4 inset-x-0 z-10 flex items-center justify-between px-3 sm:px-6 pointer-events-none">
             {/* Left Button */}
             <button
               type="button"
               onClick={handlePrev}
               aria-label="Previous image"
-              className="pointer-events-auto flex items-center justify-center w-[33px] h-[33px] rounded-[15.65px] bg-[#F3F3F3E5] border-[0.39px] border-[#00000066] shadow-sm hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+              className="pointer-events-auto flex items-center justify-center w-[29px] h-[29px] sm:w-[33px] sm:h-[33px] rounded-full bg-[#F3F3F3E5] border-[0.39px] border-[#00000066] shadow-sm hover:scale-105 active:scale-95 transition-transform cursor-pointer"
             >
               <svg
-                className="w-4 h-4 text-[#1C3A27]"
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1C3A27]"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -70,9 +77,9 @@ export function GroupDetailsGallery({
             </button>
 
             {/* Counter with camera icon */}
-            <div className="pointer-events-auto flex items-center gap-1.5 px-3 py-1 rounded-[15.65px] bg-[#F3F3F3E5] border-[0.39px] border-[#00000066] shadow-sm font-poppins text-xs font-semibold text-[#1C3A27]">
+            <div className="pointer-events-auto flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[#F3F3F3E5] border-[0.39px] border-[#00000066] shadow-sm font-poppins text-[11px] sm:text-xs font-semibold text-[#1C3A27]">
               <svg
-                className="w-3.5 h-3.5 text-[#1C3A27]"
+                className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#1C3A27]"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.8"
@@ -95,10 +102,10 @@ export function GroupDetailsGallery({
               type="button"
               onClick={handleNext}
               aria-label="Next image"
-              className="pointer-events-auto flex items-center justify-center w-[33px] h-[33px] rounded-[15.65px] bg-[#F3F3F3E5] border-[0.39px] border-[#00000066] shadow-sm hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+              className="pointer-events-auto flex items-center justify-center w-[29px] h-[29px] sm:w-[33px] sm:h-[33px] rounded-full bg-[#F3F3F3E5] border-[0.39px] border-[#00000066] shadow-sm hover:scale-105 active:scale-95 transition-transform cursor-pointer"
             >
               <svg
-                className="w-4 h-4 text-[#1C3A27]"
+                className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#1C3A27]"
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
