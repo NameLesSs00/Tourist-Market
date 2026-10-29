@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 
 interface PrivateDetailsHeroProps {
   title?: string;
@@ -10,6 +11,7 @@ interface PrivateDetailsHeroProps {
   duration?: string;
   pickup?: string;
   locale?: string;
+  heroImage?: string;
 }
 
 export function PrivateDetailsHero({
@@ -18,31 +20,62 @@ export function PrivateDetailsHero({
   duration = "20 hours",
   pickup = "From Your Hotel",
   locale = "en",
+  heroImage = "/PrivateExcursions/Privatedetails/Hero-pic.png",
 }: PrivateDetailsHeroProps) {
   // Format title if it contains TOUR or break for desktop
   const formattedTitle = title.includes("TOUR")
     ? title.replace("TOUR", "\nTOUR")
     : title;
 
+  const targetImage = heroImage || "/PrivateExcursions/Privatedetails/Hero-pic.png";
+
+  const [imgSrc, setImgSrc] = useState(targetImage);
+  if (imgSrc !== targetImage && imgSrc !== PRIVATE_EXCURSION_FALLBACK_IMAGE) {
+    setImgSrc(targetImage);
+  }
+  const isFallback =
+    !targetImage ||
+    targetImage === PRIVATE_EXCURSION_FALLBACK_IMAGE ||
+    imgSrc === PRIVATE_EXCURSION_FALLBACK_IMAGE;
+
   return (
     <section className="relative w-full overflow-hidden bg-[#FFF8ED] pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-24 lg:pb-16 min-h-[520px] lg:min-h-[580px] flex items-center">
-      {/* Background Image: Pure Hero-pic.png with no gradients */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
+      {/* Background Hero Image with Group Excursion Gradient Overlays */}
+      <div className="absolute inset-0 z-0">
         <Image
-          src="/PrivateExcursions/Privatedetails/Hero-pic.png"
+          src={imgSrc}
           alt={title}
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center"
+          onError={() => {
+            if (imgSrc !== PRIVATE_EXCURSION_FALLBACK_IMAGE) {
+              setImgSrc(PRIVATE_EXCURSION_FALLBACK_IMAGE);
+            }
+          }}
+          className={`object-right-bottom sm:object-right ${
+            isFallback
+              ? "object-contain p-6 sm:p-12 opacity-50"
+              : "object-cover"
+          }`}
         />
+        {/* Gradient overlay matching group excursions */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "linear-gradient(270deg, rgba(255, 255, 255, 0) 18.27%, #FFEACD 54.33%)",
+          }}
+        />
+        {/* Soft gradient overlay on left for readable text */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8ED] via-[#FFF8ED]/95 sm:via-[#FFF8ED]/80 to-transparent lg:w-[65%]" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-14 xl:px-16">
         {/* Back Link */}
         <div className="mb-6">
           <Link
-            href={`/${locale}/PrivateExcursions`}
+            href={`/${locale}/private-excursions`}
             className="inline-flex items-center gap-2 text-[15px] sm:text-[16px] font-medium text-[#0E4A68] hover:text-[#DE7423] transition-colors"
           >
             <span className="text-lg">←</span>

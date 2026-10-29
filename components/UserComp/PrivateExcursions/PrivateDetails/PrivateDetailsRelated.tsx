@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FiChevronLeft, FiChevronRight, FiClock, FiStar } from "react-icons/fi";
-import { PrivateExcursion } from "../types";
+import { FiClock, FiStar } from "react-icons/fi";
+import type { PrivateExcursion } from "../types";
+import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 
 interface PrivateDetailsRelatedProps {
   excursions: PrivateExcursion[];
@@ -15,9 +16,9 @@ export function PrivateDetailsRelated({
   excursions = [],
   locale = "en",
 }: PrivateDetailsRelatedProps) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const displayExcursions = (excursions || []).slice(0, 3);
 
-  if (!excursions || excursions.length === 0) return null;
+  if (displayExcursions.length === 0) return null;
 
   return (
     <section className="w-full font-poppins pt-6 pb-12">
@@ -28,25 +29,16 @@ export function PrivateDetailsRelated({
         </h2>
       </div>
 
-      {/* Cards Row with Navigation Arrows */}
-      <div className="relative">
-        {/* Left Arrow Button */}
-        <button
-          type="button"
-          onClick={() => setCurrentPage((prev) => Math.max(0, prev - 1))}
-          disabled={currentPage === 0}
-          aria-label="Previous related excursions"
-          className="hidden md:flex absolute -left-13 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-md items-center justify-center text-[#083952] hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-        >
-          <FiChevronLeft size={22} />
-        </button>
+      {/* Excursions Grid (3 Cards Max) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+        {displayExcursions.map((item) => {
+          const targetUrl = `/${locale}/private-excursions/${item.slug || item.id}`;
 
-        {/* Excursions Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-          {excursions.map((item) => (
-            <div
+          return (
+            <Link
               key={item.id}
-              className="bg-white rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-xl group"
+              href={targetUrl}
+              className="bg-white rounded-2xl overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-xl hover:-translate-y-1 group cursor-pointer block text-inherit no-underline select-none"
               style={{
                 boxShadow: "0px 4px 20px 0px rgba(0, 0, 0, 0.08)",
                 border: "0.8px solid #EFEFEF",
@@ -56,7 +48,7 @@ export function PrivateDetailsRelated({
                 {/* Image & Badge */}
                 <div className="relative w-full aspect-[16/10] overflow-hidden bg-gray-100">
                   <Image
-                    src={item.imageUrl}
+                    src={item.imageUrl || PRIVATE_EXCURSION_FALLBACK_IMAGE}
                     alt={item.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -95,7 +87,7 @@ export function PrivateDetailsRelated({
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-[17px] sm:text-[18px] font-bold text-[#083952] leading-snug line-clamp-2 uppercase min-h-[48px]">
+                  <h3 className="text-[17px] sm:text-[18px] font-bold text-[#083952] leading-snug line-clamp-2 uppercase min-h-[48px] group-hover:text-[#DE7423] transition-colors">
                     {item.title}
                   </h3>
 
@@ -117,33 +109,14 @@ export function PrivateDetailsRelated({
                   <span>Infant: {item.infantPrice.toFixed(2)} $</span>
                 </div>
 
-                {/* View Details Button */}
-                <Link
-                  href={`/${locale}/PrivateExcursions/${item.slug}`}
-                  className="mt-2 w-full py-3 rounded-xl bg-[#DE7423] text-white font-bold text-[15px] flex items-center justify-center hover:bg-[#C9641B] transition-colors shadow-sm active:scale-[0.99]"
-                >
+                {/* View Details Action Button */}
+                <div className="mt-2 w-full py-3 rounded-xl bg-[#DE7423] group-hover:bg-[#C9641B] text-white font-bold text-[15px] flex items-center justify-center transition-colors shadow-sm active:scale-[0.99]">
                   View Details
-                </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Right Arrow Button */}
-        <button
-          type="button"
-          onClick={() => setCurrentPage((prev) => prev + 1)}
-          aria-label="Next related excursions"
-          className="hidden md:flex absolute -right-13 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-white border border-gray-200 shadow-md items-center justify-center text-[#083952] hover:bg-gray-50 transition-all"
-        >
-          <FiChevronRight size={22} />
-        </button>
-      </div>
-
-      {/* Dots Indicator */}
-      <div className="flex items-center justify-center gap-2 mt-8">
-        <span className="w-2.5 h-2.5 rounded-full bg-[#083952]" />
-        <span className="w-2.5 h-2.5 rounded-full bg-gray-300" />
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

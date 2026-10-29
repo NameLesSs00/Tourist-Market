@@ -5,6 +5,7 @@ export * from "./PrivateDetailsAttractions";
 export * from "./PrivateDetailsExtraServices";
 export * from "./PrivateDetailsIncludes";
 export * from "./PrivateDetailsBookingSidebar";
+export * from "./PrivateBookingForm";
 export * from "./PrivateDetailsReviews";
 export * from "./PrivateDetailsRelated";
 export * from "./PrivateDetailsSection";

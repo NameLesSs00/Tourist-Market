@@ -34,6 +34,7 @@ export interface PrivateExcursionListItem {
 }
 
 export interface PrivateExcursionDetail extends PrivateExcursionListItem {
+  heroImageUrl?: string | null;
   fullProgram: string;
   videoUrl: string;
   imageList: Array<{ id: string; imageUrl: string; isPrimary: boolean }>;

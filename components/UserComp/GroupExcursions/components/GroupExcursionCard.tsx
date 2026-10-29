@@ -61,12 +61,13 @@ export function GroupExcursionCard({
   );
 
   const isFallback = !imgSrc || imgSrc === GROUP_EXCURSION_FALLBACK_IMAGE;
+  const targetSlugOrId = excursion.slug || id;
 
   return (
     <Link
-      href={`/${locale}/group-excursions/${id}`}
+      href={`/${locale}/group-excursions/${targetSlugOrId}`}
       prefetch={false}
-      className="group block h-full text-inherit no-underline select-none"
+      className="group block h-full text-inherit no-underline select-none cursor-pointer"
     >
       <div
         className="bg-[#FFFFFF] text-[#0E4A68] rounded-[12px] overflow-hidden flex flex-col justify-between h-full min-h-[440px] sm:min-h-[490px] md:min-h-[440px] lg:min-h-[540px] transition-all duration-300 group-hover:-translate-y-1.5 cursor-pointer"

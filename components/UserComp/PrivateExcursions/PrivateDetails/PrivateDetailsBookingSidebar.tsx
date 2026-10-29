@@ -11,91 +11,187 @@ import {
   FiPlus,
 } from "react-icons/fi";
 import { FaWhatsapp, FaTelegramPlane, FaViber } from "react-icons/fa";
-import { PrivateAttraction, PrivateExtraService, VehicleOption } from "../types";
+import { toast } from "sonner";
+import { PrivateAttraction, PrivateExtraService } from "../types";
+import { useVehicleTransferPrivateMatch } from "@/features/privateExcursions/useVehicleTransferPrivateMatch";
+import type { ExcursionAvailabilityDay } from "@/models/excursionAvailability";
+import {
+  getTomorrowDateString,
+  isBookingDateValid,
+} from "@/shared/utils/dateAvailability";
 
 interface PrivateDetailsBookingSidebarProps {
+  excursionId?: string;
   selectedAttractions: PrivateAttraction[];
   selectedExtraServices: PrivateExtraService[];
-  vehicles?: VehicleOption[];
   duration?: string;
   maxParticipants?: string;
+  bookingDate?: string;
+  onBookingDateChange?: (date: string) => void;
+  adults?: number;
+  onAdultsChange?: (adults: number) => void;
+  children?: number;
+  onChildrenChange?: (children: number) => void;
+  infants?: number;
+  onInfantsChange?: (infants: number) => void;
+  onBookNow?: () => void;
+  currency?: string;
+  locale?: string;
+  availabilityDays?: ExcursionAvailabilityDay[];
+  availability?: string;
+  /** When false the Book Now button is disabled */
+  canBook?: boolean;
 }
 
 export function PrivateDetailsBookingSidebar({
+  excursionId,
   selectedAttractions = [],
   selectedExtraServices = [],
-  vehicles = [
-    { id: "car", name: "Car", capacityText: "1-3 Passengers", price: 250 },
-    { id: "microbus", name: "Microbus", capacityText: "4-9 Passengers", price: 320 },
-    { id: "minibus", name: "Minibus", capacityText: "10-16 Passengers", price: 450 },
-    { id: "bus", name: "Bus", capacityText: "17-35 Passengers", price: 650 },
-  ],
   duration = "20 Hours",
   maxParticipants = "35 Person",
+  bookingDate: controlledBookingDate,
+  onBookingDateChange,
+  adults: controlledAdults,
+  onAdultsChange,
+  children: controlledChildren,
+  onChildrenChange,
+  infants: controlledInfants,
+  onInfantsChange,
+  onBookNow,
+  currency = "USD",
+  locale = "en",
+  availabilityDays = [],
+  availability,
+  canBook = false,
 }: PrivateDetailsBookingSidebarProps) {
-  const [bookingDate, setBookingDate] = useState<string>("");
-  const [adults, setAdults] = useState<number>(1);
-  const [children, setChildren] = useState<number>(0);
-  const [infants, setInfants] = useState<number>(0);
+  const [internalDate, setInternalDate] = useState<string>("");
+  const [internalAdults, setInternalAdults] = useState<number>(1);
+  const [internalChildren, setInternalChildren] = useState<number>(0);
+  const [internalInfants, setInternalInfants] = useState<number>(0);
+
+  const bookingDate =
+    controlledBookingDate !== undefined ? controlledBookingDate : internalDate;
+  const setBookingDate = onBookingDateChange ?? setInternalDate;
+
+  const adults =
+    controlledAdults !== undefined ? controlledAdults : internalAdults;
+  const setAdults = onAdultsChange
+    ? (val: number | ((prev: number) => number)) => {
+        const next = typeof val === "function" ? val(adults) : val;
+        onAdultsChange(next);
+      }
+    : setInternalAdults;
+
+  const children =
+    controlledChildren !== undefined ? controlledChildren : internalChildren;
+  const setChildren = onChildrenChange
+    ? (val: number | ((prev: number) => number)) => {
+        const next = typeof val === "function" ? val(children) : val;
+        onChildrenChange(next);
+      }
+    : setInternalChildren;
+
+  const infants =
+    controlledInfants !== undefined ? controlledInfants : internalInfants;
+  const setInfants = onInfantsChange
+    ? (val: number | ((prev: number) => number)) => {
+        const next = typeof val === "function" ? val(infants) : val;
+        onInfantsChange(next);
+      }
+    : setInternalInfants;
 
   const totalPassengers = adults + children + infants;
 
-  // Determine vehicle based on total passengers
-  const getVehicleInfo = (count: number) => {
-    if (count <= 3) {
-      const v = vehicles.find((x) => x.id === "car") || vehicles[0];
-      return {
-        type: "Car",
-        capacityText: "1-2 Passengers",
-        price: v?.price ?? 250,
-        icon: "/PrivateExcursions/Privatedetails/Car.svg",
-      };
-    } else if (count <= 9) {
-      const v = vehicles.find((x) => x.id === "microbus") || vehicles[1];
-      return {
-        type: "Microbus",
-        capacityText: "4-9 Passengers",
-        price: v?.price ?? 320,
-        icon: "/PrivateExcursions/Privatedetails/Microbus.svg",
-      };
-    } else if (count <= 16) {
-      const v = vehicles.find((x) => x.id === "minibus") || vehicles[2];
-      return {
-        type: "Minibus",
-        capacityText: "10-16 Passengers",
-        price: v?.price ?? 450,
-        icon: "/PrivateExcursions/Privatedetails/Minibus.svg",
-      };
-    } else {
-      const v = vehicles.find((x) => x.id === "bus") || vehicles[3];
-      return {
-        type: "Bus",
-        capacityText: "17-35 Passengers",
-        price: v?.price ?? 650,
-        icon: "/PrivateExcursions/Privatedetails/Bus.svg",
-      };
-    }
-  };
+  // Live vehicle match from backend
+  const {
+    data: matchedVehicle,
+    isLoading: isVehicleLoading,
+  } = useVehicleTransferPrivateMatch(
+    excursionId,
+    totalPassengers,
+    locale,
+    currency
+  );
 
-  const currentVehicle = getVehicleInfo(totalPassengers);
-
-  // Price calculations
+  // Price calculations (client-side for attractions/services)
   const attractionsTotal = selectedAttractions.reduce(
-    (acc, att) => acc + att.adultPrice * adults + att.childPrice * children + att.infantPrice * infants,
+    (acc, att) =>
+      acc +
+      att.adultPrice * adults +
+      att.childPrice * children +
+      att.infantPrice * infants,
     0
   );
 
   const extrasTotal = selectedExtraServices.reduce(
-    (acc, ext) => acc + ext.adultPrice * adults + ext.childPrice * children + ext.infantPrice * infants,
+    (acc, ext) =>
+      acc +
+      ext.adultPrice * adults +
+      ext.childPrice * children +
+      ext.infantPrice * infants,
     0
   );
 
-  const vehicleTotal = currentVehicle.price;
-  const totalPrice = attractionsTotal + extrasTotal + vehicleTotal;
+  const vehiclePrice = matchedVehicle?.price ?? 0;
+  const totalPrice = vehiclePrice + attractionsTotal + extrasTotal;
+
+  const tomorrowStr = getTomorrowDateString();
+  const dateValidation = isBookingDateValid(bookingDate, availabilityDays);
+  const dateError = bookingDate ? dateValidation.error : undefined;
+
+  const isDateValid = dateValidation.isValid;
+  const hasAttractions = selectedAttractions.length > 0;
+  const isReadyToBook = isDateValid && hasAttractions;
+
+  const handleScrollToAttractions = () => {
+    const el = document.getElementById("private-attractions-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleScrollToDate = () => {
+    const el = document.getElementById("private-booking-date-input");
+    if (el) {
+      el.focus();
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
+  const handleBookClick = () => {
+    if (isReadyToBook) {
+      onBookNow?.();
+      return;
+    }
+
+    if (!bookingDate) {
+      toast.error("Please select an excursion date to proceed.");
+      handleScrollToDate();
+      return;
+    }
+
+    if (dateError) {
+      toast.error(dateError);
+      handleScrollToDate();
+      return;
+    }
+
+    if (!hasAttractions) {
+      toast.error("Please select at least 1 attraction to include in your tour.");
+      handleScrollToAttractions();
+      return;
+    }
+  };
+
+  const buttonLabel = isReadyToBook
+    ? "Book Now"
+    : !bookingDate || dateError
+    ? "Select Date to Book"
+    : "Select Attraction to Book";
 
   return (
-    <aside className="w-full flex flex-col gap-6 font-poppins sticky top-28">
-      {/* ─── BOOKING CARD ─── */}
+    <aside className="w-full flex flex-col gap-6 font-poppins lg:sticky lg:top-24 lg:self-start">
+      {/* BOOKING CARD */}
       <div
         className="w-full bg-white overflow-hidden"
         style={{
@@ -128,13 +224,23 @@ export function PrivateDetailsBookingSidebar({
             </label>
             <div className="relative">
               <input
+                id="private-booking-date-input"
                 type="date"
+                min={tomorrowStr}
                 value={bookingDate}
                 onChange={(e) => setBookingDate(e.target.value)}
-                placeholder="mm/dd/yy"
-                className="w-full px-4 py-2.5 rounded-lg border border-[#BBBBBB] text-[14px] text-[#083952] focus:outline-none focus:border-[#DE7423] bg-white cursor-pointer"
+                className={`w-full px-4 py-2.5 rounded-lg border text-[14px] text-[#083952] focus:outline-none bg-white cursor-pointer transition-colors ${
+                  dateError
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#BBBBBB] focus:border-[#DE7423]"
+                }`}
               />
             </div>
+            {dateError && (
+              <p className="mt-1 text-xs text-red-500 font-medium leading-snug">
+                {dateError}
+              </p>
+            )}
           </div>
 
           {/* Passenger Steppers */}
@@ -251,31 +357,56 @@ export function PrivateDetailsBookingSidebar({
             </div>
           </div>
 
-          {/* Vehicle Type Row */}
+          {/* Vehicle Row - live from backend */}
           <div>
             <label className="block text-[14px] font-semibold text-[#083952] mb-1.5">
               Vehicle Type
             </label>
             <div
-              className="flex items-center justify-between px-4 py-3 rounded-lg bg-white"
+              className="flex items-center justify-between px-4 py-3 rounded-lg bg-white min-h-[52px]"
               style={{ border: "0.8px solid #BBBBBB" }}
             >
-              <div className="flex items-center gap-3">
-                <div className="relative w-10 h-7 shrink-0">
-                  <Image
-                    src={currentVehicle.icon}
-                    alt={currentVehicle.type}
-                    fill
-                    className="object-contain"
-                  />
+              {isVehicleLoading ? (
+                <div className="flex items-center gap-2 text-[13px] text-gray-400">
+                  <div className="w-4 h-4 border-2 border-[#DE7423] border-t-transparent rounded-full animate-spin" />
+                  <span>Checking availability...</span>
                 </div>
-                <span className="text-[14px] font-semibold text-[#0E4A68]">
-                  {currentVehicle.type} ({currentVehicle.capacityText})
+              ) : matchedVehicle ? (
+                <>
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="w-8 h-6 text-[#0E4A68] shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M8 17h8M5 11l2-5h10l2 5M3 13v6h2v-2h14v2h2v-6l-2-2H5l-2 2z"
+                      />
+                      <circle cx="7.5" cy="14.5" r="1.5" />
+                      <circle cx="16.5" cy="14.5" r="1.5" />
+                    </svg>
+                    <div>
+                      <span className="text-[14px] font-semibold text-[#0E4A68] block">
+                        {matchedVehicle.vehicleName}
+                      </span>
+                      <span className="text-[12px] text-gray-500">
+                        {matchedVehicle.from}-{matchedVehicle.to} Passengers
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-[16px] font-bold text-[#DE7423]">
+                    {matchedVehicle.price} {matchedVehicle.currency}
+                  </span>
+                </>
+              ) : (
+                <span className="text-[13px] text-gray-400 italic">
+                  No vehicle available for this passenger count
                 </span>
-              </div>
-              <span className="text-[16px] font-bold text-[#DE7423]">
-                {currentVehicle.price} $
-              </span>
+              )}
             </div>
           </div>
 
@@ -291,8 +422,18 @@ export function PrivateDetailsBookingSidebar({
               style={{ border: "0.6px solid #DE7423" }}
             >
               <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#0E4A68]">
-                <svg className="w-4 h-4 text-[#DE7423]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                <svg
+                  className="w-4 h-4 text-[#DE7423]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                  />
                   <circle cx="12" cy="9" r="2.5" />
                 </svg>
                 <span>Attractions :</span>
@@ -336,7 +477,19 @@ export function PrivateDetailsBookingSidebar({
               style={{ border: "0.6px solid #DE7423" }}
             >
               <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#0E4A68]">
-                <span>⊕</span>
+                <svg
+                  className="w-4 h-4 text-[#DE7423]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  />
+                </svg>
                 <span>Extra Services :</span>
               </div>
               {selectedExtraServices.length === 0 ? (
@@ -378,24 +531,45 @@ export function PrivateDetailsBookingSidebar({
               style={{ border: "0.6px solid #DE7423" }}
             >
               <div className="flex items-center gap-1.5 text-[13px] font-bold text-[#0E4A68]">
-                <svg className="w-4 h-4 text-[#DE7423]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 17h8M5 11l2-5h10l2 5M3 13v6h2v-2h14v2h2v-6l-2-2H5l-2 2z" />
+                <svg
+                  className="w-4 h-4 text-[#DE7423]"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 17h8M5 11l2-5h10l2 5M3 13v6h2v-2h14v2h2v-6l-2-2H5l-2 2z"
+                  />
                   <circle cx="7.5" cy="14.5" r="1.5" />
                   <circle cx="16.5" cy="14.5" r="1.5" />
                 </svg>
                 <span>Vehicle :</span>
               </div>
-              <div className="pl-5 flex items-center justify-between text-[12px] text-[#444444]">
-                <span>
-                  {currentVehicle.type} ({currentVehicle.capacityText})
-                </span>
-                <span className="font-bold text-[#DE7423]">
-                  {vehicleTotal} $
-                </span>
-              </div>
+              {isVehicleLoading ? (
+                <div className="pl-5 flex items-center gap-2 text-[12px] text-gray-400">
+                  <div className="w-3 h-3 border-2 border-[#DE7423] border-t-transparent rounded-full animate-spin" />
+                  <span>Loading...</span>
+                </div>
+              ) : matchedVehicle ? (
+                <div className="pl-5 flex items-center justify-between text-[12px] text-[#444444]">
+                  <span>
+                    {matchedVehicle.vehicleName} ({matchedVehicle.from}-{matchedVehicle.to} pax)
+                  </span>
+                  <span className="font-bold text-[#DE7423]">
+                    {matchedVehicle.price} {matchedVehicle.currency}
+                  </span>
+                </div>
+              ) : (
+                <p className="pl-5 text-[12px] text-gray-400 italic">
+                  No vehicle matched
+                </p>
+              )}
               <div className="border-t border-gray-100 pt-1.5 flex items-center justify-between text-[13px] font-bold text-[#DE7423]">
                 <span>Vehicle Total :</span>
-                <span>{vehicleTotal} $</span>
+                <span>{vehiclePrice} {matchedVehicle?.currency ?? "$"}</span>
               </div>
             </div>
 
@@ -405,7 +579,7 @@ export function PrivateDetailsBookingSidebar({
                 Total Price:
               </span>
               <span className="text-[26px] sm:text-[28px] font-extrabold text-[#DE7423]">
-                {totalPrice} $
+                {totalPrice} {matchedVehicle?.currency ?? "$"}
               </span>
             </div>
           </div>
@@ -432,8 +606,8 @@ export function PrivateDetailsBookingSidebar({
               <div className="w-10 h-10 rounded-full bg-[#DE7423] flex items-center justify-center text-white mb-1">
                 <FiCalendar size={18} />
               </div>
-              <span className="text-[12px] font-semibold text-[#666666]">
-                Flexible
+              <span className="text-[12px] font-semibold text-[#666666] truncate max-w-full">
+                {availability || "Flexible"}
               </span>
             </div>
 
@@ -448,22 +622,149 @@ export function PrivateDetailsBookingSidebar({
             </div>
           </div>
 
+          {/* Booking Requirements Checklist Card */}
+          <div className="p-3.5 rounded-lg bg-[#FFF8ED] border border-[#DE7423]/30 space-y-2.5">
+            <div className="flex items-center justify-between text-[13px] font-bold text-[#0E4A68]">
+              <span>Required to Book</span>
+              <span
+                className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                  isReadyToBook
+                    ? "bg-green-100 text-green-700"
+                    : "bg-[#DE7423]/15 text-[#DE7423]"
+                }`}
+              >
+                {isReadyToBook ? "Ready" : "Steps Missing"}
+              </span>
+            </div>
+
+            <div className="space-y-2 text-[12px]">
+              {/* Step 1: Date */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  {isDateValid ? (
+                    <svg
+                      className="w-4 h-4 text-green-600 shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-4 h-4 text-[#DE7423] shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="9" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                  )}
+                  <span
+                    className={
+                      isDateValid
+                        ? "text-green-700 font-medium truncate"
+                        : "text-[#083952] font-medium truncate"
+                    }
+                  >
+                    {isDateValid
+                      ? `Date: ${bookingDate}`
+                      : dateError
+                      ? dateError
+                      : "Select an excursion date"}
+                  </span>
+                </div>
+                {!isDateValid && (
+                  <button
+                    type="button"
+                    onClick={handleScrollToDate}
+                    className="text-[11px] font-semibold text-[#155F98] hover:underline shrink-0 cursor-pointer"
+                  >
+                    {dateError ? "Fix" : "Pick"}
+                  </button>
+                )}
+              </div>
+
+              {/* Step 2: Attractions */}
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  {hasAttractions ? (
+                    <svg
+                      className="w-4 h-4 text-green-600 shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      className="w-4 h-4 text-[#DE7423] shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle cx="12" cy="12" r="9" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                  )}
+                  <span
+                    className={
+                      hasAttractions
+                        ? "text-green-700 font-medium truncate"
+                        : "text-[#083952] font-medium truncate"
+                    }
+                  >
+                    {hasAttractions
+                      ? `${selectedAttractions.length} attraction${
+                          selectedAttractions.length > 1 ? "s" : ""
+                        } selected`
+                      : "Select at least 1 attraction"}
+                  </span>
+                </div>
+                {!hasAttractions && (
+                  <button
+                    type="button"
+                    onClick={handleScrollToAttractions}
+                    className="text-[11px] font-semibold text-[#155F98] hover:underline shrink-0 cursor-pointer"
+                  >
+                    Choose
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Book Now Button */}
           <button
             type="button"
-            className="w-full py-3.5 px-4 text-center text-white font-bold text-[16px] transition-all hover:bg-[#C9641B] active:scale-[0.99] shadow cursor-pointer"
+            onClick={handleBookClick}
+            className="w-full py-3.5 px-4 text-center font-bold text-[16px] text-white transition-all bg-[#DE7423] hover:bg-[#C9641B] active:scale-[0.99] shadow cursor-pointer rounded-[10px]"
             style={{
-              background: "#DE7423",
               border: "0.25px solid rgba(136, 136, 136, 0.8)",
-              borderRadius: "10px",
             }}
           >
-            Book Now
+            {buttonLabel}
           </button>
         </div>
       </div>
 
-      {/* ─── NEED HELP CARD ─── */}
+      {/* NEED HELP CARD */}
       <div
         className="w-full bg-white p-5 rounded-xl space-y-4"
         style={{
@@ -482,7 +783,7 @@ export function PrivateDetailsBookingSidebar({
                 Need Help ?
               </h4>
               <p className="text-[12px] font-medium text-[#083043]">
-                contact us for Help ?
+                Contact us for Help
               </p>
             </div>
           </div>
@@ -491,7 +792,6 @@ export function PrivateDetailsBookingSidebar({
 
         {/* 3 Buttons: WhatsApp, Telegram, Viber */}
         <div className="space-y-2.5">
-          {/* WhatsApp */}
           <a
             href="https://wa.me/201012345678"
             target="_blank"
@@ -503,7 +803,6 @@ export function PrivateDetailsBookingSidebar({
             <span>WhatsApp</span>
           </a>
 
-          {/* Telegram */}
           <a
             href="https://t.me/egypttouristmarket"
             target="_blank"
@@ -515,7 +814,6 @@ export function PrivateDetailsBookingSidebar({
             <span>Telegram</span>
           </a>
 
-          {/* Viber */}
           <a
             href="viber://chat?number=201012345678"
             target="_blank"

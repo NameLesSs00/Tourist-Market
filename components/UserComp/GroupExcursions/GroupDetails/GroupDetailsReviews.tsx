@@ -32,51 +32,12 @@ export interface GroupDetailsReviewsProps {
   totalReviews?: number;
 }
 
-const DEFAULT_DISTRIBUTION: RatingDistributionItem[] = [
-  { star: 5, percentage: 88, count: 574 },
-  { star: 4, percentage: 70, count: 55 },
-  { star: 3, percentage: 40, count: 16 },
-  { star: 2, percentage: 22, count: 5 },
-  { star: 1, percentage: 12, count: 3 },
-];
-
-const DEFAULT_COMMENTS: ReviewComment[] = [
-  {
-    id: "rev-1",
-    author: "Omer Khaled",
-    date: "Sep 15, 2025",
-    rating: 5,
-    likes: 12,
-    content:
-      "Our trip was absolutely amazing from start to finish! Everything was well organized, the guide was incredibly friendly, and every destination was more beautiful than we expected.",
-  },
-  {
-    id: "rev-2",
-    author: "Pola Samy",
-    date: "May 12, 2023",
-    rating: 5,
-    likes: 8,
-    content:
-      "This was easily one of the best days of our vacation! The views were breathtaking, the water was crystal clear, and the activities were so much fun. The staff were professional and welcoming, making sure everyone felt safe and comfortable throughout the entire experience.",
-  },
-  {
-    id: "rev-3",
-    author: "Mohamed Yasser",
-    date: "Sep 23, 2005",
-    rating: 5,
-    likes: 5,
-    content:
-      "This trip gave us the opportunity to discover places we probably would not have visited on our own.",
-  },
-  {
-    id: "rev-4",
-    author: "Ahmed Ali",
-    date: "Sep 23, 2005",
-    rating: 5,
-    likes: 9,
-    content:
-      "This trip gave us the opportunity to discover places we probably would not have visited on our own.",
-  },
+const EMPTY_DISTRIBUTION: RatingDistributionItem[] = [
+  { star: 5, percentage: 0, count: 0 },
+  { star: 4, percentage: 0, count: 0 },
+  { star: 3, percentage: 0, count: 0 },
+  { star: 2, percentage: 0, count: 0 },
+  { star: 1, percentage: 0, count: 0 },
 ];
 
 export function GroupDetailsReviews({
@@ -86,10 +47,10 @@ export function GroupDetailsReviews({
   averageRating,
   totalReviews,
 }: GroupDetailsReviewsProps) {
-  const ratingVal = averageRating ?? detail?.rating ?? 4.5;
-  const totalReviewsVal = totalReviews ?? detail?.totalReviews ?? 653;
-  const distList = distribution ?? detail?.ratingDistribution ?? DEFAULT_DISTRIBUTION;
-  const initialComments = propComments ?? detail?.comments ?? DEFAULT_COMMENTS;
+  const totalReviewsVal = totalReviews ?? detail?.totalReviews ?? 0;
+  const ratingVal = totalReviewsVal > 0 ? (averageRating ?? detail?.rating ?? 0) : 0;
+  const distList = distribution ?? detail?.ratingDistribution ?? EMPTY_DISTRIBUTION;
+  const initialComments = propComments ?? detail?.comments ?? [];
 
   const [commentsList, setCommentsList] = useState<ReviewComment[]>(initialComments);
   const [userRating, setUserRating] = useState<number>(0);
@@ -201,7 +162,7 @@ export function GroupDetailsReviews({
     <section className="w-full font-poppins">
       <Toaster richColors closeButton position="top-center" toastOptions={{ className: "font-poppins" }} />
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-        {/* ─── LEFT COLUMN: Rating Breakdown Card + Share Opinion Card (Total height ~774px on desktop) ─── */}
+        {/* --- LEFT COLUMN: Rating Breakdown Card + Share Opinion Card (Total height ~774px on desktop) --- */}
         <div className="lg:col-span-5 flex flex-col gap-6 justify-between">
           {/* Card 1: Rating Overview */}
           <div
@@ -215,7 +176,7 @@ export function GroupDetailsReviews({
             <div className="flex items-center gap-2 pb-3.5 sm:pb-4 border-b border-[#E5E5E5]">
               <FiStar className="text-[#0E4A68] fill-[#0E4A68]" size={20} />
               <h3 className="text-lg sm:text-[20px] font-bold text-[#0E4A68]">
-                Reviews —
+                Reviews -
               </h3>
             </div>
 
@@ -225,12 +186,21 @@ export function GroupDetailsReviews({
               <div className="w-full sm:w-auto flex flex-col items-center justify-center shrink-0 pb-4 sm:pb-0 sm:pr-6 border-b sm:border-b-0 sm:border-r border-[#EEEEEE]">
                 <div className="flex items-center gap-1.5">
                   <span className="text-[38px] sm:text-[44px] font-bold text-[#083952] leading-none">
-                    {ratingVal.toFixed(1)}
+                    {totalReviewsVal > 0 ? ratingVal.toFixed(1) : "0.0"}
                   </span>
-                  <FiStar className="text-[#F5A623] fill-[#F5A623] mb-1" size={24} />
+                  <FiStar
+                    className={`${
+                      totalReviewsVal > 0
+                        ? "text-[#F5A623] fill-[#F5A623]"
+                        : "text-gray-300 fill-gray-200"
+                    } mb-1`}
+                    size={24}
+                  />
                 </div>
                 <span className="text-[13px] sm:text-[14px] font-semibold text-[#083952] mt-1.5 sm:mt-2">
-                  {totalReviewsVal} reviews
+                  {totalReviewsVal > 0
+                    ? `${totalReviewsVal} review${totalReviewsVal > 1 ? "s" : ""}`
+                    : "No reviews yet"}
                 </span>
               </div>
 
@@ -375,7 +345,7 @@ export function GroupDetailsReviews({
           </div>
         </div>
 
-        {/* ─── RIGHT COLUMN: Reviews & Comments (Fixed height ~774px with desktop smooth scroll) ─── */}
+        {/* --- RIGHT COLUMN: Reviews & Comments (Fixed height ~774px with desktop smooth scroll) --- */}
         <div
           className="lg:col-span-7 bg-white rounded-2xl p-4 sm:p-6 lg:p-7 lg:h-[774px] flex flex-col"
           style={{
@@ -393,7 +363,20 @@ export function GroupDetailsReviews({
 
           {/* Comments List (Desktop: smooth scroll container matching 774px height) */}
           <div className="mt-4 sm:mt-5 flex-1 overflow-y-auto pr-1 sm:pr-2 space-y-5 sm:space-y-6 divide-y divide-gray-100 scroll-smooth">
-            {commentsList.map((comment, index) => {
+            {commentsList.length === 0 ? (
+              <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center px-4 py-12">
+                <div className="w-14 h-14 rounded-full bg-[#FFF8ED] border border-[#DE7423]/30 flex items-center justify-center text-[#DE7423] mb-3">
+                  <FiMessageSquare size={24} />
+                </div>
+                <h4 className="text-[17px] font-bold text-[#083952]">
+                  No reviews yet
+                </h4>
+                <p className="text-[13px] text-gray-500 mt-1.5 max-w-sm leading-relaxed">
+                  There are no reviews for this excursion yet. Be the first to share your experience!
+                </p>
+              </div>
+            ) : (
+              commentsList.map((comment, index) => {
               // On mobile, show only up to visibleCountMobile unless expanded
               const isHiddenOnMobile = index >= visibleCountMobile;
 
@@ -461,7 +444,8 @@ export function GroupDetailsReviews({
                   </div>
                 </div>
               );
-            })}
+            })
+          )}
           </div>
 
           {/* Mobile "View More" toggle button */}

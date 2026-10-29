@@ -115,16 +115,41 @@ async function fetchAvailabilityDays(
     return [];
   }
 }
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export async function resolveGroupExcursionId(
+  idOrSlug: string,
+  lang: string = "en"
+): Promise<string> {
+  if (UUID_REGEX.test(idOrSlug)) {
+    return idOrSlug;
+  }
+  try {
+    const { data } = await apiClient.get("/group-excursions", {
+      params: { lang, pageSize: 100 },
+    });
+    const payload = unwrap<{ items?: Array<{ id: string; slug: string }> }>(data);
+    const items = payload?.items || (Array.isArray(payload) ? payload : []);
+    const match = items.find((item) => item.slug === idOrSlug);
+    return match?.id || idOrSlug;
+  } catch {
+    return idOrSlug;
+  }
+}
+
 /**
- * Fetches complete group excursion data by ID:
+ * Fetches complete group excursion data by ID or slug:
  * excursion (required) + details + reviews (both optional, fetched in parallel).
  * Throws when the excursion itself cannot be loaded so query error states work.
  */
 export async function getGroupExcursionFullDetails(
-  excursionId: string,
+  idOrSlug: string,
   lang: string = "en",
   currency: string = "USD"
 ): Promise<GroupExcursionFullDetail> {
+  const excursionId = await resolveGroupExcursionId(idOrSlug, lang);
+
   // TODO: switch to the public endpoint once the backend exposes
   // GET /excursions/{id}. Verified on 2026-10-26: /excursions/{id} returns 404
   // while /admin/excursions/{id} serves the full payload (see PromptsUi/groupDataSingle.md).
@@ -158,18 +183,18 @@ export async function getGroupExcursionFullDetails(
   });
 
   const curatedStars = Number.parseFloat(excursion.stars);
-  const averageRating = hasFullReviewSet
-    ? totalRating / reviews.length
-    : Number.isFinite(curatedStars)
-      ? curatedStars
+  const averageRating =
+    totalCount > 0 && reviews.length > 0
+      ? totalRating / reviews.length
       : 0;
 
   const ratingDistribution = [5, 4, 3, 2, 1].map((star) => ({
     star,
     count: ratingCounts[star] || 0,
-    percentage: hasFullReviewSet
-      ? ((ratingCounts[star] || 0) / reviews.length) * 100
-      : 0,
+    percentage:
+      totalCount > 0 && reviews.length > 0
+        ? ((ratingCounts[star] || 0) / reviews.length) * 100
+        : 0,
   }));
 
   return {

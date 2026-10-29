@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { FiPlusCircle, FiCheck } from "react-icons/fi";
 import { PrivateExtraService } from "../types";
+import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 
 interface PrivateDetailsExtraServicesProps {
   services: PrivateExtraService[];
@@ -23,7 +24,7 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
 
   const images = service.images && service.images.length > 0
     ? service.images
-    : ["/PrivateExcursions/Privatedetails/45b0b868bae72d131ea34e72a1637a1b32122dac.png"];
+    : [PRIVATE_EXCURSION_FALLBACK_IMAGE];
 
   const handlePrevImage = () => {
     setActiveImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));

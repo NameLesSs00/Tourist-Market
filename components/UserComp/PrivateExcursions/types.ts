@@ -1,3 +1,5 @@
+import type { ExcursionAvailabilityDay } from "@/models/excursionAvailability";
+
 export interface PrivateExcursionPriceItem {
   currencyCode: string;
   adultPrice: number;
@@ -111,5 +113,7 @@ export interface PrivateExcursionDetail extends PrivateExcursion {
   attractions: PrivateAttraction[];
   extraServices: PrivateExtraService[];
   vehicles: VehicleOption[];
+  availabilityDays?: ExcursionAvailabilityDay[];
+  availability?: string;
 }
 

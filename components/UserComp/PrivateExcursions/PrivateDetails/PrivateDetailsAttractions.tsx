@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { PrivateAttraction } from "../types";
+import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 
 interface PrivateDetailsAttractionsProps {
   attractions: PrivateAttraction[];
@@ -29,7 +30,7 @@ function AttractionCard({
 
   const images = attraction.images && attraction.images.length > 0
     ? attraction.images
-    : ["/PrivateExcursions/Privatedetails/7b777cbdc9da0fa5b151e67b42e2d3da14ee38aa.png"];
+    : [PRIVATE_EXCURSION_FALLBACK_IMAGE];
 
   const handlePrevImage = () => {
     setActiveImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -154,7 +155,7 @@ function AttractionCard({
               onClick={() => setIsExpanded(!isExpanded)}
               className="text-[#155F98] text-[14px] font-semibold mt-2 inline-flex items-center gap-1 hover:underline cursor-pointer"
             >
-              {isExpanded ? "Read less ⌃" : "Read more ⌵"}
+              {isExpanded ? "Read less -" : "Read more -"}
             </button>
           </div>
 
@@ -234,8 +235,11 @@ export function PrivateDetailsAttractions({
   const canSelectMore = selectedIds.length < maxAttractions;
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl shadow-sm">
-      {/* ─── ORANGE HEADER BANNER ─── */}
+    <div
+      id="private-attractions-section"
+      className="w-full overflow-hidden rounded-2xl shadow-sm scroll-mt-28"
+    >
+      {/* --- ORANGE HEADER BANNER --- */}
       <div className="bg-[#DE7423] px-6 sm:px-8 py-4 flex items-center justify-between text-white rounded-t-2xl">
         <div className="flex items-center gap-2.5">
           <svg
@@ -260,7 +264,7 @@ export function PrivateDetailsAttractions({
         </span>
       </div>
 
-      {/* ─── ATTRACTION CARDS CONTAINER ─── */}
+      {/* --- ATTRACTION CARDS CONTAINER --- */}
       <div className="bg-[#FFF8ED] p-4 sm:p-6 space-y-6 rounded-b-2xl border-x border-b border-[#DE7423]/30">
         {attractions.map((attraction) => {
           const isSelected = selectedIds.includes(attraction.id);

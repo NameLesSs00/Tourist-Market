@@ -12,9 +12,14 @@ export const PRIVATE_BOOKING_STATUS_LABELS: Record<PrivateBookingStatus, string>
   [PrivateBookingStatus.Cancelled]: "Cancelled",
 };
 
-export const PRIVATE_PAYMENT_METHOD_LABELS: Record<number, string> = {
-  1: "Cash on Arrival",
-  2: "Credit Card / Online",
+export enum PrivatePaymentMethod {
+  CashOnArrival = 1,
+  WhatsAppDirect = 2,
+}
+
+export const PRIVATE_PAYMENT_METHOD_LABELS: Record<PrivatePaymentMethod | number, string> = {
+  [PrivatePaymentMethod.CashOnArrival]: "Cash on Arrival",
+  [PrivatePaymentMethod.WhatsAppDirect]: "WhatsApp Direct",
 };
 
 export interface PrivateBookingSelectedAttraction {
