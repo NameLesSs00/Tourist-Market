@@ -49,7 +49,7 @@ export function HeroContent({ dict, currentLocale }: HeroContentProps) {
 
         {/* Explore Services Button */}
         <Link
-          href={`/${currentLocale}/services`}
+          href={`/${currentLocale}/services/tourist`}
           className="inline-flex items-center justify-center gap-2.5 xl:gap-3 rounded-[14px] bg-[#D48C28] px-5 py-2 xl:px-7 font-['Poppins'] text-[16px] xl:text-[19px] font-medium leading-[38px] xl:leading-[42px] text-white shadow-md transition-colors hover:bg-[#B9741A] focus:outline-none"
         >
           <Image

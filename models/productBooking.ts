@@ -26,8 +26,11 @@ export interface ProductBookingItem {
   customerName: string;
   phoneNumber: string;
   email: string;
+  countryId?: string;
   hotelName: string;
+  roomNo?: string;
   address: string;
+  communicationMethod?: string;
   notes: string;
   bookingDate: string;
   status: BookingStatus;
@@ -73,8 +76,11 @@ export interface CreateProductBookingRequest {
   customerName: string;
   phoneNumber: string;
   email: string;
+  countryId?: string;
   hotelName: string;
+  roomNo: string;
   address: string;
+  communicationMethod?: string;
   notes?: string;
   items: CreateProductBookingItemRequest[];
 }

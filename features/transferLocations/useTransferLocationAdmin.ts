@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   createTransferFromLocation,
   createTransferToLocation,
@@ -49,12 +50,7 @@ export function useCreateTransferFromLocationMutation() {
       toast.success("Pickup location created successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to create pickup location."
-          : "Failed to create pickup location.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to create pickup location."));
     },
   });
 }
@@ -77,12 +73,7 @@ export function useUpdateTransferFromLocationMutation() {
       toast.success("Pickup location updated successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to update pickup location."
-          : "Failed to update pickup location.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to update pickup location."));
     },
   });
 }
@@ -96,12 +87,7 @@ export function useDeleteTransferFromLocationMutation() {
       toast.success("Pickup location deleted successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to delete pickup location."
-          : "Failed to delete pickup location.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to delete pickup location."));
     },
   });
 }
@@ -138,12 +124,7 @@ export function useCreateTransferToLocationMutation() {
       toast.success("Destination location created successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to create destination location."
-          : "Failed to create destination location.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to create destination location."));
     },
   });
 }
@@ -166,12 +147,7 @@ export function useUpdateTransferToLocationMutation() {
       toast.success("Destination location updated successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to update destination location."
-          : "Failed to update destination location.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to update destination location."));
     },
   });
 }
@@ -185,12 +161,7 @@ export function useDeleteTransferToLocationMutation() {
       toast.success("Destination location deleted successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to delete destination location."
-          : "Failed to delete destination location.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to delete destination location."));
     },
   });
 }

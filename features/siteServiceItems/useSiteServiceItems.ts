@@ -1,3 +1,4 @@
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -112,8 +113,13 @@ export function useCreateSiteServiceSubItemMutation() {
       if (newGalleryFiles && newGalleryFiles.length > 0 && createdId) {
         try {
           await uploadSiteServiceItemImages(createdId, newGalleryFiles);
-        } catch {
-          toast.warning("Item created, but gallery upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Item created, but gallery image upload failed."
+            )
+          );
         }
       }
 
@@ -123,12 +129,8 @@ export function useCreateSiteServiceSubItemMutation() {
       toast.success("Site service item created successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "site-service-items"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to create site service item.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to create site service item."));
     },
   });
 }
@@ -165,8 +167,13 @@ export function useUpdateSiteServiceSubItemMutation() {
       if (newGalleryFiles && newGalleryFiles.length > 0) {
         try {
           await uploadSiteServiceItemImages(id, newGalleryFiles);
-        } catch {
-          toast.warning("Item updated, but new gallery upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Item updated, but gallery image upload failed."
+            )
+          );
         }
       }
 
@@ -179,12 +186,8 @@ export function useUpdateSiteServiceSubItemMutation() {
         queryKey: ["admin", "site-service-item-localized", variables.id],
       });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to update site service item.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to update site service item."));
     },
   });
 }
@@ -203,12 +206,8 @@ export function useDeleteSiteServiceSubItemMutation() {
       toast.success("Site service item deleted successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "site-service-items"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to delete site service item.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to delete site service item."));
     },
   });
 }

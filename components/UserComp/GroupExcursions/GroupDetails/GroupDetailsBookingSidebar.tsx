@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { GroupExcursionDetail } from "../types";
+import { NeedHelpCard } from "@/components/UserComp/Shared/NeedHelpCard";
 
 interface GroupDetailsBookingSidebarProps {
   detail: GroupExcursionDetail;
@@ -196,64 +197,7 @@ export function GroupDetailsBookingSidebar({
       </div>
 
       {/* 2. Need Help Section Card */}
-      <div className="w-full bg-[#FFFFFF] rounded-[10px] border-[0.5px] border-[#888888] p-4 sm:p-5">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2.5">
-            <svg className="w-7 h-7 text-[#124885]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3" />
-            </svg>
-            <div>
-              <h4 className="font-poppins text-base font-bold text-[#124885]">
-                Need Help ?
-              </h4>
-              <p className="font-poppins text-xs text-[#083043]">
-                contact us for Help ?
-              </p>
-            </div>
-          </div>
-          <span className="text-[#124885] font-bold text-lg">&gt;</span>
-        </div>
-
-        {/* Action Contact Buttons */}
-        <div className="space-y-2.5">
-          {/* WhatsApp */}
-          <a
-            href="https://wa.me/2001289494715"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-2.5 px-4 bg-[#17DB55] hover:opacity-95 text-white font-poppins text-sm font-semibold rounded-[8px] flex items-center justify-center gap-2 transition cursor-pointer"
-          >
-            <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.541 1.944.825 2.791.825 3.181 0 5.767-2.586 5.768-5.766 0-3.18-2.587-5.766-5.768-5.766zm9.969 5.766c0 5.485-4.484 9.969-9.969 9.969-1.748 0-3.414-.46-4.887-1.282l-5.644 1.479 1.506-5.508c-.908-1.523-1.406-3.29-1.406-5.127 0-5.485 4.484-9.969 9.969-9.969 5.485 0 9.969 4.484 9.969 9.969z" />
-            </svg>
-            <span>WhatsApp</span>
-          </a>
-
-          {/* Telegram */}
-          <a
-            href="https://t.me"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-2.5 px-4 bg-[#0E4A68] hover:opacity-95 text-white font-poppins text-sm font-semibold rounded-[8px] flex items-center justify-center gap-2 transition cursor-pointer"
-          >
-            <svg className="w-5 h-5 fill-white" viewBox="0 0 24 24">
-              <path d="m20.665 3.717-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l-.313 4.674c.459 0 .661-.21.918-.458l2.204-2.143 4.582 3.385c.845.466 1.455.226 1.666-.783l3.008-14.167c.309-1.238-.472-1.8-1.971-1.475z" />
-            </svg>
-            <span>Telegram</span>
-          </a>
-
-          {/* Viber */}
-          <a
-            href="viber://chat"
-            className="w-full py-2.5 px-4 bg-[#F4F4F4] hover:bg-[#EBEBEB] text-[#444444] border border-[#DDD] font-poppins text-sm font-semibold rounded-[8px] flex items-center justify-center gap-2 transition cursor-pointer"
-          >
-            <svg className="w-5 h-5 fill-[#7360F2]" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.09-1.34C8.54 21.52 10.22 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.57 0-3.04-.43-4.3-1.18l-.31-.18-3.02.8.81-2.95-.2-.32C4.38 14.93 4 13.51 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8-3.59 8-8 8z" />
-            </svg>
-            <span>Viber</span>
-          </a>
-        </div>
-      </div>
+      <NeedHelpCard />
     </aside>
   );
 }

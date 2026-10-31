@@ -1,132 +1,86 @@
 "use client";
 
 import React from "react";
+import type { ProductKeyItem } from "@/models/product";
 
-export function ProductDetailsDescription() {
+interface ProductDetailsDescriptionProps {
+  title?: string;
+  subtitle?: string;
+  keys?: ProductKeyItem[];
+}
+
+export function ProductDetailsDescription({
+  title = "Product Overview",
+  subtitle,
+  keys = [],
+}: ProductDetailsDescriptionProps) {
+  const hasKeys = Array.isArray(keys) && keys.length > 0;
+
   return (
     <div
-      className="w-full p-6 sm:p-8 font-poppins select-none shadow-sm"
+      className="w-full p-6 sm:p-8 md:p-10 font-poppins select-none shadow-xs"
       style={{
         background: "#FFFFFF",
-        border: "0.8px solid #BBBBBB",
-        borderRadius: "10px",
+        border: "0.8px solid #E2E8F0",
+        borderRadius: "16px",
       }}
     >
-      {/* ─── Main Title ─── */}
-      <h3 className="text-[22px] sm:text-[26px] md:text-[28px] font-bold text-[#0E4A68] tracking-tight mb-6">
-        Pineapple: The Tropical Powerhouse
-      </h3>
+      {/* ─── Main Title & Subtitle ─── */}
+      <div className="mb-6 sm:mb-8 space-y-2.5">
+        <h3 className="text-[26px] sm:text-[30px] md:text-[34px] font-bold text-[#0E4A68] tracking-tight">
+          {title}
+        </h3>
 
-      {/* ─── Subsections ─── */}
-      <div className="flex flex-col gap-6 text-[14px] sm:text-[15px] leading-relaxed text-[#333333]">
-        {/* Origin & Flavor */}
-        <div>
-          <h4 className="font-bold text-[#0E4A68] text-[16px] sm:text-[17px] mb-2">
-            Origin & Flavor
-          </h4>
-          <ul className="flex flex-col gap-1.5 pl-2">
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">
-                  A Tropical Gem:
-                </strong>{" "}
-                Native to South America, now flourishing in Hawaii, Southeast Asia,
-                and Africa.
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">
-                  Taste Profile:
-                </strong>{" "}
-                Renowned for its iconic balance of sweet and tangy flavors.
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        {/* Nutritional Profile */}
-        <div>
-          <h4 className="font-bold text-[#0E4A68] text-[16px] sm:text-[17px] mb-2">
-            Nutritional Profile
-          </h4>
-          <ul className="flex flex-col gap-1.5 pl-2">
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">Vitamins:</strong>{" "}
-                Rich in Vitamin C, A, and Manganese.
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">
-                  Protection:
-                </strong>{" "}
-                Loaded with antioxidants that combat inflammation and disease.
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        {/* Key Health Benefits */}
-        <div>
-          <h4 className="font-bold text-[#0E4A68] text-[16px] sm:text-[17px] mb-2">
-            Key Health Benefits
-          </h4>
-          <ul className="flex flex-col gap-1.5 pl-2">
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">
-                  Digestion Hero:
-                </strong>{" "}
-                Contains Bromelain, a unique enzyme that breaks down proteins and
-                improves gut health.
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">
-                  Anti-Inflammatory:
-                </strong>{" "}
-                Helps reduce bodily swelling and promotes healing.
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        {/* Versatile Uses */}
-        <div>
-          <h4 className="font-bold text-[#0E4A68] text-[16px] sm:text-[17px] mb-2">
-            Versatile Uses
-          </h4>
-          <ul className="flex flex-col gap-1.5 pl-2">
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">Culinary:</strong>{" "}
-                Enjoyed fresh, juiced, or in savory dishes like fried rice and
-                marinades.
-              </span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-[#0E4A68] font-bold">•</span>
-              <span>
-                <strong className="font-semibold text-[#0E4A68]">
-                  Beyond the Kitchen:
-                </strong>{" "}
-                Used in skincare for brightening effects and as a natural meat
-                tenderizer due to its enzymatic properties.
-              </span>
-            </li>
-          </ul>
-        </div>
+        {subtitle && subtitle !== title && (
+          <p className="text-[16px] sm:text-[17px] text-[#64748B] font-medium leading-relaxed">
+            {subtitle}
+          </p>
+        )}
       </div>
+
+      {/* ─── Dynamic Sections (Title then Description) ─── */}
+      {hasKeys ? (
+        <div className="flex flex-col gap-7 sm:gap-9">
+          {keys.map((keyItem, index) => {
+            const values = keyItem.values || [];
+            return (
+              <div
+                key={`spec-key-${keyItem.id || index}`}
+                className="space-y-3"
+              >
+                {/* Section Title (Key) */}
+                <h4 className="text-[20px] sm:text-[22px] md:text-[24px] font-bold text-[#0E4A68] tracking-tight">
+                  {keyItem.name}
+                </h4>
+
+                {/* Section Description (Values) */}
+                <div className="space-y-2.5 text-[16px] sm:text-[17px] md:text-[18px] leading-relaxed text-[#334155]">
+                  {values.length > 0 ? (
+                    values.map((v, valIdx) => (
+                      <p
+                        key={`spec-val-${v.id || valIdx}`}
+                        className="whitespace-pre-line"
+                      >
+                        {v.value}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="text-[#94A3B8] italic">No description provided.</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        /* Fallback when no dynamic keys exist yet */
+        <div className="text-[16px] sm:text-[17px] leading-relaxed text-[#475569]">
+          <p>
+            {subtitle ||
+              "Authentic premium product delivered straight to your hotel room with Egypt Tourist Market."}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -6,6 +6,10 @@ import { FiPlus, FiUploadCloud, FiX } from "react-icons/fi";
 import { toast } from "sonner";
 import type { SiteServiceItemImage } from "@/models/siteServiceItem";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import {
+  ACCEPT_IMAGE_TYPES,
+  validateImageFile,
+} from "@/shared/utils/imageValidation";
 
 interface SiteServiceItemGalleryManagerProps {
   existingGallery: SiteServiceItemImage[];
@@ -31,12 +35,9 @@ export function SiteServiceItemGalleryManager({
     const validFiles: File[] = [];
 
     for (const file of files) {
-      if (!file.type.startsWith("image/")) {
-        toast.error(`${file.name} is not an image.`);
-        continue;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 5MB limit.`);
+      const err = validateImageFile(file);
+      if (err) {
+        toast.error(err);
         continue;
       }
       validFiles.push(file);
@@ -56,12 +57,9 @@ export function SiteServiceItemGalleryManager({
 
     const validFiles: File[] = [];
     for (const file of files) {
-      if (!file.type.startsWith("image/")) {
-        toast.error(`${file.name} is not an image.`);
-        continue;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 5MB limit.`);
+      const err = validateImageFile(file);
+      if (err) {
+        toast.error(err);
         continue;
       }
       validFiles.push(file);
@@ -99,7 +97,7 @@ export function SiteServiceItemGalleryManager({
         ref={galleryInputRef}
         type="file"
         multiple
-        accept="image/png,image/jpeg,image/webp,image/jpg"
+        accept={ACCEPT_IMAGE_TYPES}
         onChange={handleGalleryChange}
         className="hidden"
       />

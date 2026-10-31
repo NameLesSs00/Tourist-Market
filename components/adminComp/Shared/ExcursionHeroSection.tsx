@@ -3,10 +3,12 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { FiLoader, FiTrash2, FiUploadCloud } from "react-icons/fi";
+import { toast } from "sonner";
 import {
   useDeleteExcursionHeroImageMutation,
   useUploadExcursionHeroImageMutation,
 } from "@/features/privateExcursions/useExcursionImagesAdmin";
+import { ACCEPT_IMAGE_TYPES, validateImageFile } from "@/shared/utils/imageValidation";
 
 interface ExcursionHeroSectionProps {
   excursionId?: string;
@@ -28,6 +30,14 @@ export function ExcursionHeroSection({
   const handleHeroUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !excursionId) return;
+
+    const err = validateImageFile(file, 5 * 1024 * 1024);
+    if (err) {
+      toast.error(err);
+      if (heroInputRef.current) heroInputRef.current.value = "";
+      return;
+    }
+
     const res = await uploadHeroMutation.mutateAsync({ excursionId, file });
     if (res?.heroImageUrl) onHeroUrlChange(res.heroImageUrl);
     if (heroInputRef.current) heroInputRef.current.value = "";
@@ -43,7 +53,7 @@ export function ExcursionHeroSection({
     <div className="rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-4 space-y-3">
       <div className="flex items-center justify-between">
         <h4 className="text-xs font-semibold uppercase tracking-wider text-[#0E4A68]">Hero Banner Image</h4>
-        <input ref={heroInputRef} type="file" accept="image/*" className="hidden" id="hero-img-input" onChange={handleHeroUpload} />
+        <input ref={heroInputRef} type="file" accept={ACCEPT_IMAGE_TYPES} className="hidden" id="hero-img-input" onChange={handleHeroUpload} />
         <label htmlFor="hero-img-input" className="inline-flex items-center gap-1.5 rounded-lg bg-[#0E4A68] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#0A374E] cursor-pointer">
           {uploadHeroMutation.isPending ? <FiLoader className="h-3.5 w-3.5 animate-spin" /> : <FiUploadCloud className="h-3.5 w-3.5" />}
           <span>{heroUrl ? "Replace Hero" : "Upload Hero"}</span>

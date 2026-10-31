@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { FiImage, FiLoader, FiStar, FiTrash2, FiUploadCloud } from "react-icons/fi";
+import { toast } from "sonner";
 import { SlidePanel } from "@/components/adminComp/Shared/SlidePanel";
 import {
   useDeleteExcursionImageMutation,
@@ -9,6 +10,7 @@ import {
   useUploadExcursionImageMutation,
 } from "@/features/privateExcursions/useExcursionImagesAdmin";
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
+import { ACCEPT_IMAGE_TYPES, validateImageFile } from "@/shared/utils/imageValidation";
 
 interface ExcursionImagesPanelProps {
   open: boolean;
@@ -35,11 +37,22 @@ export function ExcursionImagesPanel({
     const file = e.target.files?.[0];
     if (!file || !excursion) return;
 
-    await uploadMutation.mutateAsync({
-      excursionId: excursion.id,
-      file,
-      isPrimary,
-    });
+    const err = validateImageFile(file, 5 * 1024 * 1024);
+    if (err) {
+      toast.error(err);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    try {
+      await uploadMutation.mutateAsync({
+        excursionId: excursion.id,
+        file,
+        isPrimary,
+      });
+    } catch {
+      // Error handled by mutation onError
+    }
 
     if (fileInputRef.current) fileInputRef.current.value = "";
     setIsPrimary(false);
@@ -76,7 +89,7 @@ export function ExcursionImagesPanel({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept={ACCEPT_IMAGE_TYPES}
             className="hidden"
             id="excursion-img-upload"
             disabled={uploadMutation.isPending}

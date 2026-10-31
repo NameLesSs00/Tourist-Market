@@ -84,12 +84,22 @@ export function useCreatePrivateExcursionMutation() {
 
       if (createdId) {
         if (attractionIds && attractionIds.length > 0) {
-          try { await assignPrivateExcursionAttractions(createdId, attractionIds); }
-          catch (e) { console.error(e); toast.error("Excursion created, but assigning attractions failed."); }
+          try {
+            await assignPrivateExcursionAttractions(createdId, attractionIds);
+          } catch (e) {
+            toast.error(
+              extractErrorMessage(e, "Excursion created, but assigning attractions failed.")
+            );
+          }
         }
         if (serviceIds && serviceIds.length > 0) {
-          try { await assignPrivateExcursionServices(createdId, serviceIds); }
-          catch (e) { console.error(e); toast.error("Excursion created, but assigning extra services failed."); }
+          try {
+            await assignPrivateExcursionServices(createdId, serviceIds);
+          } catch (e) {
+            toast.error(
+              extractErrorMessage(e, "Excursion created, but assigning extra services failed.")
+            );
+          }
         }
       }
       return res;
@@ -106,7 +116,12 @@ export function useUpdatePrivateExcursionMutation() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({
-      id, body, attractionIds, serviceIds, previousAttractionIds, previousServiceIds,
+      id,
+      body,
+      attractionIds,
+      serviceIds,
+      previousAttractionIds,
+      previousServiceIds,
     }: {
       id: string;
       body: PrivateExcursionUpsertRequest;
@@ -124,11 +139,22 @@ export function useUpdatePrivateExcursionMutation() {
         const toAdd = attractionIds.filter((aid) => !prev.includes(aid));
         const toRemove = prev.filter((aid) => !attractionIds.includes(aid));
         if (toAdd.length > 0) {
-          try { await assignPrivateExcursionAttractions(id, toAdd); }
-          catch (e) { console.error(e); toast.error("Failed to assign new attractions."); }
+          try {
+            await assignPrivateExcursionAttractions(id, toAdd);
+          } catch (e) {
+            toast.error(
+              extractErrorMessage(e, "Failed to assign new attractions.")
+            );
+          }
         }
         for (const remId of toRemove) {
-          try { await removePrivateExcursionAttraction(id, remId); } catch (e) { console.error(e); }
+          try {
+            await removePrivateExcursionAttraction(id, remId);
+          } catch (e) {
+            toast.error(
+              extractErrorMessage(e, "Failed to remove old attraction.")
+            );
+          }
         }
       }
 
@@ -138,11 +164,22 @@ export function useUpdatePrivateExcursionMutation() {
         const toAdd = serviceIds.filter((sid) => !prev.includes(sid));
         const toRemove = prev.filter((sid) => !serviceIds.includes(sid));
         if (toAdd.length > 0) {
-          try { await assignPrivateExcursionServices(id, toAdd); }
-          catch (e) { console.error(e); toast.error("Failed to assign new extra services."); }
+          try {
+            await assignPrivateExcursionServices(id, toAdd);
+          } catch (e) {
+            toast.error(
+              extractErrorMessage(e, "Failed to assign new extra services.")
+            );
+          }
         }
         for (const remId of toRemove) {
-          try { await removePrivateExcursionService(id, remId); } catch (e) { console.error(e); }
+          try {
+            await removePrivateExcursionService(id, remId);
+          } catch (e) {
+            toast.error(
+              extractErrorMessage(e, "Failed to remove old extra service.")
+            );
+          }
         }
       }
 

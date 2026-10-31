@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   getTransferBookingById,
   getTransferBookings,
@@ -13,14 +14,6 @@ export const transferBookingKeys = {
   details: () => [...transferBookingKeys.all, "detail"] as const,
   detail: (id: string) => [...transferBookingKeys.details(), id] as const,
 };
-
-function extractErrorMessage(err: unknown, fallback: string): string {
-  if (err && typeof err === "object" && "response" in err) {
-    const res = (err as { response?: { data?: { message?: string; detail?: string; title?: string } } }).response;
-    return res?.data?.detail || res?.data?.message || res?.data?.title || fallback;
-  }
-  return fallback;
-}
 
 export function useTransferBookingsQuery() {
   return useQuery({

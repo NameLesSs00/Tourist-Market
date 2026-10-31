@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   createProductSubcategory,
   deleteProductSubcategory,
@@ -63,8 +64,13 @@ export function useCreateProductSubcategoryMutation() {
       if (createdItem?.id && imageFile) {
         try {
           await uploadProductSubcategoryImage(createdItem.id, imageFile);
-        } catch {
-          toast.warning("Subcategory created, but cover image upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Subcategory created, but cover image upload failed."
+            )
+          );
         }
       }
 
@@ -75,12 +81,7 @@ export function useCreateProductSubcategoryMutation() {
       toast.success("Product subcategory created successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message || "Failed to create product subcategory."
-          : "Failed to create product subcategory.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to create product subcategory."));
     },
   });
 }
@@ -115,8 +116,13 @@ export function useUpdateProductSubcategoryMutation() {
       } else if (imageFile) {
         try {
           await uploadProductSubcategoryImage(id, imageFile);
-        } catch {
-          toast.warning("Details updated, but cover image replacement failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Details updated, but cover image replacement failed."
+            )
+          );
         }
       }
 
@@ -130,12 +136,7 @@ export function useUpdateProductSubcategoryMutation() {
       toast.success("Product subcategory updated successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message || "Failed to update product subcategory."
-          : "Failed to update product subcategory.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to update product subcategory."));
     },
   });
 }
@@ -153,12 +154,7 @@ export function useDeleteProductSubcategoryMutation() {
       toast.success("Product subcategory deleted successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message || "Failed to delete product subcategory."
-          : "Failed to delete product subcategory.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to delete product subcategory."));
     },
   });
 }
@@ -176,8 +172,8 @@ export function useReorderProductSubcategoriesMutation() {
       qc.invalidateQueries({ queryKey: ["admin", "product-subcategories"] });
       toast.success("Product subcategories reordered successfully.");
     },
-    onError: () => {
-      toast.error("Failed to reorder product subcategories.");
+    onError: (err: unknown) => {
+      toast.error(extractErrorMessage(err, "Failed to reorder product subcategories."));
     },
   });
 }

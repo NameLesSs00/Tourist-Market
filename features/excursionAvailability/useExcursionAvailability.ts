@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   deleteExcursionAvailabilityDay,
   getExcursionAvailability,
@@ -39,12 +40,7 @@ export function useUpdateWeeklyAvailabilityMutation() {
       toast.success("Weekly availability updated successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to update weekly availability."
-          : "Failed to update weekly availability.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to update weekly availability."));
     },
   });
 }
@@ -68,12 +64,7 @@ export function useUpdateExcursionAvailabilityDayMutation() {
       toast.success("Day availability updated.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to update day availability."
-          : "Failed to update day availability.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to update day availability."));
     },
   });
 }
@@ -95,12 +86,7 @@ export function useDeleteExcursionAvailabilityDayMutation() {
       toast.success("Availability record removed.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to remove availability."
-          : "Failed to remove availability.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to remove availability."));
     },
   });
 }

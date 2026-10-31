@@ -18,6 +18,7 @@ import type {
   ProductCategoryUpsertRequest,
 } from "@/models/productCategory";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { ACCEPT_IMAGE_TYPES, validateImageFile } from "@/shared/utils/imageValidation";
 
 interface ProductCategoryFormPanelProps {
   open: boolean;
@@ -118,13 +119,9 @@ export function ProductCategoryFormPanel({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please upload a valid image file (PNG, JPG, WebP).");
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image size must be less than 5MB.");
+    const err = validateImageFile(file, 5 * 1024 * 1024);
+    if (err) {
+      toast.error(err);
       return;
     }
 
@@ -314,7 +311,7 @@ export function ProductCategoryFormPanel({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/png,image/jpeg,image/webp,image/jpg"
+            accept={ACCEPT_IMAGE_TYPES}
             onChange={handleFileChange}
             className="hidden"
           />

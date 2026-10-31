@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   createExcursionService,
   deleteExcursionService,
@@ -106,16 +107,26 @@ export function useCreateExcursionServiceMutation() {
         if (heroFile) {
           try {
             await uploadExcursionServiceHero(id, heroFile);
-          } catch {
-            toast.warning("Service option created, but hero image upload failed.");
+          } catch (imageErr) {
+            toast.error(
+              extractErrorMessage(
+                imageErr,
+                "Service option created, but hero image upload failed."
+              )
+            );
           }
         }
 
         if (galleryFiles && galleryFiles.length > 0) {
           try {
             await uploadExcursionServiceImages(id, galleryFiles);
-          } catch {
-            toast.warning("Service option created, but gallery images upload failed.");
+          } catch (imageErr) {
+            toast.error(
+              extractErrorMessage(
+                imageErr,
+                "Service option created, but gallery images upload failed."
+              )
+            );
           }
         }
       }
@@ -127,12 +138,7 @@ export function useCreateExcursionServiceMutation() {
       toast.success("Excursion service option created successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message || "Failed to create service option."
-          : "Failed to create service option.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to create service option."));
     },
   });
 }
@@ -172,8 +178,13 @@ export function useUpdateExcursionServiceMutation() {
       } else if (heroFile) {
         try {
           await uploadExcursionServiceHero(id, heroFile);
-        } catch {
-          toast.warning("Details updated, but hero image replacement failed.");
+        } catch (imageErr) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Details updated, but hero image replacement failed."
+            )
+          );
         }
       }
 
@@ -190,8 +201,13 @@ export function useUpdateExcursionServiceMutation() {
       if (newGalleryFiles && newGalleryFiles.length > 0) {
         try {
           await uploadExcursionServiceImages(id, newGalleryFiles);
-        } catch {
-          toast.warning("Details updated, but gallery images upload failed.");
+        } catch (imageErr) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Details updated, but gallery images upload failed."
+            )
+          );
         }
       }
 
@@ -208,12 +224,7 @@ export function useUpdateExcursionServiceMutation() {
       toast.success("Excursion service option updated successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message || "Failed to update service option."
-          : "Failed to update service option.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to update service option."));
     },
   });
 }
@@ -231,12 +242,7 @@ export function useDeleteExcursionServiceMutation() {
       toast.success("Excursion service option deleted successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data
-              ?.message || "Failed to delete service option."
-          : "Failed to delete service option.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to delete service option."));
     },
   });
 }

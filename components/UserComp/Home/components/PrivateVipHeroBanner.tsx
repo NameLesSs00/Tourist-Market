@@ -50,6 +50,7 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             src="/homepage/privateSection/bgshpae.png"
             alt="VIP Banner Background Shape"
             fill
+            sizes="(max-width: 640px) 120px, 170px"
             priority
             className="object-fill object-right"
           />
@@ -73,6 +74,7 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
               src="/homepage/privateSection/Polygon 1 (2).png"
               alt="VIP Golden Frame"
               fill
+              sizes="(max-width: 640px) 145px, 220px"
               priority
               className="object-contain"
             />
@@ -86,6 +88,7 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
                 src="/homepage/privateSection/ship.svg"
                 alt="VIP Ship Icon"
                 fill
+                sizes="(max-width: 640px) 44px, 65px"
                 className="object-contain object-left"
               />
             </div>
@@ -158,6 +161,7 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             src="/homepage/privateSection/bgshpae.png"
             alt="VIP Banner Background Shape"
             fill
+            sizes="(max-width: 1280px) 430px, (max-width: 1536px) 500px, 600px"
             priority
             className="object-fill object-left"
           />
@@ -186,6 +190,7 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
               src="/homepage/privateSection/Polygon 1 (2).png"
               alt="VIP Golden Frame"
               fill
+              sizes="(max-width: 1280px) 260px, (max-width: 1536px) 325px, 410px"
               priority
               className="object-contain"
             />
@@ -199,6 +204,7 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
                 src="/homepage/privateSection/ship.svg"
                 alt="VIP Ship Icon"
                 fill
+                sizes="(max-width: 1280px) 70px, (max-width: 1536px) 85px, 115px"
                 className="object-contain object-left"
               />
             </div>

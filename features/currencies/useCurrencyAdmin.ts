@@ -1,3 +1,4 @@
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -51,12 +52,8 @@ export function useCreateCurrencyMutation() {
       qc.invalidateQueries({ queryKey: ["admin", "currencies"] });
       qc.invalidateQueries({ queryKey: ["currencies", "active"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to create currency.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to create currency."));
     },
   });
 }
@@ -75,12 +72,8 @@ export function useUpdateCurrencyMutation() {
       qc.invalidateQueries({ queryKey: ["admin", "currencies"] });
       qc.invalidateQueries({ queryKey: ["currencies", "active"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to update currency.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to update currency."));
     },
   });
 }
@@ -98,12 +91,8 @@ export function useDeleteCurrencyMutation() {
       qc.invalidateQueries({ queryKey: ["admin", "currencies"] });
       qc.invalidateQueries({ queryKey: ["currencies", "active"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to delete currency.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to delete currency."));
     },
   });
 }

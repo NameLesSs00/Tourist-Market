@@ -7,6 +7,21 @@ export interface ProductImage {
   productId: number;
 }
 
+/** Single value for a key in GET response */
+export interface ProductKeyValueItem {
+  id?: number;
+  value: string;
+  displayOrder?: number;
+}
+
+/** Single key specification item in GET response */
+export interface ProductKeyItem {
+  id?: number;
+  name: string; // Title
+  displayOrder?: number;
+  values: ProductKeyValueItem[]; // Description in values[0].value
+}
+
 export interface ProductListItem {
   id: number;
   title: string;
@@ -15,9 +30,25 @@ export interface ProductListItem {
   priceFor: string;
   subCategoryId: number;
   images: ProductImage[];
+  keys?: ProductKeyItem[];
 }
 
 export interface ProductDetail extends ProductListItem {}
+
+/** Value object for a key in POST/PUT request */
+export interface ProductKeyUpsertValue {
+  id?: number;
+  value: LocalizedText; // Multilingual description
+  displayOrder?: number;
+}
+
+/** Key specification item in POST/PUT request */
+export interface ProductKeyUpsertItem {
+  id?: number;
+  name: LocalizedText; // Multilingual title
+  displayOrder?: number;
+  values: ProductKeyUpsertValue[];
+}
 
 export interface ProductUpsertRequest {
   title: LocalizedText;
@@ -25,6 +56,7 @@ export interface ProductUpsertRequest {
   price: number;
   priceFor: LocalizedText;
   subCategoryId: number;
+  keys?: ProductKeyUpsertItem[];
 }
 
 export interface ProductAllLanguagesDetail {
@@ -35,6 +67,7 @@ export interface ProductAllLanguagesDetail {
   priceFor: LocalizedText;
   subCategoryId: number;
   images: ProductImage[];
+  keys?: ProductKeyUpsertItem[];
 }
 
 export interface ProductQueryParams {
@@ -78,6 +111,39 @@ export function fillMissingProductLanguages(
   const fallbackSubtitle = body.subtitle?.en?.trim() || "";
   const fallbackPriceFor = body.priceFor?.en?.trim() || "";
 
+  const sanitizedKeys: ProductKeyUpsertItem[] | undefined = body.keys?.map(
+    (key, keyIdx) => {
+      const fallbackKeyName = key.name?.en?.trim() || "";
+      const sanitizedValues: ProductKeyUpsertValue[] = (key.values || []).map(
+        (val, valIdx) => {
+          const fallbackVal = val.value?.en?.trim() || "";
+          return {
+            id: val.id && val.id > 0 ? val.id : 0,
+            displayOrder: val.displayOrder ?? valIdx + 1,
+            value: {
+              en: fallbackVal,
+              ru: val.value?.ru?.trim() || fallbackVal,
+              de: val.value?.de?.trim() || fallbackVal,
+              fr: val.value?.fr?.trim() || fallbackVal,
+            },
+          };
+        }
+      );
+
+      return {
+        id: key.id && key.id > 0 ? key.id : 0,
+        displayOrder: key.displayOrder ?? keyIdx + 1,
+        name: {
+          en: fallbackKeyName,
+          ru: key.name?.ru?.trim() || fallbackKeyName,
+          de: key.name?.de?.trim() || fallbackKeyName,
+          fr: key.name?.fr?.trim() || fallbackKeyName,
+        },
+        values: sanitizedValues,
+      };
+    }
+  );
+
   return {
     ...body,
     title: {
@@ -98,5 +164,6 @@ export function fillMissingProductLanguages(
       de: body.priceFor?.de?.trim() || fallbackPriceFor,
       fr: body.priceFor?.fr?.trim() || fallbackPriceFor,
     },
+    keys: sanitizedKeys,
   };
 }

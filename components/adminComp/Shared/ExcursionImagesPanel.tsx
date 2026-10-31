@@ -12,6 +12,8 @@ import {
 } from "@/features/privateExcursions/useExcursionImagesAdmin";
 import { ExcursionGalleryCard } from "./ExcursionGalleryCard";
 import { ExcursionHeroSection } from "./ExcursionHeroSection";
+import { ACCEPT_IMAGE_TYPES, validateImageFile } from "@/shared/utils/imageValidation";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 
 export interface ExcursionImageTarget {
   id: string;
@@ -55,35 +57,47 @@ export function ExcursionImagesPanel({ open, onClose, excursion }: ExcursionImag
   };
 
   const handleBatchGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (!files.length || !excursion) return;
+    const rawFiles = Array.from(e.target.files || []);
+    if (!rawFiles.length || !excursion) return;
     if (fileInputRef.current) fileInputRef.current.value = "";
 
-    setUploadQueue({ current: 1, total: files.length, name: files[0].name });
+    const validFiles: File[] = [];
+    for (const file of rawFiles) {
+      const err = validateImageFile(file, 5 * 1024 * 1024);
+      if (err) {
+        toast.error(err);
+        continue;
+      }
+      validFiles.push(file);
+    }
+
+    if (!validFiles.length) return;
+
+    setUploadQueue({ current: 1, total: validFiles.length, name: validFiles[0].name });
     let successCount = 0;
 
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      setUploadQueue({ current: i + 1, total: files.length, name: file.name });
+    for (let i = 0; i < validFiles.length; i++) {
+      const file = validFiles[i];
+      setUploadQueue({ current: i + 1, total: validFiles.length, name: file.name });
       try {
         const markPrimary = i === 0 && isPrimary;
         const res = await uploadGalleryMutation.mutateAsync({
           excursionId: excursion.id,
           file,
           isPrimary: markPrimary,
-          silent: files.length > 1,
+          silent: validFiles.length > 1,
         });
         if (markPrimary && res?.imageUrl) setPrimaryUrl(res.imageUrl);
         successCount++;
       } catch (err) {
-        console.error("Upload error on file:", file.name, err);
+        toast.error(extractErrorMessage(err, `Failed to upload ${file.name}`));
       }
     }
 
     setUploadQueue(null);
     setIsPrimary(false);
-    if (files.length > 1) {
-      toast.success(`Uploaded ${successCount} of ${files.length} photos.`);
+    if (validFiles.length > 1 && successCount > 0) {
+      toast.success(`Uploaded ${successCount} of ${validFiles.length} photos.`);
     }
   };
 
@@ -107,7 +121,7 @@ export function ExcursionImagesPanel({ open, onClose, excursion }: ExcursionImag
 
         {/* Gallery Multi-upload Queue Box */}
         <div className="rounded-2xl border-2 border-dashed border-[#CBD5E1] bg-[#F8FAFC] p-5 text-center transition hover:border-[#0E4A68]">
-          <input ref={fileInputRef} type="file" multiple accept="image/*" className="hidden" id="gallery-img-upload" disabled={isUploading} onChange={handleBatchGalleryUpload} />
+          <input ref={fileInputRef} type="file" multiple accept={ACCEPT_IMAGE_TYPES} className="hidden" id="gallery-img-upload" disabled={isUploading} onChange={handleBatchGalleryUpload} />
           <div className="flex flex-col items-center gap-2">
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0E4A6815] text-[#0E4A68]">
               {isUploading ? <FiLoader className="h-5 w-5 animate-spin" /> : <FiUploadCloud className="h-5 w-5" />}

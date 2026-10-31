@@ -1,102 +1,121 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { HotelDeliveriesCard, HotelProduct } from "./HotelDeliveriesCard";
+import { FiChevronDown } from "react-icons/fi";
+import { HotelDeliveriesCard, type HotelProduct } from "./HotelDeliveriesCard";
+import { useClientProductsQuery } from "@/features/products/useClientProducts";
+import { useCart } from "@/features/cart/useCart";
+import type { ProductListItem } from "@/models/product";
 
-const SAMPLE_PRODUCTS: HotelProduct[] = [
-  {
-    id: "ananas-1",
-    title: "ANANAS-PINEAPPLES",
-    price: "5.00 $/PIECE",
-    image: "/Hoteldeliveries/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "cherimoya-1",
-    title: "CHERIMOYA",
-    price: "2.00 $/500 g",
-    image: "/Hoteldeliveries/0fc7981686a3af0f6e17419f76c546a8e41aba2b.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "watermelon-1",
-    title: "WATERMELON",
-    price: "1.00 $/KG",
-    image: "/Hoteldeliveries/9d33047fd1866b5be63bb5362e19a2927aa30b36.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "ananas-2",
-    title: "ANANAS-PINEAPPLES",
-    price: "5.00 $/PIECE",
-    image: "/Hoteldeliveries/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "cherimoya-2",
-    title: "CHERIMOYA",
-    price: "2.00 $/500 g",
-    image: "/Hoteldeliveries/0fc7981686a3af0f6e17419f76c546a8e41aba2b.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "watermelon-2",
-    title: "WATERMELON",
-    price: "1.00 $/KG",
-    image: "/Hoteldeliveries/9d33047fd1866b5be63bb5362e19a2927aa30b36.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "ananas-3",
-    title: "ANANAS-PINEAPPLES",
-    price: "5.00 $/PIECE",
-    image: "/Hoteldeliveries/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "cherimoya-3",
-    title: "CHERIMOYA",
-    price: "2.00 $/500 g",
-    image: "/Hoteldeliveries/0fc7981686a3af0f6e17419f76c546a8e41aba2b.png",
-    category: "fruits-drinks",
-  },
-  {
-    id: "watermelon-3",
-    title: "WATERMELON",
-    price: "1.00 $/KG",
-    image: "/Hoteldeliveries/9d33047fd1866b5be63bb5362e19a2927aa30b36.png",
-    category: "fruits-drinks",
-  },
-];
+const PAGE_SIZE = 12;
 
 interface HotelDeliveriesProductsProps {
   locale?: string;
-  selectedCategory?: string;
+  activeSubcategoryId?: number | null;
   onToggleFilter?: () => void;
 }
 
+const SORT_OPTIONS: { label: string; value?: string }[] = [
+  { label: "Popular", value: undefined },
+  { label: "Price: Low to High", value: "priceAsc" },
+  { label: "Price: High to Low", value: "priceDesc" },
+  { label: "Newest", value: "newest" },
+];
+
 export function HotelDeliveriesProducts({
   locale = "en",
-  selectedCategory = "all",
+  activeSubcategoryId = null,
   onToggleFilter,
 }: HotelDeliveriesProductsProps) {
+  const { addItem } = useCart();
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("Popular");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const sortRef = useRef<HTMLDivElement>(null);
 
-  const filteredProducts = SAMPLE_PRODUCTS.filter((item) => {
-    const matchesSearch = item.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
-    const matchesCategory =
-      !selectedCategory ||
-      selectedCategory === "all" ||
-      item.category === selectedCategory ||
-      (selectedCategory.startsWith("fd-") && item.category === "fruits-drinks");
-    return matchesSearch && matchesCategory;
+  // Close sort dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+      setCurrentPage(1);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Reset page when subcategory or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeSubcategoryId, selectedSort]);
+
+  // Query real products from backend API
+  const { data, isLoading } = useClientProductsQuery({
+    search: debouncedSearch.trim() || undefined,
+    subCategoryId:
+      activeSubcategoryId && activeSubcategoryId > 0
+        ? activeSubcategoryId
+        : undefined,
+    sortBy: selectedSort.value,
+    language: locale,
+    pageNumber: currentPage,
+    pageSize: PAGE_SIZE,
   });
+
+  const products = data?.items || [];
+  const totalPages = data?.totalPages || 1;
+  const totalCount = data?.totalCount || 0;
+
+  // Apply sorting client-side as well to guarantee immediate & consistent ordering
+  const sortedProducts = useMemo(() => {
+    const list = [...products];
+    if (selectedSort.value === "priceAsc") {
+      return list.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+    }
+    if (selectedSort.value === "priceDesc") {
+      return list.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+    }
+    if (selectedSort.value === "newest") {
+      return list.sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
+    }
+    return list;
+  }, [products, selectedSort.value]);
+
+  // Generate pagination buttons
+  const paginationRange = useMemo(() => {
+    const delta = 1;
+    const range: number[] = [];
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
+      range.push(i);
+    }
+    if (currentPage - delta > 2) {
+      range.unshift(-1);
+    }
+    if (currentPage + delta < totalPages - 1) {
+      range.push(-2);
+    }
+    range.unshift(1);
+    if (totalPages > 1) {
+      range.push(totalPages);
+    }
+    return range;
+  }, [currentPage, totalPages]);
 
   return (
     <div className="flex-1 font-poppins select-none w-full">
@@ -111,7 +130,7 @@ export function HotelDeliveriesProducts({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="SEARCH"
-              className="w-[100px] xs:w-[125px] sm:w-[220px] md:w-[260px] pl-1 sm:pl-3.5 pr-6 sm:pr-9 py-1 sm:py-1.5 text-[11px] sm:text-[13px] tracking-wide placeholder:text-[#888888] placeholder:tracking-wider outline-none text-[#555555] bg-transparent border-b border-[#CCCCCC] sm:border sm:border-[rgba(0,0,0,0.3)] rounded-none sm:rounded-[5px]"
+              className="w-[110px] xs:w-[130px] sm:w-[220px] md:w-[260px] pl-1 sm:pl-3.5 pr-6 sm:pr-9 py-1 sm:py-1.5 text-[11px] sm:text-[13px] tracking-wide placeholder:text-[#888888] placeholder:tracking-wider outline-none text-[#555555] bg-transparent border-b border-[#CCCCCC] sm:border sm:border-[rgba(0,0,0,0.3)] rounded-none sm:rounded-[5px] focus:border-[#0E4A68]"
             />
             <span className="absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#888888]">
               <svg
@@ -131,7 +150,7 @@ export function HotelDeliveriesProducts({
             </span>
           </div>
 
-          {/* Mobile Filter Button (matches responsivedeliver.png) */}
+          {/* Mobile Filter Button */}
           <button
             type="button"
             onClick={onToggleFilter}
@@ -157,118 +176,171 @@ export function HotelDeliveriesProducts({
             Sort by :
           </span>
 
-          <div className="relative">
+          <div ref={sortRef} className="relative">
             <button
               type="button"
               onClick={() => setIsSortOpen((prev) => !prev)}
               className="flex items-center justify-center sm:justify-between gap-1.5 sm:gap-3 px-2 sm:px-4 py-1 sm:py-1.5 text-[11px] sm:text-[14px] text-[#555555] cursor-pointer min-w-[70px] sm:min-w-[140px] bg-white border border-[#888888] sm:border-[0.5px] rounded-[4px] sm:rounded-[5px] hover:border-[#0E4A68] transition-colors"
             >
-              <span>{sortBy}</span>
-              <span className="text-[8px] sm:text-[10px] text-[#888888]">▼</span>
+              <span>{selectedSort.label}</span>
+              <FiChevronDown
+                size={14}
+                className={`text-[#888888] transition-transform duration-200 ${
+                  isSortOpen ? "rotate-180" : "rotate-0"
+                }`}
+              />
             </button>
 
             {isSortOpen && (
               <div className="absolute right-0 sm:left-0 top-full mt-1 w-36 sm:w-44 bg-white border border-[#888888]/40 rounded-[5px] shadow-lg z-30 py-1">
-                {["Popular", "Price: Low to High", "Price: High to Low", "Newest"].map(
-                  (opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => {
-                        setSortBy(opt);
-                        setIsSortOpen(false);
-                      }}
-                      className="w-full text-left px-3 py-1.5 text-[12px] sm:text-[13px] text-[#555555] hover:bg-[#FFF9F0] hover:text-[#0E4A68] transition-colors cursor-pointer"
-                    >
-                      {opt}
-                    </button>
-                  )
-                )}
+                {SORT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.label}
+                    type="button"
+                    onClick={() => {
+                      setSelectedSort(opt);
+                      setIsSortOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 text-[12px] sm:text-[13px] transition-colors cursor-pointer ${
+                      selectedSort.label === opt.label
+                        ? "bg-[#FFF9F0] text-[#0E4A68] font-semibold"
+                        : "text-[#555555] hover:bg-[#FFF9F0] hover:text-[#0E4A68]"
+                    }`}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* ─── Product Grid: 2 columns on mobile/tablet, 3 columns on desktop (matches responsivedeliver.png) ─── */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6 lg:gap-7 xl:gap-8">
-        {filteredProducts.map((prod) => (
-          <HotelDeliveriesCard
-            key={prod.id}
-            product={prod}
-            locale={locale}
-          />
-        ))}
-      </div>
-
-      {/* ─── Pagination ─── */}
-      <div className="flex items-center justify-center gap-3 mt-14 mb-8">
-        {/* Page 1 (Active) */}
-        <button
-          type="button"
-          onClick={() => setCurrentPage(1)}
-          className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all cursor-pointer ${
-            currentPage === 1
-              ? "bg-[#0E4A68] text-white shadow-sm"
-              : "border border-[#888888] text-[#555555] hover:border-[#0E4A68]"
-          }`}
-        >
-          1
-        </button>
-
-        {/* Page 2 */}
-        <button
-          type="button"
-          onClick={() => setCurrentPage(2)}
-          className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all cursor-pointer ${
-            currentPage === 2
-              ? "bg-[#0E4A68] text-white shadow-sm"
-              : "border border-[#888888] text-[#555555] hover:border-[#0E4A68]"
-          }`}
-        >
-          2
-        </button>
-
-        {/* Page 3 */}
-        <button
-          type="button"
-          onClick={() => setCurrentPage(3)}
-          className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all cursor-pointer ${
-            currentPage === 3
-              ? "bg-[#0E4A68] text-white shadow-sm"
-              : "border border-[#888888] text-[#555555] hover:border-[#0E4A68]"
-          }`}
-        >
-          3
-        </button>
-
-        {/* Ellipsis button */}
-        <div className="relative w-8 sm:w-10 h-7 sm:h-8 flex items-center justify-center">
-          <Image
-            src="/Hoteldeliveries/L-Move.svg"
-            alt="More pages"
-            width={38}
-            height={30}
-            className="object-contain"
-          />
+      {/* ─── Loading Skeletons ─── */}
+      {isLoading && (
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6 lg:gap-7 xl:gap-8">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={`prod-skel-${i}`} className="flex flex-col gap-2">
+              <div className="aspect-square w-full rounded-[5px] bg-[#0E4A68]/10 animate-pulse" />
+              <div className="h-4 w-3/4 rounded bg-[#0E4A68]/10 animate-pulse mt-1" />
+              <div className="h-4 w-1/2 rounded bg-[#0E4A68]/10 animate-pulse" />
+            </div>
+          ))}
         </div>
+      )}
 
-        {/* Next page arrow button */}
-        <button
-          type="button"
-          onClick={() => setCurrentPage((p) => Math.min(p + 1, 3))}
-          aria-label="Next page"
-          className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center hover:opacity-85 transition-opacity cursor-pointer active:scale-95"
-        >
-          <Image
-            src="/Hoteldeliveries/L-Move (1).svg"
-            alt="Next page"
-            width={32}
-            height={32}
-            className="object-contain"
-          />
-        </button>
-      </div>
+      {/* ─── Empty State ─── */}
+      {!isLoading && products.length === 0 && (
+        <div className="rounded-xl border border-dashed border-[#CBD5E1] p-12 text-center my-8 bg-white/50">
+          <p className="text-sm font-semibold text-[#0E4A68] mb-1">
+            No products found
+          </p>
+          <p className="text-xs text-[#64748B]">
+            {debouncedSearch
+              ? `No products matching "${debouncedSearch}". Try a different keyword.`
+              : "There are no products listed in this category at the moment."}
+          </p>
+        </div>
+      )}
+
+      {/* ─── Product Grid: 2 columns on mobile/tablet, 3 columns on desktop ─── */}
+      {!isLoading && sortedProducts.length > 0 && (
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6 lg:gap-7 xl:gap-8">
+          {sortedProducts.map((prod) => (
+            <HotelDeliveriesCard
+              key={prod.id}
+              product={prod}
+              locale={locale}
+              onAddToCart={(item) => {
+                const isListItem = "subCategoryId" in item;
+                const p = item as ProductListItem;
+                let price = 0;
+                let unitName = "";
+                let image = "";
+
+                if (isListItem) {
+                  price = Number(p.price || 0);
+                  unitName = p.priceFor || "";
+                  if (p.images && p.images.length > 0) {
+                    image = p.images[0]?.imageUrl || "";
+                  }
+                } else {
+                  price = parseFloat(String((item as HotelProduct).price || "0").replace(/[^0-9.]/g, "")) || 0;
+                  image = (item as HotelProduct).image || "";
+                }
+
+                addItem(
+                  {
+                    productId: Number(item.id),
+                    title: item.title || "Product",
+                    price,
+                    unitName,
+                    image,
+                    subCategoryId: isListItem ? p.subCategoryId : undefined,
+                  },
+                  1
+                );
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* ─── Dynamic Pagination ─── */}
+      {!isLoading && totalPages > 1 && (
+        <div className="flex items-center justify-center gap-2 sm:gap-3 mt-14 mb-8">
+          {/* Previous page arrow button */}
+          <button
+            type="button"
+            disabled={currentPage <= 1}
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            aria-label="Previous page"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#888888] flex items-center justify-center text-[#555555] hover:border-[#0E4A68] hover:text-[#0E4A68] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+          >
+            ‹
+          </button>
+
+          {/* Numbered Page Buttons */}
+          {paginationRange.map((pageItem, idx) => {
+            if (pageItem < 0) {
+              return (
+                <span
+                  key={`ellipsis-${idx}`}
+                  className="px-1 text-xs text-[#888888]"
+                >
+                  …
+                </span>
+              );
+            }
+            const isActive = currentPage === pageItem;
+            return (
+              <button
+                key={`page-${pageItem}`}
+                type="button"
+                onClick={() => setCurrentPage(pageItem)}
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-[13px] sm:text-[14px] font-medium transition-all cursor-pointer ${
+                  isActive
+                    ? "bg-[#0E4A68] text-white shadow-sm"
+                    : "border border-[#888888] text-[#555555] hover:border-[#0E4A68] hover:text-[#0E4A68]"
+                }`}
+              >
+                {pageItem}
+              </button>
+            );
+          })}
+
+          {/* Next page arrow button */}
+          <button
+            type="button"
+            disabled={currentPage >= totalPages}
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            aria-label="Next page"
+            className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#888888] flex items-center justify-center text-[#555555] hover:border-[#0E4A68] hover:text-[#0E4A68] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
+          >
+            ›
+          </button>
+        </div>
+      )}
     </div>
   );
 }

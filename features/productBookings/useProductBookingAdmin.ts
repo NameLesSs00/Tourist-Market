@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   cancelProductBooking,
   getProductBookingById,
@@ -38,13 +39,8 @@ export function useUpdateProductBookingStatusMutation() {
       toast.success("Booking status updated successfully.");
       queryClient.invalidateQueries({ queryKey: PRODUCT_BOOKINGS_QUERY_KEY });
     },
-    onError: (error: any) => {
-      const msg =
-        error?.response?.data?.message ||
-        error?.response?.data?.detail ||
-        error?.message ||
-        "Failed to update booking status.";
-      toast.error(msg);
+    onError: (error: unknown) => {
+      toast.error(extractErrorMessage(error, "Failed to update booking status."));
     },
   });
 }
@@ -58,13 +54,8 @@ export function useCancelProductBookingMutation() {
       toast.success(data?.message || "Booking has been cancelled.");
       queryClient.invalidateQueries({ queryKey: PRODUCT_BOOKINGS_QUERY_KEY });
     },
-    onError: (error: any) => {
-      const msg =
-        error?.response?.data?.message ||
-        error?.response?.data?.detail ||
-        error?.message ||
-        "Failed to cancel booking.";
-      toast.error(msg);
+    onError: (error: unknown) => {
+      toast.error(extractErrorMessage(error, "Failed to cancel booking."));
     },
   });
 }

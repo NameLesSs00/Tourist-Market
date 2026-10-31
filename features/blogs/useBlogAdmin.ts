@@ -136,8 +136,10 @@ export function useCreateBlogMutation() {
       if (imageFile && res.data?.id) {
         try {
           await uploadBlogImage(res.data.id, imageFile);
-        } catch {
-          toast.warning("Blog created, but cover image upload failed.");
+        } catch (imageErr) {
+          toast.error(
+            extractErrorMessage(imageErr, "Blog created, but cover image upload failed.")
+          );
         }
       }
       return res;

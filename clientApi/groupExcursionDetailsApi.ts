@@ -122,19 +122,44 @@ export async function resolveGroupExcursionId(
   idOrSlug: string,
   lang: string = "en"
 ): Promise<string> {
-  if (UUID_REGEX.test(idOrSlug)) {
-    return idOrSlug;
+  if (!idOrSlug) return "";
+  const cleanSlug = decodeURIComponent(idOrSlug).trim();
+  if (UUID_REGEX.test(cleanSlug)) {
+    return cleanSlug;
   }
   try {
-    const { data } = await apiClient.get("/group-excursions", {
-      params: { lang, pageSize: 100 },
+    const { data } = await apiClient.get("/admin/excursions/group", {
+      params: { lang, currency: "USD", page: 1, pageSize: 100 },
     });
     const payload = unwrap<{ items?: Array<{ id: string; slug: string }> }>(data);
     const items = payload?.items || (Array.isArray(payload) ? payload : []);
-    const match = items.find((item) => item.slug === idOrSlug);
-    return match?.id || idOrSlug;
+    const match = items.find(
+      (item) =>
+        item.slug === cleanSlug ||
+        item.slug?.toLowerCase() === cleanSlug.toLowerCase() ||
+        item.id === cleanSlug
+    );
+    if (match?.id) return match.id;
+
+    // Fallback to English list if slug was generated in 'en' while browsing another locale
+    if (lang !== "en") {
+      const { data: enData } = await apiClient.get("/admin/excursions/group", {
+        params: { lang: "en", currency: "USD", page: 1, pageSize: 100 },
+      });
+      const enPayload = unwrap<{ items?: Array<{ id: string; slug: string }> }>(enData);
+      const enItems = enPayload?.items || (Array.isArray(enPayload) ? enPayload : []);
+      const enMatch = enItems.find(
+        (item) =>
+          item.slug === cleanSlug ||
+          item.slug?.toLowerCase() === cleanSlug.toLowerCase() ||
+          item.id === cleanSlug
+      );
+      if (enMatch?.id) return enMatch.id;
+    }
+
+    return cleanSlug;
   } catch {
-    return idOrSlug;
+    return cleanSlug;
   }
 }
 

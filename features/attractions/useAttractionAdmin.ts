@@ -1,3 +1,4 @@
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -88,16 +89,20 @@ export function useCreateAttractionMutation() {
         if (heroFile) {
           try {
             await uploadAttractionHero(id, heroFile);
-          } catch {
-            toast.warning("Attraction created, but cover image upload failed.");
+          } catch (imageErr) {
+            toast.error(
+              extractErrorMessage(imageErr, "Attraction created, but cover image upload failed.")
+            );
           }
         }
 
         if (galleryFiles && galleryFiles.length > 0) {
           try {
             await uploadAttractionImages(id, galleryFiles);
-          } catch {
-            toast.warning("Attraction created, but gallery images upload failed.");
+          } catch (imageErr) {
+            toast.error(
+              extractErrorMessage(imageErr, "Attraction created, but gallery images upload failed.")
+            );
           }
         }
       }
@@ -108,12 +113,8 @@ export function useCreateAttractionMutation() {
       toast.success("Attraction created successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "attractions"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to create attraction.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to create attraction."));
     },
   });
 }
@@ -147,14 +148,18 @@ export function useUpdateAttractionMutation() {
       if (heroFile) {
         try {
           await uploadAttractionHero(id, heroFile);
-        } catch {
-          toast.warning("Attraction updated, but cover image replacement failed.");
+        } catch (imageErr) {
+          toast.error(
+            extractErrorMessage(imageErr, "Attraction updated, but cover image replacement failed.")
+          );
         }
       } else if (removeHero) {
         try {
           await deleteAttractionHero(id);
-        } catch {
-          toast.warning("Attraction updated, but cover image removal failed.");
+        } catch (imageErr) {
+          toast.error(
+            extractErrorMessage(imageErr, "Attraction updated, but cover image removal failed.")
+          );
         }
       }
 
@@ -169,8 +174,10 @@ export function useUpdateAttractionMutation() {
       if (newGalleryFiles && newGalleryFiles.length > 0) {
         try {
           await uploadAttractionImages(id, newGalleryFiles);
-        } catch {
-          toast.warning("Attraction updated, but gallery images upload failed.");
+        } catch (imageErr) {
+          toast.error(
+            extractErrorMessage(imageErr, "Attraction updated, but gallery images upload failed.")
+          );
         }
       }
 
@@ -183,12 +190,8 @@ export function useUpdateAttractionMutation() {
         queryKey: ["admin", "attraction-localized", vars.id],
       });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to update attraction.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to update attraction."));
     },
   });
 }
@@ -205,12 +208,8 @@ export function useDeleteAttractionMutation() {
       toast.success("Attraction deleted successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "attractions"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to delete attraction.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to delete attraction."));
     },
   });
 }

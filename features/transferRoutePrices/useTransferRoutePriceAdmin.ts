@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   createTransferRoutePrice,
   deleteTransferRoutePrice,
@@ -20,14 +21,6 @@ export const transferRoutePriceKeys = {
   details: () => [...transferRoutePriceKeys.all, "detail"] as const,
   detail: (id: string) => [...transferRoutePriceKeys.details(), id] as const,
 };
-
-function extractErrorMessage(err: unknown, fallback: string): string {
-  if (err && typeof err === "object" && "response" in err) {
-    const res = (err as { response?: { data?: { message?: string; detail?: string; title?: string } } }).response;
-    return res?.data?.detail || res?.data?.message || res?.data?.title || fallback;
-  }
-  return fallback;
-}
 
 export function useTransferRoutePricesQuery(
   params: TransferRoutePriceQueryParams = {}

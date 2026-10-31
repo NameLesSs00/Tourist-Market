@@ -50,7 +50,7 @@ export default function RootLayout({
           <Suspense fallback={<div className="h-20 w-full" />}>
             <Header />
           </Suspense>
-          <main className="flex-1 -mt-20">{children}</main>
+          <main className="flex-1 pt-20">{children}</main>
           <Footer />
         </QueryProvider>
       </body>

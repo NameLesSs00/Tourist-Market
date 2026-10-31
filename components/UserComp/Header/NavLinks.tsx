@@ -18,26 +18,8 @@ export function NavLinks({
 }: NavLinksProps) {
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const servicesCategories = getHeaderServicesData(currentLocale);
-
-  const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-    setIsServicesOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      setIsServicesOpen(false);
-    }, 150);
-  };
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -48,12 +30,25 @@ export function NavLinks({
         setIsServicesOpen(false);
       }
     }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setIsServicesOpen(false);
+      }
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  const handleNavClick = () => {
+    setIsServicesOpen(false);
+    onNavigate?.();
+  };
 
   const navItemClass =
     "font-poppins-semibold-16 text-[#083952] transition-colors hover:text-[#D9943B] text-[13.5px] xl:text-[15px] 2xl:text-base whitespace-nowrap";
@@ -61,17 +56,12 @@ export function NavLinks({
   return (
     <nav className={`flex items-center gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 ${className}`}>
       {/* Home */}
-      <Link href={`/${currentLocale}`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}`} onClick={handleNavClick} className={navItemClass}>
         Home
       </Link>
 
-      {/* Explore Services Dropdown with Hover & Click */}
-      <div
-        className="relative"
-        ref={containerRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
+      {/* Explore Services Dropdown (Click to toggle, stays open until click outside or selection) */}
+      <div className="relative" ref={containerRef}>
         <button
           type="button"
           onClick={() => setIsServicesOpen((prev) => !prev)}
@@ -95,40 +85,35 @@ export function NavLinks({
           </svg>
         </button>
 
-        {/* 3-Column Services Mega Menu matching Filter.png */}
+        {/* 3-Column Services Mega Menu */}
         <ServicesMegaMenu
           categories={servicesCategories}
           isOpen={isServicesOpen}
-          onClose={() => {
-            setIsServicesOpen(false);
-            onNavigate?.();
-          }}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onClose={handleNavClick}
         />
       </div>
 
       {/* Hotel Deliveries */}
       <Link
         href={`/${currentLocale}/hotel-deliveries`}
-        onClick={onNavigate}
+        onClick={handleNavClick}
         className={navItemClass}
       >
         Hotel Deliveries
       </Link>
 
       {/* Blogs */}
-      <Link href={`/${currentLocale}/Blogs`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/Blogs`} onClick={handleNavClick} className={navItemClass}>
         Blogs
       </Link>
 
       {/* About Us */}
-      <Link href={`/${currentLocale}/About`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/About`} onClick={handleNavClick} className={navItemClass}>
         About Us
       </Link>
 
       {/* Contact Us */}
-      <Link href={`/${currentLocale}/Contact`} onClick={onNavigate} className={navItemClass}>
+      <Link href={`/${currentLocale}/Contact`} onClick={handleNavClick} className={navItemClass}>
         Contact Us
       </Link>
     </nav>

@@ -13,7 +13,8 @@ export default function AdminLayout({
 }) {
   return (
     // Fixed full-viewport layer so the public layout's offsets (main -mt-20) don't affect admin pages.
-    <div className="fixed inset-0 z-40 overflow-y-auto bg-[#F8FAFC] text-[#0F172A]">
+    // Strictly enforce dir="ltr" so the admin interface stays on the left side regardless of client locale.
+    <div dir="ltr" className="fixed inset-0 z-40 overflow-y-auto bg-[#F8FAFC] text-[#0F172A] text-left">
       {children}
       <Toaster richColors closeButton position="top-right" toastOptions={{ className: "font-poppins" }} />
     </div>

@@ -5,12 +5,10 @@ import Image from "next/image";
 import {
   FiCalendar,
   FiClock,
-  FiHeadphones,
-  FiChevronRight,
   FiMinus,
   FiPlus,
 } from "react-icons/fi";
-import { FaWhatsapp, FaTelegramPlane, FaViber } from "react-icons/fa";
+import { NeedHelpCard } from "@/components/UserComp/Shared/NeedHelpCard";
 import { toast } from "sonner";
 import { PrivateAttraction, PrivateExtraService } from "../types";
 import { useVehicleTransferPrivateMatch } from "@/features/privateExcursions/useVehicleTransferPrivateMatch";
@@ -765,67 +763,7 @@ export function PrivateDetailsBookingSidebar({
       </div>
 
       {/* NEED HELP CARD */}
-      <div
-        className="w-full bg-white p-5 rounded-xl space-y-4"
-        style={{
-          border: "0.8px solid #BBBBBB",
-          boxShadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.05)",
-        }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#124885]">
-              <FiHeadphones size={20} />
-            </div>
-            <div>
-              <h4 className="text-[16px] font-bold text-[#124885] leading-snug">
-                Need Help ?
-              </h4>
-              <p className="text-[12px] font-medium text-[#083043]">
-                Contact us for Help
-              </p>
-            </div>
-          </div>
-          <FiChevronRight size={20} className="text-gray-400" />
-        </div>
-
-        {/* 3 Buttons: WhatsApp, Telegram, Viber */}
-        <div className="space-y-2.5">
-          <a
-            href="https://wa.me/201012345678"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2.5 text-white font-semibold text-[14px] hover:opacity-95 transition-opacity"
-            style={{ backgroundColor: "#17DB55" }}
-          >
-            <FaWhatsapp size={18} />
-            <span>WhatsApp</span>
-          </a>
-
-          <a
-            href="https://t.me/egypttouristmarket"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2.5 text-white font-semibold text-[14px] hover:opacity-95 transition-opacity"
-            style={{ backgroundColor: "#0E4A68" }}
-          >
-            <FaTelegramPlane size={18} />
-            <span>Telegram</span>
-          </a>
-
-          <a
-            href="viber://chat?number=201012345678"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2.5 font-semibold text-[14px] text-[#333333] hover:bg-gray-200 transition-colors"
-            style={{ backgroundColor: "#F4F4F4" }}
-          >
-            <FaViber size={18} className="text-[#7360F2]" />
-            <span>Viber</span>
-          </a>
-        </div>
-      </div>
+      <NeedHelpCard />
     </aside>
   );
 }

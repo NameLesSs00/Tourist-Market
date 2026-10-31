@@ -25,7 +25,7 @@ export function useGroupExcursionDetailsQuery(
 
 /**
  * Fetches related group excursions for the detail page,
- * excluding the currently viewed excursion. Max 6 items.
+ * excluding the currently viewed excursion (by ID or slug). Max 6 items.
  */
 export function useRelatedGroupExcursionsQuery(
   currentId: string,
@@ -42,7 +42,7 @@ export function useRelatedGroupExcursionsQuery(
         pageSize: 7,
       });
       return (response?.items || [])
-        .filter((item) => item.id !== currentId)
+        .filter((item) => item.id !== currentId && item.slug !== currentId)
         .slice(0, 6)
         .map(mapBackendGroupExcursionToCard);
     },

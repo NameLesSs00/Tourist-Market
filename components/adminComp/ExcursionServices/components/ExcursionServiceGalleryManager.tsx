@@ -6,6 +6,7 @@ import { FiPlus, FiX } from "react-icons/fi";
 import { toast } from "sonner";
 import type { ExcursionServiceImage } from "@/models/excursionService";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { ACCEPT_IMAGE_TYPES, validateImageFile } from "@/shared/utils/imageValidation";
 
 interface ExcursionServiceGalleryManagerProps {
   existingGallery: ExcursionServiceImage[];
@@ -31,12 +32,9 @@ export function ExcursionServiceGalleryManager({
     const validFiles: File[] = [];
 
     for (const file of files) {
-      if (!file.type.startsWith("image/")) {
-        toast.error(`${file.name} is not an image.`);
-        continue;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error(`${file.name} exceeds 5MB limit.`);
+      const err = validateImageFile(file, 5 * 1024 * 1024);
+      if (err) {
+        toast.error(err);
         continue;
       }
       validFiles.push(file);
@@ -69,7 +67,7 @@ export function ExcursionServiceGalleryManager({
         ref={galleryInputRef}
         type="file"
         multiple
-        accept="image/png,image/jpeg,image/webp,image/jpg"
+        accept={ACCEPT_IMAGE_TYPES}
         onChange={handleGalleryChange}
         className="hidden"
       />

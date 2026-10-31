@@ -8,6 +8,7 @@ import {
   type ProductDetail,
   type ProductImage,
   type ProductImageReorderItem,
+  type ProductKeyUpsertItem,
   type ProductQueryParams,
   type ProductUpsertRequest,
 } from "@/models/product";
@@ -66,21 +67,86 @@ export async function getProductAllLanguages(
   let subCategoryId = 0;
   let images: ProductImage[] = [];
 
+  // Map to collect and merge product keys across languages
+  const keysMap: Map<
+    number | string,
+    {
+      id?: number;
+      name: LocalizedText;
+      displayOrder: number;
+      valueId?: number;
+      value: LocalizedText;
+    }
+  > = new Map();
+
   for (const r of results) {
     if (r.status === "fulfilled" && r.value.data) {
       const { lang, data } = r.value;
-      title[lang as LangCode] = data.title || "";
-      subtitle[lang as LangCode] = data.subTitle || "";
-      priceFor[lang as LangCode] = data.priceFor || "";
+      const langCode = lang as LangCode;
+      title[langCode] = data.title || "";
+      subtitle[langCode] = data.subTitle || "";
+      priceFor[langCode] = data.priceFor || "";
       price = data.price ?? price;
       subCategoryId = data.subCategoryId ?? subCategoryId;
       if (data.images && data.images.length > 0) {
         images = data.images;
       }
+
+      // Merge keys across languages
+      if (Array.isArray(data.keys)) {
+        data.keys.forEach((k, idx) => {
+          const mapKey = k.id && k.id > 0 ? k.id : `idx-${idx}`;
+          const existing = keysMap.get(mapKey) || {
+            id: k.id && k.id > 0 ? k.id : undefined,
+            name: { en: "", ru: "", de: "", fr: "" },
+            displayOrder: k.displayOrder ?? idx + 1,
+            valueId:
+              k.values?.[0]?.id && k.values[0].id > 0
+                ? k.values[0].id
+                : undefined,
+            value: { en: "", ru: "", de: "", fr: "" },
+          };
+
+          if (k.name) {
+            existing.name[langCode] = k.name;
+          }
+          if (k.values?.[0]?.value) {
+            existing.value[langCode] = k.values[0].value;
+          }
+          if (k.values?.[0]?.id && !existing.valueId) {
+            existing.valueId = k.values[0].id;
+          }
+          keysMap.set(mapKey, existing);
+        });
+      }
     }
   }
 
-  return { id, title, subtitle, price, priceFor, subCategoryId, images };
+  const mergedKeys: ProductKeyUpsertItem[] = Array.from(keysMap.values()).map(
+    (item, idx) => ({
+      id: item.id,
+      name: item.name,
+      displayOrder: item.displayOrder ?? idx + 1,
+      values: [
+        {
+          id: item.valueId,
+          value: item.value,
+          displayOrder: 1,
+        },
+      ],
+    })
+  );
+
+  return {
+    id,
+    title,
+    subtitle,
+    price,
+    priceFor,
+    subCategoryId,
+    images,
+    keys: mergedKeys,
+  };
 }
 
 export async function createProduct(

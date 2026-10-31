@@ -4,13 +4,14 @@ import React, { useState } from "react";
 import { HotelDeliveriesHero } from "../components/HotelDeliveriesHero";
 import { HotelDeliveriesCategories } from "../components/HotelDeliveriesCategories";
 import { HotelDeliveriesProducts } from "../components/HotelDeliveriesProducts";
+import { FloatingCartButton } from "../components/FloatingCartButton";
 
 interface HotelDeliveriesSectionProps {
   locale?: string;
 }
 
 export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSectionProps) {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeSubcategoryId, setActiveSubcategoryId] = useState<number | null>(null);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   return (
@@ -25,15 +26,16 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
             {/* Left Column: Categories Sidebar (Desktop only) */}
             <div className="hidden lg:block shrink-0">
               <HotelDeliveriesCategories
-                activeCategory={activeCategory}
-                onSelectCategory={setActiveCategory}
+                activeSubcategoryId={activeSubcategoryId}
+                onSelectSubcategory={setActiveSubcategoryId}
+                locale={locale}
               />
             </div>
 
             {/* Right Column: Search, Sort, Product Grid, Pagination */}
             <HotelDeliveriesProducts
               locale={locale}
-              selectedCategory={activeCategory}
+              activeSubcategoryId={activeSubcategoryId}
               onToggleFilter={() => setIsMobileFilterOpen(true)}
             />
           </div>
@@ -67,25 +69,29 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
               </div>
 
               <HotelDeliveriesCategories
-                activeCategory={activeCategory}
-                onSelectCategory={(catId) => {
-                  setActiveCategory(catId);
+                activeSubcategoryId={activeSubcategoryId}
+                onSelectSubcategory={(subId) => {
+                  setActiveSubcategoryId(subId);
                   setIsMobileFilterOpen(false);
                 }}
                 hideTitle
+                locale={locale}
               />
             </div>
 
             <button
               type="button"
               onClick={() => setIsMobileFilterOpen(false)}
-              className="w-full mt-6 py-2.5 bg-[#0E4A68] text-white rounded-[5px] text-[13px] sm:text-[14px] font-semibold text-center hover:bg-[#0A3850] active:scale-98 transition-all"
+              className="w-full mt-6 py-2.5 bg-[#0E4A68] text-white rounded-[5px] text-[13px] sm:text-[14px] font-semibold text-center hover:bg-[#0A3850] active:scale-98 transition-all cursor-pointer"
             >
               Apply Filter
             </button>
           </div>
         </div>
       )}
+
+      {/* ─── 4. Floating Cart Button ─── */}
+      <FloatingCartButton />
     </div>
   );
 }

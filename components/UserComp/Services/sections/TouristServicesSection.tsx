@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { ServiceHero, ServiceGrid } from "../components";
@@ -31,7 +31,7 @@ export function TouristServicesSection({ locale = "en" }: TouristServicesSection
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8">
       <ServiceHero
-        imageSrc="/Services/Touristservices/hero.jpg"
+        imageSrc="/Services/Touristservices/hero.png"
         altText="Tourist Services in Hurghada"
       />
       <ServiceGrid

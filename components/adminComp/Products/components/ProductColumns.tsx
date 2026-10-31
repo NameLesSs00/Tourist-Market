@@ -18,7 +18,9 @@ export function createProductColumns({
       header: "Photo",
       className: "w-[72px]",
       render: (item) => {
-        const heroImg = item.images?.slice().sort((a, b) => a.displayOrder - b.displayOrder)[0];
+        const heroImg = item.images
+          ?.slice()
+          .sort((a, b) => a.displayOrder - b.displayOrder)[0];
         const imgUrl = heroImg ? getBackendImageUrl(heroImg.imageUrl) : null;
 
         return (
@@ -45,9 +47,16 @@ export function createProductColumns({
       className: "w-[40%]",
       render: (item) => (
         <div className="min-w-0 pr-4">
-          <p className="truncate font-semibold text-xs text-[#083952]">
-            {item.title || "Untitled Product"}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="truncate font-semibold text-xs text-[#083952]">
+              {item.title || "Untitled Product"}
+            </p>
+            {item.keys && item.keys.length > 0 && (
+              <span className="shrink-0 rounded-md bg-[#0E4A6814] px-1.5 py-0.5 text-[10px] font-medium text-[#0E4A68]">
+                {item.keys.length} {item.keys.length === 1 ? "spec" : "specs"}
+              </span>
+            )}
+          </div>
           <p className="truncate text-[11px] text-[#64748B] mt-0.5">
             {item.subTitle || "No subtitle"}
           </p>
@@ -73,27 +82,24 @@ export function createProductColumns({
           <span className="text-xs font-semibold text-[#083952]">
             ${item.price.toFixed(2)}
           </span>
-          {item.priceFor && (
-            <span className="ml-1 text-[11px] text-[#64748B]">
-              / {item.priceFor}
-            </span>
-          )}
+          <span className="text-[11px] text-[#64748B] ml-1">
+            /{item.priceFor || "unit"}
+          </span>
         </div>
       ),
     },
     {
-      key: "gallery",
+      key: "photosCount",
       header: "Gallery",
       className: "w-[12%]",
-      render: (item) => (
-        <span className="inline-flex items-center gap-1 text-xs text-[#64748B]">
-          <FiImage className="h-3.5 w-3.5 text-[#0E4A68]" />
-          <span>
-            {item.images?.length || 0} photo
-            {item.images?.length !== 1 ? "s" : ""}
+      render: (item) => {
+        const count = item.images?.length ?? 0;
+        return (
+          <span className="text-xs text-[#64748B]">
+            {count} {count === 1 ? "photo" : "photos"}
           </span>
-        </span>
-      ),
+        );
+      },
     },
   ];
 }

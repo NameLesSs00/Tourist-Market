@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   createProduct,
   deleteProduct,
@@ -61,8 +62,13 @@ export function useCreateProductMutation() {
       if (created?.id && newImages && newImages.length > 0) {
         try {
           await uploadProductImages(created.id, newImages);
-        } catch {
-          toast.warning("Product created, but some images failed to upload.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Product created, but some images failed to upload."
+            )
+          );
         }
       }
       return created;
@@ -72,12 +78,7 @@ export function useCreateProductMutation() {
       toast.success("Product created successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to create product."
-          : "Failed to create product.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to create product."));
     },
   });
 }
@@ -108,8 +109,13 @@ export function useUpdateProductMutation() {
       if (newImages && newImages.length > 0) {
         try {
           await uploadProductImages(id, newImages);
-        } catch {
-          toast.warning("Product updated, but image upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Product updated, but image upload failed."
+            )
+          );
         }
       }
 
@@ -126,12 +132,7 @@ export function useUpdateProductMutation() {
       toast.success("Product updated successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to update product."
-          : "Failed to update product.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to update product."));
     },
   });
 }
@@ -146,12 +147,7 @@ export function useDeleteProductMutation() {
       toast.success("Product deleted successfully.");
     },
     onError: (err: unknown) => {
-      const message =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to delete product."
-          : "Failed to delete product.";
-      toast.error(message);
+      toast.error(extractErrorMessage(err, "Failed to delete product."));
     },
   });
 }
@@ -174,8 +170,8 @@ export function useReorderProductImagesMutation() {
       qc.invalidateQueries({ queryKey: ["admin", "products"] });
       toast.success("Images reordered successfully.");
     },
-    onError: () => {
-      toast.error("Failed to reorder images.");
+    onError: (err: unknown) => {
+      toast.error(extractErrorMessage(err, "Failed to reorder images."));
     },
   });
 }

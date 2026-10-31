@@ -9,26 +9,33 @@ interface ProductDetailsGalleryProps {
 }
 
 const DEFAULT_IMAGES = [
-  "/Hoteldeliveries/product-details/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-  "/Hoteldeliveries/product-details/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-  "/Hoteldeliveries/product-details/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-  "/Hoteldeliveries/product-details/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-  "/Hoteldeliveries/product-details/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
-  "/Hoteldeliveries/product-details/cea97bfaa2b16182bcbbfa00313df019dd4ecbb1.png",
+  "/GroupExcursions/HeroLogo.webp",
 ];
 
 export function ProductDetailsGallery({
   images = DEFAULT_IMAGES,
 }: ProductDetailsGalleryProps) {
+  const displayImages =
+    images && images.length > 0 ? images : DEFAULT_IMAGES;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [failedImages, setFailedImages] = useState<Record<number, boolean>>({});
 
   const handlePrev = () => {
-    setActiveIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setActiveIndex((prev) =>
+      prev === 0 ? displayImages.length - 1 : prev - 1
+    );
   };
 
   const handleNext = () => {
-    setActiveIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    setActiveIndex((prev) =>
+      prev === displayImages.length - 1 ? 0 : prev + 1
+    );
   };
+
+  const currentImage =
+    failedImages[activeIndex] || !displayImages[activeIndex]
+      ? DEFAULT_IMAGES[0]
+      : displayImages[activeIndex];
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 w-full select-none font-poppins">
@@ -59,12 +66,16 @@ export function ProductDetailsGallery({
         {/* Product Image */}
         <div className="relative w-[78%] h-[78%] transition-transform duration-300">
           <Image
-            src={images[activeIndex] || images[0]}
+            src={currentImage}
             alt="Product view"
             fill
             priority
             sizes="(max-width: 768px) 100vw, 550px"
             className="object-contain"
+            unoptimized={typeof currentImage === "string" && currentImage.startsWith("http")}
+            onError={() => {
+              setFailedImages((prev) => ({ ...prev, [activeIndex]: true }));
+            }}
           />
         </div>
 
@@ -95,15 +106,17 @@ export function ProductDetailsGallery({
         >
           <FiCamera size={14} className="text-white" />
           <span>
-            {activeIndex + 1}/{images.length}
+            {activeIndex + 1}/{displayImages.length}
           </span>
         </div>
       </div>
 
       {/* ─── Vertical Thumbnails (4 shown) ─── */}
       <div className="flex sm:flex-col gap-3 justify-between sm:w-[120px] md:w-[135px] shrink-0">
-        {images.slice(0, 4).map((img, idx) => {
+        {displayImages.slice(0, 4).map((img, idx) => {
           const isSelected = activeIndex === idx;
+          const thumbSrc =
+            failedImages[idx] || !img ? DEFAULT_IMAGES[0] : img;
           return (
             <button
               key={idx}
@@ -120,11 +133,15 @@ export function ProductDetailsGallery({
             >
               <div className="relative w-[75%] h-[75%]">
                 <Image
-                  src={img}
+                  src={thumbSrc}
                   alt={`Thumbnail ${idx + 1}`}
                   fill
                   sizes="135px"
                   className="object-contain"
+                  unoptimized={typeof thumbSrc === "string" && thumbSrc.startsWith("http")}
+                  onError={() => {
+                    setFailedImages((prev) => ({ ...prev, [idx]: true }));
+                  }}
                 />
               </div>
             </button>

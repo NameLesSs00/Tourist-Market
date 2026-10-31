@@ -20,12 +20,12 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
   const { hero } = dict;
 
   return (
-    <section className="relative w-full overflow-hidden min-h-[78vh] lg:min-h-[90vh] max-h-[980px] flex items-center justify-center pt-20 pb-8 lg:pt-24 lg:pb-8">
+    <section className="relative w-full overflow-hidden min-h-[78vh] lg:min-h-[90vh] max-h-[980px] flex items-center justify-center -mt-20 pt-20 pb-8 lg:pt-24 lg:pb-8">
       {/* 1. Full-Bleed Background Texture & Centered Watermark Logo */}
       <HeroBackground />
 
       {/* 2. Main Content Container */}
-      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-6 sm:px-10 lg:pl-8 xl:pl-12 2xl:pl-16 lg:pr-0 overflow-hidden">
+      <div className="relative z-10 w-full max-w-[1740px] mx-auto px-6 sm:px-10 lg:pl-8 xl:pl-12 2xl:pl-16 lg:pr-0">
         {/* Desktop View: Side-by-Side Flex Layout Matching Master Design */}
         <div className="hidden lg:flex items-center justify-between gap-6 xl:gap-8">
           {/* Left Column: Big, Lively Headline, Description & Action Buttons */}

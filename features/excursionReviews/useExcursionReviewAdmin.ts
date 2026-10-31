@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   deleteExcursionReview,
   getExcursionReviewById,
@@ -36,12 +37,7 @@ export function usePublishExcursionReviewMutation() {
       toast.success("Review published successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to publish review."
-          : "Failed to publish review.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to publish review."));
     },
   });
 }
@@ -55,12 +51,7 @@ export function useUnpublishExcursionReviewMutation() {
       toast.success("Review unpublished successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to unpublish review."
-          : "Failed to unpublish review.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to unpublish review."));
     },
   });
 }
@@ -74,12 +65,7 @@ export function useDeleteExcursionReviewMutation() {
       toast.success("Review deleted successfully.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to delete review."
-          : "Failed to delete review.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to delete review."));
     },
   });
 }
@@ -93,12 +79,7 @@ export function useMarkExcursionReviewHelpfulMutation() {
       toast.success("Review marked as helpful.");
     },
     onError: (err: unknown) => {
-      const msg =
-        err && typeof err === "object" && "response" in err
-          ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message || "Failed to mark as helpful."
-          : "Failed to mark as helpful.";
-      toast.error(msg);
+      toast.error(extractErrorMessage(err, "Failed to mark as helpful."));
     },
   });
 }

@@ -38,10 +38,13 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
     return null;
   }
 
+  // Transparent header only on the home page (/<locale> and /<locale>/)
+  const isHomePage = /^\/[a-z]{2,5}(\/)?$/.test(pathname ?? "");
+
   return (
     <header
-      className={`sticky top-0 z-50 w-full font-poppins font-poppins-semibold-16 transition-all duration-300 ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-50 w-full font-poppins font-poppins-semibold-16 transition-all duration-300 ${
+        !isHomePage || isScrolled
           ? "bg-[#F4DAB6E6] backdrop-blur-md shadow-sm border-b border-[#0839521A]"
           : "bg-transparent border-b border-transparent"
       }`}

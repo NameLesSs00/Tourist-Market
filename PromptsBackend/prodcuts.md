@@ -1,4 +1,3 @@
-create a plan to add the prodcuts to our admin pages note that the subcatfoies is the SubCategoriesProdcuts could you review it and create a plan for it ?
 Products
 
 
@@ -49,7 +48,7 @@ Curl
 curl -X 'GET' \
   'https://touristtt.runasp.net/api/products?pageNumber=1&pageSize=10' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZlM2Y2NmVmLWExZmItNGQ3Ni1mNjg4LTA4ZGYzMWQ2ZDRmMCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjJjZDFlODAyLWZkMzctNGZmZC04NWE5LTJiZDcxY2NmMTUyMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTM0ODA3MTQsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.FYlv8zbgwdO7NBIv9vXx_YtyEcNrYaefgx4ricMkCNU'
 Request URL
 https://touristtt.runasp.net/api/products?pageNumber=1&pageSize=10
 Server response
@@ -64,53 +63,126 @@ Download
   "data": {
     "items": [
       {
+        "id": 1,
+        "title": "ANANAS-PINEAPPLES",
+        "subTitle": "Pineapple: The Tropical Powerhouse",
+        "price": 5,
+        "priceFor": "PIECE",
+        "subCategoryId": 1,
+        "images": [
+          {
+            "id": 1,
+            "imageUrl": "/uploads/products/5645c942c4764774831246a1c77e564e.webp",
+            "displayOrder": 1,
+            "productId": 1
+          },
+          {
+            "id": 3,
+            "imageUrl": "/uploads/products/0d89793586a04a968aaf770e4b866699.webp",
+            "displayOrder": 2,
+            "productId": 1
+          },
+          {
+            "id": 4,
+            "imageUrl": "/uploads/products/c1453327a342482ab1cceb77128d316f.webp",
+            "displayOrder": 3,
+            "productId": 1
+          },
+          {
+            "id": 5,
+            "imageUrl": "/uploads/products/3c846a337c6140b8a32f17fc0f305dc4.webp",
+            "displayOrder": 4,
+            "productId": 1
+          }
+        ],
+        "keys": []
+      },
+      {
         "id": 2,
-        "title": "Premium Red Sea Souvenir Gift Box",
-        "subTitle": "A curated collection of authentic local Egyptian crafts and sweets",
-        "price": 35,
-        "priceFor": "per box",
+        "title": "black tea",
+        "subTitle": "Black Tea: The Bold & Heart-Healthy Classic",
+        "price": 5,
+        "priceFor": "250g",
         "subCategoryId": 2,
         "images": [
           {
-            "id": 6,
-            "imageUrl": "/uploads/products/1ad6564b1bce4e9c8be44b9395b7a6ef.webp",
+            "id": 2,
+            "imageUrl": "/uploads/products/5f25eb3d7648477b91ffa5468548cd53.webp",
             "displayOrder": 1,
             "productId": 2
           },
           {
-            "id": 5,
-            "imageUrl": "/uploads/products/ab254a1d03834212acb2c3c83589984c.webp",
+            "id": 6,
+            "imageUrl": "/uploads/products/3fffdc7e5f52447c831351cb3f5f84c8.webp",
             "displayOrder": 2,
             "productId": 2
+          },
+          {
+            "id": 7,
+            "imageUrl": "/uploads/products/8831a4ea8d3b46928077fa0ca19ef725.webp",
+            "displayOrder": 3,
+            "productId": 2
+          },
+          {
+            "id": 8,
+            "imageUrl": "/uploads/products/dcb4fb33822547a5b57899ab63e298f6.webp",
+            "displayOrder": 4,
+            "productId": 2
           }
-        ]
+        ],
+        "keys": []
       },
       {
-        "id": 1,
-        "title": "string",
-        "subTitle": "string",
-        "price": 0,
-        "priceFor": "string",
-        "subCategoryId": 2,
-        "images": [
+        "id": 3,
+        "title": "Deep Hydration Organic Shampoo",
+        "subTitle": "Nourishes dry and damaged hair with natural argan oil",
+        "price": 24.99,
+        "priceFor": "Per Bottle (500 ml)",
+        "subCategoryId": 1,
+        "images": [],
+        "keys": [
           {
             "id": 1,
-            "imageUrl": "/uploads/products/2325f5e6bfe84209ac75844e59b35a07.webp",
-            "displayOrder": 0,
-            "productId": 1
+            "name": "Hair Type",
+            "displayOrder": 1,
+            "values": [
+              {
+                "id": 1,
+                "value": "Dry, Damaged & Frizzy Hair",
+                "displayOrder": 1
+              }
+            ]
           },
           {
             "id": 2,
-            "imageUrl": "/uploads/products/8ed32fdbf896450ca8fc50332a22877b.webp",
-            "displayOrder": 0,
-            "productId": 1
+            "name": "Key Ingredients",
+            "displayOrder": 2,
+            "values": [
+              {
+                "id": 2,
+                "value": "Argan Oil, Keratin, Vitamin E",
+                "displayOrder": 1
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "name": "Volume",
+            "displayOrder": 3,
+            "values": [
+              {
+                "id": 3,
+                "value": "500 ml / 16.9 fl oz",
+                "displayOrder": 1
+              }
+            ]
           }
         ]
       }
     ],
     "pageNumber": 1,
     "pageSize": 10,
-    "totalCount": 2,
+    "totalCount": 3,
     "totalPages": 1,
     "hasPreviousPage": false,
     "hasNextPage": false
@@ -119,7 +191,7 @@ Download
 }
 Response headers
  content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:34:01 GMT 
+ date: Sat,31 Oct 2026 09:21:51 GMT 
  server: Microsoft-IIS/10.0 
  x-powered-by: ASP.NET 
 Responses
@@ -143,25 +215,87 @@ Request body
 application/json
 {
   "title": {
-    "en": "Premium Red Sea Souvenir Gift Box",
-    "ru": "Подарочная коробка с сувенирами Красного моря",
-    "de": "Premium Rotmeer-Souvenir-Geschenkbox",
-    "fr": "Coffret cadeau souvenir de la mer Rouge"
+    "en": "Deep Hydration Organic Shampoo",
+    "ru": "Органический шампунь глубокого увлажнения",
+    "de": "Bio-Shampoo für tiefenwirksame Feuchtigkeit",
+    "fr": "Shampooing bio hydratation profonde"
   },
   "subtitle": {
-    "en": "A curated collection of authentic local Egyptian crafts and sweets",
-    "ru": "Коллекция аутентичных местных египетских ремесел и сладостей",
-    "de": "Eine handverlesene Kollektion authentischer lokaler ägyptischer Handwerkskunst und Süßigkeiten",
-    "fr": "Une collection d'artisanat et de douceurs égyptiennes locales authentiques"
+    "en": "Nourishes dry and damaged hair with natural argan oil",
+    "ru": "Питает сухие и поврежденные волосы натуральным аргановым маслом",
+    "de": "Pflegt trockenes und strapaziertes Haar mit natürlichem Arganöl",
+    "fr": "Nourrit les cheveux secs et abîmés à l'huile d'argan naturelle"
   },
-  "price": 35,
+  "price": 24.99,
   "priceFor": {
-    "en": "per box",
-    "ru": "за коробку",
-    "de": "pro Box",
-    "fr": "par boîte"
+    "en": "Per Bottle (500 ml)",
+    "ru": "За флакон (500 мл)",
+    "de": "Pro Flasche (500 ml)",
+    "fr": "Par flacon (500 ml)"
   },
-  "subCategoryId": 2
+  "subCategoryId": 1,
+  "keys": [
+    {
+      "name": {
+        "en": "Hair Type",
+        "ru": "Тип волос",
+        "de": "Haartyp",
+        "fr": "Type de cheveux"
+      },
+      "displayOrder": 1,
+      "values": [
+        {
+          "value": {
+            "en": "Dry, Damaged & Frizzy Hair",
+            "ru": "Сухие, поврежденные и пушащиеся волосы",
+            "de": "Trockenes, strapaziertes & krauses Haar",
+            "fr": "Cheveux secs, abîmés et frisés"
+          },
+          "displayOrder": 1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Key Ingredients",
+        "ru": "Основные ингредиенты",
+        "de": "Hauptinhaltsstoffe",
+        "fr": "Ingrédients clés"
+      },
+      "displayOrder": 2,
+      "values": [
+        {
+          "value": {
+            "en": "Argan Oil, Keratin, Vitamin E",
+            "ru": "Аргановое масло, кератин, витамин Е",
+            "de": "Arganöl, Keratin, Vitamin E",
+            "fr": "Huile d'argan, kératine, vitamine E"
+          },
+          "displayOrder": 1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Volume",
+        "ru": "Объем",
+        "de": "Inhalt",
+        "fr": "Volume"
+      },
+      "displayOrder": 3,
+      "values": [
+        {
+          "value": {
+            "en": "500 ml / 16.9 fl oz",
+            "ru": "500 мл",
+            "de": "500 ml",
+            "fr": "500 ml"
+          },
+          "displayOrder": 1
+        }
+      ]
+    }
+  ]
 }
 Execute
 Clear
@@ -171,29 +305,91 @@ Curl
 curl -X 'POST' \
   'https://touristtt.runasp.net/api/products' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZlM2Y2NmVmLWExZmItNGQ3Ni1mNjg4LTA4ZGYzMWQ2ZDRmMCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjJjZDFlODAyLWZkMzctNGZmZC04NWE5LTJiZDcxY2NmMTUyMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTM0ODA3MTQsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.FYlv8zbgwdO7NBIv9vXx_YtyEcNrYaefgx4ricMkCNU' \
   -H 'Content-Type: application/json' \
   -d '{
   "title": {
-    "en": "Premium Red Sea Souvenir Gift Box",
-    "ru": "Подарочная коробка с сувенирами Красного моря",
-    "de": "Premium Rotmeer-Souvenir-Geschenkbox",
-    "fr": "Coffret cadeau souvenir de la mer Rouge"
+    "en": "Deep Hydration Organic Shampoo",
+    "ru": "Органический шампунь глубокого увлажнения",
+    "de": "Bio-Shampoo für tiefenwirksame Feuchtigkeit",
+    "fr": "Shampooing bio hydratation profonde"
   },
   "subtitle": {
-    "en": "A curated collection of authentic local Egyptian crafts and sweets",
-    "ru": "Коллекция аутентичных местных египетских ремесел и сладостей",
-    "de": "Eine handverlesene Kollektion authentischer lokaler ägyptischer Handwerkskunst und Süßigkeiten",
-    "fr": "Une collection d'\''artisanat et de douceurs égyptiennes locales authentiques"
+    "en": "Nourishes dry and damaged hair with natural argan oil",
+    "ru": "Питает сухие и поврежденные волосы натуральным аргановым маслом",
+    "de": "Pflegt trockenes und strapaziertes Haar mit natürlichem Arganöl",
+    "fr": "Nourrit les cheveux secs et abîmés à l'\''huile d'\''argan naturelle"
   },
-  "price": 35,
+  "price": 24.99,
   "priceFor": {
-    "en": "per box",
-    "ru": "за коробку",
-    "de": "pro Box",
-    "fr": "par boîte"
+    "en": "Per Bottle (500 ml)",
+    "ru": "За флакон (500 мл)",
+    "de": "Pro Flasche (500 ml)",
+    "fr": "Par flacon (500 ml)"
   },
-  "subCategoryId": 2
+  "subCategoryId": 1,
+  "keys": [
+    {
+      "name": {
+        "en": "Hair Type",
+        "ru": "Тип волос",
+        "de": "Haartyp",
+        "fr": "Type de cheveux"
+      },
+      "displayOrder": 1,
+      "values": [
+        {
+          "value": {
+            "en": "Dry, Damaged & Frizzy Hair",
+            "ru": "Сухие, поврежденные и пушащиеся волосы",
+            "de": "Trockenes, strapaziertes & krauses Haar",
+            "fr": "Cheveux secs, abîmés et frisés"
+          },
+          "displayOrder": 1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Key Ingredients",
+        "ru": "Основные ингредиенты",
+        "de": "Hauptinhaltsstoffe",
+        "fr": "Ingrédients clés"
+      },
+      "displayOrder": 2,
+      "values": [
+        {
+          "value": {
+            "en": "Argan Oil, Keratin, Vitamin E",
+            "ru": "Аргановое масло, кератин, витамин Е",
+            "de": "Arganöl, Keratin, Vitamin E",
+            "fr": "Huile d'\''argan, kératine, vitamine E"
+          },
+          "displayOrder": 1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Volume",
+        "ru": "Объем",
+        "de": "Inhalt",
+        "fr": "Volume"
+      },
+      "displayOrder": 3,
+      "values": [
+        {
+          "value": {
+            "en": "500 ml / 16.9 fl oz",
+            "ru": "500 мл",
+            "de": "500 ml",
+            "fr": "500 ml"
+          },
+          "displayOrder": 1
+        }
+      ]
+    }
+  ]
 }'
 Request URL
 https://touristtt.runasp.net/api/products
@@ -208,21 +404,59 @@ Download
   "isSuccess": true,
   "message": "Product created successfully.",
   "data": {
-    "id": 2,
-    "title": "Premium Red Sea Souvenir Gift Box",
-    "subTitle": "A curated collection of authentic local Egyptian crafts and sweets",
-    "price": 35,
-    "priceFor": "per box",
-    "subCategoryId": 2,
-    "images": []
+    "id": 3,
+    "title": "Deep Hydration Organic Shampoo",
+    "subTitle": "Nourishes dry and damaged hair with natural argan oil",
+    "price": 24.99,
+    "priceFor": "Per Bottle (500 ml)",
+    "subCategoryId": 1,
+    "images": [],
+    "keys": [
+      {
+        "id": 1,
+        "name": "Hair Type",
+        "displayOrder": 1,
+        "values": [
+          {
+            "id": 1,
+            "value": "Dry, Damaged & Frizzy Hair",
+            "displayOrder": 1
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "name": "Key Ingredients",
+        "displayOrder": 2,
+        "values": [
+          {
+            "id": 2,
+            "value": "Argan Oil, Keratin, Vitamin E",
+            "displayOrder": 1
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Volume",
+        "displayOrder": 3,
+        "values": [
+          {
+            "id": 3,
+            "value": "500 ml / 16.9 fl oz",
+            "displayOrder": 1
+          }
+        ]
+      }
+    ]
   },
   "errors": null
 }
 Response headers
  access-control-allow-origin: * 
  content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:31:52 GMT 
- location: https://touristtt.runasp.net/api/products/2 
+ date: Sat,31 Oct 2026 09:21:32 GMT 
+ location: https://touristtt.runasp.net/api/products/3 
  server: Microsoft-IIS/10.0 
  x-powered-by: ASP.NET 
 Responses
@@ -242,7 +476,7 @@ Name	Description
 id *
 integer($int32)
 (path)
-2
+3
 language
 string
 (query)
@@ -253,11 +487,11 @@ Responses
 Curl
 
 curl -X 'GET' \
-  'https://touristtt.runasp.net/api/products/2' \
+  'https://touristtt.runasp.net/api/products/3' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ'
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZlM2Y2NmVmLWExZmItNGQ3Ni1mNjg4LTA4ZGYzMWQ2ZDRmMCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjJjZDFlODAyLWZkMzctNGZmZC04NWE5LTJiZDcxY2NmMTUyMSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTM0ODA3MTQsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.FYlv8zbgwdO7NBIv9vXx_YtyEcNrYaefgx4ricMkCNU'
 Request URL
-https://touristtt.runasp.net/api/products/2
+https://touristtt.runasp.net/api/products/3
 Server response
 Code	Details
 200	
@@ -268,24 +502,49 @@ Download
   "isSuccess": true,
   "message": null,
   "data": {
-    "id": 2,
-    "title": "Premium Red Sea Souvenir Gift Box",
-    "subTitle": "A curated collection of authentic local Egyptian crafts and sweets",
-    "price": 35,
-    "priceFor": "per box",
-    "subCategoryId": 2,
-    "images": [
+    "id": 3,
+    "title": "Deep Hydration Organic Shampoo",
+    "subTitle": "Nourishes dry and damaged hair with natural argan oil",
+    "price": 24.99,
+    "priceFor": "Per Bottle (500 ml)",
+    "subCategoryId": 1,
+    "images": [],
+    "keys": [
       {
-        "id": 6,
-        "imageUrl": "/uploads/products/1ad6564b1bce4e9c8be44b9395b7a6ef.webp",
+        "id": 1,
+        "name": "Hair Type",
         "displayOrder": 1,
-        "productId": 2
+        "values": [
+          {
+            "id": 1,
+            "value": "Dry, Damaged & Frizzy Hair",
+            "displayOrder": 1
+          }
+        ]
       },
       {
-        "id": 5,
-        "imageUrl": "/uploads/products/ab254a1d03834212acb2c3c83589984c.webp",
+        "id": 2,
+        "name": "Key Ingredients",
         "displayOrder": 2,
-        "productId": 2
+        "values": [
+          {
+            "id": 2,
+            "value": "Argan Oil, Keratin, Vitamin E",
+            "displayOrder": 1
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Volume",
+        "displayOrder": 3,
+        "values": [
+          {
+            "id": 3,
+            "value": "500 ml / 16.9 fl oz",
+            "displayOrder": 1
+          }
+        ]
       }
     ]
   },
@@ -293,7 +552,7 @@ Download
 }
 Response headers
  content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:33:51 GMT 
+ date: Sat,31 Oct 2026 09:21:39 GMT 
  server: Microsoft-IIS/10.0 
  x-powered-by: ASP.NET 
 Responses
@@ -339,7 +598,31 @@ Schema
     "de": "string",
     "fr": "string"
   },
-  "subCategoryId": 0
+  "subCategoryId": 0,
+  "keys": [
+    {
+      "id": 0,
+      "name": {
+        "en": "string",
+        "ru": "string",
+        "de": "string",
+        "fr": "string"
+      },
+      "displayOrder": 0,
+      "values": [
+        {
+          "id": 0,
+          "value": {
+            "en": "string",
+            "ru": "string",
+            "de": "string",
+            "fr": "string"
+          },
+          "displayOrder": 0
+        }
+      ]
+    }
+  ]
 }
 Responses
 Code	Description	Links
@@ -350,332 +633,3 @@ No links
 
 DELETE
 /api/products/{id}
-
-
-Parameters
-Try it out
-Name	Description
-id *
-integer($int32)
-(path)
-id
-Responses
-Code	Description	Links
-200	
-OK
-
-No links
-
-GET
-/api/products/{productId}/images
-
-
-Parameters
-Cancel
-Name	Description
-productId *
-integer($int32)
-(path)
-2
-Execute
-Clear
-Responses
-Curl
-
-curl -X 'GET' \
-  'https://touristtt.runasp.net/api/products/2/images' \
-  -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ'
-Request URL
-https://touristtt.runasp.net/api/products/2/images
-Server response
-Code	Details
-200	
-Response body
-Download
-{
-  "success": true,
-  "isSuccess": true,
-  "message": null,
-  "data": [
-    {
-      "id": 6,
-      "imageUrl": "/uploads/products/1ad6564b1bce4e9c8be44b9395b7a6ef.webp",
-      "displayOrder": 1,
-      "productId": 2
-    },
-    {
-      "id": 5,
-      "imageUrl": "/uploads/products/ab254a1d03834212acb2c3c83589984c.webp",
-      "displayOrder": 2,
-      "productId": 2
-    }
-  ],
-  "errors": null
-}
-Response headers
- content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:33:44 GMT 
- server: Microsoft-IIS/10.0 
- x-powered-by: ASP.NET 
-Responses
-Code	Description	Links
-200	
-OK
-
-No links
-
-POST
-/api/products/{productId}/images
-
-
-Parameters
-Cancel
-Reset
-Name	Description
-productId *
-integer($int32)
-(path)
-2
-Request body
-
-multipart/form-data
-files
-array<string>
-Frame 545.png-
-adminLogin.png-
-Polygon 1.png-
-Polygon 2.png-
-Add string item
-Send empty value
-Execute
-Clear
-Responses
-Curl
-
-curl -X 'POST' \
-  'https://touristtt.runasp.net/api/products/2/images' \
-  -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'files=@Frame 545.png;type=image/png' \
-  -F 'files=@adminLogin.png;type=image/png' \
-  -F 'files=@Polygon 1.png;type=image/png' \
-  -F 'files=@Polygon 2.png;type=image/png'
-Request URL
-https://touristtt.runasp.net/api/products/2/images
-Server response
-Code	Details
-200	
-Response body
-Download
-{
-  "success": true,
-  "isSuccess": true,
-  "message": "4 image(s) uploaded successfully.",
-  "data": [
-    {
-      "id": 3,
-      "imageUrl": "/uploads/products/879497095e8849b698571c7ad22c52cb.webp",
-      "displayOrder": 1,
-      "productId": 2
-    },
-    {
-      "id": 4,
-      "imageUrl": "/uploads/products/da609e8adab548bb9fcfb351f2e3235e.webp",
-      "displayOrder": 2,
-      "productId": 2
-    },
-    {
-      "id": 5,
-      "imageUrl": "/uploads/products/ab254a1d03834212acb2c3c83589984c.webp",
-      "displayOrder": 3,
-      "productId": 2
-    },
-    {
-      "id": 6,
-      "imageUrl": "/uploads/products/1ad6564b1bce4e9c8be44b9395b7a6ef.webp",
-      "displayOrder": 4,
-      "productId": 2
-    }
-  ],
-  "errors": null
-}
-Response headers
- access-control-allow-origin: * 
- content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:32:28 GMT 
- server: Microsoft-IIS/10.0 
- x-powered-by: ASP.NET 
-Responses
-Code	Description	Links
-200	
-OK
-
-No links
-
-PUT
-/api/products/{productId}/images/reorder
-
-
-Parameters
-Cancel
-Reset
-Name	Description
-productId *
-integer($int32)
-(path)
-2
-Request body
-
-application/json
-{
-  "images": [
-    {
-      "imageId": 6,
-      "displayOrder": 1
-    },
-    {
-      "imageId": 5,
-      "displayOrder": 2
-    },
-    {
-      "imageId": 4,
-      "displayOrder": 3
-    },
-    {
-      "imageId": 3,
-      "displayOrder": 4
-    }
-  ]
-}
-Execute
-Clear
-Responses
-Curl
-
-curl -X 'PUT' \
-  'https://touristtt.runasp.net/api/products/2/images/reorder' \
-  -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "images": [
-    {
-      "imageId": 6,
-      "displayOrder": 1
-    },
-    {
-      "imageId": 5,
-      "displayOrder": 2
-    },
-    {
-      "imageId": 4,
-      "displayOrder": 3
-    },
-    {
-      "imageId": 3,
-      "displayOrder": 4
-    }
-  ]
-}'
-Request URL
-https://touristtt.runasp.net/api/products/2/images/reorder
-Server response
-Code	Details
-200	
-Response body
-Download
-{
-  "success": true,
-  "isSuccess": true,
-  "message": "Images reordered successfully.",
-  "data": [
-    {
-      "id": 6,
-      "imageUrl": "/uploads/products/1ad6564b1bce4e9c8be44b9395b7a6ef.webp",
-      "displayOrder": 1,
-      "productId": 2
-    },
-    {
-      "id": 5,
-      "imageUrl": "/uploads/products/ab254a1d03834212acb2c3c83589984c.webp",
-      "displayOrder": 2,
-      "productId": 2
-    },
-    {
-      "id": 4,
-      "imageUrl": "/uploads/products/da609e8adab548bb9fcfb351f2e3235e.webp",
-      "displayOrder": 3,
-      "productId": 2
-    },
-    {
-      "id": 3,
-      "imageUrl": "/uploads/products/879497095e8849b698571c7ad22c52cb.webp",
-      "displayOrder": 4,
-      "productId": 2
-    }
-  ],
-  "errors": null
-}
-Response headers
- access-control-allow-origin: * 
- content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:33:14 GMT 
- server: Microsoft-IIS/10.0 
- x-powered-by: ASP.NET 
-Responses
-Code	Description	Links
-200	
-OK
-
-No links
-
-DELETE
-/api/products/{productId}/images/{imageId}
-
-
-Parameters
-Cancel
-Name	Description
-productId *
-integer($int32)
-(path)
-2
-imageId *
-integer($int32)
-(path)
-4
-Execute
-Clear
-Responses
-Curl
-
-curl -X 'DELETE' \
-  'https://touristtt.runasp.net/api/products/2/images/4' \
-  -H 'accept: */*' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImY4MmI2YmM3LTYzY2UtNGQwZC01YTczLTA4ZGYyZDFmOTY4NSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJzdXBlcmFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3VwZXJhZG1pbkB0b3VyaXN0bWFya2V0LmNvbSIsImp0aSI6IjUyNjZhNGNmLWU1NDQtNDFjMy1iYzRhLTFhNDU5YTAxOWVkZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlN1cGVyQWRtaW4iLCJleHAiOjE3OTI2MTEwODcsImlzcyI6IlRvdXJpc3RNYXJrZXRBUEkiLCJhdWQiOiJUb3VyaXN0TWFya2V0Q2xpZW50In0.kdm4RLL44Z4qWgP3Qw_FS787SM4XyjdkYJhu0s3XJOQ'
-Request URL
-https://touristtt.runasp.net/api/products/2/images/4
-Server response
-Code	Details
-200	
-Response body
-Download
-{
-  "success": true,
-  "isSuccess": true,
-  "message": "Product image deleted successfully.",
-  "data": null,
-  "errors": null
-}
-Response headers
- access-control-allow-origin: * 
- content-type: application/json; charset=utf-8 
- date: Wed,21 Oct 2026 18:33:32 GMT 
- server: Microsoft-IIS/10.0 
- x-powered-by: ASP.NET 
-Responses
-Code	Description	Links
-200	
-OK

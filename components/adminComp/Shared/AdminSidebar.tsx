@@ -47,25 +47,32 @@ export function AdminSidebar({
   );
 
   return (
-    <div className="flex h-full flex-col bg-gradient-to-b from-[#0E4A68] to-[#062A3D] text-[#FFFFFF]">
-      {/* Brand */}
-      <div className="flex items-center justify-between px-6 pb-5 pt-6 border-b border-[#FFFFFF14]">
-        <Link href="/admin/dashboard" onClick={onNavigate} className="flex items-center">
+    <div className="flex h-full flex-col bg-gradient-to-b from-[#0A2637] via-[#092231] to-[#071B27] text-[#FFFFFF]">
+      {/* Brand Header */}
+      <div className="flex h-16 shrink-0 items-center justify-between border-b border-[#FFFFFF14] px-5">
+        <Link
+          href="/admin/dashboard"
+          onClick={onNavigate}
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-90"
+        >
           <Image
             src="/shared/LogoFooter.svg"
             alt="Egypt Tourist Market"
-            width={180}
-            height={56}
+            width={140}
+            height={44}
             priority
-            className="h-11 w-auto object-contain"
+            className="h-8 w-auto object-contain"
           />
+          <span className="rounded-md bg-[#FFFFFF14] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#D48C28]">
+            Admin
+          </span>
         </Link>
         {showCloseButton && (
           <button
             type="button"
             onClick={onNavigate}
             aria-label="Close menu"
-            className="rounded-lg p-2 text-[#FFFFFFB3] hover:bg-[#FFFFFF1A] hover:text-[#FFFFFF] cursor-pointer"
+            className="rounded-lg p-1.5 text-[#FFFFFFB3] hover:bg-[#FFFFFF1A] hover:text-[#FFFFFF] cursor-pointer"
           >
             <FiX className="h-5 w-5" />
           </button>
@@ -73,8 +80,11 @@ export function AdminSidebar({
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-4" suppressHydrationWarning>
-        {/* Standalone Items */}
+      <nav
+        className="flex-1 overflow-y-auto px-4 py-3.5 space-y-3.5 [scrollbar-width:thin] [scrollbar-color:#FFFFFF20_transparent]"
+        suppressHydrationWarning
+      >
+        {/* Standalone Items (Dashboard) */}
         <div className="space-y-1">
           {STANDALONE_NAV_ITEMS.map((item) => {
             const active = pathname === item.href;
@@ -84,28 +94,34 @@ export function AdminSidebar({
                 key={item.href}
                 href={item.href}
                 onClick={onNavigate}
-                className={`group relative flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold transition-all ${
+                className={`group flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-colors ${
                   active
-                    ? "bg-[#FFFFFF] text-[#0E4A68] shadow-md font-bold"
-                    : "text-[#FFFFFFE6] hover:bg-[#FFFFFF14] hover:text-[#FFFFFF]"
+                    ? "bg-[#FFFFFF18] text-[#FFFFFF]"
+                    : "text-[#FFFFFFCC] hover:bg-[#FFFFFF0D] hover:text-[#FFFFFF]"
                 }`}
               >
+                <div className="flex items-center gap-3 min-w-0">
+                  <Icon
+                    className={`h-[18px] w-[18px] shrink-0 transition-colors ${
+                      active ? "text-[#D48C28]" : "text-[#FFFFFF99] group-hover:text-[#FFFFFF]"
+                    }`}
+                  />
+                  <span className="truncate">{item.label}</span>
+                </div>
                 {active && (
-                  <span className="absolute -left-4 top-1/2 h-7 w-1.5 -translate-y-1/2 rounded-r-full bg-[#D48C28]" />
+                  <span className="h-2 w-2 shrink-0 rounded-full bg-[#D48C28]" />
                 )}
-                <Icon className={`h-5 w-5 shrink-0 ${active ? "text-[#D48C28]" : "text-[#FFFFFFB3]"}`} />
-                <span>{item.label}</span>
               </Link>
             );
           })}
         </div>
 
         {/* Categorized Dropdowns */}
-        <div className="space-y-2 pt-2 border-t border-[#FFFFFF14]">
-          <p className="px-3.5 pt-1 text-xs font-semibold uppercase tracking-wider text-[#FFFFFF80]">
+        <div className="space-y-1.5 pt-2 border-t border-[#FFFFFF14]">
+          <p className="px-3 pb-1 text-xs font-bold uppercase tracking-wider text-[#FFFFFF70]">
             Modules & Management
           </p>
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             {visibleCategories.map((category) => (
               <AdminNavSection
                 key={category.id}
@@ -119,14 +135,14 @@ export function AdminSidebar({
         </div>
       </nav>
 
-      {/* Bottom: account + logout */}
-      <div className="space-y-3 border-t border-[#FFFFFF1A] p-4">
-        <div className="flex items-center gap-3 rounded-xl bg-[#FFFFFF0F] p-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#D48C28] text-sm font-bold uppercase shadow-inner">
+      {/* Bottom: User Card & Actions */}
+      <div className="shrink-0 border-t border-[#FFFFFF14] p-4 space-y-3 bg-[#06172280]">
+        <div className="flex items-center gap-3 rounded-xl bg-[#FFFFFF0D] p-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#D48C28] text-sm font-bold uppercase text-white shadow-inner">
             {displayName.charAt(0)}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold">{displayName}</p>
+            <p className="truncate text-sm font-semibold text-white">{displayName}</p>
             <p className="truncate text-xs text-[#FFFFFF99]" suppressHydrationWarning>
               {user?.roles?.[0] || "Admin"} ·{" "}
               {minutesRemaining >= 60
@@ -136,38 +152,26 @@ export function AdminSidebar({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onChangePassword}
-          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-[#FFFFFFCC] transition-colors hover:bg-[#FFFFFF14] hover:text-[#FFFFFF] cursor-pointer"
-        >
-          <FiKey className="h-4 w-4 text-[#FFFFFF99]" />
-          <span>Change Password</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onChangePassword}
+            title="Change password"
+            className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[#FFFFFF0D] hover:bg-[#FFFFFF18] px-3 py-2 text-xs font-semibold text-[#FFFFFFE6] hover:text-white transition-colors cursor-pointer"
+          >
+            <FiKey className="h-4 w-4 text-[#FFFFFFB3]" />
+            <span>Password</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={onLogout}
-          className="flex w-full items-center gap-3 rounded-xl border border-[#F8717140] bg-[#F871711A] px-3.5 py-2.5 text-sm font-semibold text-[#FECACA] transition-colors hover:bg-[#F8717133] hover:text-[#FFFFFF] cursor-pointer"
-        >
-          <FiLogOut className="h-4 w-4" />
-          <span>Logout</span>
-        </button>
-
-        <div className="pt-1 text-center text-[10px] text-[#FFFFFF66]">
-          <span>© 2026 Egypt Tourist Market. All rights reserved.</span>
-          <br />
-          <span>
-            Powered by{" "}
-            <a
-              href="https://tech-gear.net/en"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-[#D48C28] hover:underline transition-colors"
-            >
-              Tech Gear Solutions
-            </a>
-          </span>
+          <button
+            type="button"
+            onClick={onLogout}
+            title="Logout"
+            className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-[#F8717140] bg-[#F871711A] hover:bg-[#F8717130] px-3 py-2 text-xs font-semibold text-[#FECACA] hover:text-white transition-colors cursor-pointer"
+          >
+            <FiLogOut className="h-4 w-4" />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     </div>

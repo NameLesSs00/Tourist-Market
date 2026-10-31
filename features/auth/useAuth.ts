@@ -3,9 +3,10 @@ import { useRouter } from "next/navigation";
 import authApi from "@/clientApi/authApi";
 import useAuthStore from "./authStore";
 import { LoginRequest, ChangePasswordRequest } from "@/models/auth";
-import axios from "axios";
-
 import { toast } from "sonner";
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
+
+export { extractErrorMessage };
 
 export function useLoginMutation() {
   const router = useRouter();
@@ -52,33 +53,4 @@ export function useChangePasswordMutation() {
     mutationFn: (payload: ChangePasswordRequest) =>
       authApi.changePassword(payload),
   });
-}
-
-/**
- * Utility helper to extract user-friendly error messages from backend responses
- */
-export function extractErrorMessage(error: unknown, fallback?: string): string {
-  if (axios.isAxiosError(error)) {
-    const data = error.response?.data;
-    if (data?.message) {
-      return data.message;
-    }
-    if (Array.isArray(data?.errors) && data.errors.length > 0) {
-      return data.errors.join(", ");
-    }
-    if (typeof data?.errors === "string") {
-      return data.errors;
-    }
-    if (data?.errors && typeof data.errors === "object") {
-      const messages = Object.values(data.errors).flat();
-      if (messages.length > 0) return messages.join(", ");
-    }
-    if (error.response?.status === 401) {
-      return "Invalid username or password. Please try again.";
-    }
-    if (error.response?.status === 500) {
-      return "Server error occurred. Please try again later.";
-    }
-  }
-  return fallback || "An unexpected error occurred. Please check your connection.";
 }

@@ -9,28 +9,17 @@ interface ServicesMegaMenuProps {
   categories: MegaMenuCategory[];
   isOpen: boolean;
   onClose: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 }
 
 export function ServicesMegaMenu({
   categories,
   isOpen,
   onClose,
-  onMouseEnter,
-  onMouseLeave,
 }: ServicesMegaMenuProps) {
   if (!isOpen) return null;
 
   return (
-    <div
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      className="absolute top-full left-[-24px] lg:left-[-32px] xl:left-[-40px] pt-3 z-50 animate-in fade-in zoom-in-95 duration-150"
-    >
-      {/* Invisible hover bridge to prevent cursor gap drop */}
-      <div className="absolute -top-3 inset-x-0 h-4 pointer-events-auto" />
-
+    <div className="absolute top-full left-[-24px] lg:left-[-32px] xl:left-[-40px] pt-3 z-50 animate-in fade-in zoom-in-95 duration-150">
       {/* Main Filter Panel Matching PromptsUi/Filter.png with #FFFEEF background */}
       <div
         className="w-[660px] lg:w-[700px] xl:w-[780px] rounded-[24px] xl:rounded-[28px] bg-[#FFFEEF] border border-[#08395215] p-6 lg:p-7 xl:p-8 shadow-[0px_16px_45px_rgba(8,57,82,0.12)]"

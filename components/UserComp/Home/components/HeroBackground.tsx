@@ -26,6 +26,7 @@ export function HeroBackground() {
           width={750}
           height={650}
           priority
+          style={{ width: "100%", height: "auto" }}
           className="w-full h-auto object-contain"
         />
       </div>

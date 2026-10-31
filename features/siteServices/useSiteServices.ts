@@ -1,3 +1,4 @@
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -83,8 +84,13 @@ export function useCreateSiteServiceMutation() {
       if (imageFile && createdId) {
         try {
           await uploadSiteServiceImage(createdId, imageFile);
-        } catch {
-          toast.warning("Site service created, but cover image upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Site service created, but cover image upload failed."
+            )
+          );
         }
       }
 
@@ -94,12 +100,8 @@ export function useCreateSiteServiceMutation() {
       toast.success("Site service created successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "site-services"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to create site service.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to create site service."));
     },
   });
 }
@@ -133,14 +135,24 @@ export function useUpdateSiteServiceMutation() {
       if (removeImage && !imageFile) {
         try {
           await deleteSiteServiceImage(id);
-        } catch {
-          toast.warning("Service updated, but image deletion failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Service updated, but image deletion failed."
+            )
+          );
         }
       } else if (imageFile) {
         try {
           await uploadSiteServiceImage(id, imageFile);
-        } catch {
-          toast.warning("Service updated, but image upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Service updated, but image upload failed."
+            )
+          );
         }
       }
 
@@ -153,12 +165,8 @@ export function useUpdateSiteServiceMutation() {
         queryKey: ["admin", "site-service-localized", variables.id],
       });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to update site service.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to update site service."));
     },
   });
 }
@@ -177,12 +185,8 @@ export function useDeleteSiteServiceMutation() {
       toast.success("Site service deleted successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "site-services"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to delete site service.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to delete site service."));
     },
   });
 }

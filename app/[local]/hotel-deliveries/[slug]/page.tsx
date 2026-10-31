@@ -4,11 +4,20 @@ import { ProductDetailsSection } from "@/components/UserComp/HotelDeliveries";
 
 export const instant = false;
 
-export const metadata: Metadata = {
-  title: "Ananas-Pineapples - Hotel Deliveries | Egypt Tourist Market",
-  description:
-    "Order fresh pineapples delivered straight to your hotel with Egypt Tourist Market.",
-};
+interface PageProps {
+  params: Promise<{
+    local: string;
+    slug: string;
+  }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  return {
+    title: "Hotel Delivery Product | Egypt Tourist Market",
+    description: `Order delivery straight to your hotel room with Egypt Tourist Market. Product: ${slug}`,
+  };
+}
 
 export function generateStaticParams() {
   return [
@@ -16,14 +25,11 @@ export function generateStaticParams() {
     { local: "fr", slug: "ananas-1" },
     { local: "de", slug: "ananas-1" },
     { local: "ru", slug: "ananas-1" },
+    { local: "en", slug: "1" },
+    { local: "fr", slug: "1" },
+    { local: "de", slug: "1" },
+    { local: "ru", slug: "1" },
   ];
-}
-
-interface PageProps {
-  params: Promise<{
-    local: string;
-    slug: string;
-  }>;
 }
 
 async function ProductDetailsResolved({ params }: PageProps) {

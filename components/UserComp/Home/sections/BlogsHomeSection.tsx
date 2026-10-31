@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import type { BlogItem } from "@/models/blog";
 import { BlogCard } from "@/components/UserComp/Blogs/components/BlogCard";
 import { useClientBlogsQuery } from "@/features/blogs/useClientBlogs";
 
@@ -13,50 +12,14 @@ interface BlogsHomeSectionProps {
 }
 
 export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
-  // Fetch strictly 5 blogs for the home section
+  // Fetch only 3 blogs for the home section grid
   const { data, isLoading } = useClientBlogsQuery(
-    { pageNumber: 1, pageSize: 5 },
+    { pageNumber: 1, pageSize: 3 },
     locale
   );
 
-  const blogs = data?.items && data.items.length > 0 ? data.items.slice(0, 5) : [];
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const isPointerDownRef = useRef(false);
-  const startXRef = useRef(0);
-  const startScrollLeftRef = useRef(0);
-  const hasMovedRef = useRef(false);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button !== 0 || !scrollContainerRef.current) return;
-    isPointerDownRef.current = true;
-    hasMovedRef.current = false;
-    startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
-    startScrollLeftRef.current = scrollContainerRef.current.scrollLeft;
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isPointerDownRef.current || !scrollContainerRef.current) return;
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = x - startXRef.current;
-    if (Math.abs(walk) > 5) {
-      if (!hasMovedRef.current) {
-        hasMovedRef.current = true;
-        setIsDragging(true);
-      }
-      scrollContainerRef.current.scrollLeft = startScrollLeftRef.current - walk;
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (!isPointerDownRef.current) return;
-    isPointerDownRef.current = false;
-    setTimeout(() => {
-      setIsDragging(false);
-      hasMovedRef.current = false;
-    }, 50);
-  };
+  const blogs =
+    data?.items && data.items.length > 0 ? data.items.slice(0, 3) : [];
 
   return (
     <section
@@ -98,56 +61,45 @@ export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
           </p>
         </motion.div>
 
-        {/* Horizontal Carousel Track Wrapper */}
-        <div className="relative w-full">
-          {/* 5 Blog Cards: Smooth Horizontal Scroller with Touch Swipe & Drag */}
-          {isLoading ? (
-            <div className="flex gap-6 sm:gap-7 lg:gap-8 overflow-hidden pb-4 pt-2 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="w-[86vw] sm:w-[390px] md:w-[410px] lg:w-[420px] 2xl:w-[435px] shrink-0 rounded-[20px] bg-[#0E4A68]/15 animate-pulse aspect-[16/16]"
-                />
-              ))}
-            </div>
-          ) : (
-            <div
-              ref={scrollContainerRef}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-              onDragStart={(e) => e.preventDefault()}
-              onClickCapture={(e) => {
-                if (hasMovedRef.current) {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }
-              }}
-              style={{ WebkitOverflowScrolling: "touch" }}
-              className={`relative z-10 w-full overflow-x-auto no-scrollbar pb-4 pt-2 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:px-0 select-none ${
-                isDragging ? "cursor-grabbing scroll-auto" : "cursor-grab"
-              }`}
-            >
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.05 }}
-                transition={{ duration: 0.55, ease: "easeOut" }}
-                className="flex gap-6 sm:gap-7 lg:gap-8 items-stretch"
-              >
-                {blogs.map((blog) => (
-                  <div
-                    key={blog.id}
-                    className="w-[86vw] sm:w-[390px] md:w-[410px] lg:w-[420px] 2xl:w-[435px] shrink-0 h-full select-none"
-                  >
+        {/* Blog Cards Grid: 1 col on mobile, 2 on sm, 3 on lg */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div
+                key={i}
+                className="rounded-[20px] bg-[#0E4A68]/15 animate-pulse aspect-[16/16]"
+              />
+            ))}
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.05 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+          >
+            {/* Grid wrapper — centers any orphan card in the last row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
+              {blogs.map((blog, index) => {
+                const total = blogs.length;
+                const colsPerRow = 3;
+                const orphanCount = total % colsPerRow;
+                const isOrphan =
+                  orphanCount !== 0 && index >= total - orphanCount;
+                // Center a single orphan on lg (3-col) grid by offsetting col-start
+                const centerClass =
+                  isOrphan && orphanCount === 1
+                    ? "lg:col-start-2 sm:col-start-1"
+                    : "";
+                return (
+                  <div key={blog.id} className={centerClass}>
                     <BlogCard blog={blog} locale={locale} />
                   </div>
-                ))}
-              </motion.div>
+                );
+              })}
             </div>
-          )}
-        </div>
+          </motion.div>
+        )}
 
         {/* Center CTA Button: Read More */}
         <div className="mt-12 sm:mt-14 flex justify-center">

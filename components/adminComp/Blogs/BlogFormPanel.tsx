@@ -20,6 +20,7 @@ import {
 } from "@/models/localization";
 import type { BlogItem, BlogUpsertRequest } from "@/models/blog";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { ACCEPT_IMAGE_TYPES, validateImageFile } from "@/shared/utils/imageValidation";
 
 interface BlogFormPanelProps {
   open: boolean;
@@ -94,13 +95,9 @@ export function BlogFormPanel({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please upload a valid image file (PNG, JPG, WEBP).");
-      return;
-    }
-
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Image file size must be less than 5MB.");
+    const err = validateImageFile(file, 5 * 1024 * 1024);
+    if (err) {
+      toast.error(err);
       return;
     }
 
@@ -280,7 +277,7 @@ export function BlogFormPanel({
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept={ACCEPT_IMAGE_TYPES}
             onChange={handleFileChange}
             className="hidden"
           />

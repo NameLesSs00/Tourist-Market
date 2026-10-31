@@ -65,9 +65,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen w-full bg-[#F1F5F9] font-poppins">
-      {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-80 lg:block">
+    <div dir="ltr" className="flex min-h-screen w-full bg-[#F1F5F9] font-poppins text-left">
+      {/* Desktop sidebar - pinned to left */}
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-72 lg:block border-r border-[#0E4A6818] shadow-sm">
         <AdminSidebar {...sidebarProps} />
       </aside>
 
@@ -76,14 +76,14 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         {isDrawerOpen && (
           <div className="fixed inset-0 z-[70] lg:hidden">
             <motion.div
-              className="absolute inset-0 bg-[#0F172A80]"
+              className="absolute inset-0 bg-[#0F172A80] backdrop-blur-xs"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsDrawerOpen(false)}
             />
             <motion.aside
-              className="relative h-full w-80 shadow-2xl"
+              className="relative h-full w-72 shadow-2xl"
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
@@ -100,7 +100,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       </AnimatePresence>
 
       {/* Content */}
-      <div className="flex min-w-0 flex-1 flex-col lg:pl-80">
+      <div className="flex min-w-0 flex-1 flex-col lg:pl-72">
         {/* Mobile-only menu trigger (no header on desktop) */}
         <div className="sticky top-0 z-20 flex items-center px-4 pt-4 lg:hidden">
           <button

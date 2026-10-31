@@ -1,3 +1,4 @@
+import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -108,8 +109,13 @@ export function useCreateProductCategoryMutation() {
       if (imageFile && typeof createdId === "number") {
         try {
           await uploadProductCategoryImage(createdId, imageFile);
-        } catch {
-          toast.warning("Category created, but cover image upload failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Category created, but cover image upload failed."
+            )
+          );
         }
       }
 
@@ -119,12 +125,8 @@ export function useCreateProductCategoryMutation() {
       toast.success("Product category created successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "product-categories"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to create product category.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to create product category."));
     },
   });
 }
@@ -157,14 +159,24 @@ export function useUpdateProductCategoryMutation() {
       if (imageFile) {
         try {
           await uploadProductCategoryImage(id, imageFile);
-        } catch {
-          toast.warning("Category updated, but image replacement failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Category updated, but image replacement failed."
+            )
+          );
         }
       } else if (removeImage) {
         try {
           await deleteProductCategoryImage(id);
-        } catch {
-          toast.warning("Category updated, but image removal failed.");
+        } catch (imageErr: unknown) {
+          toast.error(
+            extractErrorMessage(
+              imageErr,
+              "Category updated, but image removal failed."
+            )
+          );
         }
       }
 
@@ -177,12 +189,8 @@ export function useUpdateProductCategoryMutation() {
         queryKey: ["admin", "product-category-localized", vars.id],
       });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to update product category.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to update product category."));
     },
   });
 }
@@ -199,12 +207,8 @@ export function useDeleteProductCategoryMutation() {
       toast.success("Product category deleted successfully.");
       qc.invalidateQueries({ queryKey: ["admin", "product-categories"] });
     },
-    onError: (err: any) => {
-      const msg =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Failed to delete product category.";
-      toast.error(msg);
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to delete product category."));
     },
   });
 }

@@ -10,6 +10,7 @@ import type {
 } from "@/models/product";
 import {
   ProductGalleryManager,
+  ProductKeysManager,
   ProductLocalizedFields,
   ProductSpecsPricing,
 } from "./components";
@@ -52,6 +53,11 @@ export function ProductFormPanel({
     setPrice,
     subCategoryId,
     setSubCategoryId,
+    keys,
+    handleAddKey,
+    handleRemoveKey,
+    handleUpdateKeyTitle,
+    handleUpdateKeyDescription,
     existingImages,
     newPreviews,
     errors,
@@ -77,8 +83,8 @@ export function ProductFormPanel({
       title={isEdit ? "Edit Product" : "Create New Product"}
       subtitle={
         isEdit
-          ? "Update product details, pricing, and photo gallery."
-          : "Add a new product with multilingual details and photos."
+          ? "Update product details, pricing, specifications, and photo gallery."
+          : "Add a new product with multilingual details, specifications, and photos."
       }
       widthClassName="max-w-2xl"
       footer={
@@ -132,7 +138,7 @@ export function ProductFormPanel({
           errors={errors}
         />
 
-        {/* 3. BOTTOM: Localized Fields (Stacked EN, RU, DE, FR) */}
+        {/* 3. Localized Fields (Title, Subtitle, Price Unit) */}
         <ProductLocalizedFields
           title={title}
           subtitle={subtitle}
@@ -154,7 +160,18 @@ export function ProductFormPanel({
               setErrors((prev) => ({ ...prev, [`priceFor.${lang}`]: "" }));
           }}
         />
+
+        {/* 4. BOTTOM: Dynamic Specifications Manager (Keys: Title & Description) */}
+        <ProductKeysManager
+          keys={keys}
+          onAddKey={handleAddKey}
+          onRemoveKey={handleRemoveKey}
+          onUpdateTitle={handleUpdateKeyTitle}
+          onUpdateDescription={handleUpdateKeyDescription}
+        />
       </form>
     </SlidePanel>
   );
 }
+
+export default ProductFormPanel;
