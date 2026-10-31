@@ -57,7 +57,7 @@ export function useChangePasswordMutation() {
 /**
  * Utility helper to extract user-friendly error messages from backend responses
  */
-export function extractErrorMessage(error: unknown): string {
+export function extractErrorMessage(error: unknown, fallback?: string): string {
   if (axios.isAxiosError(error)) {
     const data = error.response?.data;
     if (data?.message) {
@@ -80,5 +80,5 @@ export function extractErrorMessage(error: unknown): string {
       return "Server error occurred. Please try again later.";
     }
   }
-  return "An unexpected error occurred. Please check your connection.";
+  return fallback || "An unexpected error occurred. Please check your connection.";
 }

@@ -2,8 +2,6 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { TransferSection } from "@/components/UserComp/Transfer";
 
-export const instant = false;
-
 export const metadata: Metadata = {
   title: "Transfer Services | Egypt Tourist Market",
   description:
@@ -25,6 +23,14 @@ interface PageProps {
   }>;
 }
 
+function TransferLoadingFallback() {
+  return (
+    <div className="w-full min-h-screen bg-[#FFF8ED] font-poppins flex items-center justify-center py-32">
+      <div className="w-12 h-12 rounded-full border-4 border-[#0E4A68] border-t-transparent animate-spin" />
+    </div>
+  );
+}
+
 async function TransferResolved({ params }: PageProps) {
   const { local } = await params;
   return <TransferSection locale={local} />;
@@ -32,7 +38,7 @@ async function TransferResolved({ params }: PageProps) {
 
 export default function DirectTransferPage(props: PageProps) {
   return (
-    <Suspense fallback={<TransferSection locale="en" />}>
+    <Suspense fallback={<TransferLoadingFallback />}>
       <TransferResolved {...props} />
     </Suspense>
   );

@@ -4,6 +4,8 @@ import type {
   TransferBookingPreviewParams,
   TransferBookingPreviewResult,
   TransferBookingStatus,
+  CreateTransferBookingRequest,
+  CreateTransferBookingResponse,
 } from "@/models/transferBooking";
 
 export async function getTransferBookings(): Promise<TransferBookingItem[]> {
@@ -48,6 +50,16 @@ export async function previewTransferBooking(
   const { data } = await apiClient.get<TransferBookingPreviewResult>(
     "/transfer-bookings/preview",
     { params }
+  );
+  return data;
+}
+
+export async function createTransferBooking(
+  payload: CreateTransferBookingRequest
+): Promise<CreateTransferBookingResponse> {
+  const { data } = await apiClient.post<CreateTransferBookingResponse>(
+    "/transfer-bookings",
+    payload
   );
   return data;
 }

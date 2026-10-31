@@ -110,3 +110,26 @@ export function formatTransferVehicleType(type: number | string): string {
   if (num === 3) return "Bus (17-35 pax)";
   return "Private Vehicle";
 }
+
+export interface CreateTransferBookingRequest {
+  fromLocationId: string;
+  toLocationId: string;
+  adults: number;
+  children: number;
+  tripType: TransferTripType;
+  tripDate: string;
+  tripTime: string;
+  customerName: string;
+  countryId: string;
+  email: string;
+  communicationMethod: TransferCommunicationMethod;
+  phoneNumber: string;
+  luggageCount: number;
+  notes?: string;
+}
+
+export interface CreateTransferBookingResponse {
+  message?: string;
+  totalPrice?: number;
+  paymentMessage?: string;
+}
