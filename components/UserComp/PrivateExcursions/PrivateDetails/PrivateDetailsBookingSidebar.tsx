@@ -75,27 +75,27 @@ export function PrivateDetailsBookingSidebar({
     controlledAdults !== undefined ? controlledAdults : internalAdults;
   const setAdults = onAdultsChange
     ? (val: number | ((prev: number) => number)) => {
-        const next = typeof val === "function" ? val(adults) : val;
-        onAdultsChange(next);
-      }
+      const next = typeof val === "function" ? val(adults) : val;
+      onAdultsChange(next);
+    }
     : setInternalAdults;
 
   const children =
     controlledChildren !== undefined ? controlledChildren : internalChildren;
   const setChildren = onChildrenChange
     ? (val: number | ((prev: number) => number)) => {
-        const next = typeof val === "function" ? val(children) : val;
-        onChildrenChange(next);
-      }
+      const next = typeof val === "function" ? val(children) : val;
+      onChildrenChange(next);
+    }
     : setInternalChildren;
 
   const infants =
     controlledInfants !== undefined ? controlledInfants : internalInfants;
   const setInfants = onInfantsChange
     ? (val: number | ((prev: number) => number)) => {
-        const next = typeof val === "function" ? val(infants) : val;
-        onInfantsChange(next);
-      }
+      const next = typeof val === "function" ? val(infants) : val;
+      onInfantsChange(next);
+    }
     : setInternalInfants;
 
   const totalPassengers = adults + children + infants;
@@ -184,8 +184,8 @@ export function PrivateDetailsBookingSidebar({
   const buttonLabel = isReadyToBook
     ? "Book Now"
     : !bookingDate || dateError
-    ? "Select Date to Book"
-    : "Select Attraction to Book";
+      ? "Select Date to Book"
+      : "Select Attraction to Book";
 
   return (
     <aside className="w-full flex flex-col gap-6 font-poppins lg:sticky lg:top-24 lg:self-start">
@@ -227,11 +227,10 @@ export function PrivateDetailsBookingSidebar({
                 min={tomorrowStr}
                 value={bookingDate}
                 onChange={(e) => setBookingDate(e.target.value)}
-                className={`w-full px-4 py-2.5 rounded-lg border text-[14px] text-[#083952] focus:outline-none bg-white cursor-pointer transition-colors ${
-                  dateError
+                className={`w-full px-4 py-2.5 rounded-lg border text-[14px] text-[#083952] focus:outline-none bg-white cursor-pointer transition-colors ${dateError
                     ? "border-red-500 focus:border-red-500"
                     : "border-[#BBBBBB] focus:border-[#DE7423]"
-                }`}
+                  }`}
               />
             </div>
             {dateError && (
@@ -625,11 +624,10 @@ export function PrivateDetailsBookingSidebar({
             <div className="flex items-center justify-between text-[13px] font-bold text-[#0E4A68]">
               <span>Required to Book</span>
               <span
-                className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                  isReadyToBook
+                className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${isReadyToBook
                     ? "bg-green-100 text-green-700"
                     : "bg-[#DE7423]/15 text-[#DE7423]"
-                }`}
+                  }`}
               >
                 {isReadyToBook ? "Ready" : "Steps Missing"}
               </span>
@@ -676,8 +674,8 @@ export function PrivateDetailsBookingSidebar({
                     {isDateValid
                       ? `Date: ${bookingDate}`
                       : dateError
-                      ? dateError
-                      : "Select an excursion date"}
+                        ? dateError
+                        : "Select an excursion date"}
                   </span>
                 </div>
                 {!isDateValid && (
@@ -729,9 +727,8 @@ export function PrivateDetailsBookingSidebar({
                     }
                   >
                     {hasAttractions
-                      ? `${selectedAttractions.length} attraction${
-                          selectedAttractions.length > 1 ? "s" : ""
-                        } selected`
+                      ? `${selectedAttractions.length} attraction${selectedAttractions.length > 1 ? "s" : ""
+                      } selected`
                       : "Select at least 1 attraction"}
                   </span>
                 </div>
@@ -763,7 +760,71 @@ export function PrivateDetailsBookingSidebar({
       </div>
 
       {/* NEED HELP CARD */}
+<<<<<<< Updated upstream
       <NeedHelpCard />
+=======
+      <div
+        className="w-full bg-white p-5 rounded-xl space-y-4"
+        style={{
+          border: "0.8px solid #BBBBBB",
+          boxShadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.05)",
+        }}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#124885]">
+              <FiHeadphones size={20} />
+            </div>
+            <div>
+              <h4 className="text-[16px] font-bold text-[#124885] leading-snug">
+                Need Help ?
+              </h4>
+              <p className="text-[12px] font-medium text-[#083043]">
+                Contact us for Help
+              </p>
+            </div>
+          </div>
+          <FiChevronRight size={20} className="text-gray-400" />
+        </div>
+
+        {/* 3 Buttons: WhatsApp, Telegram, Viber */}
+        <div className="space-y-2.5">
+          <a
+            href="https://wa.me/201036232021"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2.5 text-white font-semibold text-[14px] hover:opacity-95 transition-opacity"
+            style={{ backgroundColor: "#17DB55" }}
+          >
+            <FaWhatsapp size={18} />
+            <span>WhatsApp</span>
+          </a>
+
+          <a
+            href="https://t.me/egypttouristmarket"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2.5 text-white font-semibold text-[14px] hover:opacity-95 transition-opacity"
+            style={{ backgroundColor: "#0E4A68" }}
+          >
+            <FaTelegramPlane size={18} />
+            <span>Telegram</span>
+          </a>
+
+          <a
+            href="viber://chat?number=201036232021"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2.5 font-semibold text-[14px] text-[#333333] hover:bg-gray-200 transition-colors"
+            style={{ backgroundColor: "#F4F4F4" }}
+          >
+            <FaViber size={18} className="text-[#7360F2]" />
+            <span>Viber</span>
+          </a>
+        </div>
+      </div>
+>>>>>>> Stashed changes
     </aside>
   );
 }

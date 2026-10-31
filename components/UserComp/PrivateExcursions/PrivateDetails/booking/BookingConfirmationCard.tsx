@@ -132,7 +132,7 @@ export function BookingConfirmationCard({
           Back to Excursion Details
         </button>
         <a
-          href={`https://wa.me/201012345678?text=Hello,%20I%20have%20booked%20${encodeURIComponent(
+          href={`https://wa.me/201036232021?text=Hello,%20I%20have%20booked%20${encodeURIComponent(
             detail.title
           )}%20(Ref:%20${encodeURIComponent(confirmedBooking.bookingReference)})`}
           target="_blank"

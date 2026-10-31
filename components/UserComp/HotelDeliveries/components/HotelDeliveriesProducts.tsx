@@ -7,6 +7,10 @@ import { HotelDeliveriesCard, type HotelProduct } from "./HotelDeliveriesCard";
 import { useClientProductsQuery } from "@/features/products/useClientProducts";
 import { useCart } from "@/features/cart/useCart";
 import type { ProductListItem } from "@/models/product";
+<<<<<<< Updated upstream
+=======
+import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+>>>>>>> Stashed changes
 
 const PAGE_SIZE = 12;
 
@@ -262,11 +266,23 @@ export function HotelDeliveriesProducts({
                   price = Number(p.price || 0);
                   unitName = p.priceFor || "";
                   if (p.images && p.images.length > 0) {
+<<<<<<< Updated upstream
                     image = p.images[0]?.imageUrl || "";
                   }
                 } else {
                   price = parseFloat(String((item as HotelProduct).price || "0").replace(/[^0-9.]/g, "")) || 0;
                   image = (item as HotelProduct).image || "";
+=======
+                    const heroImg = p.images
+                      .slice()
+                      .sort((a, b) => a.displayOrder - b.displayOrder)[0];
+                    image = getBackendImageUrl(heroImg?.imageUrl) || heroImg?.imageUrl || "";
+                  }
+                } else {
+                  price = parseFloat(String((item as HotelProduct).price || "0").replace(/[^0-9.]/g, "")) || 0;
+                  const raw = (item as HotelProduct).image || "";
+                  image = getBackendImageUrl(raw) || raw;
+>>>>>>> Stashed changes
                 }
 
                 addItem(

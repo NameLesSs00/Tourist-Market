@@ -57,7 +57,7 @@ export function BookingContactFields({
             <FiPhone className="absolute left-3 top-3 text-gray-400" size={16} />
             <input
               type="tel"
-              placeholder="+20 123 456 7890"
+              placeholder="+201036232021"
               value={phone}
               onChange={(e) => onPhoneChange(e.target.value)}
               required
@@ -88,7 +88,7 @@ export function BookingContactFields({
               <FaWhatsapp className="absolute left-3 top-3 text-[#16A34A]" size={16} />
               <input
                 type="tel"
-                placeholder="+20 123 456 7890"
+                placeholder="+201036232021"
                 value={whatsApp}
                 onChange={(e) => onWhatsAppChange(e.target.value)}
                 required

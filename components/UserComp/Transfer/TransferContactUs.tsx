@@ -70,7 +70,7 @@ export function TransferContactUs() {
 
       {/* Contact info subtitle */}
       <div className="text-xs font-semibold text-[#52646B]">
-        +20 01289494715 · Daily 9:00 AM – 9:00 PM
+        +201036234030 · Daily 9:00 AM – 9:00 PM
       </div>
     </div>
   );

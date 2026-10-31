@@ -91,7 +91,11 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
       )}
 
       {/* ─── 4. Floating Cart Button ─── */}
+<<<<<<< Updated upstream
       <FloatingCartButton />
+=======
+      <FloatingCartButton locale={locale} />
+>>>>>>> Stashed changes
     </div>
   );
 }

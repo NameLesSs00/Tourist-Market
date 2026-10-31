@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "@/features/cart/useCart";
+<<<<<<< Updated upstream
+=======
+import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+>>>>>>> Stashed changes
 
 interface ProductDetailsBookingCardProps {
   productId?: number;
@@ -12,6 +17,10 @@ interface ProductDetailsBookingCardProps {
   available?: number;
   unitPrice?: number;
   unitName?: string;
+<<<<<<< Updated upstream
+=======
+  imageUrl?: string;
+>>>>>>> Stashed changes
   locale?: string;
 }
 
@@ -22,8 +31,15 @@ export function ProductDetailsBookingCard({
   available = 99,
   unitPrice = 0,
   unitName = "Piece",
+<<<<<<< Updated upstream
   locale = "en",
 }: ProductDetailsBookingCardProps) {
+=======
+  imageUrl,
+  locale = "en",
+}: ProductDetailsBookingCardProps) {
+  const router = useRouter();
+>>>>>>> Stashed changes
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
@@ -36,17 +52,33 @@ export function ProductDetailsBookingCard({
   };
 
   const handleAddToCart = () => {
+<<<<<<< Updated upstream
+=======
+    const resolvedImage = imageUrl ? getBackendImageUrl(imageUrl) || imageUrl : undefined;
+>>>>>>> Stashed changes
     addItem(
       {
         productId,
         title: itemTitle,
         price: unitPrice,
         unitName: displayUnit,
+<<<<<<< Updated upstream
+=======
+        image: resolvedImage,
+>>>>>>> Stashed changes
       },
       quantity
     );
   };
 
+<<<<<<< Updated upstream
+=======
+  const handleOrderNow = () => {
+    handleAddToCart();
+    router.push(`/${locale}/cart`);
+  };
+
+>>>>>>> Stashed changes
   const total = (quantity * unitPrice).toFixed(2);
   const displayUnit = unitName?.trim() || "Piece";
 
@@ -178,7 +210,11 @@ export function ProductDetailsBookingCard({
             {/* Buy Now Button */}
             <button
               type="button"
+<<<<<<< Updated upstream
               onClick={handleAddToCart}
+=======
+              onClick={handleOrderNow}
+>>>>>>> Stashed changes
               className="w-full py-2.5 text-center text-white font-semibold text-[15px] hover:opacity-95 active:scale-[0.99] transition-all cursor-pointer shadow-sm"
               style={{
                 background: "#0E4A68",

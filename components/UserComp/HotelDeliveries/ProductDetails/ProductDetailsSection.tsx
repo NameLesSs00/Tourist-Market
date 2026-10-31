@@ -114,6 +114,10 @@ export function ProductDetailsSection({
               category={subcategory?.name || "Hotel Delivery"}
               unitPrice={product?.price}
               unitName={product?.priceFor}
+<<<<<<< Updated upstream
+=======
+              imageUrl={galleryImages?.[0]}
+>>>>>>> Stashed changes
               locale={locale}
             />
 
@@ -134,7 +138,11 @@ export function ProductDetailsSection({
       </div>
 
       {/* ─── Floating Cart Button ─── */}
+<<<<<<< Updated upstream
       <FloatingCartButton />
+=======
+      <FloatingCartButton locale={locale} />
+>>>>>>> Stashed changes
     </div>
   );
 }

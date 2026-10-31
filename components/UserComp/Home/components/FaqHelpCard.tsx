@@ -77,7 +77,7 @@ export function FaqHelpCard({
         </h3>
 
         <Link
-          href={`/${currentLocale}/contact`}
+          href={`/${currentLocale}/Contact`}
           className="inline-flex items-center justify-center rounded-2xl bg-[#0E4A68] px-9 py-3.5 font-poppins text-base font-semibold text-white shadow-md transition-all duration-300 hover:bg-[#083952] hover:scale-105 cursor-pointer"
         >
           {faq.helpButton}

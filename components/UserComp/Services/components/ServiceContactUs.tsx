@@ -68,7 +68,7 @@ export function ServiceContactUs() {
 
         {/* Working Hours & Phone Info */}
         <p className="text-xs sm:text-sm font-medium text-[#646464] mt-1">
-          +20 01289494715 · Daily 9:00 AM – 9:00 PM
+          +201036234030 · Daily 9:00 AM – 9:00 PM
         </p>
       </div>
     </div>

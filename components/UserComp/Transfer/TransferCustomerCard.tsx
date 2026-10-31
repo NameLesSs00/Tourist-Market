@@ -143,7 +143,7 @@ export function TransferCustomerCard({
           </label>
           <input
             type="tel"
-            placeholder="+20 123 456 7890"
+            placeholder="+201036232021"
             value={phoneNumber}
             onChange={(e) => onPhoneNumberChange(e.target.value)}
             className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066] placeholder:font-normal"

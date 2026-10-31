@@ -4,6 +4,7 @@ import { Poppins, Manrope, Montserrat, Caveat } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/UserComp/Header";
 import { Footer } from "@/components/UserComp/Footer";
+import { WhatsAppFloatingButton } from "@/components/UserComp/Shared/WhatsAppFloatingButton";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 
 const poppins = Poppins({
@@ -52,6 +53,7 @@ export default function RootLayout({
           </Suspense>
           <main className="flex-1 pt-20">{children}</main>
           <Footer />
+          <WhatsAppFloatingButton />
         </QueryProvider>
       </body>
     </html>

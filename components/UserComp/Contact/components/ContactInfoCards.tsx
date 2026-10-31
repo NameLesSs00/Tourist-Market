@@ -19,10 +19,10 @@ export function ContactInfoCards() {
       icon: "/contact/Frame 388.svg",
       content: (
         <a
-          href="tel:+201234567890"
+          href="tel:+201036232021"
           className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68] hover:text-[#D48C28] transition-colors"
         >
-          +20 123 456 7890
+          +201036232021
         </a>
       ),
     },
@@ -32,7 +32,7 @@ export function ContactInfoCards() {
       icon: "/contact/Frame 388 (1).svg",
       content: (
         <a
-          href="mailto:info@etouristmarket.com"
+          href="mailto:info@touristmarket-egypt.com"
           className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68] hover:text-[#D48C28] transition-colors break-all"
         >
           info@etouristmarket .com
@@ -45,7 +45,7 @@ export function ContactInfoCards() {
       icon: "/contact/Frame 387.svg",
       content: (
         <p className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68]">
-          El Kawther , Hurghada, Egypt
+          Hurghada, Egypt
         </p>
       ),
     },
