@@ -170,7 +170,10 @@ export function mapGroupExcursionFullDetail(
       "Year-round",
     pickup:
       findLiteralValue(details?.literally, "pickupLocation") || "Hotel pickup available",
-    maxParticipants: parseMaxParticipants(details?.literally),
+    maxParticipants:
+      typeof excursion.maxParticipants === "number" && excursion.maxParticipants > 0
+        ? excursion.maxParticipants
+        : parseMaxParticipants(details?.literally, 0),
     dateType: "Multiple Departures",
 
     // Reviews
@@ -353,7 +356,7 @@ function findLiteralValue(
  */
 function parseMaxParticipants(
   literally: KeyValuePair[] | undefined,
-  fallback: number = 50
+  fallback: number = 0
 ): number {
   const match = findLiteralValue(literally, "groupSize").match(/\d+/);
   return match ? parseInt(match[0], 10) : fallback;

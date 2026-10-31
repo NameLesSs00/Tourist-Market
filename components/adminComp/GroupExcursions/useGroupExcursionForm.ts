@@ -33,6 +33,7 @@ export function useGroupExcursionForm({
   const [infantPriceUsd, setInfantPriceUsd] = useState(0);
   const [stars, setStars] = useState("5");
   const [durationHours, setDurationHours] = useState(8);
+  const [maxParticipants, setMaxParticipants] = useState(20);
   const [videoUrl, setVideoUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
   const [isActive, setIsActive] = useState(true);
@@ -57,6 +58,9 @@ export function useGroupExcursionForm({
       setInfantPriceUsd(excursion.price?.infantPrice ?? 0);
       setStars(excursion.stars || "5");
       setDurationHours(excursion.durationHours || 0);
+      if (typeof excursion.maxParticipants === "number" && excursion.maxParticipants > 0) {
+        setMaxParticipants(excursion.maxParticipants);
+      }
       setIsFeatured(Boolean(excursion.isFeatured));
       setIsActive(true);
     }
@@ -79,6 +83,9 @@ export function useGroupExcursionForm({
         setVideoUrl(base.videoUrl || "");
         setDurationHours(base.durationHours || 0);
         setStars(base.stars || "5");
+        if (typeof base.maxParticipants === "number" && base.maxParticipants > 0) {
+          setMaxParticipants(base.maxParticipants);
+        }
         setIsFeatured(Boolean(base.isFeatured));
         if (base.price) {
           setAdultPriceUsd(base.price.adultPrice ?? 0);
@@ -101,6 +108,7 @@ export function useGroupExcursionForm({
     if (!title.en?.trim()) errs["title.en"] = "English Title is required.";
     if (!categoryId.trim()) errs.categoryId = "Category is required.";
     if (adultPriceUsd <= 0) errs.adultPriceUsd = "Adult price must be greater than 0.";
+    if (maxParticipants <= 0) errs.maxParticipants = "Max participants must be greater than 0.";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -121,6 +129,7 @@ export function useGroupExcursionForm({
           adultPriceUsd,
           childPriceUsd,
           infantPriceUsd,
+          maxParticipants: Number(maxParticipants) || 0,
           stars: String(stars).trim() || "5",
           maxAttractions: 0,
           durationHours,
@@ -137,6 +146,7 @@ export function useGroupExcursionForm({
         adultPriceUsd,
         childPriceUsd,
         infantPriceUsd,
+        maxParticipants: Number(maxParticipants) || 0,
         stars: String(stars).trim() || "5",
         durationHours,
         videoUrl: videoUrl.trim() || "",
@@ -159,6 +169,7 @@ export function useGroupExcursionForm({
     infantPriceUsd,
     stars,
     durationHours,
+    maxParticipants,
     videoUrl,
     isFeatured,
     isActive,
@@ -175,6 +186,7 @@ export function useGroupExcursionForm({
     setInfantPriceUsd,
     setStars,
     setDurationHours,
+    setMaxParticipants,
     setVideoUrl,
     setIsFeatured,
     setIsActive,

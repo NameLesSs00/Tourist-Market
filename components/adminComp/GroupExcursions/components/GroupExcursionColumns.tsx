@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FiCalendar, FiClock, FiFileText, FiHelpCircle, FiImage, FiStar } from "react-icons/fi";
+import { FiCalendar, FiClock, FiFileText, FiHelpCircle, FiImage, FiStar, FiUsers } from "react-icons/fi";
 import type { DataTableColumn } from "@/components/adminComp/Shared";
 import type { GroupExcursionListItem } from "@/models/groupExcursion";
 
@@ -99,6 +99,12 @@ export function buildGroupExcursionColumns({
             <FiStar className="h-3 w-3 text-[#D48C28] fill-[#D48C28]" />
             <span>{item.stars || item.rating || "5"} Stars</span>
           </div>
+          {typeof item.maxParticipants === "number" && item.maxParticipants > 0 ? (
+            <div className="flex items-center gap-1 text-[11px] text-[#0E4A68] font-medium">
+              <FiUsers className="h-3 w-3" />
+              <span>Max {item.maxParticipants} pax</span>
+            </div>
+          ) : null}
         </div>
       ),
     },

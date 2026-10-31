@@ -65,6 +65,7 @@ export function GroupExcursionFormPanel({
             slug={form.slug}
             stars={form.stars}
             durationHours={form.durationHours}
+            maxParticipants={form.maxParticipants}
             videoUrl={form.videoUrl}
             isFeatured={form.isFeatured}
             isActive={form.isActive}
@@ -73,6 +74,7 @@ export function GroupExcursionFormPanel({
             onSlugChange={form.setSlug}
             onStarsChange={form.setStars}
             onDurationHoursChange={form.setDurationHours}
+            onMaxParticipantsChange={form.setMaxParticipants}
             onVideoUrlChange={form.setVideoUrl}
             onIsFeaturedChange={form.setIsFeatured}
             onIsActiveChange={form.setIsActive}

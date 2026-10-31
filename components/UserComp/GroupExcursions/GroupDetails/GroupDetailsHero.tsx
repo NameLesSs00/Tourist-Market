@@ -23,6 +23,7 @@ export function GroupDetailsHero({
     duration,
     availability,
     pickup,
+    maxParticipants,
     heroImage,
     imageUrl,
     gallery,
@@ -201,6 +202,30 @@ export function GroupDetailsHero({
               </div>
             </div>
           </div>
+
+          {/* Group Size (when maxParticipants is provided) */}
+          {maxParticipants && maxParticipants > 0 ? (
+            <>
+              <div className="hidden sm:block h-8 lg:h-10 w-[1px] bg-[#888888]/60 shrink-0" />
+              <div className="flex items-center gap-2.5 sm:gap-3 col-span-2 sm:col-span-1">
+                <div className="text-[#0E4A68] shrink-0">
+                  <svg
+                    className="w-7 h-7 sm:w-9 sm:h-9"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                  </svg>
+                </div>
+                <div className="min-w-0">
+                  <div className="font-poppins text-[11px] sm:text-xs text-[#646464]">Group Size</div>
+                  <div className="font-poppins text-xs sm:text-sm lg:text-base font-bold text-[#0E4A68] truncate">
+                    Up to {maxParticipants} {maxParticipants === 1 ? "Person" : "People"}
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
     </section>

@@ -144,7 +144,9 @@ export function GroupDetailsBookingSidebar({
               </div>
               <div className="font-poppins text-[9px] sm:text-[10px] text-[#646464] leading-tight truncate w-full">Max Guests</div>
               <div className="font-poppins text-[11px] sm:text-xs font-bold text-[#0E4A68] mt-0.5 truncate w-full">
-                {maxParticipants} Person
+                {maxParticipants && maxParticipants > 0
+                  ? `${maxParticipants} ${maxParticipants === 1 ? "Person" : "Persons"}`
+                  : "Flexible"}
               </div>
             </div>
 

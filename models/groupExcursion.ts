@@ -24,6 +24,7 @@ export interface GroupExcursionListItem {
   durationHours: number;
   stars: string;
   maxAttractions: number;
+  maxParticipants?: number | null;
   primaryImageUrl: string | null;
   heroImageUrl: string | null;
   category?: ExcursionCategoryRef | null;
@@ -60,6 +61,7 @@ export interface GroupExcursionCreateRequest {
   adultPriceUsd: number;
   childPriceUsd: number;
   infantPriceUsd: number;
+  maxParticipants: number;
   stars: string;
   durationHours: number;
   videoUrl?: string;
@@ -79,6 +81,7 @@ export interface GroupExcursionUpdateRequest {
   adultPriceUsd: number;
   childPriceUsd: number;
   infantPriceUsd: number;
+  maxParticipants: number;
   stars: string;
   maxAttractions: number;
   durationHours: number;
@@ -106,6 +109,7 @@ export interface GroupExcursionDetailItem {
   durationHours: number;
   stars: string;
   maxAttractions: number;
+  maxParticipants?: number | null;
   primaryImageUrl: string | null;
   heroImageUrl: string | null;
   heroImage?: string | null;

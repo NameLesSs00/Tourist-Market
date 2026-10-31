@@ -121,6 +121,12 @@ export function GroupBookingForm({
       return;
     }
 
+    const totalGuests = adults + children + infants;
+    if (detail.maxParticipants && detail.maxParticipants > 0 && totalGuests > detail.maxParticipants) {
+      toast.error(`Total guests cannot exceed the maximum allowed (${detail.maxParticipants}).`);
+      return;
+    }
+
     const isoDate = new Date(`${date}T08:00:00.000Z`).toISOString();
 
     submitBooking(
@@ -220,6 +226,7 @@ export function GroupBookingForm({
           infants={infants}
           onInfantsChange={setInfants}
           infantPrice={detail.infantPrice}
+          maxParticipants={detail.maxParticipants}
         />
 
         {/* Live Price Breakdown Card from POST /api/excursions/{id}/group-price-preview */}

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FiCheck, FiClock, FiLayers, FiSliders, FiStar } from "react-icons/fi";
+import { FiCheck, FiClock, FiLayers, FiSliders, FiStar, FiUsers } from "react-icons/fi";
 import { useExcursionCategoriesQuery } from "@/features/excursionCategories/useExcursionCategoryAdmin";
 
 interface GroupExcursionSpecsProps {
@@ -9,6 +9,7 @@ interface GroupExcursionSpecsProps {
   slug?: string;
   stars: string;
   durationHours: number;
+  maxParticipants: number;
   videoUrl?: string;
   isFeatured: boolean;
   isActive: boolean;
@@ -17,6 +18,7 @@ interface GroupExcursionSpecsProps {
   onSlugChange?: (val: string) => void;
   onStarsChange: (val: string) => void;
   onDurationHoursChange: (val: number) => void;
+  onMaxParticipantsChange: (val: number) => void;
   onVideoUrlChange?: (val: string) => void;
   onIsFeaturedChange: (val: boolean) => void;
   onIsActiveChange: (val: boolean) => void;
@@ -26,12 +28,14 @@ export function GroupExcursionSpecs({
   categoryId,
   stars,
   durationHours,
+  maxParticipants,
   isFeatured,
   isActive,
   errors,
   onCategoryIdChange,
   onStarsChange,
   onDurationHoursChange,
+  onMaxParticipantsChange,
   onIsFeaturedChange,
   onIsActiveChange,
 }: GroupExcursionSpecsProps) {
@@ -49,7 +53,7 @@ export function GroupExcursionSpecs({
         </h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* Category */}
         <div className="sm:col-span-1">
           <label className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-[#334155]">
@@ -102,6 +106,25 @@ export function GroupExcursionSpecs({
             placeholder="e.g. 5 or 4.8"
             className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
           />
+        </div>
+
+        {/* Max Participants */}
+        <div>
+          <label className="mb-1 flex items-center gap-1 text-xs font-semibold text-[#334155]">
+            <FiUsers className="h-3.5 w-3.5 text-[#0E4A68]" /> Max Participants <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            min="1"
+            step="1"
+            value={maxParticipants || ""}
+            onChange={(e) => onMaxParticipantsChange(Math.max(0, parseInt(e.target.value, 10) || 0))}
+            placeholder="e.g. 25"
+            className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-xs text-[#0F172A] outline-none transition focus:border-[#0E4A68]"
+          />
+          {errors.maxParticipants && (
+            <p className="mt-1 text-[11px] text-red-500">{errors.maxParticipants}</p>
+          )}
         </div>
       </div>
 

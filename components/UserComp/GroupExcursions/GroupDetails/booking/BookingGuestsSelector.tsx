@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { FiCalendar } from "react-icons/fi";
+import { FiCalendar, FiUsers } from "react-icons/fi";
 
 interface BookingGuestsSelectorProps {
   date: string;
@@ -16,6 +16,7 @@ interface BookingGuestsSelectorProps {
   infants: number;
   onInfantsChange: (val: number) => void;
   infantPrice: number;
+  maxParticipants?: number;
 }
 
 export function BookingGuestsSelector({
@@ -31,13 +32,26 @@ export function BookingGuestsSelector({
   infants,
   onInfantsChange,
   infantPrice,
+  maxParticipants,
 }: BookingGuestsSelectorProps) {
+  const totalGuests = adults + children + infants;
+  const isCapped = typeof maxParticipants === "number" && maxParticipants > 0;
+  const canAddMore = !isCapped || totalGuests < maxParticipants;
+
   return (
     <div className="space-y-4">
-      <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
-        <FiCalendar className="text-[#DE7423]" />
-        <span>1. Select Date & Guests</span>
-      </h3>
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
+          <FiCalendar className="text-[#DE7423]" />
+          <span>1. Select Date & Guests</span>
+        </h3>
+        {isCapped ? (
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#0E4A68] bg-[#0E4A680C] px-2.5 py-1 rounded-md">
+            <FiUsers className="text-[#0E4A68]" />
+            <span>Max {maxParticipants} guests ({totalGuests}/{maxParticipants})</span>
+          </span>
+        ) : null}
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Trip Date */}
@@ -73,8 +87,15 @@ export function BookingGuestsSelector({
             </span>
             <button
               type="button"
-              onClick={() => onAdultsChange(adults + 1)}
-              className="w-10 h-10 rounded-lg border border-[#BBBBBB] bg-[#F8FAFC] text-base font-bold text-[#0E4A68] hover:bg-[#E2E8F0] cursor-pointer"
+              onClick={() => {
+                if (canAddMore) onAdultsChange(adults + 1);
+              }}
+              disabled={!canAddMore}
+              className={`w-10 h-10 rounded-lg border border-[#BBBBBB] bg-[#F8FAFC] text-base font-bold text-[#0E4A68] transition ${
+                !canAddMore
+                  ? "opacity-40 cursor-not-allowed"
+                  : "hover:bg-[#E2E8F0] cursor-pointer"
+              }`}
             >
               +
             </button>
@@ -100,8 +121,15 @@ export function BookingGuestsSelector({
               </span>
               <button
                 type="button"
-                onClick={() => onChildrenChange(children + 1)}
-                className="w-10 h-10 rounded-lg border border-[#BBBBBB] bg-[#F8FAFC] text-base font-bold text-[#0E4A68] hover:bg-[#E2E8F0] cursor-pointer"
+                onClick={() => {
+                  if (canAddMore) onChildrenChange(children + 1);
+                }}
+                disabled={!canAddMore}
+                className={`w-10 h-10 rounded-lg border border-[#BBBBBB] bg-[#F8FAFC] text-base font-bold text-[#0E4A68] transition ${
+                  !canAddMore
+                    ? "opacity-40 cursor-not-allowed"
+                    : "hover:bg-[#E2E8F0] cursor-pointer"
+                }`}
               >
                 +
               </button>
@@ -128,8 +156,15 @@ export function BookingGuestsSelector({
               </span>
               <button
                 type="button"
-                onClick={() => onInfantsChange(infants + 1)}
-                className="w-10 h-10 rounded-lg border border-[#BBBBBB] bg-[#F8FAFC] text-base font-bold text-[#0E4A68] hover:bg-[#E2E8F0] cursor-pointer"
+                onClick={() => {
+                  if (canAddMore) onInfantsChange(infants + 1);
+                }}
+                disabled={!canAddMore}
+                className={`w-10 h-10 rounded-lg border border-[#BBBBBB] bg-[#F8FAFC] text-base font-bold text-[#0E4A68] transition ${
+                  !canAddMore
+                    ? "opacity-40 cursor-not-allowed"
+                    : "hover:bg-[#E2E8F0] cursor-pointer"
+                }`}
               >
                 +
               </button>
