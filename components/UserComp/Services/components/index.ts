@@ -5,3 +5,4 @@ export * from "./ServiceDetailCard";
 export * from "./ServiceBookingForm";
 export * from "./ServiceContactUs";
 export * from "./ServiceReviews";
+export * from "./ServiceThankYouSection";

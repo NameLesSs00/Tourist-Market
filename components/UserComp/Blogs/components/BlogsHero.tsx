@@ -17,7 +17,7 @@ export function BlogsHero({ locale = "en" }: BlogsHeroProps) {
       className="relative isolate w-full overflow-hidden pt-28 pb-14 sm:pt-32 sm:pb-20 lg:pt-24 lg:pb-24"
       style={{
         background:
-          "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFEACD 41%, #FFEACD 100%)",
+          "linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFEACD 41.35%)",
       }}
     >
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-16">
@@ -66,16 +66,16 @@ export function BlogsHero({ locale = "en" }: BlogsHeroProps) {
             </div>
           </motion.div>
 
-          {/* Right Column: Hero Collage Graphic (Frame 545.png) */}
+          {/* Right Column: Hero Collage Graphic */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
             className="lg:col-span-6 xl:col-span-6 flex justify-center lg:justify-end"
           >
-            <div className="relative w-full max-w-[560px] lg:max-w-[620px] aspect-[594/520]">
+            <div className="relative w-full max-w-[560px] lg:max-w-[620px] aspect-[1009/796]">
               <Image
-                src="/blogs/Frame 545.png"
+                src="/Blogs/blogsHero.png"
                 alt="Travel stories and inspiring moments"
                 fill
                 priority

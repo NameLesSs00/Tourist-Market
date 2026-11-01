@@ -1,17 +1,11 @@
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   getSiteServiceSubItems,
   getSiteServiceSubItemById,
 } from "@/clientApi/siteServiceItemApi";
 import { getSiteServices } from "@/clientApi/siteServiceApi";
-import {
-  getServiceReviews,
-  createServiceReview,
-  markServiceReviewHelpful,
-} from "@/clientApi/serviceReviewApi";
-import type { CreateServiceReviewRequest } from "@/models/serviceReview";
 import type { SiteServiceSubItem } from "@/models/siteServiceItem";
 import type { ServiceCardItem } from "@/components/UserComp/Services/types";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
@@ -99,46 +93,5 @@ export function usePublicServiceSubItemById(id: string, lang: string = "en") {
     enabled: valid,
     staleTime: 1000 * 60 * 5,
     retry: 1,
-  });
-}
-
-// ─── Reviews for a sub-service ────────────────────────────────────────────────
-export function usePublicServiceReviews(
-  subServiceId: string | undefined,
-  pageSize: number = 50
-) {
-  return useQuery({
-    queryKey: ["public", "service-reviews", subServiceId],
-    queryFn: async () => {
-      if (!subServiceId) return null;
-      const res = await getServiceReviews({
-        subServiceId,
-        isPublished: true,
-        pageSize,
-      });
-      return res.data ?? null;
-    },
-    enabled: !!subServiceId,
-    staleTime: 1000 * 60 * 2,
-  });
-}
-
-// ─── Submit a new review ──────────────────────────────────────────────────────
-export function useSubmitServiceReview(subServiceId: string) {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (body: CreateServiceReviewRequest) => createServiceReview(body),
-    onSuccess: () => {
-      qc.invalidateQueries({
-        queryKey: ["public", "service-reviews", subServiceId],
-      });
-    },
-  });
-}
-
-// ─── Mark review as helpful ───────────────────────────────────────────────────
-export function useMarkReviewHelpful() {
-  return useMutation({
-    mutationFn: (id: string) => markServiceReviewHelpful(id),
   });
 }

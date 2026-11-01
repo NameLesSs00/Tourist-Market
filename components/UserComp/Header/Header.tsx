@@ -18,6 +18,11 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // Automatically close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 20) {
@@ -38,21 +43,31 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
     return null;
   }
 
+  // Detect active locale from pathname (e.g. /en/..., /fr/..., /de/..., /ru/...)
+  const segments = pathname?.split("/").filter(Boolean) || [];
+  const activeLocale =
+    segments[0] && ["en", "ru", "de", "fr"].includes(segments[0])
+      ? segments[0]
+      : currentLocale;
+
   // Transparent header only on the home page (/<locale> and /<locale>/)
   const isHomePage = /^\/[a-z]{2,5}(\/)?$/.test(pathname ?? "");
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 w-full font-poppins font-poppins-semibold-16 transition-all duration-300 ${
-        !isHomePage || isScrolled
-          ? "bg-[#F4DAB6E6] backdrop-blur-md shadow-sm border-b border-[#0839521A]"
-          : "bg-transparent border-b border-transparent"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 w-full font-poppins font-poppins-semibold-16">
+      {/* Background layer: Isolated so backdrop-blur never traps fixed descendants */}
+      <div
+        className={`absolute inset-0 -z-10 transition-all duration-300 ${
+          !isHomePage || isScrolled
+            ? "bg-[#F4DAB6E6] backdrop-blur-md shadow-sm border-b border-[#0839521A]"
+            : "bg-transparent border-b border-transparent pointer-events-none"
+        }`}
+      />
+
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Left: Brand Logo */}
         <div className="flex shrink-0 items-center">
-          <Link href={`/${currentLocale}`} className="flex items-center">
+          <Link href={`/${activeLocale}`} className="flex items-center">
             <Image
               src="/shared/logoHeader.svg"
               alt="Egypt Tourist Market"
@@ -66,7 +81,7 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
 
         {/* Center: Desktop Navigation Links */}
         <div className="hidden lg:flex lg:items-center lg:justify-center">
-          <NavLinks currentLocale={currentLocale} />
+          <NavLinks currentLocale={activeLocale} />
         </div>
 
         {/* Right: Desktop Currency & Language Selectors */}
@@ -83,8 +98,18 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
             aria-label="Open Navigation Menu"
             className="rounded-xl p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer"
           >
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2.2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
             </svg>
           </button>
         </div>
@@ -94,7 +119,7 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        currentLocale={currentLocale}
+        currentLocale={activeLocale}
       />
     </header>
   );

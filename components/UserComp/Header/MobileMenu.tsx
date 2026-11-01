@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
 import { FiChevronDown, FiX } from "react-icons/fi";
@@ -14,8 +15,13 @@ interface MobileMenuProps {
 }
 
 export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenuProps) {
+  const [mounted, setMounted] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const categories = getHeaderServicesData(currentLocale);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -28,10 +34,10 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-[#FFF4E5] text-[#083952] lg:hidden animate-in fade-in duration-200">
+  const content = (
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-[#FFF4E5] text-[#083952] lg:hidden animate-in fade-in duration-200">
       {/* Top Bar with Brand Logo and Close button */}
       <div className="flex h-20 shrink-0 items-center justify-between border-b border-[#08395215] px-4 sm:px-6">
         <Link href={`/${currentLocale}`} onClick={onClose} className="flex items-center">
@@ -161,6 +167,8 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
       </div>
     </div>
   );
+
+  return createPortal(content, document.body);
 }
 
 export default MobileMenu;

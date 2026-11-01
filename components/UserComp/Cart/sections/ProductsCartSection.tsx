@@ -11,6 +11,7 @@ import { useActiveDeliveryProductsQuery } from "@/features/deliveryProducts/useD
 import { createProductBooking } from "@/clientApi/productBookingApi";
 import type { CreateProductBookingRequest } from "@/models/productBooking";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
+import { isValidEmail, isValidPhoneNumber } from "@/shared/utils/phoneUtils";
 import {
   ProductsCartTable,
   OrderSummaryCard,
@@ -119,8 +120,25 @@ export function ProductsCartSection({
       return;
     }
 
-    if (!contactData.name.trim() || !contactData.phoneNumber.trim()) {
-      toast.error("Please fill in your name and phone number.");
+    if (!contactData.name.trim() || contactData.name.trim().length < 2) {
+      toast.error("Please enter your name (at least 2 characters).");
+      return;
+    }
+
+    if (!contactData.phoneNumber.trim()) {
+      toast.error("Please fill in your phone number.");
+      return;
+    }
+
+    if (!isValidPhoneNumber(contactData.phoneNumber)) {
+      toast.error(
+        "Please enter a valid phone number with country code (7 to 15 digits)."
+      );
+      return;
+    }
+
+    if (contactData.email && !isValidEmail(contactData.email)) {
+      toast.error("Please enter a valid email address.");
       return;
     }
 
@@ -277,12 +295,12 @@ export function ProductsCartSection({
   const isEmpty = !isHydrated || items.length === 0;
 
   return (
-    <div className="w-full min-h-screen bg-[#FFF8ED] py-8 sm:py-12 font-poppins">
-      <div className="mx-auto w-full max-w-[1360px] px-4 sm:px-6 lg:px-8">
+    <div className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-10 md:py-12 font-poppins">
+      <div className="mx-auto w-full max-w-[1360px] px-3.5 sm:px-6 lg:px-8">
         {/* ─── Page Title & Flow Step Badges ─── */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 mb-6 sm:mb-8">
           <div>
-            <h1 className="text-[28px] sm:text-[34px] md:text-[36px] font-semibold text-[#083952] tracking-tight">
+            <h1 className="text-[26px] sm:text-[32px] md:text-[36px] font-semibold text-[#083952] tracking-tight">
               Products Cart
             </h1>
             <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
@@ -293,11 +311,11 @@ export function ProductsCartSection({
           </div>
 
           {!isEmpty && (
-            <div className="inline-flex items-center gap-2 p-1 bg-white rounded-full border border-[#888888]/40 shadow-2xs self-start sm:self-auto">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1 bg-white rounded-full border border-[#888888]/40 shadow-2xs self-start sm:self-auto flex-wrap">
               <button
                 type="button"
                 onClick={() => setCurrentStep("cart")}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                   currentStep === "cart"
                     ? "bg-[#0E4A68] text-white"
                     : "text-[#64748B] hover:text-[#0E4A68]"
@@ -310,7 +328,7 @@ export function ProductsCartSection({
               <button
                 type="button"
                 onClick={handleProceedToCheckout}
-                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                   currentStep === "checkout"
                     ? "bg-[#0E4A68] text-white"
                     : "text-[#64748B] hover:text-[#0E4A68]"
@@ -324,9 +342,9 @@ export function ProductsCartSection({
         </div>
 
         {/* ─── Main Two-Column Layout (Desktop First) ─── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           {/* ─── Left Column (Table OR Checkout Forms) ─── */}
-          <div className="lg:col-span-8 flex flex-col gap-6 sm:gap-8">
+          <div className="lg:col-span-8 flex flex-col gap-5 sm:gap-6 md:gap-8">
             {isEmpty ? (
               /* Empty Cart State */
               <div
@@ -338,13 +356,13 @@ export function ProductsCartSection({
                 }}
                 className="w-full"
               >
-                {/* Table Header */}
+                {/* Desktop Table Header (hidden on mobile) */}
                 <div
                   style={{
                     backgroundColor: "#0E4A68",
                     borderBottom: "1px solid #888888",
                   }}
-                  className="grid grid-cols-12 py-3.5 px-6 text-white text-[14px] font-semibold tracking-wider uppercase select-none items-center"
+                  className="hidden md:grid grid-cols-12 py-3.5 px-6 text-white text-[14px] font-semibold tracking-wider uppercase select-none items-center"
                 >
                   <div className="col-span-5 text-left">PRODUCT</div>
                   <div className="col-span-2 text-center">PRICE</div>
@@ -366,12 +384,12 @@ export function ProductsCartSection({
                   onClearCart={handleClearCart}
                 />
 
-                {/* Cart Action Bar */}
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-3 p-4 bg-white rounded-[8px] border border-[#888888]/40 shadow-xs">
+                {/* Unified Cart Action Bar */}
+                <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-3 p-3.5 sm:p-4 bg-white rounded-[8px] border border-[#888888]/40 shadow-xs">
                   <button
                     type="button"
                     onClick={handleClearCart}
-                    className="text-xs sm:text-[13px] text-gray-500 hover:text-red-600 transition-colors cursor-pointer"
+                    className="w-full sm:w-auto text-center py-2 text-xs sm:text-[13px] text-gray-500 hover:text-red-600 transition-colors cursor-pointer font-medium"
                   >
                     Clear Entire Cart
                   </button>
@@ -389,7 +407,7 @@ export function ProductsCartSection({
               /* Step 2: Checkout Guest & Delivery Forms */
               <>
                 {/* Back to Cart Bar */}
-                <div className="flex items-center justify-between bg-white px-5 py-3.5 rounded-[8px] border border-[#888888]/40 shadow-xs">
+                <div className="flex items-center justify-between bg-white px-4 sm:px-5 py-3.5 rounded-[8px] border border-[#888888]/40 shadow-xs">
                   <button
                     type="button"
                     onClick={() => setCurrentStep("cart")}

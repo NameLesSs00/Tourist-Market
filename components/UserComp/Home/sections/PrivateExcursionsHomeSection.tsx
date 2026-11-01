@@ -4,6 +4,11 @@ import React from "react";
 import { motion } from "framer-motion";
 import { PrivateVipHeroBanner } from "../components/PrivateVipHeroBanner";
 import { PrivateCategoryCard } from "../components/PrivateCategoryCard";
+import {
+  getTopPrivateCategories,
+  getBottomPrivateCategories,
+  PRIVATE_HOMEPAGE_CATEGORIES,
+} from "../config/privateExcursionCategories";
 
 interface PrivateExcursionsHomeSectionProps {
   locale?: string;
@@ -12,53 +17,20 @@ interface PrivateExcursionsHomeSectionProps {
 export function PrivateExcursionsHomeSection({
   locale = "en",
 }: PrivateExcursionsHomeSectionProps) {
-  const topCategories = [
-    {
-      id: "historical",
-      title: "Private Historical Trips",
-      description:
-        "Explore ancient landmarks, iconic monuments, and fascinating stories from the past.",
-      imageSrc: "/homepage/privateSection/PrivateHistoricalTrips.png",
-      href: `/${locale}/private-excursions?category=Historical`,
-    },
-    {
-      id: "sea",
-      title: "Private Sea Trips",
-      description:
-        "Discover crystal-clear waters, vibrant marine life, and breathtaking coastal scenery.",
-      imageSrc: "/homepage/privateSection/PrivateSeaTrips.png",
-      href: `/${locale}/private-excursions?category=Sea%20Trips`,
-    },
-    {
-      id: "safari",
-      title: "Private Super Safari Trips",
-      description:
-        "Enjoy thrilling off-road rides, exciting desert activities, and unforgettable safari experiences.",
-      imageSrc: "/homepage/privateSection/PrivateSuperSafariTrips.png",
-      href: `/${locale}/private-excursions?category=Adventure`,
-    },
-  ];
+  const topCategories = getTopPrivateCategories().map((cat) => ({
+    ...cat,
+    href: `/${locale}/private-excursions?category=${cat.categoryId}`,
+  }));
 
-  const bottomCategories = [
-    {
-      id: "city",
-      title: "Private City Trips",
-      description:
-        "Discover famous attractions, charming streets, and local culture at your own pace.",
-      imageSrc: "/homepage/privateSection/PrivateCityTrips.png",
-      href: `/${locale}/private-excursions?category=Historical`,
-    },
-    {
-      id: "fun",
-      title: "Private Fun Trips",
-      description:
-        "Explore golden dunes, stunning desert landscapes, and the peaceful beauty of nature.",
-      imageSrc: "/homepage/privateSection/PrivateFunTrips.png",
-      href: `/${locale}/private-excursions?category=FUN%20Trips`,
-    },
-  ];
+  const bottomCategories = getBottomPrivateCategories().map((cat) => ({
+    ...cat,
+    href: `/${locale}/private-excursions?category=${cat.categoryId}`,
+  }));
 
-  const allCategories = [...topCategories, ...bottomCategories];
+  const allCategories = PRIVATE_HOMEPAGE_CATEGORIES.map((cat) => ({
+    ...cat,
+    href: `/${locale}/private-excursions?category=${cat.categoryId}`,
+  }));
 
   return (
     <section

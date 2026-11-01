@@ -2,6 +2,8 @@ const COOKIE_NAME = "helpful_reviews";
 const SUBMITTED_COOKIE_NAME = "submitted_reviews";
 const PRODUCT_HELPFUL_COOKIE_NAME = "helpful_product_reviews";
 const PRODUCT_SUBMITTED_COOKIE_NAME = "submitted_product_reviews";
+const SERVICE_HELPFUL_COOKIE_NAME = "helpful_service_reviews";
+const SERVICE_SUBMITTED_COOKIE_NAME = "submitted_service_reviews";
 const ONE_YEAR_SECONDS = 60 * 60 * 24 * 365;
 
 /** Reads the list of review ids this browser has already marked helpful. */
@@ -123,6 +125,73 @@ export function markProductReviewSubmitted(productId: string | number): void {
   const ids = readSubmittedProductIds();
   if (!ids.includes(key)) ids.push(key);
   document.cookie = `${PRODUCT_SUBMITTED_COOKIE_NAME}=${encodeURIComponent(
+    ids.join(",")
+  )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
+}
+
+// ---------------------------------------------------------------------------
+// Site Service Reviews Cookie Helpers
+// ---------------------------------------------------------------------------
+
+/** Reads the list of service review ids this browser has already marked helpful. */
+export function readHelpfulServiceReviewIds(): string[] {
+  if (typeof document === "undefined") return [];
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${SERVICE_HELPFUL_COOKIE_NAME}=([^;]*)`)
+  );
+  if (!match) return [];
+  return decodeURIComponent(match[1])
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+}
+
+/** True when this browser already marked the given service review helpful. */
+export function isServiceReviewMarkedHelpful(reviewId: string): boolean {
+  const key = String(reviewId).trim();
+  if (!key) return false;
+  return readHelpfulServiceReviewIds().includes(key);
+}
+
+/** Persists a service review id as helpful in a first-party cookie (once per browser). */
+export function markServiceReviewHelpfulInCookie(reviewId: string): void {
+  if (typeof document === "undefined") return;
+  const key = String(reviewId).trim();
+  if (!key) return;
+  const ids = readHelpfulServiceReviewIds();
+  if (!ids.includes(key)) ids.push(key);
+  document.cookie = `${SERVICE_HELPFUL_COOKIE_NAME}=${encodeURIComponent(
+    ids.join(",")
+  )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
+}
+
+function readSubmittedServiceIds(): string[] {
+  if (typeof document === "undefined") return [];
+  const match = document.cookie.match(
+    new RegExp(`(?:^|; )${SERVICE_SUBMITTED_COOKIE_NAME}=([^;]*)`)
+  );
+  if (!match) return [];
+  return decodeURIComponent(match[1])
+    .split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+}
+
+/** True when this browser already submitted a review for the sub-service. */
+export function hasSubmittedServiceReview(subServiceId: string): boolean {
+  const key = String(subServiceId).trim();
+  if (!key) return false;
+  return readSubmittedServiceIds().includes(key);
+}
+
+/** Records that a review was submitted for the sub-service (once per browser). */
+export function markServiceReviewSubmitted(subServiceId: string): void {
+  if (typeof document === "undefined") return;
+  const key = String(subServiceId).trim();
+  if (!key) return;
+  const ids = readSubmittedServiceIds();
+  if (!ids.includes(key)) ids.push(key);
+  document.cookie = `${SERVICE_SUBMITTED_COOKIE_NAME}=${encodeURIComponent(
     ids.join(",")
   )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
 }

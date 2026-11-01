@@ -49,13 +49,13 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
 
         {/* Real Estate "For Rent" badge */}
         {badge && (
-          <div className="absolute top-3 right-3 z-10">
+          <div className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 z-10">
             <span
               style={{
                 backgroundColor: "#134B68",
                 borderRadius: "12px",
               }}
-              className="inline-block px-3 py-1 font-poppins text-xs font-medium text-white shadow-sm"
+              className="inline-block px-2.5 sm:px-3 py-0.5 sm:py-1 font-poppins text-[11px] sm:text-xs font-medium text-white shadow-sm"
             >
               {badge}
             </span>
@@ -64,10 +64,10 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
       </div>
 
       {/* 2. Card Content Body */}
-      <div className="p-5 flex flex-col flex-1 justify-between gap-4 font-poppins pointer-events-none">
-        <div className="flex flex-col gap-2">
+      <div className="p-3.5 sm:p-5 flex flex-col flex-1 justify-between gap-3 sm:gap-4 font-poppins pointer-events-none">
+        <div className="flex flex-col gap-1.5 sm:gap-2">
           {/* Title */}
-          <h3 className="text-base sm:text-[17px] font-bold text-[#0E4A68] tracking-tight leading-snug">
+          <h3 className="text-[15px] sm:text-base md:text-[17px] font-bold text-[#0E4A68] tracking-tight leading-snug line-clamp-2">
             {title}
           </h3>
 
@@ -78,7 +78,7 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
         </div>
 
         {/* 3. Action Buttons Row: View Details & WhatsApp */}
-        <div className="grid grid-cols-2 gap-3 pt-2 pointer-events-auto">
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-2 pointer-events-auto">
           {/* Primary View Details Button */}
           <Link
             href={detailHref}
@@ -88,7 +88,7 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
               borderRadius: "5px",
               boxShadow: "0px 2px 20px 2px #00000040",
             }}
-            className="relative z-10 flex items-center justify-center py-2 px-3 text-white font-semibold text-xs sm:text-[13px] transition-all duration-200 hover:brightness-110 active:scale-[0.98] text-center"
+            className="relative z-10 flex items-center justify-center py-2 px-1.5 sm:px-3 text-white font-semibold text-[11.5px] sm:text-xs md:text-[13px] whitespace-nowrap transition-all duration-200 hover:brightness-110 active:scale-[0.98] text-center"
           >
             View Details
           </Link>
@@ -103,9 +103,9 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
               backgroundColor: "#17DB55",
               borderRadius: "5px",
             }}
-            className="relative z-10 flex items-center justify-center gap-1.5 py-2 px-3 text-white font-semibold text-xs sm:text-[13px] transition-all duration-200 hover:brightness-105 active:scale-[0.98] text-center"
+            className="relative z-10 flex items-center justify-center gap-1 sm:gap-1.5 py-2 px-1.5 sm:px-3 text-white font-semibold text-[11.5px] sm:text-xs md:text-[13px] whitespace-nowrap transition-all duration-200 hover:brightness-105 active:scale-[0.98] text-center"
           >
-            <FaWhatsapp className="w-4 h-4 shrink-0" />
+            <FaWhatsapp className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
             <span>WhatsApp</span>
           </a>
         </div>

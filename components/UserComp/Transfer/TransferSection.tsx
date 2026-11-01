@@ -15,6 +15,11 @@ import {
   useTransferPreview,
   useTransferToLocations,
 } from "@/features/transferBookings/useClientTransferBooking";
+import {
+  isValidEmail,
+  isValidPhoneNumber,
+  sanitizePhoneNumber,
+} from "@/shared/utils/phoneUtils";
 import { TransferHero } from "./TransferHero";
 import { TransferBookingForm } from "./TransferBookingForm";
 import { TransferVehicleCard } from "./TransferVehicleCard";
@@ -63,7 +68,6 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
   // Initialize sensible defaults when locations arrive
   useEffect(() => {
     if (!fromLocationId && fromLocations.length > 0) {
-      // Prefer Makadi if present, otherwise first
       const defaultFrom =
         fromLocations.find((l: TransferLocationItem) =>
           l.name.toLowerCase().includes("makadi")
@@ -74,7 +78,6 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
 
   useEffect(() => {
     if (!toLocationId && toLocations.length > 0) {
-      // Prefer Senzo Mall or second item if present
       const defaultTo =
         toLocations.find((l: TransferLocationItem) =>
           l.name.toLowerCase().includes("senzo")
@@ -86,8 +89,11 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
   useEffect(() => {
     if (!countryId && countries.length > 0) {
       setCountryId(countries[0].id);
+      if (countries[0].phoneCode && !phoneNumber) {
+        setPhoneNumber(sanitizePhoneNumber(countries[0].phoneCode));
+      }
     }
-  }, [countries, countryId]);
+  }, [countries, countryId, phoneNumber]);
 
   // Selected Location Names for card display
   const fromName =
@@ -107,7 +113,6 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
       tripType,
     });
 
-  // Calculate fallbacks matching reference screenshot if preview endpoint is pending/offline
   const isRoundTrip = tripType === TransferTripType.RoundTrip;
   const defaultFallbackPrice = isRoundTrip ? 28 : 25;
   const currentPrice =
@@ -122,7 +127,6 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
   // ─── 4. SUBMIT BOOKING MUTATION ───
   const createBookingMutation = useCreateTransferBooking({
     onSuccess: () => {
-      // Reset sensitive fields
       setCustomerName("");
       setEmail("");
       setPhoneNumber("");
@@ -144,24 +148,35 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
       toast.error("Please select a trip date.");
       return;
     }
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (tripDate < todayStr) {
+      toast.error("Trip date cannot be in the past.");
+      return;
+    }
     if (!tripTime) {
       toast.error("Please select a trip time.");
       return;
     }
-    if (!customerName.trim()) {
-      toast.error("Please enter your full name.");
+    if (!customerName.trim() || customerName.trim().length < 2) {
+      toast.error("Please enter your full name (at least 2 characters).");
       return;
     }
     if (!countryId) {
       toast.error("Please select your country.");
       return;
     }
-    if (!email.trim() || !email.includes("@")) {
+    if (!email.trim() || !isValidEmail(email)) {
       toast.error("Please provide a valid email address.");
       return;
     }
     if (!phoneNumber.trim()) {
       toast.error("Please provide your phone number.");
+      return;
+    }
+    if (!isValidPhoneNumber(phoneNumber)) {
+      toast.error(
+        "Please provide a valid phone number with country code (7 to 15 digits)."
+      );
       return;
     }
 
@@ -250,10 +265,19 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
           countries={countries}
           isLoadingCountries={isLoadingCountries}
           onCustomerNameChange={setCustomerName}
-          onCountryIdChange={setCountryId}
+          onCountryIdChange={(id) => {
+            setCountryId(id);
+            const found = countries.find((c) => c.id === id);
+            if (
+              found?.phoneCode &&
+              (!phoneNumber || /^\+\d{1,4}$/.test(phoneNumber.trim()))
+            ) {
+              setPhoneNumber(sanitizePhoneNumber(found.phoneCode));
+            }
+          }}
           onEmailChange={setEmail}
           onCommunicationMethodChange={setCommunicationMethod}
-          onPhoneNumberChange={setPhoneNumber}
+          onPhoneNumberChange={(val) => setPhoneNumber(sanitizePhoneNumber(val))}
           onLuggageCountChange={setLuggageCount}
         />
 

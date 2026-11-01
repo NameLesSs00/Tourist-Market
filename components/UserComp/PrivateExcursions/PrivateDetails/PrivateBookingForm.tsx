@@ -26,6 +26,7 @@ import {
   BookingContactFields,
   BookingPaymentSelector,
 } from "./booking";
+import { isValidPhoneNumber, sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
 import {
   getTomorrowDateString,
   isBookingDateValid,
@@ -101,8 +102,8 @@ export function PrivateBookingForm({
       return;
     }
 
-    if (!customerName.trim()) {
-      toast.error("Please enter your full name.");
+    if (!customerName.trim() || customerName.trim().length < 2) {
+      toast.error("Please enter your full name (at least 2 characters).");
       return;
     }
 
@@ -111,14 +112,28 @@ export function PrivateBookingForm({
       return;
     }
 
-    const effectiveWhatsApp = sameAsPhone ? phone.trim() : whatsApp.trim();
-    if (!effectiveWhatsApp) {
-      toast.error("Please enter a valid WhatsApp number.");
+    if (!isValidPhoneNumber(phone)) {
+      toast.error(
+        "Please enter a valid phone number with country code (7 to 15 digits)."
+      );
       return;
     }
 
-    if (!hotelName.trim()) {
-      toast.error("Please enter your hotel or resort name for pickup.");
+    const effectiveWhatsApp = sameAsPhone ? phone.trim() : whatsApp.trim();
+    if (!effectiveWhatsApp) {
+      toast.error("Please enter your WhatsApp number.");
+      return;
+    }
+
+    if (!isValidPhoneNumber(effectiveWhatsApp)) {
+      toast.error(
+        "Please enter a valid WhatsApp number with country code (7 to 15 digits)."
+      );
+      return;
+    }
+
+    if (!hotelName.trim() || hotelName.trim().length < 2) {
+      toast.error("Please enter your hotel or resort name for pickup (at least 2 characters).");
       return;
     }
 
@@ -389,11 +404,22 @@ export function PrivateBookingForm({
           customerName={customerName}
           onCustomerNameChange={setCustomerName}
           phone={phone}
-          onPhoneChange={setPhone}
+          onPhoneChange={(val) => {
+            const sanitized = sanitizePhoneNumber(val);
+            setPhone(sanitized);
+            if (sameAsPhone) {
+              setWhatsApp(sanitized);
+            }
+          }}
           whatsApp={whatsApp}
-          onWhatsAppChange={setWhatsApp}
+          onWhatsAppChange={(val) => setWhatsApp(sanitizePhoneNumber(val))}
           sameAsPhone={sameAsPhone}
-          onSameAsPhoneChange={setSameAsPhone}
+          onSameAsPhoneChange={(checked) => {
+            setSameAsPhone(checked);
+            if (checked) {
+              setWhatsApp(phone);
+            }
+          }}
           hotelName={hotelName}
           onHotelNameChange={setHotelName}
           roomNumber={roomNumber}

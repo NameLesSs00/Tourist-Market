@@ -43,32 +43,32 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
       className="w-full max-w-[960px] mx-auto overflow-hidden font-poppins"
     >
       {/* 1. Header Image Flush With Top */}
-      <div className="relative w-full aspect-[960/480] bg-slate-100 overflow-hidden">
+      <div className="relative w-full aspect-[16/9] sm:aspect-[960/480] bg-slate-100 overflow-hidden">
         {imageUrl ? (
           <Image
             src={imageUrl}
             alt={title}
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 960px"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 960px"
             className="object-cover object-center"
           />
         ) : null}
       </div>
 
       {/* 2. Content Body */}
-      <div className="p-6 sm:p-10 flex flex-col gap-8">
+      <div className="p-4 sm:p-7 md:p-10 flex flex-col gap-6 sm:gap-8">
         {/* Title with Blue Accent Underline */}
         <div className="flex flex-col items-center text-center">
-          <h1 className="text-2xl sm:text-3xl font-bold uppercase text-[#0E4A68] tracking-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase text-[#0E4A68] tracking-tight">
             {title}
           </h1>
-          <div className="w-16 h-1 bg-[#0E4A68] mt-2 rounded-full" />
+          <div className="w-14 sm:w-16 h-1 bg-[#0E4A68] mt-2 rounded-full" />
         </div>
 
         {/* Vehicle / Service Spec Meta (for car, real estate, airport) */}
         {modelYear && (
-          <div className="flex flex-col gap-2.5 text-[#0E4A68] text-sm sm:text-base font-normal">
+          <div className="flex flex-col gap-2 sm:gap-2.5 text-[#0E4A68] text-xs sm:text-sm md:text-base font-normal">
             <p>
               <span className="font-medium">Model year:</span> {modelYear}
             </p>
@@ -83,25 +83,25 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
 
         {/* Tourist Services (Translator) Description & Languages */}
         {tagline && (
-          <div className="flex flex-col gap-4 text-[#0E4A68]">
-            <h2 className="text-base sm:text-lg font-bold leading-snug">
+          <div className="flex flex-col gap-3 sm:gap-4 text-[#0E4A68]">
+            <h2 className="text-sm sm:text-base md:text-lg font-bold leading-snug">
               {tagline}
             </h2>
             {detailedDescription && (
-              <p className="text-sm leading-relaxed text-[#0E4A68]/90 font-normal">
+              <p className="text-xs sm:text-sm leading-relaxed text-[#0E4A68]/90 font-normal">
                 {detailedDescription}
               </p>
             )}
 
             {availableLanguages && availableLanguages.length > 0 && (
-              <div className="mt-3">
-                <h3 className="text-base font-bold text-[#0E4A68] mb-2">
+              <div className="mt-2 sm:mt-3">
+                <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] mb-1.5 sm:mb-2">
                   Available Languages:
                 </h3>
-                <ul className="flex flex-col gap-1 text-sm text-[#0E4A68]">
+                <ul className="flex flex-col gap-1 text-xs sm:text-sm text-[#0E4A68]">
                   {availableLanguages.map((lang, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0E4A68]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#0E4A68] shrink-0" />
                       <span>{lang}</span>
                     </li>
                   ))}
@@ -111,13 +111,13 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
 
             {costServices && costServices.length > 0 && (
               <div className="mt-2">
-                <h3 className="text-base font-bold text-[#0E4A68] mb-1.5">
+                <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] mb-1.5">
                   Cost Services:
                 </h3>
-                <ul className="flex flex-col gap-1 text-sm text-[#0E4A68]">
+                <ul className="flex flex-col gap-1 text-xs sm:text-sm text-[#0E4A68]">
                   {costServices.map((cost, idx) => (
                     <li key={idx} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0E4A68]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#0E4A68] shrink-0" />
                       <span>{cost}</span>
                     </li>
                   ))}
@@ -129,9 +129,9 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
 
         {/* Numbered Notes Section */}
         {notes && notes.length > 0 && (
-          <div className="flex flex-col gap-3 text-[#0E4A68]">
-            <h3 className="text-lg sm:text-xl font-bold">Notes:</h3>
-            <ol className="flex flex-col gap-2.5 text-xs sm:text-sm leading-relaxed font-normal">
+          <div className="flex flex-col gap-2.5 sm:gap-3 text-[#0E4A68]">
+            <h3 className="text-base sm:text-lg md:text-xl font-bold">Notes:</h3>
+            <ol className="flex flex-col gap-2 text-xs sm:text-sm leading-relaxed font-normal">
               {notes.map((note, index) => (
                 <li key={index} className="flex items-start gap-2">
                   <span className="font-bold shrink-0">{index + 1})</span>
@@ -148,9 +148,9 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
             backgroundColor: "#134B68",
             borderRadius: "8px",
           }}
-          className="w-full py-6 px-6 sm:px-10 flex flex-col items-center justify-center text-center text-white gap-2 shadow-md"
+          className="w-full py-5 sm:py-6 px-4 sm:px-10 flex flex-col items-center justify-center text-center text-white gap-1.5 sm:gap-2 shadow-md"
         >
-          <div className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+          <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
             {priceFormatted}
           </div>
           <div className="text-xs sm:text-sm font-medium text-white/90">
@@ -159,7 +159,7 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
           <button
             type="button"
             onClick={handleScrollToBooking}
-            className="mt-3 inline-flex items-center gap-2 bg-white text-[#134B68] font-semibold text-xs sm:text-sm py-2 px-6 rounded-[5px] shadow-sm transition-all duration-200 hover:bg-slate-100 active:scale-[0.98] cursor-pointer"
+            className="mt-2.5 sm:mt-3 inline-flex items-center gap-2 bg-white text-[#134B68] font-semibold text-xs sm:text-sm py-2 px-5 sm:px-6 rounded-[5px] shadow-sm transition-all duration-200 hover:bg-slate-100 active:scale-[0.98] cursor-pointer"
           >
             {bookingButtonText}
           </button>

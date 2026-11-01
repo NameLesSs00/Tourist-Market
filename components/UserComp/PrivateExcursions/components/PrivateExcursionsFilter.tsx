@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import Image from "next/image";
 import { CustomDropdown, DropdownOption } from "@/components/UserComp/GroupExcursions/components/CustomDropdown";
 
@@ -19,6 +19,7 @@ interface PrivateExcursionsFilterProps {
   categories?: ExcursionCategoryOption[];
   onFilterChange: (filters: PrivateExcursionFilterValues) => void;
   disabled?: boolean;
+  selectedCategory?: string;
 }
 
 const DURATION_OPTIONS: DropdownOption[] = [
@@ -33,10 +34,25 @@ export function PrivateExcursionsFilter({
   categories = [],
   onFilterChange,
   disabled = false,
+  selectedCategory,
 }: PrivateExcursionsFilterProps) {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("all");
+  const [category, setCategory] = useState(selectedCategory || "all");
   const [duration, setDuration] = useState("all");
+
+  const onFilterChangeRef = useRef(onFilterChange);
+  useEffect(() => {
+    onFilterChangeRef.current = onFilterChange;
+  });
+
+  const isInitialMount = useRef(true);
+
+  // Sync internal category state when selectedCategory prop changes from external source
+  useEffect(() => {
+    if (selectedCategory !== undefined && selectedCategory !== category) {
+      setCategory(selectedCategory);
+    }
+  }, [selectedCategory, category]);
 
   // Construct Category options dynamically from backend
   const categoryOptions: DropdownOption[] = useMemo(() => {
@@ -51,7 +67,7 @@ export function PrivateExcursionsFilter({
 
   const handleCategoryChange = (newCat: string) => {
     setCategory(newCat);
-    onFilterChange({
+    onFilterChangeRef.current({
       search,
       category: newCat,
       duration,
@@ -60,17 +76,22 @@ export function PrivateExcursionsFilter({
 
   const handleDurationChange = (newDuration: string) => {
     setDuration(newDuration);
-    onFilterChange({
+    onFilterChangeRef.current({
       search,
       category,
       duration: newDuration,
     });
   };
 
-  // Debounced search input (350ms)
+  // Debounced search input (350ms): ONLY triggers when the user types in the search bar
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+
     const handler = setTimeout(() => {
-      onFilterChange({
+      onFilterChangeRef.current({
         search,
         category,
         duration,
@@ -78,10 +99,10 @@ export function PrivateExcursionsFilter({
     }, 350);
 
     return () => clearTimeout(handler);
-  }, [search, category, duration, onFilterChange]);
+  }, [search, category, duration]);
 
   const handleApplyNow = () => {
-    onFilterChange({
+    onFilterChangeRef.current({
       search,
       category,
       duration,
@@ -92,7 +113,7 @@ export function PrivateExcursionsFilter({
     setSearch("");
     setCategory("all");
     setDuration("all");
-    onFilterChange({
+    onFilterChangeRef.current({
       search: "",
       category: "all",
       duration: "all",
@@ -131,100 +152,67 @@ export function PrivateExcursionsFilter({
                 disabled={disabled}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleApplyNow()}
-                placeholder="Search in Excursions..."
-                className="w-full bg-transparent font-poppins text-xs sm:text-sm text-[#0E4A68] placeholder-[#888888] focus:outline-none pr-2"
+                placeholder="Search excursions..."
+                className="w-full bg-transparent text-sm text-[#0E4A68] placeholder:text-[#888888] focus:outline-none pr-2 disabled:cursor-not-allowed disabled:opacity-60"
               />
-              <div className="shrink-0 w-4 h-4 relative select-none pointer-events-none">
+              <div className="shrink-0 flex items-center justify-center text-[#888888]">
                 <Image
-                  src="/PrivateExcursions/Vector (9).svg"
-                  alt=""
-                  fill
-                  className="object-contain"
+                  src="/search.svg"
+                  alt="Search"
+                  width={18}
+                  height={18}
+                  className="opacity-70"
                 />
               </div>
             </div>
           </div>
 
           {/* 2. Category Dropdown */}
-          <CustomDropdown
-            label="Category"
-            options={categoryOptions}
-            value={category}
-            onChange={handleCategoryChange}
-            disabled={disabled}
-            icon={
-              <div className="w-4 h-4 relative select-none">
-                <Image
-                  src="/PrivateExcursions/Vector (10).svg"
-                  alt=""
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            }
-          />
+          <div>
+            <CustomDropdown
+              label="Category"
+              options={categoryOptions}
+              value={category}
+              onChange={handleCategoryChange}
+              disabled={disabled}
+            />
+          </div>
 
           {/* 3. Duration Dropdown */}
-          <CustomDropdown
-            label="Duration"
-            options={DURATION_OPTIONS}
-            value={duration}
-            onChange={handleDurationChange}
-            disabled={disabled}
-            icon={
-              <svg
-                className="w-4 h-4 text-[#0E4A68]"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-              </svg>
-            }
-          />
+          <div>
+            <CustomDropdown
+              label="Duration"
+              options={DURATION_OPTIONS}
+              value={duration}
+              onChange={handleDurationChange}
+              disabled={disabled}
+            />
+          </div>
 
-          {/* 4. Action Buttons */}
-          <div className="flex flex-col gap-1.5">
-            <span className="hidden lg:block font-poppins text-xs sm:text-sm font-semibold text-transparent select-none">
-              Action
-            </span>
-            <div className="flex items-center gap-2">
+          {/* 4. Action Buttons (Apply & Reset) */}
+          <div className="flex items-center gap-2.5">
+            {/* Apply Button */}
+            <button
+              type="button"
+              disabled={disabled}
+              onClick={handleApplyNow}
+              className="flex-1 h-11 bg-[#DE7423] hover:bg-[#c46116] active:scale-[0.98] text-white font-poppins font-semibold text-sm rounded-[8px] transition-all duration-200 shadow-sm cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <span>Apply</span>
+            </button>
+
+            {/* Reset Button */}
+            {isFiltered && (
               <button
                 type="button"
                 disabled={disabled}
-                onClick={handleApplyNow}
-                style={{
-                  background: "#DE7423",
-                  boxShadow:
-                    "0px 1px 10px 1px rgba(222, 116, 35, 0.7), 0px 4px 25px 0px rgba(0, 0, 0, 0.3)",
-                }}
-                className="flex-1 h-11 rounded-[8px] flex items-center justify-center gap-2 text-white font-poppins text-sm font-semibold tracking-wide cursor-pointer transition-all duration-200 hover:brightness-105 active:scale-[0.99] disabled:opacity-60"
+                onClick={handleReset}
+                title="Reset all filters"
+                className="h-11 px-3.5 bg-gray-100 hover:bg-gray-200 text-[#0E4A68] rounded-[8px] text-xs font-semibold transition-colors cursor-pointer shrink-0 disabled:opacity-60"
               >
-                <div className="shrink-0 w-4 h-4 relative select-none">
-                  <Image
-                    src="/PrivateExcursions/Vector (13).svg"
-                    alt=""
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-                <span>Search</span>
+                Reset
               </button>
-
-              {isFiltered && (
-                <button
-                  type="button"
-                  onClick={handleReset}
-                  className="h-11 px-3 rounded-[8px] border border-[#888888] text-[#0E4A68] hover:bg-gray-100 font-poppins text-xs font-semibold transition cursor-pointer"
-                  title="Reset Filters"
-                >
-                  Reset
-                </button>
-              )}
-            </div>
+            )}
           </div>
         </div>
       </div>

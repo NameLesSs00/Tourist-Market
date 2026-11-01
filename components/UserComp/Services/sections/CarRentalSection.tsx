@@ -1,32 +1,29 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { ServiceHero, ServiceGrid } from "../components";
 import {
-  useSiteServiceIdByTitle,
   usePublicServiceSubItems,
   mapSubItemToCard,
 } from "@/features/siteServiceItems/usePublicServiceItems";
+import { SITE_SERVICES_CONFIG } from "../config/siteServicesConfig";
 
 interface CarRentalSectionProps {
   locale?: string;
 }
 
 export function CarRentalSection({ locale = "en" }: CarRentalSectionProps) {
-  const serviceId = useSiteServiceIdByTitle("car", locale);
+  const serviceId = SITE_SERVICES_CONFIG.carRental.id;
 
   const { data: subItems, isLoading, isError } = usePublicServiceSubItems(
     serviceId,
     locale
   );
 
-  // Only derive cards from real API data — never fall back to dummy content
+  // Derive cards from real API data
   const cards = subItems
     ? subItems.map((item) => mapSubItemToCard(item, "car-rental"))
     : [];
-
-  // Still loading the parent service id (first network call)
-  const isWaiting = !serviceId || isLoading;
 
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8">
@@ -39,7 +36,7 @@ export function CarRentalSection({ locale = "en" }: CarRentalSectionProps) {
         subtitle="Explore Hurghada and beyond at your own pace with our wide selection of premium rental cars."
         cards={cards}
         locale={locale}
-        isLoading={isWaiting}
+        isLoading={isLoading}
         isError={isError}
       />
     </div>

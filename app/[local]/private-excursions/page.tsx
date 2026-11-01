@@ -32,7 +32,7 @@ async function PrivateExcursionsResolved({ params }: PageProps) {
 
 export default function LocalPrivateExcursionsKebabPage(props: PageProps) {
   return (
-    <Suspense fallback={<PrivateExcursionsSection locale="en" />}>
+    <Suspense fallback={<div className="w-full min-h-screen bg-[#FFF8ED]" />}>
       <PrivateExcursionsResolved {...props} />
     </Suspense>
   );

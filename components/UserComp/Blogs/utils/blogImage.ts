@@ -1,6 +1,6 @@
 const BACKEND_STATIC_BASE = "https://touristtt.runasp.net";
 export const DEFAULT_BLOG_FALLBACK_IMAGE =
-  "/blogs/65daec21883f275c2509a2dfaebfa61e20f7da79.jpg";
+  "/homepage/hero/homeHeroBg.jpg";
 
 /**
  * Resolves a backend blog image path to a complete, valid URL with graceful fallback.

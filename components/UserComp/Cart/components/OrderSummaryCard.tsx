@@ -67,7 +67,7 @@ export function OrderSummaryCard({
     <div
       style={{
         border: "0.5px solid #888888",
-        borderRadius: "5px",
+        borderRadius: "8px",
         backgroundColor: "#FFFFFF",
       }}
       className="w-full font-poppins overflow-hidden shadow-xs"
@@ -77,21 +77,28 @@ export function OrderSummaryCard({
         style={{
           backgroundColor: "#0E4A68",
         }}
-        className="py-3 px-5 text-white text-[17px] font-bold tracking-wide select-none"
+        className="py-3 px-4 sm:px-5 text-white text-[16px] sm:text-[17px] font-bold tracking-wide select-none"
       >
         Order Summary
       </div>
 
       {/* ─── Body ─── */}
       {isEmpty ? (
-        <div className="py-14 text-center">
-          <p className="text-[16px] font-medium text-[#083952]">
+        <div className="py-12 sm:py-14 text-center">
+          <p className="text-[15px] sm:text-[16px] font-medium text-[#083952]">
             No Items Here
           </p>
         </div>
       ) : (
-        /* Mini Product Cards List */
-        <div className="p-4 flex flex-col gap-3 max-h-[380px] overflow-y-auto">
+        /* Mini Product Cards List:
+           On Step 1 ("cart"), items are already visible right above the summary, so hide repeated item list on mobile (hidden lg:flex).
+           On Step 2 ("checkout"), show the mini product list so the guest can review their items while filling forms.
+        */
+        <div
+          className={`p-3.5 sm:p-4 ${
+            currentStep === "cart" ? "hidden lg:flex" : "flex"
+          } flex-col gap-2.5 sm:gap-3 max-h-[380px] overflow-y-auto`}
+        >
           {items.map((item) => {
             const lineTotal = (item.price || 0) * item.quantity;
 
@@ -103,7 +110,7 @@ export function OrderSummaryCard({
                   borderRadius: "6px",
                   backgroundColor: "#FFFFFF",
                 }}
-                className="p-2.5 flex items-center justify-between gap-3 hover:border-[#146188] transition-colors"
+                className="p-2 sm:p-2.5 flex items-center justify-between gap-2.5 sm:gap-3 hover:border-[#146188] transition-colors"
               >
                 {/* Product Thumbnail */}
                 <div
@@ -112,23 +119,23 @@ export function OrderSummaryCard({
                     border: "0.5px solid #888888/40",
                     borderRadius: "4px",
                   }}
-                  className="relative w-12 h-12 shrink-0 p-0.5 flex items-center justify-center overflow-hidden"
+                  className="relative w-11 h-11 sm:w-12 sm:h-12 shrink-0 p-0.5 flex items-center justify-center overflow-hidden"
                 >
                   <MiniCartThumbnail image={item.image} title={item.title} />
                 </div>
 
                 {/* Product Details (Title + Quantity × Price) */}
                 <div className="flex-1 min-w-0 flex flex-col justify-center">
-                  <h5 className="font-poppins text-[13px] font-semibold text-[#146188] uppercase truncate leading-tight">
+                  <h5 className="font-poppins text-[12.5px] sm:text-[13px] font-semibold text-[#146188] uppercase truncate leading-tight">
                     {item.title}
                   </h5>
-                  <p className="font-poppins text-[13px] text-[#646464] font-normal mt-0.5">
+                  <p className="font-poppins text-[12px] sm:text-[13px] text-[#646464] font-normal mt-0.5">
                     {item.quantity}×{(item.price || 0).toFixed(0)} $
                   </p>
                 </div>
 
                 {/* Remove Cross & Line Total */}
-                <div className="flex flex-col items-end justify-between h-12 py-0.5 shrink-0">
+                <div className="flex flex-col items-end justify-between h-11 sm:h-12 py-0.5 shrink-0">
                   <button
                     type="button"
                     onClick={() => onRemoveItem(item.productId)}
@@ -137,7 +144,7 @@ export function OrderSummaryCard({
                   >
                     <FiX size={13} />
                   </button>
-                  <span className="font-poppins text-[14px] font-semibold text-[#0E4A68] leading-none">
+                  <span className="font-poppins text-[13.5px] sm:text-[14px] font-semibold text-[#0E4A68] leading-none">
                     {lineTotal.toFixed(0)} $
                   </span>
                 </div>
@@ -148,9 +155,9 @@ export function OrderSummaryCard({
       )}
 
       {/* ─── Footer: Subtotal & Total ─── */}
-      <div className="p-4 sm:p-5 flex flex-col gap-3 bg-white">
+      <div className="p-3.5 sm:p-5 flex flex-col gap-3 bg-white">
         {/* Subtotal */}
-        <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[15px]">
+        <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[14.5px] sm:text-[15px]">
           <span className="font-medium text-[#0E4A68]">Subtotal :</span>
           <span className="font-medium text-[#0E4A68]">
             ${subtotal.toFixed(2)}
@@ -158,7 +165,7 @@ export function OrderSummaryCard({
         </div>
 
         {/* Shipping */}
-        <div className="flex items-center justify-between text-[15px]">
+        <div className="flex items-center justify-between text-[14.5px] sm:text-[15px]">
           <span className="font-medium text-[#0E4A68]">Shipping :</span>
           {hasShipping ? (
             <span className="font-medium text-[#0E4A68]">
@@ -172,7 +179,7 @@ export function OrderSummaryCard({
         </div>
 
         {/* Total */}
-        <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[16px]">
+        <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[15.5px] sm:text-[16px]">
           <span className="font-bold text-[#0E4A68]">Total :</span>
           <span className="font-bold text-[#0E4A68]">
             ${total.toFixed(2)}
@@ -188,7 +195,7 @@ export function OrderSummaryCard({
               backgroundColor: "#0E4A68",
               borderRadius: "5px",
             }}
-            className="w-full mt-2 py-3 text-white font-poppins text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer"
+            className="w-full mt-2 py-3 text-white font-poppins text-[14.5px] sm:text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer"
           >
             Proceed to Checkout
           </button>
@@ -204,7 +211,7 @@ export function OrderSummaryCard({
               backgroundColor: "#0E4A68",
               borderRadius: "5px",
             }}
-            className="w-full mt-2 py-3 text-white font-poppins text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full mt-2 py-3 text-white font-poppins text-[14.5px] sm:text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Placing Order..." : "Place Order"}
           </button>

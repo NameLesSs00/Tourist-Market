@@ -101,7 +101,7 @@ function mapSubItemToDetail(
 // ─── Back button ──────────────────────────────────────────────────────────────
 function BackButton({ href }: { href: string }) {
   return (
-    <div className="mb-6 max-w-[960px] mx-auto">
+    <div className="mb-4 sm:mb-6 max-w-[960px] mx-auto">
       <Link
         href={href}
         style={{
@@ -109,7 +109,7 @@ function BackButton({ href }: { href: string }) {
           border: "0.5px solid #888888",
           borderRadius: "5px",
         }}
-        className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#0E4A68] hover:bg-slate-50 transition-colors shadow-sm"
+        className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#0E4A68] hover:bg-slate-50 transition-colors shadow-sm"
       >
         <FiArrowLeft className="w-4 h-4" />
         <span>Back</span>
@@ -122,9 +122,9 @@ function BackButton({ href }: { href: string }) {
 function DetailSkeleton() {
   return (
     <div className="w-full max-w-[960px] mx-auto animate-pulse">
-      <div className="w-full aspect-[960/480] bg-slate-200 rounded-lg" />
-      <div className="mt-8 space-y-4">
-        <div className="h-8 w-1/2 bg-slate-200 rounded mx-auto" />
+      <div className="w-full aspect-[16/9] sm:aspect-[960/480] bg-slate-200 rounded-lg" />
+      <div className="mt-6 sm:mt-8 space-y-4">
+        <div className="h-7 sm:h-8 w-1/2 bg-slate-200 rounded mx-auto" />
         <div className="h-4 w-full bg-slate-100 rounded" />
         <div className="h-4 w-4/5 bg-slate-100 rounded" />
         <div className="h-4 w-3/5 bg-slate-100 rounded" />
@@ -160,8 +160,8 @@ export function ServiceDetailSection({
     : null;
 
   return (
-    <div className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-10 font-poppins text-[#0E4A68]">
-      <div className="w-full max-w-[1320px] mx-auto px-4">
+    <div className="w-full min-h-screen bg-[#FFF8ED] pt-4 sm:pt-8 md:pt-10 pb-16 sm:pb-24 md:pb-32 font-poppins text-[#0E4A68]">
+      <div className="w-full max-w-[1320px] mx-auto px-3 sm:px-4 lg:px-6">
         <BackButton href={backHref} />
 
         {/* Loading */}
@@ -169,13 +169,13 @@ export function ServiceDetailSection({
 
         {/* Not found / invalid slug */}
         {!isLoading && isNotFound && (
-          <div className="w-full max-w-[960px] mx-auto text-center py-20">
-            <p className="text-[#0E4A68] text-base font-semibold opacity-60">
+          <div className="w-full max-w-[960px] mx-auto text-center py-16 sm:py-20">
+            <p className="text-[#0E4A68] text-sm sm:text-base font-semibold opacity-60">
               Service not found.
             </p>
             <Link
               href={backHref}
-              className="mt-4 inline-block text-sm text-[#134B68] underline"
+              className="mt-4 inline-block text-xs sm:text-sm text-[#134B68] underline"
             >
               Back to listing
             </Link>
@@ -189,7 +189,7 @@ export function ServiceDetailSection({
             <ServiceDetailCard detail={detail} />
 
             {/* 2. Booking Form */}
-            <ServiceBookingForm detail={detail} />
+            <ServiceBookingForm detail={detail} locale={locale} />
 
             {/* 3. Contact Us */}
             <ServiceContactUs />

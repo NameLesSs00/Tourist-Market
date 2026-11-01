@@ -1,32 +1,29 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { ServiceHero, ServiceGrid } from "../components";
 import {
-  useSiteServiceIdByTitle,
   usePublicServiceSubItems,
   mapSubItemToCard,
 } from "@/features/siteServiceItems/usePublicServiceItems";
+import { SITE_SERVICES_CONFIG } from "../config/siteServicesConfig";
 
 interface VipAirportSectionProps {
   locale?: string;
 }
 
 export function VipAirportSection({ locale = "en" }: VipAirportSectionProps) {
-  const serviceId = useSiteServiceIdByTitle("vip", locale);
+  const serviceId = SITE_SERVICES_CONFIG.vipAirport.id;
 
   const { data: subItems, isLoading, isError } = usePublicServiceSubItems(
     serviceId,
     locale
   );
 
-  // Only derive cards from real API data — never fall back to dummy content
+  // Derive cards from real API data
   const cards = subItems
     ? subItems.map((item) => mapSubItemToCard(item, "vip-airport"))
     : [];
-
-  // Still loading the parent service id (first network call)
-  const isWaiting = !serviceId || isLoading;
 
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8">
@@ -39,7 +36,7 @@ export function VipAirportSection({ locale = "en" }: VipAirportSectionProps) {
         subtitle="Elevate your Hurghada departure with our seamless, exclusive VIP services."
         cards={cards}
         locale={locale}
-        isLoading={isWaiting}
+        isLoading={isLoading}
         isError={isError}
       />
     </div>

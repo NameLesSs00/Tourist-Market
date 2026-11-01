@@ -1,3 +1,5 @@
+export type ServiceType = "vip-airport" | "real-estate" | "tourist" | "car-rental";
+
 export interface ServiceCardItem {
   id: string;
   slug: string;
@@ -7,7 +9,7 @@ export interface ServiceCardItem {
   badge?: string; // e.g., "For Rent"
   price?: number;
   pricePeriod?: string; // "Per Day" | "Per Hour"
-  serviceType: "vip-airport" | "real-estate" | "tourist" | "car-rental";
+  serviceType: ServiceType;
 }
 
 export interface ServiceDetailItem extends ServiceCardItem {
@@ -38,14 +40,9 @@ export interface ServiceBookingFormData {
   translatorLanguage?: string;
   date: string;
   endDate?: string;
-  numberOfDays: string;
-}
-
-export interface ServiceReviewItem {
-  id: string;
-  author: string;
-  date: string;
-  rating: number;
-  likes: number;
-  content: string;
+  flightNumber?: string;
+  departureTime?: string;
+  passengers?: string;
+  destination?: string;
+  specialRequests?: string;
 }

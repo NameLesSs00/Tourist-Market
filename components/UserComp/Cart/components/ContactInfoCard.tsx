@@ -78,7 +78,7 @@ export function ContactInfoCard({
         backgroundColor: "#FFFFFF",
         borderRadius: "8px",
       }}
-      className="w-full p-6 sm:p-8 font-poppins"
+      className="w-full p-4 sm:p-6 md:p-8 font-poppins"
     >
       {/* Title */}
       <h3 className="text-[22px] font-semibold text-[#0E4A68] mb-6">

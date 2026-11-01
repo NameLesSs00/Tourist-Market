@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMutation } from "@tanstack/react-query";
 import apiClient from "@/clientApi/apiConfig";
@@ -7,71 +7,73 @@ import {
   ServicesGuideLanguage,
 } from "@/models/servicesBooking";
 
-export interface CarRentalBookingPayload {
+export interface BaseServiceBookingPayload {
   subServiceId: string;
   name: string;
   country: string;
   hotel: string;
   roomNo: string;
-  phoneNumber: string;
   emailAddress: string;
+  phoneNumber?: string;
   communicationMethod: ServicesCommunicationMethod;
+  note?: string;
+}
+
+export interface CarRentalBookingPayload extends BaseServiceBookingPayload {
   date: string;
   numberOfDays: number;
 }
 
-export interface VipHurghadaBookingPayload {
-  subServiceId: string;
-  name: string;
-  country: string;
-  hotel: string;
-  roomNo: string;
-  phoneNumber: string;
-  emailAddress: string;
-  communicationMethod: ServicesCommunicationMethod;
-  date: string;
-  numberOfDays: number;
+export interface VipHurghadaBookingPayload extends BaseServiceBookingPayload {
+  flightNumber: string;
+  departureTime: string;
+  noOfPersons: number;
+  destinationTo: string;
 }
 
-export interface RealEstateBookingPayload {
-  subServiceId: string;
-  name: string;
-  country: string;
-  hotel: string;
-  roomNo: string;
-  phoneNumber: string;
-  emailAddress: string;
-  communicationMethod: ServicesCommunicationMethod;
-  date: string;
-  numberOfDays: number;
-}
+export interface RealEstateBookingPayload extends BaseServiceBookingPayload {}
 
-export interface TouristServiceBookingPayload {
-  subServiceId: string;
-  name: string;
-  country: string;
-  hotel: string;
-  roomNo: string;
-  phoneNumber: string;
-  emailAddress: string;
-  communicationMethod: ServicesCommunicationMethod;
+export interface TouristServiceBookingPayload extends BaseServiceBookingPayload {
   guideLanguage: ServicesGuideLanguage;
   date: string;
   timeFrom: string;
   timeTo: string;
 }
 
-type AnyBookingPayload =
+export type AnyBookingPayload =
   | CarRentalBookingPayload
   | VipHurghadaBookingPayload
   | RealEstateBookingPayload
   | TouristServiceBookingPayload;
 
+export interface ServiceBookingResponseData {
+  id: string;
+  name: string;
+  country: string;
+  hotel: string;
+  roomNo: string;
+  emailAddress: string;
+  subServiceId: string;
+  subServiceTitle: string;
+  bookingType: number;
+  status: number;
+  createdAt: string;
+  note?: string;
+}
+
+export interface ServiceBookingApiResponse {
+  success: boolean;
+  isSuccess: boolean;
+  message: string | null;
+  data: ServiceBookingResponseData;
+  errors: string[] | null;
+}
+
 const ENDPOINT_MAP: Record<string, string> = {
-  "car-rental":  "/services/bookings/car-rental",
+  "car-rental": "/services/bookings/car-rental",
   "vip-airport": "/services/bookings/vip-hurghada",
   "real-estate": "/services/bookings/real-estate",
-  "tourist":     "/services/bookings/tourist-service",
+  "tourist": "/services/bookings/tourist-service",
 };
 
 export function useSubmitServiceBooking(
@@ -80,7 +82,10 @@ export function useSubmitServiceBooking(
   const endpoint = ENDPOINT_MAP[serviceType];
   return useMutation({
     mutationFn: async (payload: AnyBookingPayload) => {
-      const { data } = await apiClient.post(endpoint, payload);
+      const { data } = await apiClient.post<ServiceBookingApiResponse>(
+        endpoint,
+        payload
+      );
       return data;
     },
   });
@@ -90,19 +95,28 @@ export function mapCommunicationMethod(
   val: string
 ): ServicesCommunicationMethod {
   switch (val) {
-    case "whatsapp": return ServicesCommunicationMethod.WhatsApp;
-    case "viber":    return ServicesCommunicationMethod.Viber;
-    case "phone":    return ServicesCommunicationMethod.Phone;
-    case "email":    return ServicesCommunicationMethod.Email;
-    default:         return ServicesCommunicationMethod.WhatsApp;
+    case "whatsapp":
+      return ServicesCommunicationMethod.WhatsApp;
+    case "viber":
+      return ServicesCommunicationMethod.Viber;
+    case "phone":
+      return ServicesCommunicationMethod.Phone;
+    case "email":
+      return ServicesCommunicationMethod.Email;
+    default:
+      return ServicesCommunicationMethod.WhatsApp;
   }
 }
 
 export function mapGuideLanguage(val: string): ServicesGuideLanguage {
   switch (val) {
-    case "german":   return ServicesGuideLanguage.German;
-    case "russian":  return ServicesGuideLanguage.Russian;
-    case "french":   return ServicesGuideLanguage.French;
-    default:         return ServicesGuideLanguage.English;
+    case "german":
+      return ServicesGuideLanguage.German;
+    case "russian":
+      return ServicesGuideLanguage.Russian;
+    case "french":
+      return ServicesGuideLanguage.French;
+    default:
+      return ServicesGuideLanguage.English;
   }
 }

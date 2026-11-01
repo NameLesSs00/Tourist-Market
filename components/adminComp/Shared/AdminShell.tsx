@@ -116,25 +116,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         <main className="w-full flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           {children}
         </main>
-
-        {/* Admin Footer */}
-        <footer className="w-full border-t border-[#E2E8F0] bg-white/60 px-4 py-4 text-center text-xs text-[#64748B] sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-center gap-1.5">
-            <span>© 2026 Egypt Tourist Market. All rights reserved.</span>
-            <span>·</span>
-            <span>
-              Powered by{" "}
-              <a
-                href="https://tech-gear.net/en"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-[#0E4A68] hover:text-[#D48C28] transition-colors underline"
-              >
-                Tech Gear Solutions
-              </a>
-            </span>
-          </div>
-        </footer>
       </div>
 
       <ChangePasswordPanel open={isPasswordOpen} onClose={() => setIsPasswordOpen(false)} />

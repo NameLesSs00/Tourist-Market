@@ -17,7 +17,7 @@ export function AboutHero({ locale = "en" }: AboutHeroProps) {
       className="relative isolate w-full overflow-hidden pt-28 pb-12 sm:pt-32 sm:pb-16 lg:pt-16 lg:pb-12 xl:pt-20 xl:pb-16 min-h-[540px] xl:min-h-[580px] flex items-center"
       style={{
         background:
-          "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFEACD 41%, #FFEACD 100%)",
+          "linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, #FFEACD 41.35%)",
       }}
     >
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-14 xl:px-16">

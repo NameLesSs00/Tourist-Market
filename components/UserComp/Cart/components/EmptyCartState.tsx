@@ -12,13 +12,11 @@ export function EmptyCartState({ locale = "en" }: EmptyCartStateProps) {
     <div
       style={{
         backgroundColor: "#FFFFFF",
-        border: "1px solid #888888",
-        borderTop: "none",
-        borderRadius: "0px 0px 8px 8px",
+        borderColor: "#888888",
       }}
-      className="w-full min-h-[380px] flex flex-col items-center justify-center p-8 sm:p-12 text-center"
+      className="w-full min-h-[340px] sm:min-h-[380px] flex flex-col items-center justify-center p-6 sm:p-12 text-center border md:border-t-0 rounded-[8px] md:rounded-t-none"
     >
-      <h3 className="font-poppins text-[22px] sm:text-[24px] font-semibold text-[#0E4A68] mb-6">
+      <h3 className="font-poppins text-[20px] sm:text-[24px] font-semibold text-[#0E4A68] mb-6">
         Cart Is Empty
       </h3>
 
@@ -38,4 +36,3 @@ export function EmptyCartState({ locale = "en" }: EmptyCartStateProps) {
 }
 
 export default EmptyCartState;
-

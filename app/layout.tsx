@@ -59,7 +59,12 @@ export default function RootLayout({
             richColors
             closeButton
             position="top-right"
-            toastOptions={{ className: "font-poppins" }}
+            offset="90px"
+            duration={4000}
+            style={{ zIndex: 99999 }}
+            toastOptions={{
+              className: "font-poppins text-xs sm:text-sm shadow-xl",
+            }}
           />
         </QueryProvider>
       </body>

@@ -22,6 +22,7 @@ import {
   BookingGuestsSelector,
   BookingPaymentSelector,
 } from "./booking";
+import { isValidPhoneNumber, sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
 
 interface GroupBookingFormProps {
   detail: GroupExcursionDetail;
@@ -79,9 +80,10 @@ export function GroupBookingForm({
   const { mutate: submitBooking, isPending } = useCreateGroupBookingMutation();
 
   const handlePhoneChange = (val: string) => {
-    setPhone(val);
+    const sanitized = sanitizePhoneNumber(val);
+    setPhone(sanitized);
     if (sameAsPhone) {
-      setWhatsApp(val);
+      setWhatsApp(sanitized);
     }
   };
 
@@ -99,12 +101,21 @@ export function GroupBookingForm({
       toast.error("Please select a trip date.");
       return;
     }
-    if (!customerName.trim()) {
-      toast.error("Please enter your full name.");
+    const todayStr = new Date().toISOString().split("T")[0];
+    if (date < todayStr) {
+      toast.error("Trip date cannot be in the past.");
+      return;
+    }
+    if (!customerName.trim() || customerName.trim().length < 2) {
+      toast.error("Please enter your full name (at least 2 characters).");
       return;
     }
     if (!phone.trim()) {
       toast.error("Please enter your contact phone number.");
+      return;
+    }
+    if (!isValidPhoneNumber(phone)) {
+      toast.error("Please enter a valid phone number with country code (7 to 15 digits).");
       return;
     }
     const finalWhatsApp = sameAsPhone ? phone.trim() : whatsApp.trim();
@@ -112,8 +123,12 @@ export function GroupBookingForm({
       toast.error("Please enter your WhatsApp number.");
       return;
     }
-    if (!hotelName.trim()) {
-      toast.error("Please enter your hotel name for pickup.");
+    if (!isValidPhoneNumber(finalWhatsApp)) {
+      toast.error("Please enter a valid WhatsApp number with country code (7 to 15 digits).");
+      return;
+    }
+    if (!hotelName.trim() || hotelName.trim().length < 2) {
+      toast.error("Please enter your hotel or pickup location (at least 2 characters).");
       return;
     }
     if (!roomNumber.trim()) {

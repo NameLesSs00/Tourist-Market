@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   PrivateExcursionsHero,
   PrivateExcursionsFilter,
@@ -18,21 +19,86 @@ interface PrivateExcursionsSectionProps {
 export function PrivateExcursionsSection({
   locale = "en",
 }: PrivateExcursionsSectionProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  const urlCategoryParam =
+    searchParams.get("category") || searchParams.get("categoryId") || "";
+
+  // 1. Fetch real categories from GET /api/excursion-categories
+  const { data: categories = [] } = useExcursionCategoriesQuery(locale);
+
+  // 2. Resolve URL parameter to a valid backend category UUID
+  const matchedCategoryId = useMemo(() => {
+    if (!urlCategoryParam) return "all";
+
+    // Direct match against category UUID
+    const directMatch = categories.find(
+      (c) => c.id.toLowerCase() === urlCategoryParam.toLowerCase()
+    );
+    if (directMatch) return directMatch.id;
+
+    // Fallback: match by slug or localized name
+    const nameMatch = categories.find((c) => {
+      const nameLower = c.name?.toLowerCase() || "";
+      const slugLower = c.slug?.toLowerCase() || "";
+      const paramLower = urlCategoryParam.toLowerCase();
+      return (
+        nameLower === paramLower ||
+        slugLower === paramLower ||
+        nameLower.includes(paramLower) ||
+        paramLower.includes(nameLower)
+      );
+    });
+    if (nameMatch) return nameMatch.id;
+
+    return urlCategoryParam;
+  }, [urlCategoryParam, categories]);
 
   const [filterValues, setFilterValues] = useState<PrivateExcursionFilterValues>({
     search: "",
-    category: "all",
+    category: matchedCategoryId || "all",
     duration: "all",
   });
 
-  // 1. Determine server-side categoryId
+  // Sync internal filter values when URL search param or categories change
+  useEffect(() => {
+    if (matchedCategoryId && matchedCategoryId !== "all") {
+      setFilterValues((prev) => {
+        if (prev.category === matchedCategoryId) return prev;
+        return {
+          ...prev,
+          category: matchedCategoryId,
+        };
+      });
+    } else if (!urlCategoryParam) {
+      setFilterValues((prev) => {
+        if (prev.category === "all") return prev;
+        return {
+          ...prev,
+          category: "all",
+        };
+      });
+    }
+  }, [matchedCategoryId, urlCategoryParam]);
+
+  // 3. Determine server-side categoryId
   const selectedCategoryId =
     filterValues.category && filterValues.category !== "all"
       ? filterValues.category
       : undefined;
 
-  // 2. Fetch live private excursions using TanStack useInfiniteQuery
+  // Memoize query params to prevent TanStack infinite re-render cycles
+  const queryParams = useMemo(
+    () => ({
+      categoryId: selectedCategoryId,
+      pageSize: 9,
+    }),
+    [selectedCategoryId]
+  );
+
+  // 4. Fetch live private excursions using TanStack useInfiniteQuery
   const {
     data,
     isLoading,
@@ -41,16 +107,7 @@ export function PrivateExcursionsSection({
     isFetchingNextPage,
     fetchNextPage,
     refetch,
-  } = useClientInfinitePrivateExcursionsQuery(
-    {
-      categoryId: selectedCategoryId,
-      pageSize: 9,
-    },
-    locale
-  );
-
-  // 3. Fetch real categories from GET /api/excursion-categories
-  const { data: categories = [] } = useExcursionCategoriesQuery(locale);
+  } = useClientInfinitePrivateExcursionsQuery(queryParams, locale);
 
   const categoryOptions = useMemo(
     () =>
@@ -61,7 +118,7 @@ export function PrivateExcursionsSection({
     [categories]
   );
 
-  // 4. Flatten all infinite pages into single array of cards
+  // 5. Flatten all infinite pages into single array of cards
   const allLoadedExcursions = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) =>
@@ -69,7 +126,7 @@ export function PrivateExcursionsSection({
     );
   }, [data]);
 
-  // 5. Apply real-time client filters for search and duration
+  // 6. Apply real-time client filters for search and duration
   const displayedExcursions = useMemo(() => {
     let items = allLoadedExcursions;
 
@@ -105,10 +162,10 @@ export function PrivateExcursionsSection({
     return items;
   }, [allLoadedExcursions, filterValues]);
 
-  // 6. Setup IntersectionObserver on sentinel element for endless scrolling
+  // 7. Setup IntersectionObserver on sentinel element for endless scrolling
   useEffect(() => {
     const sentinel = sentinelRef.current;
-    if (!sentinel) return;
+    if (!sentinel || !hasNextPage) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -125,13 +182,48 @@ export function PrivateExcursionsSection({
     observer.observe(sentinel);
 
     return () => {
-      observer.unobserve(sentinel);
+      observer.disconnect();
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  const handleFilterChange = (newFilters: PrivateExcursionFilterValues) => {
-    setFilterValues(newFilters);
-  };
+  const handleFilterChange = useCallback(
+    (newFilters: PrivateExcursionFilterValues) => {
+      setFilterValues((prev) => {
+        if (
+          prev.search === newFilters.search &&
+          prev.category === newFilters.category &&
+          prev.duration === newFilters.duration
+        ) {
+          return prev;
+        }
+        return newFilters;
+      });
+
+      // Synchronize URL query parameter ONLY if the category parameter actually changed
+      const currentCategoryInUrl =
+        searchParams.get("category") || searchParams.get("categoryId") || "";
+      const targetCategoryInUrl =
+        newFilters.category && newFilters.category !== "all"
+          ? newFilters.category
+          : "";
+
+      if (currentCategoryInUrl !== targetCategoryInUrl) {
+        const params = new URLSearchParams(searchParams.toString());
+        if (targetCategoryInUrl) {
+          params.set("category", targetCategoryInUrl);
+        } else {
+          params.delete("category");
+          params.delete("categoryId");
+        }
+
+        const newQuery = params.toString() ? `?${params.toString()}` : "";
+        router.replace(`/${locale}/private-excursions${newQuery}`, {
+          scroll: false,
+        });
+      }
+    },
+    [searchParams, router, locale]
+  );
 
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] text-[#0E4A68] font-poppins">
@@ -143,6 +235,7 @@ export function PrivateExcursionsSection({
         {/* Filter Section */}
         <PrivateExcursionsFilter
           categories={categoryOptions}
+          selectedCategory={filterValues.category}
           onFilterChange={handleFilterChange}
           disabled={isLoading}
         />
