@@ -6,6 +6,18 @@
     "buttons": {
       "hotelDeliveries": "Hotel Deliveries",
       "exploreServices": "Explore Services"
+    },
+    "alt": {
+      "background": "Egyptian Desert Background",
+      "watermark": "Tourist Market Watermark Emblem",
+      "pyramid": "3D Golden Pyramid",
+      "polygonBase": "Hexagon Polygon Base",
+      "dining": "Luxury Dining",
+      "diving": "Coral Reef Diving",
+      "beach": "Beach Resorts",
+      "coastline": "Red Sea Coastline",
+      "cruise": "Yacht and Sea Cruises",
+      "temples": "Ancient Temples"
     }
   },
   "nav": {
@@ -16,6 +28,115 @@
     "faq": "FAQ",
     "about": "About Us",
     "contact": "Contact Us"
+  },
+  "headerServices": {
+    "allServices": "All Services",
+    "touristServices": "Tourist Services",
+    "realEstate": "Red Sea Real Estate",
+    "carRental": "Car Rental Service",
+    "vipAirport": "VIP Services - Hurghada Airport",
+    "excursions": "Excursions",
+    "groupExcursions": "Group Excursions",
+    "privateExcursions": "Private Excursions",
+    "transportation": "Transportation",
+    "transferServices": "Transfer Services"
+  },
+  "groupExcursions": {
+    "titlePrefix": "Group",
+    "titleAccent": "Excursions",
+    "subtitle": "Group Adventures, Endless Joy",
+    "viewAll": "View All Trips",
+    "viewDetails": "View Details",
+    "pricing": {
+      "adult": "Adult",
+      "child": "Child",
+      "infant": "Infant"
+    },
+    "error": {
+      "title": "Unable to Load Excursions",
+      "description": "We encountered a temporary connection issue while reaching the server. Please try again or check back shortly.",
+      "retry": "Try Again"
+    },
+    "empty": {
+      "title": "No Group Excursions Available",
+      "description": "We are currently preparing exciting new group experiences. In the meantime, discover our exclusive private trips.",
+      "action": "Explore Private Excursions"
+    }
+  },
+  "privateExcursions": {
+    "titlePrefix": "Private",
+    "titleAccent": "Excursions",
+    "subtitle": "Discover Privacy, Enjoy Exclusivity",
+    "vipBanner": {
+      "categories": "Categories",
+      "badge": "Exclusive VIP Escapes",
+      "privacy": "Unparalleled Privacy",
+      "button": "Plan Your Private Trip",
+      "alt": {
+        "background": "VIP Banner Background Shape",
+        "frame": "VIP Golden Frame",
+        "shipIcon": "VIP Ship Icon",
+        "yacht": "Private Luxury Yacht",
+        "helicopter": "Private Helicopter Tour"
+      }
+    },
+    "explore": "Explore",
+    "categories": {
+      "historical": {
+        "title": "Private Historical Trips",
+        "description": "Explore ancient landmarks, iconic monuments, and fascinating stories from the past."
+      },
+      "sea": {
+        "title": "Private Sea Trips",
+        "description": "Discover crystal-clear waters, vibrant marine life, and breathtaking coastal scenery."
+      },
+      "safari": {
+        "title": "Private Super Safari Trips",
+        "description": "Enjoy thrilling off-road rides, exciting desert activities, and unforgettable safari experiences."
+      },
+      "city": {
+        "title": "Private City Trips",
+        "description": "Discover famous attractions, charming streets, and local culture at your own pace."
+      },
+      "fun": {
+        "title": "Private Fun Trips",
+        "description": "Explore golden dunes, stunning desert landscapes, and the peaceful beauty of nature."
+      }
+    }
+  },
+  "services": {
+    "titlePrefix": "Our",
+    "titleAccent": "Services",
+    "subtitle": "Everything you need for your ultimate experience",
+    "explore": "Explore",
+    "prev": "Previous services",
+    "next": "Next services",
+    "items": {
+      "hotelDeliveries": {
+        "title": "Hotel Deliveries",
+        "alt": "Hotel Deliveries - Room Service & Amenities"
+      },
+      "touristServices": {
+        "title": "Tourist Services",
+        "alt": "Tourist Services - Guided Cultural & Historical Tours"
+      },
+      "realEstate": {
+        "title": "Red Sea Real Estate",
+        "alt": "Red Sea Real Estate - Luxury Villas & Coastal Properties"
+      },
+      "carRental": {
+        "title": "Car Rental",
+        "alt": "Car Rental - Luxury SUVs & Desert Vehicles"
+      },
+      "transferService": {
+        "title": "Transfer Service",
+        "alt": "Transfer Service - Private & Group Transportation"
+      },
+      "vipAirport": {
+        "title": "VIP Services - Hurghada Airport",
+        "alt": "VIP Services - Hurghada Airport Meet & Assist"
+      }
+    }
   },
   "faq": {
     "titlePrefix": "Frequently Asked",

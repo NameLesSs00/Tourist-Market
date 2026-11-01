@@ -1,6 +1,8 @@
 export { TransferServicesManagerComp } from "./TransferServicesManagerComp";
-export { TransferRoutePriceList } from "./TransferRoutePriceList";
-export { TransferRoutePriceFormPanel } from "./TransferRoutePriceFormPanel";
+export { VehicleTypeList } from "./VehicleTypeList";
+export { VehicleTypeFormPanel } from "./VehicleTypeFormPanel";
+export { TransferVehiclePriceList } from "./TransferVehiclePriceList";
+export { TransferVehiclePriceFormPanel } from "./TransferVehiclePriceFormPanel";
 export { TransferLocationsView } from "./TransferLocationsView";
+export { TransferReviewList } from "./TransferReviewList";
 export { TransferServicesTabs, type TransferServicesTab } from "./TransferServicesTabs";
-export * from "./components";

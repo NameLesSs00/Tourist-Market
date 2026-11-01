@@ -100,6 +100,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
     children: [
       { label: "Transfer Services", href: "/admin/dashboard/transfer-services", icon: FiRepeat },
       { label: "Transfer Bookings", href: "/admin/dashboard/transfer-bookings", icon: FiClock },
+      { label: "Transfer Reviews", href: "/admin/dashboard/transfer-reviews", icon: FiStar },
     ],
   },
   {

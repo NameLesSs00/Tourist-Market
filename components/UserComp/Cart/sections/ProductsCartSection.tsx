@@ -132,7 +132,7 @@ export function ProductsCartSection({
 
     if (!isValidPhoneNumber(contactData.phoneNumber)) {
       toast.error(
-        "Please enter a valid phone number with country code (7 to 15 digits)."
+        "Please enter a valid phone number (7 to 15 digits)."
       );
       return;
     }

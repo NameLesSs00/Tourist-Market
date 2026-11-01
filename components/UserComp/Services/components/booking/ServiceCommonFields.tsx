@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { FiChevronDown, FiPhone } from "react-icons/fi";
-import type { CountryItem } from "@/models/country";
+import { FiChevronDown } from "react-icons/fi";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -12,24 +11,16 @@ import {
 interface ServiceCommonFieldsProps {
   formData: ServiceBookingFormData;
   fieldErrors: ServiceFieldErrors;
-  isCustomCountry: boolean;
-  countriesList: (CountryItem | { id: string; name: string; phoneCode: string })[];
-  isLoadingCountries: boolean;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
-  onCountryChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onPhoneChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function ServiceCommonFields({
   formData,
   fieldErrors,
-  isCustomCountry,
-  countriesList,
-  isLoadingCountries,
   onChange,
-  onCountryChange,
   onPhoneChange,
 }: ServiceCommonFieldsProps) {
   return (
@@ -60,43 +51,15 @@ export function ServiceCommonFields({
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
           Country <span className="text-red-500">*</span>
         </label>
-        <div className="relative">
-          <select
-            name="country"
-            required
-            value={isCustomCountry ? "__other__" : formData.country}
-            onChange={onCountryChange}
-            disabled={isLoadingCountries}
-            className={`appearance-none ${getFieldInputClass(
-              Boolean(fieldErrors.country)
-            )} cursor-pointer pr-10`}
-          >
-            <option value="">
-              {isLoadingCountries ? "Loading countries..." : "Select your country"}
-            </option>
-            {countriesList.map((c) => (
-              <option key={c.id} value={c.name}>
-                {c.name} {c.phoneCode ? `(${c.phoneCode})` : ""}
-              </option>
-            ))}
-            <option value="__other__">Other (Enter manually)</option>
-          </select>
-          <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-        </div>
-
-        {isCustomCountry && (
-          <div className="mt-1.5">
-            <input
-              type="text"
-              name="customCountry"
-              value={formData.customCountry}
-              onChange={onChange}
-              placeholder="Enter your country name"
-              className={getFieldInputClass(Boolean(fieldErrors.country))}
-            />
-          </div>
-        )}
-
+        <input
+          type="text"
+          name="country"
+          required
+          value={formData.country}
+          onChange={onChange}
+          placeholder="e.g. Germany"
+          className={getFieldInputClass(Boolean(fieldErrors.country))}
+        />
         {fieldErrors.country && (
           <span className="text-[11px] sm:text-xs text-rose-500 font-medium">
             {fieldErrors.country}
@@ -143,27 +106,20 @@ export function ServiceCommonFields({
       {/* 5. Phone Number */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Phone Number (with Country Code) <span className="text-red-500">*</span>
+          Phone Number <span className="text-red-500">*</span>
         </label>
-        <div className="relative">
-          <input
-            type="tel"
-            name="phoneNumber"
-            required
-            value={formData.phoneNumber}
-            onChange={onPhoneChange}
-            placeholder="e.g. +20 123 456 7890"
-            className={getFieldInputClass(Boolean(fieldErrors.phoneNumber))}
-          />
-          <FiPhone className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-        </div>
-        {fieldErrors.phoneNumber ? (
+        <input
+          type="tel"
+          name="phoneNumber"
+          required
+          value={formData.phoneNumber}
+          onChange={onPhoneChange}
+          placeholder="e.g. +20 123 456 7890"
+          className={getFieldInputClass(Boolean(fieldErrors.phoneNumber))}
+        />
+        {fieldErrors.phoneNumber && (
           <span className="text-[11px] sm:text-xs text-rose-500 font-medium">
             {fieldErrors.phoneNumber}
-          </span>
-        ) : (
-          <span className="text-[10.5px] text-[#64748B]">
-            Include international calling code (e.g. +20 for Egypt, +49 for Germany).
           </span>
         )}
       </div>
@@ -221,3 +177,4 @@ export function ServiceCommonFields({
   );
 }
 
+export default ServiceCommonFields;

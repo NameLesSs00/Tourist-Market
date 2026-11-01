@@ -3,12 +3,14 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface PrivateCategoryCardProps {
   title: string;
   description: string;
   imageSrc: string;
   href: string;
+  exploreText?: string;
 }
 
 export function PrivateCategoryCard({
@@ -16,14 +18,18 @@ export function PrivateCategoryCard({
   description,
   imageSrc,
   href,
+  exploreText = "Explore",
 }: PrivateCategoryCardProps) {
   return (
     <Link
       href={href}
-      className="group relative block w-full no-underline transition-transform duration-300 hover:-translate-y-1"
+      className="group relative block w-full no-underline"
     >
-      <div
-        className="relative flex items-center justify-between min-h-[105px] sm:min-h-[135px] lg:min-h-[155px] xl:min-h-[175px] 2xl:min-h-[195px] bg-[#FFF4E5] rounded-[16px] sm:rounded-[20px] lg:rounded-[22px] pl-[54px] sm:pl-[85px] lg:pl-[90px] xl:pl-[105px] 2xl:pl-[120px] pr-3.5 sm:pr-5 lg:pr-6 xl:pr-8 py-3 sm:py-4 lg:py-4 xl:py-5 2xl:py-6 shadow-sm"
+      <motion.div
+        whileHover={{ y: -4, scale: 1.01 }}
+        whileTap={{ scale: 0.99 }}
+        transition={{ duration: 0.22, ease: "easeOut" }}
+        className="relative flex items-center justify-between min-h-[105px] sm:min-h-[135px] lg:min-h-[155px] xl:min-h-[175px] 2xl:min-h-[195px] bg-[#FFF4E5] rounded-[16px] sm:rounded-[20px] lg:rounded-[22px] pl-[54px] sm:pl-[85px] lg:pl-[90px] xl:pl-[105px] 2xl:pl-[120px] pr-3.5 sm:pr-5 lg:pr-6 xl:pr-8 py-3 sm:py-4 lg:py-4 xl:py-5 2xl:py-6 shadow-sm cursor-pointer"
         style={{
           border: "1px solid #D48C28",
         }}
@@ -52,10 +58,10 @@ export function PrivateCategoryCard({
         {/* "Explore" CTA on Bottom-Right */}
         <div className="shrink-0 self-end mb-0.5 sm:mb-1">
           <span className="font-poppins font-bold text-[11.5px] sm:text-[14px] lg:text-[16px] xl:text-[19px] text-[#0E4A68] underline decoration-solid underline-offset-[3px] sm:underline-offset-[4px] leading-[22px] sm:leading-[28px] lg:leading-[32px] xl:leading-[38px] group-hover:text-[#DE7423] transition-colors whitespace-nowrap">
-            Explore
+            {exploreText}
           </span>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }

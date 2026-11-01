@@ -10,7 +10,6 @@ import {
 
 export interface ValidateBookingParams {
   formData: ServiceBookingFormData;
-  isCustomCountry: boolean;
   serviceType: ServiceType;
   todayStr: string;
   nowDateTimeStr: string;
@@ -18,7 +17,6 @@ export interface ValidateBookingParams {
 
 export function validateServiceBookingForm({
   formData,
-  isCustomCountry,
   serviceType,
   todayStr,
   nowDateTimeStr,
@@ -34,12 +32,11 @@ export function validateServiceBookingForm({
   }
 
   // 2. Country
-  if (isCustomCountry) {
-    if (!formData.customCountry.trim()) {
-      errors.country = "Please enter your country.";
-    }
-  } else if (!formData.country.trim()) {
-    errors.country = "Please select your country.";
+  const trimmedCountry = formData.country.trim();
+  if (!trimmedCountry) {
+    errors.country = "Country is required.";
+  } else if (trimmedCountry.length < 2) {
+    errors.country = "Country must be at least 2 characters.";
   }
 
   // 3. Hotel Location
@@ -56,7 +53,7 @@ export function validateServiceBookingForm({
     errors.phoneNumber = "Phone number is required.";
   } else if (!isValidPhoneNumber(trimmedPhone)) {
     errors.phoneNumber =
-      "Please enter a valid phone number (7 to 15 digits including country code).";
+      "Please enter a valid phone number (7 to 15 digits).";
   }
 
   // 5. Email Address

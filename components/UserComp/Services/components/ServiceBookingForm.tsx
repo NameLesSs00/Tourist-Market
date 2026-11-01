@@ -21,14 +21,10 @@ export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingForm
   const {
     formData,
     fieldErrors,
-    isCustomCountry,
-    countriesList,
-    isLoadingCountries,
     todayStr,
     nowDateTimeStr,
     isPending,
     handleChange,
-    handleCountryChange,
     handlePhoneChange,
     handleSubmit,
   } = useServiceBookingForm(detail, locale);
@@ -89,11 +85,7 @@ export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingForm
             <ServiceCommonFields
               formData={formData}
               fieldErrors={fieldErrors}
-              isCustomCountry={isCustomCountry}
-              countriesList={countriesList}
-              isLoadingCountries={isLoadingCountries}
               onChange={handleChange}
-              onCountryChange={handleCountryChange}
               onPhoneChange={handlePhoneChange}
             />
 

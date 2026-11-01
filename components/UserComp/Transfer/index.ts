@@ -9,4 +9,6 @@ export * from "./TransferNotesCard";
 export * from "./TransferSummaryCard";
 export * from "./TransferContactUs";
 export * from "./TransferReviews";
+export * from "./TransferBookingConfirmationCard";
+export * from "./useTransferBookingForm";
 export * from "./TransferSection";

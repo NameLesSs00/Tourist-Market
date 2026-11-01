@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface CurrencyOption {
   code: string;
@@ -39,8 +40,9 @@ export function CurrencySelector({
 
   return (
     <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
-      <button
+      <motion.button
         type="button"
+        whileTap={{ scale: 0.96 }}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
@@ -59,48 +61,54 @@ export function CurrencySelector({
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
         </svg>
-      </button>
+      </motion.button>
 
-      {isOpen && (
-        <div
-          className={`absolute right-0 w-36 rounded-xl border border-[#08395226] bg-[#FFF9F2] p-1.5 shadow-lg backdrop-blur-md z-50 animate-in fade-in zoom-in-95 duration-150 ${
-            dropdownDirection === "up" ? "bottom-full mb-2 origin-bottom-right" : "mt-2 origin-top-right"
-          }`}
-        >
-          {CURRENCIES.map((currency) => {
-            const isCurrent = currency.code === selected.code;
-            return (
-              <button
-                key={currency.code}
-                type="button"
-                onClick={() => {
-                  setSelected(currency);
-                  setIsOpen(false);
-                }}
-                className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 font-poppins-semibold-16 transition-colors ${
-                  isCurrent
-                    ? "bg-[#F4DAB6] text-[#083952]"
-                    : "text-[#083952] hover:bg-[#F4DAB666]"
-                }`}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-[#083952]">{currency.symbol}</span>
-                  <span>{currency.code}</span>
-                </div>
-                {isCurrent && (
-                  <svg className="h-4 w-4 text-[#083952]" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fillRule="evenodd"
-                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: dropdownDirection === "up" ? 6 : -6, scale: 0.96 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: dropdownDirection === "up" ? 6 : -6, scale: 0.96 }}
+            transition={{ duration: 0.16, ease: "easeOut" }}
+            className={`absolute right-0 w-36 rounded-xl border border-[#08395226] bg-[#FFF9F2] p-1.5 shadow-lg backdrop-blur-md z-50 ${
+              dropdownDirection === "up" ? "bottom-full mb-2 origin-bottom-right" : "mt-2 origin-top-right"
+            }`}
+          >
+            {CURRENCIES.map((currency) => {
+              const isCurrent = currency.code === selected.code;
+              return (
+                <button
+                  key={currency.code}
+                  type="button"
+                  onClick={() => {
+                    setSelected(currency);
+                    setIsOpen(false);
+                  }}
+                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 font-poppins-semibold-16 transition-colors ${
+                    isCurrent
+                      ? "bg-[#F4DAB6] text-[#083952]"
+                      : "text-[#083952] hover:bg-[#F4DAB666]"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-[#083952]">{currency.symbol}</span>
+                    <span>{currency.code}</span>
+                  </div>
+                  {isCurrent && (
+                    <svg className="h-4 w-4 text-[#083952]" fill="currentColor" viewBox="0 0 20 20">
+                      <path
+                        fillRule="evenodd"
+                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  )}
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

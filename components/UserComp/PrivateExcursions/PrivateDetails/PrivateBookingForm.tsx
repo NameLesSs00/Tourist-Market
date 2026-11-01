@@ -114,7 +114,7 @@ export function PrivateBookingForm({
 
     if (!isValidPhoneNumber(phone)) {
       toast.error(
-        "Please enter a valid phone number with country code (7 to 15 digits)."
+        "Please enter a valid phone number (7 to 15 digits)."
       );
       return;
     }
@@ -127,7 +127,7 @@ export function PrivateBookingForm({
 
     if (!isValidPhoneNumber(effectiveWhatsApp)) {
       toast.error(
-        "Please enter a valid WhatsApp number with country code (7 to 15 digits)."
+        "Please enter a valid WhatsApp number (7 to 15 digits)."
       );
       return;
     }

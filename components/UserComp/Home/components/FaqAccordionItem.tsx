@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
 import type { FaqItem } from "@/models/faq";
 
 interface FaqAccordionItemProps {
@@ -58,8 +61,11 @@ export function FaqAccordionItem({
 }: FaqAccordionItemProps) {
   return (
     <div className={`relative select-none ${className}`}>
-      <button
+      <motion.button
         type="button"
+        whileTap={{ scale: 0.99 }}
+        whileHover={{ x: isDesktop ? 3 : 0 }}
+        transition={{ duration: 0.2 }}
         onClick={onToggle}
         onDragStart={(e) => e.preventDefault()}
         aria-expanded={isOpen}
@@ -86,27 +92,30 @@ export function FaqAccordionItem({
         <span className="shrink-0 text-[#0E4A68] select-none pointer-events-none">
           {isOpen ? <CrossIcon /> : <PlusIcon />}
         </span>
-      </button>
+      </motion.button>
 
-      {/* Mobile & Tablet: inline expandable answer */}
+      {/* Mobile & Tablet: inline expandable answer with AnimatePresence */}
       {!isDesktop && (
-        <div
-          className={`grid overflow-hidden transition-all duration-300 ease-out ${
-            isOpen ? "grid-rows-[1fr] opacity-100 mt-2.5" : "grid-rows-[0fr] opacity-0"
-          }`}
-        >
-          <div className="min-h-0">
-            <div className="rounded-[16px] border border-[#0E4A6880] bg-[#FFF8EF] p-4.5 sm:p-5 shadow-2xs">
-              <p className="font-poppins text-xs sm:text-sm font-normal leading-relaxed text-[#1E293B]">
-                {item.answer}
-              </p>
-            </div>
-          </div>
-        </div>
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="overflow-hidden mt-2.5"
+            >
+              <div className="rounded-[16px] border border-[#0E4A6880] bg-[#FFF8EF] p-4.5 sm:p-5 shadow-2xs">
+                <p className="font-poppins text-xs sm:text-sm font-normal leading-relaxed text-[#1E293B]">
+                  {item.answer}
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
     </div>
   );
 }
 
 export default FaqAccordionItem;
-

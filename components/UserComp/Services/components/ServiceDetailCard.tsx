@@ -1,8 +1,14 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import { ServiceDetailItem } from "../types";
+import {
+  ServiceImageGallery,
+  ServiceSpecificationsGrid,
+  ServicePricingTiers,
+  ServiceAlertBanner,
+  ServiceNotesAccordion,
+} from "./detail";
 
 interface ServiceDetailCardProps {
   detail: ServiceDetailItem;
@@ -12,13 +18,19 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
   const {
     title,
     imageUrl,
+    galleryImages,
     modelYear,
     transmission,
     airConditioning,
     tagline,
     detailedDescription,
+    description,
     availableLanguages,
     costServices,
+    specifications,
+    inclusions,
+    optionsTiers,
+    alert,
     notes,
     priceFormatted,
     billingPeriod,
@@ -32,6 +44,8 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
     }
   };
 
+  const displayText = detailedDescription || description;
+
   return (
     <div
       style={{
@@ -42,22 +56,15 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
       }}
       className="w-full max-w-[960px] mx-auto overflow-hidden font-poppins"
     >
-      {/* 1. Header Image Flush With Top */}
-      <div className="relative w-full aspect-[16/9] sm:aspect-[960/480] bg-slate-100 overflow-hidden">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            priority
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 960px"
-            className="object-cover object-center"
-          />
-        ) : null}
-      </div>
+      {/* 1. Header Image & Gallery */}
+      <ServiceImageGallery
+        mainImage={imageUrl}
+        galleryImages={galleryImages}
+        title={title}
+      />
 
       {/* 2. Content Body */}
-      <div className="p-4 sm:p-7 md:p-10 flex flex-col gap-6 sm:gap-8">
+      <div className="p-4 sm:p-7 md:p-10 flex flex-col gap-6 sm:gap-7 w-full min-w-0">
         {/* Title with Blue Accent Underline */}
         <div className="flex flex-col items-center text-center">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase text-[#0E4A68] tracking-tight">
@@ -66,81 +73,59 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
           <div className="w-14 sm:w-16 h-1 bg-[#0E4A68] mt-2 rounded-full" />
         </div>
 
-        {/* Vehicle / Service Spec Meta (for car, real estate, airport) */}
-        {modelYear && (
-          <div className="flex flex-col gap-2 sm:gap-2.5 text-[#0E4A68] text-xs sm:text-sm md:text-base font-normal">
-            <p>
-              <span className="font-medium">Model year:</span> {modelYear}
-            </p>
-            <p>
-              <span className="font-medium">Transmission:</span> {transmission}
-            </p>
-            <p>
-              <span className="font-medium">Air conditioning:</span> {airConditioning}
-            </p>
-          </div>
-        )}
+        {/* Important Notice Banner */}
+        <ServiceAlertBanner alert={alert} />
 
-        {/* Tourist Services (Translator) Description & Languages */}
-        {tagline && (
-          <div className="flex flex-col gap-3 sm:gap-4 text-[#0E4A68]">
+        {/* Tagline / Subtitle & Detailed Description */}
+        <div className="flex flex-col gap-3 text-[#0E4A68]">
+          {tagline && (
             <h2 className="text-sm sm:text-base md:text-lg font-bold leading-snug">
               {tagline}
             </h2>
-            {detailedDescription && (
-              <p className="text-xs sm:text-sm leading-relaxed text-[#0E4A68]/90 font-normal">
-                {detailedDescription}
-              </p>
-            )}
+          )}
+          {displayText && (
+            <p className="text-xs sm:text-sm leading-relaxed text-[#0E4A68]/90 font-normal">
+              {displayText}
+            </p>
+          )}
+        </div>
 
-            {availableLanguages && availableLanguages.length > 0 && (
-              <div className="mt-2 sm:mt-3">
-                <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] mb-1.5 sm:mb-2">
-                  Available Languages:
-                </h3>
-                <ul className="flex flex-col gap-1 text-xs sm:text-sm text-[#0E4A68]">
-                  {availableLanguages.map((lang, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0E4A68] shrink-0" />
-                      <span>{lang}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {costServices && costServices.length > 0 && (
-              <div className="mt-2">
-                <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] mb-1.5">
-                  Cost Services:
-                </h3>
-                <ul className="flex flex-col gap-1 text-xs sm:text-sm text-[#0E4A68]">
-                  {costServices.map((cost, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#0E4A68] shrink-0" />
-                      <span>{cost}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Numbered Notes Section */}
-        {notes && notes.length > 0 && (
-          <div className="flex flex-col gap-2.5 sm:gap-3 text-[#0E4A68]">
-            <h3 className="text-base sm:text-lg md:text-xl font-bold">Notes:</h3>
-            <ol className="flex flex-col gap-2 text-xs sm:text-sm leading-relaxed font-normal">
-              {notes.map((note, index) => (
-                <li key={index} className="flex items-start gap-2">
-                  <span className="font-bold shrink-0">{index + 1})</span>
-                  <span>{note}</span>
-                </li>
+        {/* Available Languages (for tourist guide / translator) */}
+        {availableLanguages && availableLanguages.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <h3 className="text-sm sm:text-base font-bold text-[#0E4A68]">
+              Available Languages:
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {availableLanguages.map((lang, idx) => (
+                <span
+                  key={idx}
+                  className="px-3 py-1 rounded-full bg-[#0E4A68]/10 text-[#0E4A68] text-xs font-semibold"
+                >
+                  {lang}
+                </span>
               ))}
-            </ol>
+            </div>
           </div>
         )}
+
+        {/* Dynamic Specifications & Inclusions Grid */}
+        <ServiceSpecificationsGrid
+          specifications={specifications}
+          inclusions={inclusions}
+          modelYear={modelYear}
+          transmission={transmission}
+          airConditioning={airConditioning}
+        />
+
+        {/* Pricing Packages & Options Matrix */}
+        <ServicePricingTiers
+          optionsTiers={optionsTiers}
+          costServices={costServices}
+        />
+
+        {/* Terms & Operational Notes */}
+        <ServiceNotesAccordion notes={notes} />
 
         {/* 3. Bottom Price Banner */}
         <div
@@ -148,7 +133,7 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
             backgroundColor: "#134B68",
             borderRadius: "8px",
           }}
-          className="w-full py-5 sm:py-6 px-4 sm:px-10 flex flex-col items-center justify-center text-center text-white gap-1.5 sm:gap-2 shadow-md"
+          className="w-full py-5 sm:py-6 px-4 sm:px-10 flex flex-col items-center justify-center text-center text-white gap-1.5 sm:gap-2 shadow-md mt-2"
         >
           <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
             {priceFormatted}

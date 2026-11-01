@@ -1,3 +1,5 @@
+import { getDictionary } from "@/shared/utils/getDictionary";
+
 export interface MegaMenuItem {
   title: string;
   href: string;
@@ -12,37 +14,42 @@ export interface MegaMenuCategory {
 }
 
 export function getHeaderServicesData(locale = "en"): MegaMenuCategory[] {
+  const dict = getDictionary(locale);
+  const hs = dict.headerServices;
+
   return [
     {
       id: "all-services",
-      title: "All Services",
+      title: hs.allServices,
       iconSrc: "/header/list.svg",
-      iconAlt: "All Services",
+      iconAlt: hs.allServices,
       items: [
-        { title: "Tourist Services", href: `/${locale}/services/tourist` },
-        { title: "RED SEA REAL ESTATE", href: `/${locale}/services/real-estate` },
-        { title: "CAR RENTAL SERVICE", href: `/${locale}/services/car-rental` },
-        { title: "VIP Services-Hurghada Airport", href: `/${locale}/services/vip-airport` },
+        { title: hs.touristServices, href: `/${locale}/services/tourist` },
+        { title: hs.realEstate, href: `/${locale}/services/real-estate` },
+        { title: hs.carRental, href: `/${locale}/services/car-rental` },
+        { title: hs.vipAirport, href: `/${locale}/services/vip-airport` },
       ],
     },
     {
       id: "excursions",
-      title: "Excursions",
+      title: hs.excursions,
       iconSrc: "/header/map.svg",
-      iconAlt: "Excursions",
+      iconAlt: hs.excursions,
       items: [
-        { title: "Group Excursions", href: `/${locale}/group-excursions` },
-        { title: "Private Excursions", href: `/${locale}/private-excursions` },
+        { title: hs.groupExcursions, href: `/${locale}/group-excursions` },
+        { title: hs.privateExcursions, href: `/${locale}/private-excursions` },
       ],
     },
     {
       id: "transportation",
-      title: "Transportation",
+      title: hs.transportation,
       iconSrc: "/header/bus.svg",
-      iconAlt: "Transportation",
+      iconAlt: hs.transportation,
       items: [
-        { title: "Transfer Services", href: `/${locale}/services/transfer` },
+        { title: hs.transferServices, href: `/${locale}/services/transfer` },
       ],
     },
   ];
 }
+
+export default getHeaderServicesData;

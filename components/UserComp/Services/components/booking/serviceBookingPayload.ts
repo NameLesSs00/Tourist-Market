@@ -10,7 +10,6 @@ import { ServiceBookingFormData } from "./bookingTypes";
 export interface BuildPayloadParams {
   subServiceId?: string;
   formData: ServiceBookingFormData;
-  finalCountry: string;
   serviceType: ServiceType;
   formTitle: string;
   formSubtitle?: string;
@@ -19,7 +18,6 @@ export interface BuildPayloadParams {
 export function buildServiceBookingPayload({
   subServiceId,
   formData,
-  finalCountry,
   serviceType,
 }: BuildPayloadParams): AnyBookingPayload {
   const commMethod = mapCommunicationMethod(formData.communicationMethod);
@@ -27,7 +25,7 @@ export function buildServiceBookingPayload({
   const basePayload = {
     subServiceId: subServiceId ?? "",
     name: formData.name.trim(),
-    country: finalCountry,
+    country: formData.country.trim(),
     hotel: formData.hotel.trim(),
     roomNo: formData.roomNumber.trim(),
     phoneNumber: formData.phoneNumber.trim(),
@@ -79,14 +77,13 @@ export function buildServiceBookingPayload({
 
 export function buildConfirmedServiceBooking({
   formData,
-  finalCountry,
   serviceType,
   formTitle,
   formSubtitle,
 }: BuildPayloadParams): ConfirmedServiceBooking {
   return {
     name: formData.name.trim(),
-    country: finalCountry,
+    country: formData.country.trim(),
     hotel: formData.hotel.trim(),
     roomNo: formData.roomNumber.trim() || undefined,
     emailAddress: formData.emailAddress.trim(),

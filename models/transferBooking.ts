@@ -13,8 +13,6 @@ export enum TransferTripType {
 export enum TransferCommunicationMethod {
   Email = 1,
   WhatsApp = 2,
-  Viber = 3,
-  Phone = 4,
 }
 
 export interface TransferBookingItem {
@@ -25,8 +23,11 @@ export interface TransferBookingItem {
   children: number;
   tripType: TransferTripType;
   vehicleType: number | string;
+  vehicleTypeTransferId?: string | null;
   tripDate: string;
   tripTime: string;
+  returnDate?: string;
+  returnTime?: string;
   customerName: string;
   countryId: string;
   email: string;
@@ -35,6 +36,8 @@ export interface TransferBookingItem {
   luggageCount: number;
   notes?: string;
   totalPrice: number;
+  discountPercentage?: number;
+  discountAmount?: number;
   status: TransferBookingStatus;
   createdAt: string;
 }
@@ -50,6 +53,43 @@ export interface TransferBookingPreviewParams {
 export interface TransferBookingPreviewResult {
   vehicleType: string | number;
   totalPrice: number;
+}
+
+export interface TransferPriceBreakdown {
+  oneWayPrice: number;
+  roundTripPrice: number;
+  discountPercentage: number;
+  discountAmount: number;
+  additionalHours: number;
+  additionalHoursPrice: number;
+  finalPrice: number;
+}
+
+export interface TransferMatchResponseDto {
+  vehicleTypeTransferId: string;
+  vehicleName?: string | null;
+  fromPerson: number;
+  toPerson: number;
+  totalPersons: number;
+  fromLocationId: string;
+  fromLocation?: string | null;
+  toLocationId: string;
+  toLocation?: string | null;
+  tripType: TransferTripType | number;
+  currency?: string | null;
+  currencySymbol?: string | null;
+  price: TransferPriceBreakdown;
+}
+
+export interface TransferMatchParams {
+  FromLocationId: string;
+  ToLocationId: string;
+  Adults: number;
+  Children?: number;
+  TripType: number;
+  AdditionalHours?: number;
+  currency?: string;
+  lang?: string;
 }
 
 export const TRANSFER_BOOKING_STATUS_LABELS: Record<TransferBookingStatus, string> = {
@@ -97,8 +137,6 @@ export const TRANSFER_TRIP_TYPE_LABELS: Record<TransferTripType, string> = {
 export const TRANSFER_COMMUNICATION_LABELS: Record<TransferCommunicationMethod, string> = {
   [TransferCommunicationMethod.Email]: "Email",
   [TransferCommunicationMethod.WhatsApp]: "WhatsApp",
-  [TransferCommunicationMethod.Viber]: "Viber",
-  [TransferCommunicationMethod.Phone]: "Phone",
 };
 
 export function formatTransferVehicleType(type: number | string): string {
@@ -119,6 +157,8 @@ export interface CreateTransferBookingRequest {
   tripType: TransferTripType;
   tripDate: string;
   tripTime: string;
+  returnDate?: string;
+  returnTime?: string;
   customerName: string;
   countryId: string;
   email: string;

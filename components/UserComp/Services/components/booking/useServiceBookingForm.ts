@@ -1,16 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { ServiceDetailItem } from "../../types";
 import { useSubmitServiceBooking } from "@/features/servicesBookings/usePublicServicesBooking";
 import { useServiceBookingStore } from "@/features/servicesBookings/serviceBookingStore";
-import { useCountriesQuery } from "@/features/countries/useCountryAdmin";
-import {
-  sanitizePhoneNumber,
-  FALLBACK_COUNTRIES,
-} from "@/shared/utils/phoneUtils";
+import { sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import {
   ServiceBookingFormData,
@@ -36,24 +32,10 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
   const setRealEstateNote = useServiceBookingStore((s) => s.setRealEstateNote);
   const setLastBooking = useServiceBookingStore((s) => s.setLastBooking);
 
-  const { data: remoteCountries, isLoading: isLoadingCountries } =
-    useCountriesQuery(locale);
-
-  const countriesList = useMemo(() => {
-    if (remoteCountries && remoteCountries.length > 0) {
-      return remoteCountries;
-    }
-    return FALLBACK_COUNTRIES;
-  }, [remoteCountries]);
-
-  const [isCustomCountry, setIsCustomCountry] = useState(
-    Boolean(contactDraft.isCustomCountry)
-  );
-
   const [formData, setFormData] = useState<ServiceBookingFormData>(() => ({
     name: contactDraft.name || "",
     country: contactDraft.country || "",
-    customCountry: contactDraft.customCountry || "",
+    customCountry: "",
     hotel: contactDraft.hotel || "",
     roomNumber: contactDraft.roomNumber || "",
     phoneNumber: contactDraft.phoneNumber || "",
@@ -75,11 +57,14 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
   const [fieldErrors, setFieldErrors] = useState<ServiceFieldErrors>({});
   const { mutateAsync, isPending } = useSubmitServiceBooking(serviceType);
 
-  const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
-  const nowDateTimeStr = useMemo(() => {
+  const [todayStr, setTodayStr] = useState<string>("");
+  const [nowDateTimeStr, setNowDateTimeStr] = useState<string>("");
+
+  useEffect(() => {
+    setTodayStr(new Date().toISOString().split("T")[0]);
     const now = new Date();
     const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
-    return local.toISOString().slice(0, 16);
+    setNowDateTimeStr(local.toISOString().slice(0, 16));
   }, []);
 
   const clearFieldError = (fieldName: string) => {
@@ -97,7 +82,6 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
       [
         "name",
         "country",
-        "customCountry",
         "hotel",
         "roomNumber",
         "phoneNumber",
@@ -140,41 +124,6 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
     clearFieldError(name);
   };
 
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const val = e.target.value;
-    clearFieldError("country");
-
-    if (val === "__other__") {
-      setIsCustomCountry(true);
-      setContactField("isCustomCountry", true);
-      setContactField("country", "");
-      setFormData((prev) => ({ ...prev, country: "" }));
-      return;
-    }
-
-    setIsCustomCountry(false);
-    setContactField("isCustomCountry", false);
-    setContactField("country", val);
-    setContactField("customCountry", "");
-
-    const selected = countriesList.find((c) => c.name === val);
-
-    setFormData((prev) => {
-      const next = { ...prev, country: val, customCountry: "" };
-
-      if (
-        selected?.phoneCode &&
-        (!prev.phoneNumber || /^\+\d{1,4}$/.test(prev.phoneNumber.trim()))
-      ) {
-        const pref = sanitizePhoneNumber(selected.phoneCode);
-        next.phoneNumber = pref;
-        setContactField("phoneNumber", pref);
-      }
-
-      return next;
-    });
-  };
-
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const sanitized = sanitizePhoneNumber(e.target.value);
     setFormData((prev) => ({ ...prev, phoneNumber: sanitized }));
@@ -185,7 +134,6 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
   const validate = (): boolean => {
     const { isValid, errors } = validateServiceBookingForm({
       formData,
-      isCustomCountry,
       serviceType,
       todayStr,
       nowDateTimeStr,
@@ -197,7 +145,7 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
     if (!isValid && errorKeys.length > 0) {
       const firstKey = errorKeys[0];
       const targetElement = document.querySelector(
-        `[name="${firstKey === "country" && isCustomCountry ? "customCountry" : firstKey}"]`
+        `[name="${firstKey}"]`
       ) as HTMLElement | null;
 
       if (targetElement) {
@@ -216,14 +164,9 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
     e.preventDefault();
     if (!validate()) return;
 
-    const finalCountry = isCustomCountry
-      ? formData.customCountry.trim()
-      : formData.country.trim();
-
     const payloadParams = {
       subServiceId,
       formData,
-      finalCountry,
       serviceType,
       formTitle,
       formSubtitle,
@@ -251,14 +194,10 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
   return {
     formData,
     fieldErrors,
-    isCustomCountry,
-    countriesList,
-    isLoadingCountries,
     todayStr,
     nowDateTimeStr,
     isPending,
     handleChange,
-    handleCountryChange,
     handlePhoneChange,
     handleSubmit,
   };

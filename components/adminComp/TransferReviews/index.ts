@@ -1,0 +1,2 @@
+export { TransferReviewManagerComp } from "./TransferReviewManagerComp";
+

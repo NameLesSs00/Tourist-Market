@@ -1,26 +1,42 @@
 "use client";
 
 import React from "react";
-import { FiCornerUpRight, FiDollarSign, FiMapPin } from "react-icons/fi";
+import { FiCornerUpRight, FiDollarSign, FiMapPin, FiStar } from "react-icons/fi";
+import { FaCar } from "react-icons/fa6";
 
-export type TransferServicesTab = "prices" | "from" | "to";
+export type TransferServicesTab =
+  | "vehicleTypes"
+  | "prices"
+  | "from"
+  | "to"
+  | "reviews";
 
 interface TransferServicesTabsProps {
   activeTab: TransferServicesTab;
   onTabChange: (tab: TransferServicesTab) => void;
+  vehicleTypesCount?: number;
   pricesCount?: number;
   fromCount?: number;
   toCount?: number;
+  reviewsCount?: number;
 }
 
 export function TransferServicesTabs({
   activeTab,
   onTabChange,
+  vehicleTypesCount,
   pricesCount,
   fromCount,
   toCount,
+  reviewsCount,
 }: TransferServicesTabsProps) {
   const tabs = [
+    {
+      id: "vehicleTypes" as const,
+      label: "Vehicle Types",
+      icon: FaCar,
+      count: vehicleTypesCount,
+    },
     {
       id: "prices" as const,
       label: "Route Prices",
@@ -38,6 +54,12 @@ export function TransferServicesTabs({
       label: "Destination Locations",
       icon: FiMapPin,
       count: toCount,
+    },
+    {
+      id: "reviews" as const,
+      label: "Customer Reviews",
+      icon: FiStar,
+      count: reviewsCount,
     },
   ];
 

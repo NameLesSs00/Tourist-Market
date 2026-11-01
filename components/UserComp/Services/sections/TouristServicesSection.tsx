@@ -20,7 +20,7 @@ export function TouristServicesSection({ locale = "en" }: TouristServicesSection
     locale
   );
 
-  // Derive cards from real API data
+  // Derive cards directly from API data
   const cards = subItems
     ? subItems.map((item) => mapSubItemToCard(item, "tourist"))
     : [];

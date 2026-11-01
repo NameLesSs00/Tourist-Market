@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Dictionary } from "@/shared/utils/getDictionary";
 
 interface FaqHeaderProps {
@@ -10,7 +13,13 @@ export function FaqHeader({ dict }: FaqHeaderProps) {
   const { faq } = dict;
 
   return (
-    <div className="flex flex-col items-center text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="flex flex-col items-center text-center"
+    >
       <div className="flex items-center justify-center gap-2 lg:gap-3">
         <Image
           src="/homepage/Faq/Questions.svg"
@@ -28,7 +37,7 @@ export function FaqHeader({ dict }: FaqHeaderProps) {
       <p className="mt-1.5 font-poppins text-[13px] font-normal leading-[18px] text-[#646464] lg:mt-2 lg:text-[21px] lg:leading-[35px]">
         {faq.subtitle}
       </p>
-    </div>
+    </motion.div>
   );
 }
 

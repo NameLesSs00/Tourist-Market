@@ -9,7 +9,24 @@ export interface ServiceCardItem {
   badge?: string; // e.g., "For Rent"
   price?: number;
   pricePeriod?: string; // "Per Day" | "Per Hour"
+  priceFormatted?: string;
+  keyFeatures?: string[];
   serviceType: ServiceType;
+}
+
+export interface ServiceSpecification {
+  label: string;
+  value: string;
+}
+
+export interface ServiceOptionTier {
+  key: string;
+  value: string;
+}
+
+export interface ServiceOptionGroup {
+  name: string;
+  tiers: ServiceOptionTier[];
 }
 
 export interface ServiceDetailItem extends ServiceCardItem {
@@ -26,6 +43,11 @@ export interface ServiceDetailItem extends ServiceCardItem {
   bookingButtonText: string; // "Book This Car ↓" or "Book This Service ↓"
   formTitle: string; // "Car Rental" | "VIP Services" | "Real Estate" | "Tourist Services"
   formSubtitle: string; // "Mercedes Benz" | "VIP Lounge" etc.
+  galleryImages?: string[];
+  alert?: string;
+  specifications?: ServiceSpecification[];
+  optionsTiers?: ServiceOptionGroup[];
+  inclusions?: string[];
 }
 
 export interface ServiceBookingFormData {

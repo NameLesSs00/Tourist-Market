@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { TransferCommunicationMethod } from "@/models/transferBooking";
@@ -37,12 +39,12 @@ export function TransferCustomerCard({
   onLuggageCountChange,
 }: TransferCustomerCardProps) {
   return (
-    <div className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-5 md:p-6 space-y-4 font-poppins">
+    <div className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins">
       <h2 className="text-base sm:text-lg font-bold text-[#0E4A68]">
         Customer Information
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Name */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
@@ -53,7 +55,7 @@ export function TransferCustomerCard({
             placeholder="Your Full Name"
             value={customerName}
             onChange={(e) => onCustomerNameChange(e.target.value)}
-            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066] placeholder:font-normal"
+            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
           />
         </div>
 
@@ -100,7 +102,7 @@ export function TransferCustomerCard({
             placeholder="you@example.com"
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
-            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066] placeholder:font-normal"
+            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
           />
         </div>
 
@@ -121,8 +123,6 @@ export function TransferCustomerCard({
             >
               <option value={TransferCommunicationMethod.WhatsApp}>WhatsApp</option>
               <option value={TransferCommunicationMethod.Email}>Email</option>
-              <option value={TransferCommunicationMethod.Viber}>Viber</option>
-              <option value={TransferCommunicationMethod.Phone}>Phone</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
               <Image
@@ -146,7 +146,7 @@ export function TransferCustomerCard({
             placeholder="+20 123 456 7890"
             value={phoneNumber}
             onChange={(e) => onPhoneNumberChange(e.target.value)}
-            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066] placeholder:font-normal"
+            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
           />
         </div>
 
@@ -165,10 +165,12 @@ export function TransferCustomerCard({
               onLuggageCountChange(val);
             }}
             placeholder="0"
-            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066] placeholder:font-normal"
+            className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
           />
         </div>
       </div>
     </div>
   );
 }
+
+export default TransferCustomerCard;

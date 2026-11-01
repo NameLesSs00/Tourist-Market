@@ -12,6 +12,7 @@ import {
 import {
   usePublicServiceSubItemById,
   isUUID,
+  SERVICE_FALLBACK_IMAGE,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 import type { ServiceDetailItem } from "../types";
@@ -28,23 +29,47 @@ function mapSubItemToDetail(
   item: SiteServiceSubItem,
   serviceType: ServiceDetailItem["serviceType"]
 ): ServiceDetailItem {
-  // First gallery image
   const sortedImages = item.images && item.images.length > 0
     ? [...item.images].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
     : [];
   const rawImage = sortedImages[0]?.imageUrl || item.images?.[0]?.imageUrl;
-  const firstImage = getBackendImageUrl(rawImage) ?? "";
+  const firstImage = getBackendImageUrl(rawImage) || SERVICE_FALLBACK_IMAGE;
+  const galleryImages = sortedImages
+    .map((img) => getBackendImageUrl(img.imageUrl) ?? "")
+    .filter(Boolean);
 
-  // Notes: each non-empty line of the note field becomes a numbered note
   const notes: string[] = item.note
     ? item.note.split("\n").map((n) => n.trim()).filter(Boolean)
     : [];
 
-  // Price display
   const price = item.price ?? item.basePriceUSD ?? 0;
   const priceFormatted = `$${price}`;
 
-  // Feature values for car-style spec rows (model year, transmission, A/C)
+  // Structured specifications from features
+  const specifications = item.features.flatMap((f) =>
+    f.values.map((v) => {
+      const colonIdx = v.name.indexOf(":");
+      if (colonIdx > 0) {
+        return {
+          label: v.name.substring(0, colonIdx).trim(),
+          value: v.name.substring(colonIdx + 1).trim(),
+        };
+      }
+      return { label: f.name || "Specification", value: v.name };
+    })
+  );
+
+  // Inclusions extracted from feature groups
+  const inclusions = item.features
+    .filter((f) => /inclusion|included|perks/i.test(f.name))
+    .flatMap((f) => f.values.map((v) => v.name));
+
+  // Structured options and duration tiers
+  const optionsTiers = item.options.map((opt) => ({
+    name: opt.name || "Pricing Options",
+    tiers: opt.values.map((v) => ({ key: v.key, value: v.value })),
+  }));
+
   const allFeatureValues = item.features.flatMap((f) =>
     f.values.map((v) => v.name)
   );
@@ -55,7 +80,6 @@ function mapSubItemToDetail(
   const airConditioning =
     allFeatureValues.find((v) => /air.?con/i.test(v)) || undefined;
 
-  // Option values displayed as "Cost Services" (e.g. price tiers)
   const costServices: string[] = item.options.flatMap((opt) =>
     opt.values.map((v) => (v.value ? `${v.key}: ${v.value}` : v.key))
   );
@@ -75,30 +99,32 @@ function mapSubItemToDetail(
     title: item.title,
     description: item.description,
     imageUrl: firstImage,
+    galleryImages: galleryImages.length > 0 ? galleryImages : undefined,
     serviceType,
-    // Spec rows (car-rental / vip-airport)
     modelYear,
     transmission,
     airConditioning,
-    // Tagline + body (tourist / real-estate)
+    specifications: specifications.length > 0 ? specifications : undefined,
+    inclusions: inclusions.length > 0 ? inclusions : undefined,
+    optionsTiers: optionsTiers.length > 0 ? optionsTiers : undefined,
+    alert: item.alert || undefined,
     tagline: item.textTopImage || item.subtitle || undefined,
     detailedDescription: item.description,
-    // Notes
     notes: notes.length > 0 ? notes : undefined,
-    // Pricing
     priceFormatted,
     billingPeriod: serviceType === "tourist" ? "Per Hour" : "Per Day",
     bookingButtonText:
-      serviceType === "car-rental" ? "Book This Car ↓" : "Book This Service ↓",
-    // Form labels
+      serviceType === "car-rental"
+        ? "Book This Car ↓"
+        : serviceType === "real-estate"
+        ? "Inquire This Property ↓"
+        : "Book This Service ↓",
     formTitle,
     formSubtitle: item.title,
-    // Cost tiers from options
     costServices: costServices.length > 0 ? costServices : undefined,
   };
 }
 
-// ─── Back button ──────────────────────────────────────────────────────────────
 function BackButton({ href }: { href: string }) {
   return (
     <div className="mb-4 sm:mb-6 max-w-[960px] mx-auto">
@@ -118,7 +144,6 @@ function BackButton({ href }: { href: string }) {
   );
 }
 
-// ─── Loading skeleton ─────────────────────────────────────────────────────────
 function DetailSkeleton() {
   return (
     <div className="w-full max-w-[960px] mx-auto animate-pulse">
@@ -133,7 +158,6 @@ function DetailSkeleton() {
   );
 }
 
-// ─── Section ──────────────────────────────────────────────────────────────────
 export function ServiceDetailSection({
   serviceType,
   slug,
@@ -146,18 +170,13 @@ export function ServiceDetailSection({
     data: subItem,
     isLoading,
     isError,
-    fetchStatus,
   } = usePublicServiceSubItemById(slug, locale);
-
-  // "idle" fetchStatus + disabled = slug was not a UUID → treat as not found
-  const isNotFound =
-    (!validId) ||
-    (!isLoading && !subItem && fetchStatus === "idle") ||
-    (!isLoading && isError);
 
   const detail: ServiceDetailItem | null = subItem
     ? mapSubItemToDetail(subItem, serviceType)
     : null;
+
+  const isNotFound = !isLoading && (!subItem || !validId || isError);
 
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] pt-4 sm:pt-8 md:pt-10 pb-16 sm:pb-24 md:pb-32 font-poppins text-[#0E4A68]">
@@ -167,8 +186,8 @@ export function ServiceDetailSection({
         {/* Loading */}
         {isLoading && <DetailSkeleton />}
 
-        {/* Not found / invalid slug */}
-        {!isLoading && isNotFound && (
+        {/* Not found */}
+        {isNotFound && (
           <div className="w-full max-w-[960px] mx-auto text-center py-16 sm:py-20">
             <p className="text-[#0E4A68] text-sm sm:text-base font-semibold opacity-60">
               Service not found.

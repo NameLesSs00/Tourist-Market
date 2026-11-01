@@ -6,6 +6,18 @@
     "buttons": {
       "hotelDeliveries": "Hotellieferungen",
       "exploreServices": "Services erkunden"
+    },
+    "alt": {
+      "background": "Ägyptischer Wüstenhintergrund",
+      "watermark": "Tourist Market Wasserzeichen-Emblem",
+      "pyramid": "Goldene 3D-Pyramide",
+      "polygonBase": "Sechseckige Polygonbasis",
+      "dining": "Gehobene Gastronomie",
+      "diving": "Tauchen an Korallenriffen",
+      "beach": "Strandresorts",
+      "coastline": "Küste des Roten Meeres",
+      "cruise": "Yacht- und Seereisen",
+      "temples": "Antike Tempel"
     }
   },
   "nav": {
@@ -16,6 +28,115 @@
     "faq": "FAQ",
     "about": "Über uns",
     "contact": "Kontakt"
+  },
+  "headerServices": {
+    "allServices": "Alle Services",
+    "touristServices": "Touristenservices",
+    "realEstate": "Rotes Meer Immobilien",
+    "carRental": "Mietwagenservice",
+    "vipAirport": "VIP-Services - Flughafen Hurghada",
+    "excursions": "Ausflüge",
+    "groupExcursions": "Gruppenausflüge",
+    "privateExcursions": "Private Ausflüge",
+    "transportation": "Transport",
+    "transferServices": "Transferservices"
+  },
+  "groupExcursions": {
+    "titlePrefix": "Gruppen-",
+    "titleAccent": "Ausflüge",
+    "subtitle": "Gruppenabenteuer, endlose Freude",
+    "viewAll": "Alle Reisen ansehen",
+    "viewDetails": "Details ansehen",
+    "pricing": {
+      "adult": "Erwachsener",
+      "child": "Kind",
+      "infant": "Kleinkind"
+    },
+    "error": {
+      "title": "Ausflüge können nicht geladen werden",
+      "description": "Beim Verbindungsaufbau zum Server ist ein temporärer Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+      "retry": "Erneut versuchen"
+    },
+    "empty": {
+      "title": "Keine Gruppenausflüge verfügbar",
+      "description": "Wir bereiten derzeit aufregende neue Gruppenerlebnisse vor. Entdecken Sie in der Zwischenzeit unsere privaten Touren.",
+      "action": "Private Ausflüge erkunden"
+    }
+  },
+  "privateExcursions": {
+    "titlePrefix": "Private",
+    "titleAccent": "Ausflüge",
+    "subtitle": "Entdecken Sie Privatsphäre, genießen Sie Exklusivität",
+    "vipBanner": {
+      "categories": "Kategorien",
+      "badge": "Exklusive VIP-Erlebnisse",
+      "privacy": "Beispiellose Privatsphäre",
+      "button": "Privatreise planen",
+      "alt": {
+        "background": "Hintergrundform des VIP-Banners",
+        "frame": "Goldener VIP-Rahmen",
+        "shipIcon": "VIP-Schiffssymbol",
+        "yacht": "Private Luxusyacht",
+        "helicopter": "Privater Hubschrauberrundflug"
+      }
+    },
+    "explore": "Entdecken",
+    "categories": {
+      "historical": {
+        "title": "Private historische Touren",
+        "description": "Erkunden Sie antike Sehenswürdigkeiten, ikonische Denkmäler und faszinierende Geschichten vergangener Epochen."
+      },
+      "sea": {
+        "title": "Private Bootsausflüge",
+        "description": "Entdecken Sie kristallklares Wasser, faszinierende Unterwasserwelten und atemberaubende Küstenlandschaften."
+      },
+      "safari": {
+        "title": "Private Super-Safari-Touren",
+        "description": "Erleben Sie rasante Offroad-Fahrten, aufregende Wüstenaktivitäten und unvergessliche Safari-Abenteuer."
+      },
+      "city": {
+        "title": "Private Stadttouren",
+        "description": "Entdecken Sie berühmte Sehenswürdigkeiten, malerische Gassen und lokale Kultur in Ihrem eigenen Tempo."
+      },
+      "fun": {
+        "title": "Private Freizeitausflüge",
+        "description": "Erkunden Sie goldene Dünen, atemberaubende Wüstenlandschaften und die friedvolle Schönheit der Natur."
+      }
+    }
+  },
+  "services": {
+    "titlePrefix": "Unsere",
+    "titleAccent": "Dienstleistungen",
+    "subtitle": "Alles, was Sie für Ihr perfektes Erlebnis brauchen",
+    "explore": "Entdecken",
+    "prev": "Vorherige Dienstleistungen",
+    "next": "Nächste Dienstleistungen",
+    "items": {
+      "hotelDeliveries": {
+        "title": "Hotellieferungen",
+        "alt": "Hotellieferungen - Zimmerservice & Annehmlichkeiten"
+      },
+      "touristServices": {
+        "title": "Touristischer Service",
+        "alt": "Touristischer Service - Geführte Kultur- und Historientouren"
+      },
+      "realEstate": {
+        "title": "Rotes Meer Immobilien",
+        "alt": "Rotes Meer Immobilien - Luxusvillen & Küstenanwesen"
+      },
+      "carRental": {
+        "title": "Mietwagen",
+        "alt": "Mietwagen - Luxus-SUVs & Wüstenfahrzeuge"
+      },
+      "transferService": {
+        "title": "Transferservice",
+        "alt": "Transferservice - Privat- und Gruppentransporte"
+      },
+      "vipAirport": {
+        "title": "VIP-Services - Flughafen Hurghada",
+        "alt": "VIP-Services - Meet & Assist am Flughafen Hurghada"
+      }
+    }
   },
   "faq": {
     "titlePrefix": "Häufig gestellte",

@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaWhatsapp } from "react-icons/fa";
 import { ServiceCardItem } from "../types";
+import { SERVICE_FALLBACK_IMAGE } from "@/features/siteServiceItems/usePublicServiceItems";
 
 interface ServiceCardProps {
   item: ServiceCardItem;
@@ -17,6 +18,16 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
   const whatsappUrl = `https://wa.me/201289494715?text=${encodeURIComponent(
     `Hello, I am interested in ${title}`
   )}`;
+
+  const [imgSrc, setImgSrc] = useState<string>(
+    imageUrl || SERVICE_FALLBACK_IMAGE
+  );
+
+  useEffect(() => {
+    setImgSrc(imageUrl || SERVICE_FALLBACK_IMAGE);
+  }, [imageUrl]);
+
+  const isFallback = !imgSrc || imgSrc === SERVICE_FALLBACK_IMAGE;
 
   return (
     <div
@@ -36,16 +47,21 @@ export function ServiceCard({ item, locale = "en" }: ServiceCardProps) {
       />
 
       {/* 1. Card Top Image */}
-      <div className="relative w-full aspect-[400/230] overflow-hidden bg-slate-100 pointer-events-none">
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
-            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : null}
+      <div className="relative w-full aspect-[400/230] overflow-hidden bg-slate-100 flex items-center justify-center pointer-events-none">
+        <Image
+          src={imgSrc}
+          alt={title}
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 380px"
+          onError={() => {
+            if (imgSrc !== SERVICE_FALLBACK_IMAGE) {
+              setImgSrc(SERVICE_FALLBACK_IMAGE);
+            }
+          }}
+          className={`transition-transform duration-500 group-hover:scale-105 ${
+            isFallback ? "object-contain p-6 opacity-60" : "object-cover object-center"
+          }`}
+        />
 
         {/* Real Estate "For Rent" badge */}
         {badge && (

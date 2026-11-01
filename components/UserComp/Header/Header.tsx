@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { CurrencySelector } from "./CurrencySelector";
 import { LanguageSelector } from "./LanguageSelector";
 import { MobileMenu } from "./MobileMenu";
@@ -54,7 +55,12 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
   const isHomePage = /^\/[a-z]{2,5}(\/)?$/.test(pathname ?? "");
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full font-poppins font-poppins-semibold-16">
+    <motion.header
+      initial={{ y: -16, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className="fixed top-0 left-0 right-0 z-50 w-full font-poppins font-poppins-semibold-16"
+    >
       {/* Background layer: Isolated so backdrop-blur never traps fixed descendants */}
       <div
         className={`absolute inset-0 -z-10 transition-all duration-300 ${
@@ -64,9 +70,14 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
         }`}
       />
 
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Left: Brand Logo */}
-        <div className="flex shrink-0 items-center">
+      <div className="flex h-20 w-full items-center justify-between px-4 sm:px-8 lg:px-12 xl:px-14 2xl:px-16">
+        {/* Left: Brand Logo with subtle hover interaction */}
+        <motion.div
+          className="flex shrink-0 items-center"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.2 }}
+        >
           <Link href={`/${activeLocale}`} className="flex items-center">
             <Image
               src="/shared/logoHeader.svg"
@@ -77,24 +88,25 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
               className="h-10 w-auto object-contain sm:h-12"
             />
           </Link>
-        </div>
+        </motion.div>
 
         {/* Center: Desktop Navigation Links */}
-        <div className="hidden lg:flex lg:items-center lg:justify-center">
+        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center px-4">
           <NavLinks currentLocale={activeLocale} />
         </div>
 
         {/* Right: Desktop Currency & Language Selectors */}
-        <div className="hidden lg:flex lg:items-center lg:gap-3">
+        <div className="hidden lg:flex lg:shrink-0 lg:items-center lg:gap-3">
           <CurrencySelector />
-          <LanguageSelector />
+          <LanguageSelector currentLocale={activeLocale} />
         </div>
 
         {/* Mobile & Tablet Hamburger Menu Button */}
         <div className="flex items-center lg:hidden">
-          <button
+          <motion.button
             type="button"
             onClick={() => setIsMobileMenuOpen(true)}
+            whileTap={{ scale: 0.9 }}
             aria-label="Open Navigation Menu"
             className="rounded-xl p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer"
           >
@@ -111,7 +123,7 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-          </button>
+          </motion.button>
         </div>
       </div>
 
@@ -121,7 +133,7 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
         onClose={() => setIsMobileMenuOpen(false)}
         currentLocale={activeLocale}
       />
-    </header>
+    </motion.header>
   );
 }
 

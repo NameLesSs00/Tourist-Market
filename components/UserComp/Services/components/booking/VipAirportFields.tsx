@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { FiUsers } from "react-icons/fi";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
   getFieldInputClass,
+  getPickerInputClass,
+  triggerPicker,
 } from "./bookingTypes";
 
 interface VipAirportFieldsProps {
@@ -54,7 +55,8 @@ export function VipAirportFields({
           required
           value={formData.departureDateTime}
           onChange={onChange}
-          className={getFieldInputClass(Boolean(fieldErrors.departureDateTime))}
+          onClick={triggerPicker}
+          className={getPickerInputClass(Boolean(fieldErrors.departureDateTime))}
         />
         {fieldErrors.departureDateTime && (
           <span className="text-[11px] sm:text-xs text-rose-500 font-medium">
@@ -67,20 +69,17 @@ export function VipAirportFields({
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
           Number of Passengers <span className="text-red-500">*</span>
         </label>
-        <div className="relative">
-          <input
-            type="number"
-            min="1"
-            max="50"
-            name="noOfPersons"
-            required
-            value={formData.noOfPersons}
-            onChange={onChange}
-            placeholder="e.g. 2"
-            className={getFieldInputClass(Boolean(fieldErrors.noOfPersons))}
-          />
-          <FiUsers className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-        </div>
+        <input
+          type="number"
+          min="1"
+          max="50"
+          name="noOfPersons"
+          required
+          value={formData.noOfPersons}
+          onChange={onChange}
+          placeholder="e.g. 2"
+          className={getFieldInputClass(Boolean(fieldErrors.noOfPersons))}
+        />
         {fieldErrors.noOfPersons && (
           <span className="text-[11px] sm:text-xs text-rose-500 font-medium">
             {fieldErrors.noOfPersons}
@@ -112,4 +111,3 @@ export function VipAirportFields({
 }
 
 export default VipAirportFields;
-

@@ -17,6 +17,9 @@ export function isUUID(value: string): boolean {
   return UUID_RE.test(value);
 }
 
+// ─── Fallback image constant ─────────────────────────────────────────────────
+export const SERVICE_FALLBACK_IMAGE = "/GroupExcursions/HeroLogo.webp";
+
 // ─── Card mapper ──────────────────────────────────────────────────────────────
 export function mapSubItemToCard(
   item: SiteServiceSubItem,
@@ -26,7 +29,13 @@ export function mapSubItemToCard(
     ? [...item.images].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
     : [];
   const rawImage = sortedImages[0]?.imageUrl || item.images?.[0]?.imageUrl;
-  const firstImage = getBackendImageUrl(rawImage) ?? "";
+  const firstImage = getBackendImageUrl(rawImage) || SERVICE_FALLBACK_IMAGE;
+  const price = item.price ?? item.basePriceUSD ?? 0;
+
+  const keyFeatures = item.features
+    ? item.features.flatMap((f) => f.values.map((v) => v.name)).slice(0, 3)
+    : [];
+
   return {
     id: item.id,
     slug: item.id, // slug IS the UUID — used for navigation to detail page
@@ -34,6 +43,10 @@ export function mapSubItemToCard(
     description: item.description,
     imageUrl: firstImage,
     badge: undefined,
+    price,
+    pricePeriod: serviceType === "tourist" ? "Per Hour" : "Per Day",
+    priceFormatted: price > 0 ? `$${price}` : undefined,
+    keyFeatures: keyFeatures.length > 0 ? keyFeatures : undefined,
     serviceType,
   };
 }

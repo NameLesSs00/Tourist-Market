@@ -58,3 +58,14 @@ export const getFieldInputClass = (hasError: boolean): string =>
       : "border-[#888888]/60 bg-white focus:border-[#134B68] focus:ring-1 focus:ring-[#134B68]"
   }`;
 
+export const getPickerInputClass = (hasError: boolean): string =>
+  `${getFieldInputClass(hasError)} cursor-pointer`;
+
+export const triggerPicker = (e: React.MouseEvent<HTMLInputElement>) => {
+  try {
+    e.currentTarget.showPicker?.();
+  } catch {
+    // Browser fallback
+  }
+};
+

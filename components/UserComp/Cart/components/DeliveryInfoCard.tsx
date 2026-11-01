@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { FiChevronDown, FiCalendar, FiClock } from "react-icons/fi";
+import { FiChevronDown } from "react-icons/fi";
 import type { CartDeliveryFormData } from "../types";
 import type { DeliveryProductItem } from "@/models/deliveryProduct";
 
@@ -128,23 +128,20 @@ export function DeliveryInfoCard({
             <label className="text-[14px] font-medium text-[#0E4A68]">
               Delivery Date <span className="text-red-500">*</span>
             </label>
-            <div className="relative">
-              <input
-                type="date"
-                required
-                value={formData.deliveryDate}
-                onChange={(e) => onChange("deliveryDate", e.target.value)}
-                onClick={(e) => {
-                  try {
-                    (e.currentTarget as HTMLInputElement).showPicker?.();
-                  } catch {
-                    // Fallback for browsers without showPicker support
-                  }
-                }}
-                className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0"
-              />
-              <FiCalendar className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-            </div>
+            <input
+              type="date"
+              required
+              value={formData.deliveryDate}
+              onChange={(e) => onChange("deliveryDate", e.target.value)}
+              onClick={(e) => {
+                try {
+                  (e.currentTarget as HTMLInputElement).showPicker?.();
+                } catch {
+                  // Fallback for browsers without showPicker support
+                }
+              }}
+              className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer"
+            />
           </div>
         </div>
 
@@ -153,24 +150,21 @@ export function DeliveryInfoCard({
           <label className="text-[14px] font-medium text-[#0E4A68]">
             Delivery Time <span className="text-red-500">*</span>
           </label>
-          <div className="relative">
-            <input
-              type="time"
-              required
-              value={formData.deliveryTime}
-              onChange={(e) => onChange("deliveryTime", e.target.value)}
-              onClick={(e) => {
-                try {
-                  (e.currentTarget as HTMLInputElement).showPicker?.();
-                } catch {
-                  // Fallback for browsers without showPicker support
-                }
-              }}
-              placeholder="--:--"
-              className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0"
-            />
-            <FiClock className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-          </div>
+          <input
+            type="time"
+            required
+            value={formData.deliveryTime}
+            onChange={(e) => onChange("deliveryTime", e.target.value)}
+            onClick={(e) => {
+              try {
+                (e.currentTarget as HTMLInputElement).showPicker?.();
+              } catch {
+                // Fallback for browsers without showPicker support
+              }
+            }}
+            placeholder="--:--"
+            className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer"
+          />
           <p className="text-[12px] text-[#64748B]">
             Select any delivery time that suits you (e.g. 14:30)
           </p>

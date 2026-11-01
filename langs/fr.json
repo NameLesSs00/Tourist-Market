@@ -6,6 +6,18 @@
     "buttons": {
       "hotelDeliveries": "Livraisons à l'hôtel",
       "exploreServices": "Explorer les services"
+    },
+    "alt": {
+      "background": "Arrière-plan du désert égyptien",
+      "watermark": "Emblème de filigrane Tourist Market",
+      "pyramid": "Pyramide dorée en 3D",
+      "polygonBase": "Base polygonale hexagonale",
+      "dining": "Restauration de luxe",
+      "diving": "Plongée sur les récifs coralliens",
+      "beach": "Stations balnéaires",
+      "coastline": "Littoral de la mer Rouge",
+      "cruise": "Croisières en yacht et en mer",
+      "temples": "Temples antiques"
     }
   },
   "nav": {
@@ -16,6 +28,115 @@
     "faq": "FAQ",
     "about": "À propos",
     "contact": "Contactez-nous"
+  },
+  "headerServices": {
+    "allServices": "Tous les services",
+    "touristServices": "Services touristiques",
+    "realEstate": "Immobilier Mer Rouge",
+    "carRental": "Location de voitures",
+    "vipAirport": "Services VIP - Aéroport d'Hurghada",
+    "excursions": "Excursions",
+    "groupExcursions": "Excursions en groupe",
+    "privateExcursions": "Excursions privées",
+    "transportation": "Transport",
+    "transferServices": "Services de transfert"
+  },
+  "groupExcursions": {
+    "titlePrefix": "Excursions en",
+    "titleAccent": "Groupe",
+    "subtitle": "Aventures en groupe, joie infinie",
+    "viewAll": "Voir tous les voyages",
+    "viewDetails": "Voir les détails",
+    "pricing": {
+      "adult": "Adulte",
+      "child": "Enfant",
+      "infant": "Bébé"
+    },
+    "error": {
+      "title": "Impossible de charger les excursions",
+      "description": "Nous avons rencontré un problème temporaire de connexion au serveur. Veuillez réessayer ou revenir bientôt.",
+      "retry": "Réessayer"
+    },
+    "empty": {
+      "title": "Aucune excursion en groupe disponible",
+      "description": "Nous préparons actuellement de nouvelles expériences de groupe passionnantes. En attendant, découvrez nos voyages privés.",
+      "action": "Explorer les excursions privées"
+    }
+  },
+  "privateExcursions": {
+    "titlePrefix": "Excursions",
+    "titleAccent": "Privées",
+    "subtitle": "Découvrez l'intimité, vivez l'exclusivité",
+    "vipBanner": {
+      "categories": "Catégories",
+      "badge": "Escapades VIP Exclusives",
+      "privacy": "Intimité Inégalée",
+      "button": "Planifier votre voyage",
+      "alt": {
+        "background": "Forme de fond de la bannière VIP",
+        "frame": "Cadre doré VIP",
+        "shipIcon": "Icône de bateau VIP",
+        "yacht": "Yacht de luxe privé",
+        "helicopter": "Vol privé en hélicoptère"
+      }
+    },
+    "explore": "Explorer",
+    "categories": {
+      "historical": {
+        "title": "Voyages Historiques Privés",
+        "description": "Explorez des monuments antiques, des sites emblématiques et des récits fascinants du passé."
+      },
+      "sea": {
+        "title": "Excursions Maritimes Privées",
+        "description": "Découvrez des eaux cristallines, une vie marine éclatante et des paysages côtiers à couper le souffle."
+      },
+      "safari": {
+        "title": "Super Safari Privé",
+        "description": "Profitez de balades tout-terrain palpitantes, d'activités désertiques et d'expériences safari inoubliables."
+      },
+      "city": {
+        "title": "Visites de Ville Privées",
+        "description": "Découvrez des attractions célèbres, des ruelles charmantes et la culture locale à votre rythme."
+      },
+      "fun": {
+        "title": "Sorties Récréatives Privées",
+        "description": "Parcourez les dunes dorées, les paysages désertiques grandioses et la sérénité de la nature."
+      }
+    }
+  },
+  "services": {
+    "titlePrefix": "Nos",
+    "titleAccent": "Services",
+    "subtitle": "Tout ce dont vous avez besoin pour une expérience inoubliable",
+    "explore": "Explorer",
+    "prev": "Services précédents",
+    "next": "Services suivants",
+    "items": {
+      "hotelDeliveries": {
+        "title": "Livraisons à l'hôtel",
+        "alt": "Livraisons à l'hôtel - Service d'étage et commodités"
+      },
+      "touristServices": {
+        "title": "Services touristiques",
+        "alt": "Services touristiques - Visites guidées culturelles et historiques"
+      },
+      "realEstate": {
+        "title": "Immobilier Mer Rouge",
+        "alt": "Immobilier Mer Rouge - Villas de luxe et propriétés côtières"
+      },
+      "carRental": {
+        "title": "Location de voitures",
+        "alt": "Location de voitures - SUV de luxe et véhicules pour le désert"
+      },
+      "transferService": {
+        "title": "Service de transfert",
+        "alt": "Service de transfert - Transport privé et de groupe"
+      },
+      "vipAirport": {
+        "title": "Services VIP - Aéroport d'Hurghada",
+        "alt": "Services VIP - Accueil et assistance à l'aéroport d'Hurghada"
+      }
+    }
   },
   "faq": {
     "titlePrefix": "Questions",

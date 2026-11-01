@@ -6,6 +6,7 @@ import { sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
 
 interface ServiceReviewFormProps {
   alreadySubmitted: boolean;
+  onResetSubmitted?: () => void;
   userRating: number;
   userName: string;
   userEmail: string;
@@ -22,6 +23,7 @@ interface ServiceReviewFormProps {
 
 export function ServiceReviewForm({
   alreadySubmitted,
+  onResetSubmitted,
   userRating,
   userName,
   userEmail,
@@ -54,8 +56,19 @@ export function ServiceReviewForm({
       </p>
 
       {alreadySubmitted ? (
-        <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-800">
-          <strong>Thank you!</strong> Your review has been submitted and is currently pending review.
+        <div className="p-4 sm:p-5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-800 space-y-2">
+          <p>
+            <strong>Thank you!</strong> Your review has been submitted and is currently pending review.
+          </p>
+          {onResetSubmitted && (
+            <button
+              type="button"
+              onClick={onResetSubmitted}
+              className="text-xs text-emerald-700 underline font-semibold hover:text-emerald-900 cursor-pointer"
+            >
+              Write another review
+            </button>
+          )}
         </div>
       ) : (
         <form onSubmit={onSubmit} noValidate className="space-y-4">
@@ -124,7 +137,7 @@ export function ServiceReviewForm({
           {/* Phone */}
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              Phone Number (with Country Code) *
+              Phone Number *
             </label>
             <input
               type="tel"

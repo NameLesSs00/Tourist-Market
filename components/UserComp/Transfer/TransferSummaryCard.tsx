@@ -1,10 +1,20 @@
+"use client";
+
 import React from "react";
 import { TransferTripType } from "@/models/transferBooking";
 
 interface TransferSummaryCardProps {
-  vehicleType: string;
+  vehicleType?: string | null;
   totalPrice: number;
+  basePrice?: number;
+  discountAmount?: number;
+  discountPercentage?: number;
+  additionalHours?: number;
+  additionalHourRate?: number;
   tripType: TransferTripType;
+  hasRouteSelected: boolean;
+  isMatchError?: boolean;
+  matchErrorMessage?: string | null;
   isSubmitting?: boolean;
   onSubmit: () => void;
 }
@@ -12,12 +22,25 @@ interface TransferSummaryCardProps {
 export function TransferSummaryCard({
   vehicleType,
   totalPrice,
+  basePrice = 0,
+  discountAmount = 0,
+  discountPercentage = 15,
+  additionalHours = 0,
+  additionalHourRate = 10,
   tripType,
+  hasRouteSelected,
+  isMatchError = false,
+  matchErrorMessage,
   isSubmitting = false,
   onSubmit,
 }: TransferSummaryCardProps) {
   const isRoundTrip = tripType === TransferTripType.RoundTrip;
-  const formattedPrice = `$${totalPrice.toFixed(2)}`;
+  const formattedPrice = isMatchError
+    ? "Unavailable"
+    : hasRouteSelected
+    ? `$${totalPrice.toFixed(2)}`
+    : "$0.00";
+  const extraHoursPrice = additionalHours * additionalHourRate;
 
   return (
     <div className="space-y-6 font-poppins">
@@ -30,22 +53,58 @@ export function TransferSummaryCard({
         {/* Vehicle Type Row */}
         <div className="flex items-center justify-between text-xs sm:text-sm">
           <span className="text-gray-200">Vehicle Type:</span>
-          <span className="font-bold text-white">{vehicleType || "Car"}</span>
+          <span className="font-bold text-white">
+            {isMatchError
+              ? "Unavailable"
+              : hasRouteSelected
+              ? (vehicleType || "Matched Vehicle")
+              : "Pending Route Selection"}
+          </span>
         </div>
 
+        {/* Route Base Fare */}
+        {hasRouteSelected && !isMatchError && typeof basePrice === "number" && basePrice > 0 && (
+          <div className="flex items-center justify-between text-xs sm:text-sm text-gray-200">
+            <span>Route Base Fare:</span>
+            <span>${basePrice.toFixed(2)}</span>
+          </div>
+        )}
+
+        {/* Round Trip Discount */}
+        {hasRouteSelected && !isMatchError && isRoundTrip && discountAmount > 0 && (
+          <div className="flex items-center justify-between text-xs sm:text-sm text-emerald-300">
+            <span>Round-Trip Discount ({discountPercentage}%):</span>
+            <span>-${discountAmount.toFixed(2)}</span>
+          </div>
+        )}
+
+        {/* Additional Hours Line Item */}
+        {!isMatchError && additionalHours > 0 && (
+          <div className="flex items-center justify-between text-xs sm:text-sm text-amber-200">
+            <span>Extra Waiting ({additionalHours} hr{additionalHours > 1 ? "s" : ""} @ ${additionalHourRate}/hr):</span>
+            <span>+${extraHoursPrice.toFixed(2)}</span>
+          </div>
+        )}
+
         {/* Total Price Row */}
-        <div className="flex items-center justify-between text-xs sm:text-sm">
-          <span className="text-gray-200">Total Price:</span>
-          <span className="font-bold text-[#F0C060] text-base sm:text-lg">
+        <div className="flex items-center justify-between text-xs sm:text-sm pt-2 border-t border-white/20">
+          <span className="text-white font-semibold">Total Fare:</span>
+          <span
+            className={`font-bold text-lg sm:text-xl ${
+              isMatchError ? "text-rose-300 text-sm sm:text-base font-semibold" : "text-[#F0C060]"
+            }`}
+          >
             {formattedPrice}
           </span>
         </div>
 
-        {/* Inner Offer Banner */}
+        {/* Dynamic Offer Banner */}
         <div className="bg-[#12647C] rounded-[6.29px] p-3 text-center text-xs sm:text-sm font-medium text-white shadow-xs">
-          {isRoundTrip
-            ? "Save 25% when choosing Round Trip + 3 hours free waiting"
-            : "Save 10% when choosing Round Trip + 3 hours free waiting"}
+          {isMatchError
+            ? matchErrorMessage || "No route price is available for this combination."
+            : isRoundTrip
+            ? `${discountPercentage}% Round-Trip Discount applied + 3 hours free waiting`
+            : `Save ${discountPercentage}% when choosing Round Trip + 3 hours free waiting`}
         </div>
       </div>
 
@@ -54,8 +113,8 @@ export function TransferSummaryCard({
         <button
           type="button"
           onClick={onSubmit}
-          disabled={isSubmitting}
-          className="bg-[#0E4A68] hover:bg-[#0c405b] active:scale-[0.99] text-[#FFFFFF] font-semibold text-sm sm:text-base px-10 sm:px-14 py-3 rounded-[8.38px] shadow-[0px_2.1px_8.38px_0px_#00000033] transition cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          disabled={isSubmitting || !hasRouteSelected || isMatchError}
+          className="w-full sm:w-auto bg-[#0E4A68] hover:bg-[#0c405b] active:scale-[0.99] text-[#FFFFFF] font-semibold text-sm sm:text-base px-8 sm:px-14 py-3 rounded-[8.38px] shadow-[0px_2.1px_8.38px_0px_#00000033] transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {isSubmitting ? (
             <>
@@ -81,11 +140,17 @@ export function TransferSummaryCard({
               </svg>
               <span>Submitting Booking...</span>
             </>
+          ) : isMatchError ? (
+            <span>Route Price Unavailable</span>
+          ) : !hasRouteSelected ? (
+            <span>Please Select Pickup & Destination</span>
           ) : (
-            <span>Submit Booking</span>
+            <span>Submit Transfer Booking</span>
           )}
         </button>
       </div>
     </div>
   );
 }
+
+export default TransferSummaryCard;

@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   HeroBackground,
@@ -22,7 +23,7 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
   return (
     <section className="relative w-full overflow-hidden min-h-[78vh] lg:min-h-[90vh] max-h-[980px] flex items-center justify-center -mt-20 pt-20 pb-8 lg:pt-24 lg:pb-8">
       {/* 1. Full-Bleed Background Texture & Centered Watermark Logo */}
-      <HeroBackground />
+      <HeroBackground dict={dict} />
 
       {/* 2. Main Content Container */}
       <div className="relative z-10 w-full max-w-[1740px] mx-auto px-6 sm:px-10 lg:pl-8 xl:pl-12 2xl:pl-16 lg:pr-0">
@@ -31,8 +32,8 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
           {/* Left Column: Big, Lively Headline, Description & Action Buttons */}
           <HeroContent dict={dict} currentLocale={locale} />
 
-          {/* Right Column: Interlocking Honeycomb Hexagons & Big 3D Pyramid (Partly Cut at Right Edge) */}
-          <DesktopHexGrid />
+          {/* Right Column: Interlocking Honeycomb Hexagons & Big 3D Pyramid */}
+          <DesktopHexGrid dict={dict} />
         </div>
 
         {/* Mobile View: Stacked Layout Matching HeroMobile.png */}
@@ -41,13 +42,18 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
           <HeroContent dict={dict} currentLocale={locale} />
 
           {/* Centerpiece: Mobile Hexagons Cluster + 3D Pyramid */}
-          <MobileHexGrid />
+          <MobileHexGrid dict={dict} />
 
           {/* Bottom Stacked Action Buttons for Mobile */}
-          <div className="w-full max-w-[340px] flex flex-col gap-3.5 z-20">
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.35, ease: "easeOut" }}
+            className="w-full max-w-[340px] flex flex-col gap-3.5 z-20"
+          >
             {/* Explore Services Button */}
             <Link
-              href={`/${locale}/services`}
+              href={`/${locale}/services/tourist`}
               className="flex items-center justify-center gap-3 w-full rounded-[14px] bg-[#D48C28] py-3.5 px-6 font-['Poppins'] text-[18px] font-medium leading-none text-white shadow-md active:scale-95 transition-all"
             >
               <Image
@@ -74,7 +80,7 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
               />
               <span>{hero.buttons.hotelDeliveries}</span>
             </Link>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

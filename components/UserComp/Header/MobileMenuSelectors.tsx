@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import { FiCheck, FiChevronDown } from "react-icons/fi";
 
 interface CurrencyOption {
@@ -29,14 +30,34 @@ const LANGUAGES: LanguageOption[] = [
   { code: "ru", name: "Русский", flagSrc: "/flags/ru.svg" },
 ];
 
-export function MobileMenuSelectors({ className = "" }: { className?: string }) {
+interface MobileMenuSelectorsProps {
+  className?: string;
+  currentLocale?: string;
+  onSelectLocale?: () => void;
+}
+
+export function MobileMenuSelectors({
+  className = "",
+  currentLocale = "en",
+  onSelectLocale,
+}: MobileMenuSelectorsProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(CURRENCIES[0]);
-  const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption>(LANGUAGES[0]);
+
+  const initialLang = LANGUAGES.find((l) => l.code === currentLocale) || LANGUAGES[0];
+  const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption>(initialLang);
 
   const currencyRef = useRef<HTMLDivElement>(null);
   const languageRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const match = LANGUAGES.find((l) => l.code === currentLocale);
+    if (match) setSelectedLanguage(match);
+  }, [currentLocale]);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -50,6 +71,22 @@ export function MobileMenuSelectors({ className = "" }: { className?: string }) 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLanguageChange = (item: LanguageOption) => {
+    setSelectedLanguage(item);
+    setLanguageOpen(false);
+    onSelectLocale?.();
+
+    document.cookie = `NEXT_LOCALE=${item.code}; path=/; max-age=31536000; SameSite=Lax`;
+
+    const segments = pathname?.split("/").filter(Boolean) || [];
+    if (segments.length > 0 && ["en", "fr", "de", "ru"].includes(segments[0])) {
+      segments[0] = item.code;
+      router.push("/" + segments.join("/"));
+    } else {
+      router.push(`/${item.code}${pathname === "/" ? "" : pathname}`);
+    }
+  };
 
   return (
     <div className={`w-full space-y-3.5 ${className}`}>
@@ -151,10 +188,7 @@ export function MobileMenuSelectors({ className = "" }: { className?: string }) 
                 <button
                   key={item.code}
                   type="button"
-                  onClick={() => {
-                    setSelectedLanguage(item);
-                    setLanguageOpen(false);
-                  }}
+                  onClick={() => handleLanguageChange(item)}
                   className={`flex w-full items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-semibold transition cursor-pointer ${
                     isActive
                       ? "bg-[#083952] text-[#FFFFFF]"

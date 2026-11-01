@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { FiCalendar } from "react-icons/fi";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
   getFieldInputClass,
+  getPickerInputClass,
+  triggerPicker,
 } from "./bookingTypes";
 
 interface CarRentalFieldsProps {
@@ -27,18 +28,16 @@ export function CarRentalFields({
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
           Pick-up Date <span className="text-red-500">*</span>
         </label>
-        <div className="relative">
-          <input
-            type="date"
-            name="rentalDate"
-            min={todayStr}
-            required
-            value={formData.rentalDate}
-            onChange={onChange}
-            className={getFieldInputClass(Boolean(fieldErrors.rentalDate))}
-          />
-          <FiCalendar className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
-        </div>
+        <input
+          type="date"
+          name="rentalDate"
+          min={todayStr}
+          required
+          value={formData.rentalDate}
+          onChange={onChange}
+          onClick={triggerPicker}
+          className={getPickerInputClass(Boolean(fieldErrors.rentalDate))}
+        />
         {fieldErrors.rentalDate && (
           <span className="text-[11px] sm:text-xs text-rose-500 font-medium">
             {fieldErrors.rentalDate}
@@ -72,4 +71,3 @@ export function CarRentalFields({
 }
 
 export default CarRentalFields;
-

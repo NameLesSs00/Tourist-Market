@@ -51,7 +51,7 @@ export function BookingContactFields({
         {/* Phone */}
         <div>
           <label className="block text-xs font-semibold text-[#083952] mb-1">
-            Phone Number (with Country Code) *
+            Phone Number *
           </label>
           <div className="relative">
             <FiPhone className="absolute left-3 top-3 text-gray-400" size={16} />

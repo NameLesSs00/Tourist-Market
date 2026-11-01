@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { motion, type Variants } from "framer-motion";
 import { getDictionary } from "@/shared/utils/getDictionary";
 import { useClientFaqsQuery } from "@/features/faq/useClientFaqs";
 import {
@@ -16,7 +17,6 @@ interface FaqSectionProps {
   locale?: string;
 }
 
-// Static circle arc offsets for homepage matching FAQDesktop.png:
 const HOMEPAGE_STAGGER = [
   "xl:ml-0",
   "xl:ml-14 2xl:ml-16",
@@ -24,6 +24,29 @@ const HOMEPAGE_STAGGER = [
   "xl:ml-14 2xl:ml-16",
   "xl:ml-0",
 ];
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      ease: "easeOut",
+    },
+  },
+};
 
 export function FaqSection({ locale = "en" }: FaqSectionProps) {
   const dict = getDictionary(locale);
@@ -37,7 +60,6 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
 
   const displayItems = useMemo(() => items.slice(0, 5), [items]);
 
-  // Keep active selected item valid
   useEffect(() => {
     if (displayItems.length > 0 && !selectedId) {
       setSelectedId(displayItems[0].id || displayItems[0].question);
@@ -105,39 +127,142 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
         {/* 4. Live Data State */}
         {!isLoading && !isError && displayItems.length > 0 && (
           <>
-            {/* Desktop View (>= 1280px): Clean 3-Column Static Crescent Arc Layout */}
+            {/* Desktop View (>= 1280px) */}
             <div className="mt-8 hidden xl:flex xl:items-start xl:justify-between xl:gap-3 2xl:gap-6">
-              {/* Left Column: Help Card - Sticky Pinned */}
-              <div className="w-[350px] 2xl:w-[380px] shrink-0 sticky top-28 self-start">
+              {/* Left Column: Help Card */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="w-[350px] 2xl:w-[380px] shrink-0 sticky top-28 self-start"
+              >
                 <FaqHelpCard dict={dict} currentLocale={locale} />
-              </div>
+              </motion.div>
 
               {/* Center Column: Questions in Static Crescent Arc */}
-              <div className="flex-1 max-w-[490px] 2xl:max-w-[530px] xl:-ml-6 2xl:-ml-8 space-y-4 overflow-visible">
+              <div className="flex-1 max-w-[490px] 2xl:max-w-[530px] xl:-ml-6 2xl:-ml-8 overflow-visible">
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.08 }}
+                  className="space-y-4"
+                >
+                  {displayItems.map((item, index) => {
+                    const isCurrentActive =
+                      (item.id || item.question) ===
+                      (activeItem?.id || activeItem?.question);
+
+                    return (
+                      <motion.div
+                        key={item.id || item.question || index}
+                        variants={itemVariants}
+                      >
+                        <FaqAccordionItem
+                          item={item}
+                          isOpen={isCurrentActive}
+                          onToggle={() =>
+                            setSelectedId(item.id || item.question)
+                          }
+                          className={HOMEPAGE_STAGGER[index] ?? ""}
+                          isDesktop
+                        />
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+
+                {/* View All FAQs Link */}
+                <div className="pt-5 flex justify-center">
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -1 }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Link
+                      href={`/${locale}/faq`}
+                      className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-colors cursor-pointer"
+                    >
+                      <span>View All FAQs</span>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M6 12L10 8L6 4"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </Link>
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Right Column: Solution Callout Box */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="flex-1 max-w-[420px] 2xl:max-w-[450px] sticky top-28 self-start"
+              >
+                <FaqAnswerPanel item={activeItem ?? undefined} />
+              </motion.div>
+            </div>
+
+            {/* Tablet & Mobile View (< 1280px) */}
+            <div className="mt-8 xl:hidden">
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.08 }}
+                className="mx-auto max-w-2xl space-y-3.5"
+              >
                 {displayItems.map((item, index) => {
                   const isCurrentActive =
                     (item.id || item.question) ===
                     (activeItem?.id || activeItem?.question);
 
                   return (
-                    <FaqAccordionItem
+                    <motion.div
                       key={item.id || item.question || index}
-                      item={item}
-                      isOpen={isCurrentActive}
-                      onToggle={() =>
-                        setSelectedId(item.id || item.question)
-                      }
-                      className={HOMEPAGE_STAGGER[index] ?? ""}
-                      isDesktop
-                    />
+                      variants={itemVariants}
+                    >
+                      <FaqAccordionItem
+                        item={item}
+                        isOpen={isCurrentActive}
+                        onToggle={() => {
+                          setSelectedId((prev) =>
+                            prev === (item.id || item.question)
+                              ? null
+                              : item.id || item.question
+                          );
+                        }}
+                        isDesktop={false}
+                      />
+                    </motion.div>
                   );
                 })}
+              </motion.div>
 
-                {/* View All FAQs Link (No question count) */}
-                <div className="pt-3 flex justify-center">
+              {/* View All FAQs Link on Mobile */}
+              <div className="mt-6 flex justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                >
                   <Link
                     href={`/${locale}/faq`}
-                    className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-all cursor-pointer"
+                    className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-colors cursor-pointer"
                   >
                     <span>View All FAQs</span>
                     <svg
@@ -156,70 +281,19 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
                       />
                     </svg>
                   </Link>
-                </div>
-              </div>
-
-              {/* Right Column: Solution Callout Box - Sticky Pinned */}
-              <div className="flex-1 max-w-[420px] 2xl:max-w-[450px] sticky top-28 self-start">
-                <FaqAnswerPanel item={activeItem ?? undefined} />
-              </div>
-            </div>
-
-            {/* Tablet & Mobile View (< 1280px): Clean Vertical Accordion Stack */}
-            <div className="mt-8 xl:hidden">
-              <div className="mx-auto max-w-2xl space-y-3.5">
-                {displayItems.map((item, index) => {
-                  const isCurrentActive =
-                    (item.id || item.question) ===
-                    (activeItem?.id || activeItem?.question);
-
-                  return (
-                    <FaqAccordionItem
-                      key={item.id || item.question || index}
-                      item={item}
-                      isOpen={isCurrentActive}
-                      onToggle={() => {
-                        setSelectedId((prev) =>
-                          prev === (item.id || item.question)
-                            ? null
-                            : item.id || item.question
-                        );
-                      }}
-                      isDesktop={false}
-                    />
-                  );
-                })}
-              </div>
-
-              {/* View All FAQs Link on Mobile (No question count) */}
-              <div className="mt-6 flex justify-center">
-                <Link
-                  href={`/${locale}/faq`}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-all cursor-pointer"
-                >
-                  <span>View All FAQs</span>
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="M6 12L10 8L6 4"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
+                </motion.div>
               </div>
 
               {/* Centered Help Card below questions */}
-              <div className="mt-8 flex justify-center">
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="mt-8 flex justify-center"
+              >
                 <FaqHelpCard dict={dict} currentLocale={locale} isMobile />
-              </div>
+              </motion.div>
             </div>
           </>
         )}

@@ -3,35 +3,53 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { GroupExcursion } from "../types";
 import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
+import { getDictionary, type Dictionary } from "@/shared/utils/getDictionary";
 
 interface GroupExcursionCardProps {
   excursion: GroupExcursion;
   locale?: string;
+  dict?: Dictionary;
 }
 
-const STAR_D = "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z";
+const STAR_D =
+  "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z";
 
 export function GroupExcursionCard({
   excursion,
   locale = "en",
+  dict,
 }: GroupExcursionCardProps) {
-  const { id, title, description, badge, duration, rating, adultPrice, childPrice, infantPrice, currency, imageUrl } = excursion;
+  const {
+    id,
+    title,
+    description,
+    badge,
+    duration,
+    rating,
+    adultPrice,
+    childPrice,
+    infantPrice,
+    currency,
+    imageUrl,
+  } = excursion;
   const [imgSrc, setImgSrc] = React.useState(imageUrl);
   const [prevImageUrl, setPrevImageUrl] = React.useState(imageUrl);
 
-  // Reset the fallback when a new image arrives. Done during render instead of
-  // in an effect to avoid a cascading re-render.
+  const activeDict = dict || getDictionary(locale);
+  const t = activeDict.groupExcursions;
+
   if (prevImageUrl !== imageUrl) {
     setPrevImageUrl(imageUrl);
     setImgSrc(imageUrl);
   }
 
   const priceItems = [
-    adultPrice > 0 ? { label: "Adult", value: adultPrice } : null,
-    childPrice > 0 ? { label: "Child", value: childPrice } : null,
-    infantPrice > 0 ? { label: "Infant", value: infantPrice } : null,
+    adultPrice > 0 ? { label: t.pricing.adult, value: adultPrice } : null,
+    childPrice > 0 ? { label: t.pricing.child, value: childPrice } : null,
+    infantPrice > 0 ? { label: t.pricing.infant, value: infantPrice } : null,
   ].filter(Boolean) as { label: string; value: number }[];
 
   const hasAllPrices = priceItems.length >= 3;
@@ -43,13 +61,25 @@ export function GroupExcursionCard({
         const isFull = rating >= starIndex;
         const isHalf = !isFull && rating >= starIndex - 0.5;
         return (
-          <span key={starIndex} className="relative inline-block w-[16px] sm:w-[18px] md:w-[16px] lg:w-[22px] h-[16px] sm:h-[18px] md:h-[16px] lg:h-[22px]">
-            <svg className="w-full h-full fill-[#8CC63F]/25 text-[#8CC63F]/25" viewBox="0 0 20 20">
+          <span
+            key={starIndex}
+            className="relative inline-block w-[16px] sm:w-[18px] md:w-[16px] lg:w-[22px] h-[16px] sm:h-[18px] md:h-[16px] lg:h-[22px]"
+          >
+            <svg
+              className="w-full h-full fill-[#8CC63F]/25 text-[#8CC63F]/25"
+              viewBox="0 0 20 20"
+            >
               <path d={STAR_D} />
             </svg>
             {(isFull || isHalf) && (
-              <span className="absolute inset-0 overflow-hidden" style={{ width: isHalf ? "50%" : "100%" }}>
-                <svg className="w-full h-full fill-[#8CC63F] text-[#8CC63F]" viewBox="0 0 20 20">
+              <span
+                className="absolute inset-0 overflow-hidden"
+                style={{ width: isHalf ? "50%" : "100%" }}
+              >
+                <svg
+                  className="w-full h-full fill-[#8CC63F] text-[#8CC63F]"
+                  viewBox="0 0 20 20"
+                >
                   <path d={STAR_D} />
                 </svg>
               </span>
@@ -69,8 +99,11 @@ export function GroupExcursionCard({
       prefetch={false}
       className="group block h-full text-inherit no-underline select-none cursor-pointer"
     >
-      <div
-        className="bg-[#FFFFFF] text-[#0E4A68] rounded-[12px] overflow-hidden flex flex-col justify-between h-full min-h-[440px] sm:min-h-[490px] md:min-h-[440px] lg:min-h-[540px] transition-all duration-300 group-hover:-translate-y-1.5 cursor-pointer"
+      <motion.div
+        whileHover={{ y: -6 }}
+        whileTap={{ scale: 0.99 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className="bg-[#FFFFFF] text-[#0E4A68] rounded-[12px] overflow-hidden flex flex-col justify-between h-full min-h-[440px] sm:min-h-[490px] md:min-h-[440px] lg:min-h-[540px] cursor-pointer"
         style={{
           border: "0.5px solid #888888",
           boxShadow: "0px 2px 20px 2px #00000033",
@@ -116,7 +149,6 @@ export function GroupExcursionCard({
           <div>
             {/* Duration & Rating Row */}
             <div className="flex flex-wrap items-center justify-between gap-x-1 gap-y-1.5">
-              {/* Duration */}
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <svg
                   className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-[#0E4A68] shrink-0"
@@ -128,14 +160,11 @@ export function GroupExcursionCard({
                   <circle cx="12" cy="12" r="9" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
-                <span
-                  className="font-poppins font-semibold text-[14px] sm:text-[16px] md:text-[14px] lg:text-[19px] leading-[20px] sm:leading-[22px] md:leading-[20px] lg:leading-[26px] text-[#0E4A68] tracking-normal align-middle"
-                >
+                <span className="font-poppins font-semibold text-[14px] sm:text-[16px] md:text-[14px] lg:text-[19px] leading-[20px] sm:leading-[22px] md:leading-[20px] lg:leading-[26px] text-[#0E4A68] tracking-normal align-middle">
                   {duration}
                 </span>
               </div>
 
-              {/* Rating & Stars */}
               <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 <span className="font-poppins font-bold text-[14px] sm:text-[16px] md:text-[14px] lg:text-[19px] leading-[20px] sm:leading-[22px] md:leading-[20px] lg:leading-[26px] text-[#0E4A68]">
                   {rating.toFixed(1)}
@@ -145,9 +174,7 @@ export function GroupExcursionCard({
             </div>
 
             {/* Title */}
-            <h3
-              className="font-poppins font-bold text-[15px] sm:text-[17px] md:text-[15px] lg:text-[18px] text-[#0E4A68] mt-2 sm:mt-2.5 md:mt-2 uppercase tracking-[-0.03em] text-left leading-[20px] sm:leading-[24px] md:leading-[20px] lg:leading-[26px] line-clamp-2 min-h-[40px] sm:min-h-[48px] md:min-h-[40px] lg:min-h-[52px] flex items-center"
-            >
+            <h3 className="font-poppins font-bold text-[15px] sm:text-[17px] md:text-[15px] lg:text-[18px] text-[#0E4A68] mt-2 sm:mt-2.5 md:mt-2 uppercase tracking-[-0.03em] text-left leading-[20px] sm:leading-[24px] md:leading-[20px] lg:leading-[26px] line-clamp-2 min-h-[40px] sm:min-h-[48px] md:min-h-[40px] lg:min-h-[52px] flex items-center">
               {title}
             </h3>
 
@@ -186,11 +213,11 @@ export function GroupExcursionCard({
                 boxShadow: "0px 2px 20px 2px rgba(0, 0, 0, 0.25)",
               }}
             >
-              View Details
+              {t.viewDetails}
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </Link>
   );
 }

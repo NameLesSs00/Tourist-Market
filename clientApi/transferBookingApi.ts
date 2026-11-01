@@ -6,6 +6,8 @@ import type {
   TransferBookingStatus,
   CreateTransferBookingRequest,
   CreateTransferBookingResponse,
+  TransferMatchParams,
+  TransferMatchResponseDto,
 } from "@/models/transferBooking";
 
 export async function getTransferBookings(): Promise<TransferBookingItem[]> {
@@ -49,6 +51,16 @@ export async function previewTransferBooking(
 ): Promise<TransferBookingPreviewResult> {
   const { data } = await apiClient.get<TransferBookingPreviewResult>(
     "/transfer-bookings/preview",
+    { params }
+  );
+  return data;
+}
+
+export async function matchTransferBooking(
+  params: TransferMatchParams
+): Promise<TransferMatchResponseDto> {
+  const { data } = await apiClient.get<TransferMatchResponseDto>(
+    "/transfer-bookings/match",
     { params }
   );
   return data;

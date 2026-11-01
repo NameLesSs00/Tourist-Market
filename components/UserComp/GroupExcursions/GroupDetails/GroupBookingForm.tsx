@@ -115,7 +115,7 @@ export function GroupBookingForm({
       return;
     }
     if (!isValidPhoneNumber(phone)) {
-      toast.error("Please enter a valid phone number with country code (7 to 15 digits).");
+      toast.error("Please enter a valid phone number (7 to 15 digits).");
       return;
     }
     const finalWhatsApp = sameAsPhone ? phone.trim() : whatsApp.trim();
@@ -124,7 +124,7 @@ export function GroupBookingForm({
       return;
     }
     if (!isValidPhoneNumber(finalWhatsApp)) {
-      toast.error("Please enter a valid WhatsApp number with country code (7 to 15 digits).");
+      toast.error("Please enter a valid WhatsApp number (7 to 15 digits).");
       return;
     }
     if (!hotelName.trim() || hotelName.trim().length < 2) {

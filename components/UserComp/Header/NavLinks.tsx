@@ -2,8 +2,10 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ServicesMegaMenu } from "./ServicesMegaMenu";
 import { getHeaderServicesData } from "./headerServicesData";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface NavLinksProps {
   currentLocale?: string;
@@ -19,6 +21,8 @@ export function NavLinks({
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const dict = getDictionary(currentLocale);
+  const nav = dict.nav;
   const servicesCategories = getHeaderServicesData(currentLocale);
 
   useEffect(() => {
@@ -54,16 +58,20 @@ export function NavLinks({
     "font-poppins-semibold-16 text-[#083952] transition-colors hover:text-[#D9943B] text-[13.5px] xl:text-[15px] 2xl:text-base whitespace-nowrap";
 
   return (
-    <nav className={`flex items-center gap-3 lg:gap-4 xl:gap-6 2xl:gap-8 ${className}`}>
+    <nav className={`flex items-center gap-3.5 lg:gap-5 xl:gap-7 2xl:gap-9 ${className}`}>
       {/* Home */}
-      <Link href={`/${currentLocale}`} onClick={handleNavClick} className={navItemClass}>
-        Home
-      </Link>
+      <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
+        <Link href={`/${currentLocale}`} onClick={handleNavClick} className={navItemClass}>
+          {nav.home}
+        </Link>
+      </motion.div>
 
-      {/* Explore Services Dropdown (Click to toggle, stays open until click outside or selection) */}
+      {/* Explore Services Dropdown */}
       <div className="relative" ref={containerRef}>
-        <button
+        <motion.button
           type="button"
+          whileHover={{ y: -1 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => setIsServicesOpen((prev) => !prev)}
           aria-expanded={isServicesOpen}
           aria-haspopup="true"
@@ -71,7 +79,7 @@ export function NavLinks({
             isServicesOpen ? "text-[#D9943B]" : ""
           }`}
         >
-          <span>Explore Services</span>
+          <span>{nav.exploreServices}</span>
           <svg
             className={`h-3.5 w-3.5 transition-transform duration-200 ${
               isServicesOpen ? "rotate-180 text-[#D9943B]" : ""
@@ -83,7 +91,7 @@ export function NavLinks({
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
           </svg>
-        </button>
+        </motion.button>
 
         {/* 3-Column Services Mega Menu */}
         <ServicesMegaMenu
@@ -94,28 +102,36 @@ export function NavLinks({
       </div>
 
       {/* Hotel Deliveries */}
-      <Link
-        href={`/${currentLocale}/hotel-deliveries`}
-        onClick={handleNavClick}
-        className={navItemClass}
-      >
-        Hotel Deliveries
-      </Link>
+      <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
+        <Link
+          href={`/${currentLocale}/hotel-deliveries`}
+          onClick={handleNavClick}
+          className={navItemClass}
+        >
+          {nav.hotelDeliveries}
+        </Link>
+      </motion.div>
 
       {/* Blogs */}
-      <Link href={`/${currentLocale}/Blogs`} onClick={handleNavClick} className={navItemClass}>
-        Blogs
-      </Link>
+      <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
+        <Link href={`/${currentLocale}/Blogs`} onClick={handleNavClick} className={navItemClass}>
+          {nav.blogs}
+        </Link>
+      </motion.div>
 
       {/* About Us */}
-      <Link href={`/${currentLocale}/About`} onClick={handleNavClick} className={navItemClass}>
-        About Us
-      </Link>
+      <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
+        <Link href={`/${currentLocale}/About`} onClick={handleNavClick} className={navItemClass}>
+          {nav.about}
+        </Link>
+      </motion.div>
 
       {/* Contact Us */}
-      <Link href={`/${currentLocale}/Contact`} onClick={handleNavClick} className={navItemClass}>
-        Contact Us
-      </Link>
+      <motion.div whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}>
+        <Link href={`/${currentLocale}/Contact`} onClick={handleNavClick} className={navItemClass}>
+          {nav.contact}
+        </Link>
+      </motion.div>
     </nav>
   );
 }

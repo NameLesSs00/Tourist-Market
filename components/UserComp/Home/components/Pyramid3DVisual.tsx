@@ -2,10 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
+import type { Dictionary } from "@/shared/utils/getDictionary";
 
 interface Pyramid3DVisualProps {
   className?: string;
   size?: "sm" | "md" | "lg";
+  dict?: Dictionary;
 }
 
 const sizeConfig = {
@@ -17,8 +19,11 @@ const sizeConfig = {
 export function Pyramid3DVisual({
   className = "",
   size = "lg",
+  dict,
 }: Pyramid3DVisualProps) {
   const sizeClass = sizeConfig[size];
+  const polyAlt = dict?.hero?.alt?.polygonBase ?? "Hexagon Polygon Base";
+  const pyramidAlt = dict?.hero?.alt?.pyramid ?? "3D Golden Pyramid";
 
   return (
     <div
@@ -28,7 +33,7 @@ export function Pyramid3DVisual({
       <div className="absolute inset-0 flex items-center justify-center">
         <Image
           src="/homepage/hero/poly.webp"
-          alt="Hexagon Polygon Base"
+          alt={polyAlt}
           width={325}
           height={375}
           priority
@@ -36,7 +41,7 @@ export function Pyramid3DVisual({
         />
       </div>
 
-      {/* 2. Middle Layer: 3 Concentric Orbit Rings (CSS-animated via wrapper divs) */}
+      {/* 2. Middle Layer: 3 Concentric Orbit Rings */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <div className="relative h-[96%] w-[96%]">
           {/* Ring 1 - Outer (Clockwise 8s) */}
@@ -97,11 +102,11 @@ export function Pyramid3DVisual({
         </div>
       </div>
 
-      {/* 3. Top Layer: 3D Pyramid - Balanced size with rings orbiting around it */}
+      {/* 3. Top Layer: 3D Pyramid */}
       <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
         <Image
           src="/homepage/hero/3dPirm.webp"
-          alt="3D Golden Pyramid"
+          alt={pyramidAlt}
           width={350}
           height={350}
           priority

@@ -165,33 +165,18 @@ export function markServiceReviewHelpfulInCookie(reviewId: string): void {
   )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
 }
 
-function readSubmittedServiceIds(): string[] {
-  if (typeof document === "undefined") return [];
-  const match = document.cookie.match(
-    new RegExp(`(?:^|; )${SERVICE_SUBMITTED_COOKIE_NAME}=([^;]*)`)
-  );
-  if (!match) return [];
-  return decodeURIComponent(match[1])
-    .split(",")
-    .map((id) => id.trim())
-    .filter(Boolean);
+export function clearSubmittedServiceReviewsCookie(): void {
+  if (typeof document === "undefined") return;
+  document.cookie = `${SERVICE_SUBMITTED_COOKIE_NAME}=;path=/;max-age=0;SameSite=Lax`;
 }
 
 /** True when this browser already submitted a review for the sub-service. */
-export function hasSubmittedServiceReview(subServiceId: string): boolean {
-  const key = String(subServiceId).trim();
-  if (!key) return false;
-  return readSubmittedServiceIds().includes(key);
+export function hasSubmittedServiceReview(_subServiceId: string): boolean {
+  // Do not permanently lock out the review form across sessions
+  return false;
 }
 
-/** Records that a review was submitted for the sub-service (once per browser). */
-export function markServiceReviewSubmitted(subServiceId: string): void {
-  if (typeof document === "undefined") return;
-  const key = String(subServiceId).trim();
-  if (!key) return;
-  const ids = readSubmittedServiceIds();
-  if (!ids.includes(key)) ids.push(key);
-  document.cookie = `${SERVICE_SUBMITTED_COOKIE_NAME}=${encodeURIComponent(
-    ids.join(",")
-  )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
+/** Records that a review was submitted for the sub-service (in-memory per session). */
+export function markServiceReviewSubmitted(_subServiceId: string): void {
+  // Intentionally ephemeral to avoid locking user out permanently
 }

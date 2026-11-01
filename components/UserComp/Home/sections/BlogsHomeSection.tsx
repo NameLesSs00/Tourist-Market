@@ -3,13 +3,36 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { BlogCard } from "@/components/UserComp/Blogs/components/BlogCard";
 import { useClientBlogsQuery } from "@/features/blogs/useClientBlogs";
 
 interface BlogsHomeSectionProps {
   locale?: string;
 }
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.14,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+const cardItemVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
 
 export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
   // Fetch only 3 blogs for the home section grid
@@ -43,7 +66,7 @@ export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center mb-10 sm:mb-14"
         >
@@ -73,46 +96,59 @@ export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
           </div>
         ) : (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.05 }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.08 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8"
           >
-            {/* Grid wrapper — centers any orphan card in the last row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 lg:gap-8">
-              {blogs.map((blog, index) => {
-                const total = blogs.length;
-                const colsPerRow = 3;
-                const orphanCount = total % colsPerRow;
-                const isOrphan =
-                  orphanCount !== 0 && index >= total - orphanCount;
-                // Center a single orphan on lg (3-col) grid by offsetting col-start
-                const centerClass =
-                  isOrphan && orphanCount === 1
-                    ? "lg:col-start-2 sm:col-start-1"
-                    : "";
-                return (
-                  <div key={blog.id} className={centerClass}>
-                    <BlogCard blog={blog} locale={locale} />
-                  </div>
-                );
-              })}
-            </div>
+            {blogs.map((blog, index) => {
+              const total = blogs.length;
+              const colsPerRow = 3;
+              const orphanCount = total % colsPerRow;
+              const isOrphan =
+                orphanCount !== 0 && index >= total - orphanCount;
+              const centerClass =
+                isOrphan && orphanCount === 1
+                  ? "lg:col-start-2 sm:col-start-1"
+                  : "";
+              return (
+                <motion.div
+                  key={blog.id}
+                  variants={cardItemVariants}
+                  className={centerClass}
+                >
+                  <BlogCard blog={blog} locale={locale} />
+                </motion.div>
+              );
+            })}
           </motion.div>
         )}
 
         {/* Center CTA Button: Read More */}
-        <div className="mt-12 sm:mt-14 flex justify-center">
-          <Link
-            href={`/${locale}/Blogs`}
-            className="inline-flex items-center justify-center bg-[#165F84] hover:bg-[#0E4A68] active:scale-95 text-white font-poppins font-semibold text-sm sm:text-base py-3 px-12 rounded-[14px] transition-all duration-200 cursor-pointer"
-            style={{
-              boxShadow: "0px 4px 16px 0px rgba(0, 0, 0, 0.2)",
-            }}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.45, delay: 0.2, ease: "easeOut" }}
+          className="mt-12 sm:mt-14 flex justify-center"
+        >
+          <motion.div
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
           >
-            Read More
-          </Link>
-        </div>
+            <Link
+              href={`/${locale}/Blogs`}
+              className="inline-flex items-center justify-center bg-[#165F84] hover:bg-[#0E4A68] text-white font-poppins font-semibold text-sm sm:text-base py-3 px-12 rounded-[14px] transition-colors cursor-pointer"
+              style={{
+                boxShadow: "0px 4px 16px 0px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              Read More
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

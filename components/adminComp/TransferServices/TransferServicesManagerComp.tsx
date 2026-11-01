@@ -2,40 +2,48 @@
 
 import React, { useState } from "react";
 import { PageHeader } from "@/components/adminComp/Shared";
-import { useTransferRoutePricesQuery } from "@/features/transferRoutePrices/useTransferRoutePriceAdmin";
+import { useVehicleTypeTransfersQuery } from "@/features/vehicleTypeTransfers/useVehicleTypeTransferAdmin";
+import { useTransferVehiclePricesQuery } from "@/features/transferVehiclePrices/useTransferVehiclePriceAdmin";
 import {
   useTransferFromLocationsQuery,
   useTransferToLocationsQuery,
 } from "@/features/transferLocations/useTransferLocationAdmin";
+import { useAdminTransferReviewsQuery } from "@/features/transferReviews/useAdminTransferReviews";
 import {
   TransferServicesTabs,
   type TransferServicesTab,
 } from "./TransferServicesTabs";
-import { TransferRoutePriceList } from "./TransferRoutePriceList";
+import { VehicleTypeList } from "./VehicleTypeList";
+import { TransferVehiclePriceList } from "./TransferVehiclePriceList";
 import { TransferLocationsView } from "./TransferLocationsView";
+import { TransferReviewList } from "./TransferReviewList";
 
 interface TransferServicesManagerCompProps {
   defaultTab?: TransferServicesTab;
 }
 
 export function TransferServicesManagerComp({
-  defaultTab = "prices",
+  defaultTab = "vehicleTypes",
 }: TransferServicesManagerCompProps) {
   const [activeTab, setActiveTab] = useState<TransferServicesTab>(defaultTab);
 
-  const pricesCountQuery = useTransferRoutePricesQuery({ pageSize: 1 });
+  const vehicleTypesQuery = useVehicleTypeTransfersQuery({ pageSize: 1 });
+  const pricesCountQuery = useTransferVehiclePricesQuery({ PageSize: 1 });
   const fromCountQuery = useTransferFromLocationsQuery({ pageSize: 1 });
   const toCountQuery = useTransferToLocationsQuery({ pageSize: 1 });
+  const reviewsCountQuery = useAdminTransferReviewsQuery({ pageSize: 1 });
 
+  const vehicleTypesCount = vehicleTypesQuery.data?.totalCount ?? 0;
   const pricesCount = pricesCountQuery.data?.totalCount ?? 0;
   const fromCount = fromCountQuery.data?.data?.totalCount ?? 0;
   const toCount = toCountQuery.data?.data?.totalCount ?? 0;
+  const reviewsCount = reviewsCountQuery.data?.totalCount ?? 0;
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Transfer Services"
-        description="Manage route pricing rules, departure pickup points, and destination drop-off locations."
+        description="Manage transfer vehicle types, route pricing, departure pickup points, destination drop-off locations, and customer reviews."
       />
 
       {/* Main Tabbed Switcher */}
@@ -43,16 +51,20 @@ export function TransferServicesManagerComp({
         <TransferServicesTabs
           activeTab={activeTab}
           onTabChange={setActiveTab}
+          vehicleTypesCount={vehicleTypesCount}
           pricesCount={pricesCount}
           fromCount={fromCount}
           toCount={toCount}
+          reviewsCount={reviewsCount}
         />
       </div>
 
       {/* Active Tab Content */}
-      {activeTab === "prices" && <TransferRoutePriceList />}
+      {activeTab === "vehicleTypes" && <VehicleTypeList />}
+      {activeTab === "prices" && <TransferVehiclePriceList />}
       {activeTab === "from" && <TransferLocationsView locationType="from" />}
       {activeTab === "to" && <TransferLocationsView locationType="to" />}
+      {activeTab === "reviews" && <TransferReviewList />}
     </div>
   );
 }

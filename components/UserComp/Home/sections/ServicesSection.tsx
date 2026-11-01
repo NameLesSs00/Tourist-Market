@@ -1,15 +1,42 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { ServiceCard } from "../components/ServiceCard";
 import { getServicesData, ServiceItem } from "@/shared/utils/servicesData";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ServicesSectionProps {
   locale?: string;
 }
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.09,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardItemVariants: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
 export function Services({ locale = "en" }: ServicesSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.services;
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const services = getServicesData(locale);
 
@@ -63,38 +90,41 @@ export function Services({ locale = "en" }: ServicesSectionProps) {
     <section
       id="services"
       className="w-full bg-[#FFF4E5] py-14 sm:py-16 lg:py-20 relative overflow-hidden"
-      aria-label="Our Services"
+      aria-label={t.titlePrefix + " " + t.titleAccent}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 14 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center mb-10 sm:mb-12"
         >
           <h2 className="font-poppins text-3xl sm:text-4xl lg:text-[40px] font-bold tracking-tight text-[#003D5B]">
-            Our <span className="text-[#D48C28]">Services</span>
+            {t.titlePrefix} <span className="text-[#D48C28]">{t.titleAccent}</span>
           </h2>
           <p className="font-poppins text-sm sm:text-base text-[#646464] mt-2 font-normal">
-            Everything you need for your ultimate experience
+            {t.subtitle}
           </p>
         </motion.div>
 
         {/* Big Rounded Container for Cards */}
         <motion.div
-          initial={{ opacity: 0, y: 18 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.05 }}
+          viewport={{ once: true, amount: 0.08 }}
+          transition={{ duration: 0.55, ease: "easeOut" }}
           className="services-carousel-panel relative pt-14 sm:pt-16 lg:pt-20 pb-10 sm:pb-12 px-5 sm:px-8 lg:px-12"
         >
           {/* Left Circular Arrow Button */}
-          <button
+          <motion.button
             type="button"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => handleScroll("left")}
-            aria-label="Previous services"
-            className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13 bg-[#F7F7F7] rounded-full flex items-center justify-center text-[#003D5B] shadow-[0px_2px_15px_0px_#00000033] hover:scale-105 active:scale-95 transition-all z-30 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#D48C28]"
+            aria-label={t.prev}
+            className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13 bg-[#F7F7F7] rounded-full flex items-center justify-center text-[#003D5B] shadow-[0px_2px_15px_0px_#00000033] transition-colors z-30 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#D48C28]"
             style={{
               boxShadow: "0px 2px 15px 0px rgba(0, 0, 0, 0.2)",
             }}
@@ -112,14 +142,16 @@ export function Services({ locale = "en" }: ServicesSectionProps) {
                 d="M15.75 19.5L8.25 12l7.5-7.5"
               />
             </svg>
-          </button>
+          </motion.button>
 
           {/* Right Circular Arrow Button */}
-          <button
+          <motion.button
             type="button"
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
             onClick={() => handleScroll("right")}
-            aria-label="Next services"
-            className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13 bg-[#F7F7F7] rounded-full flex items-center justify-center text-[#003D5B] shadow-[0px_2px_15px_0px_#00000033] hover:scale-105 active:scale-95 transition-all z-30 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#D48C28]"
+            aria-label={t.next}
+            className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 lg:w-13 lg:h-13 bg-[#F7F7F7] rounded-full flex items-center justify-center text-[#003D5B] shadow-[0px_2px_15px_0px_#00000033] transition-colors z-30 cursor-pointer focus-visible:outline-2 focus-visible:outline-[#D48C28]"
             style={{
               boxShadow: "0px 2px 15px 0px rgba(0, 0, 0, 0.2)",
             }}
@@ -137,7 +169,7 @@ export function Services({ locale = "en" }: ServicesSectionProps) {
                 d="M8.25 4.5l7.5 7.5-7.5 7.5"
               />
             </svg>
-          </button>
+          </motion.button>
 
           {/* Cards Carousel Container: Smooth mouse-drag to scroll and native touch swipe */}
           <div
@@ -156,16 +188,23 @@ export function Services({ locale = "en" }: ServicesSectionProps) {
               isDragging ? "cursor-grabbing" : "cursor-grab scroll-smooth"
             }`}
           >
-            <div className="flex gap-4 sm:gap-5 xl:gap-6 items-start">
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.08 }}
+              className="flex gap-4 sm:gap-5 xl:gap-6 items-start"
+            >
               {services.map((item) => (
-                <div
+                <motion.div
                   key={item.id}
+                  variants={cardItemVariants}
                   className="w-[260px] sm:w-[275px] xl:w-[290px] flex-shrink-0"
                 >
-                  <ServiceCard item={item} />
-                </div>
+                  <ServiceCard item={item} exploreText={t.explore} />
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>

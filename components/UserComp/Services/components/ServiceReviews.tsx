@@ -10,8 +10,7 @@ import {
 import {
   readHelpfulServiceReviewIds,
   markServiceReviewHelpfulInCookie,
-  hasSubmittedServiceReview,
-  markServiceReviewSubmitted,
+  clearSubmittedServiceReviewsCookie,
 } from "@/shared/utils/helpfulReviews";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { isValidEmail, isValidPhoneNumber } from "@/shared/utils/phoneUtils";
@@ -59,9 +58,8 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
     });
     setLikedMap(map);
 
-    if (subServiceId) {
-      setAlreadySubmitted(hasSubmittedServiceReview(subServiceId));
-    }
+    // Clear legacy cookie that permanently locked the review form
+    clearSubmittedServiceReviewsCookie();
   }, [subServiceId]);
 
   useEffect(() => {
@@ -140,7 +138,7 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
     }
     if (!userPhone.trim() || !isValidPhoneNumber(userPhone)) {
       toast.error(
-        "Please enter a valid phone number with country code (7 to 15 digits)."
+        "Please enter a valid phone number (7 to 15 digits)."
       );
       return;
     }
@@ -160,7 +158,6 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
       },
       {
         onSuccess: () => {
-          markServiceReviewSubmitted(subServiceId);
           setAlreadySubmitted(true);
           setUserRating(0);
           setUserName("");
@@ -196,6 +193,7 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
 
           <ServiceReviewForm
             alreadySubmitted={alreadySubmitted}
+            onResetSubmitted={() => setAlreadySubmitted(false)}
             userRating={userRating}
             userName={userName}
             userEmail={userEmail}

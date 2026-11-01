@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { BlogItem } from "@/models/blog";
 import {
   DEFAULT_BLOG_FALLBACK_IMAGE,
@@ -38,11 +39,14 @@ export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
       />
 
       {/* Main Blog Card */}
-      <article
+      <motion.article
+        whileHover={{ y: -6 }}
+        whileTap={{ scale: 0.99 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         style={{
           borderRadius: "20px",
         }}
-        className="relative z-10 flex flex-col w-full h-full overflow-hidden shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl select-none"
+        className="relative z-10 flex flex-col w-full h-full overflow-hidden shadow-md select-none cursor-pointer"
       >
         {/* Top: Blog Image (Clickable) */}
         <Link
@@ -89,23 +93,25 @@ export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
 
           {/* Card Button ("Read article") */}
           <div className="mt-6 flex justify-center w-full">
-            <Link
-              href={`/${locale}/Blogs/${blog.id}`}
-              draggable={false}
-              onDragStart={(e) => e.preventDefault()}
-              style={{
-                backgroundColor: "#FFFFFFEB",
-                color: "#000000",
-                boxShadow: "0px 4px 4px 0px #FFFFFF40",
-                borderRadius: "25px",
-              }}
-              className="inline-flex items-center justify-center px-6 py-2 font-['Poppins'] text-[13px] sm:text-[14px] font-medium tracking-normal transition-all duration-200 hover:bg-white hover:scale-[1.02] active:scale-[0.98] select-none"
-            >
-              Read article
-            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                href={`/${locale}/Blogs/${blog.id}`}
+                draggable={false}
+                onDragStart={(e) => e.preventDefault()}
+                style={{
+                  backgroundColor: "#FFFFFFEB",
+                  color: "#000000",
+                  boxShadow: "0px 4px 4px 0px #FFFFFF40",
+                  borderRadius: "25px",
+                }}
+                className="inline-flex items-center justify-center px-6 py-2 font-['Poppins'] text-[13px] sm:text-[14px] font-medium tracking-normal transition-colors hover:bg-white select-none cursor-pointer"
+              >
+                Read article
+              </Link>
+            </motion.div>
           </div>
         </div>
-      </article>
+      </motion.article>
     </div>
   );
 }

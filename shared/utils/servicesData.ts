@@ -1,3 +1,5 @@
+import { getDictionary } from "@/shared/utils/getDictionary";
+
 export interface ServiceItem {
   id: string;
   title: string;
@@ -8,54 +10,57 @@ export interface ServiceItem {
 }
 
 export function getServicesData(locale = "en"): ServiceItem[] {
+  const dict = getDictionary(locale);
+  const items = dict.services.items;
+
   return [
     {
       id: "hotel-deliveries",
-      title: "Hotel Deliveries",
+      title: items.hotelDeliveries.title,
       image: "/homepage/services/HotelDeliveriesM.jpg",
       floatingImage: "/homepage/services/HotelDeliveriesC.png",
       href: `/${locale}/hotel-deliveries`,
-      alt: "Hotel Deliveries - Room Service & Amenities",
+      alt: items.hotelDeliveries.alt,
     },
     {
       id: "tourist-services",
-      title: "Tourist Services",
+      title: items.touristServices.title,
       image: "/homepage/services/TouristServicesM.jpg",
       floatingImage: "/homepage/services/TouristServicesC.png",
       href: `/${locale}/services/tourist`,
-      alt: "Tourist Services - Guided Cultural & Historical Tours",
+      alt: items.touristServices.alt,
     },
     {
       id: "red-sea-real-estate",
-      title: "Red Sea Real Estate",
+      title: items.realEstate.title,
       image: "/homepage/services/RealEstateM.jpg",
       floatingImage: "/homepage/services/Real EstateC.png",
       href: `/${locale}/services/real-estate`,
-      alt: "Red Sea Real Estate - Luxury Villas & Coastal Properties",
+      alt: items.realEstate.alt,
     },
     {
       id: "car-rental",
-      title: "Car Rental",
+      title: items.carRental.title,
       image: "/homepage/services/CarRentalM.jpg",
       floatingImage: "/homepage/services/CarRentalC.png",
       href: `/${locale}/services/car-rental`,
-      alt: "Car Rental - Luxury SUVs & Desert Vehicles",
+      alt: items.carRental.alt,
     },
     {
       id: "transfer-service",
-      title: "Transfer Service",
+      title: items.transferService.title,
       image: "/homepage/services/TransferServiceM.jpg",
       floatingImage: "/homepage/services/TransferServiceC.png",
       href: `/${locale}/services/transfer`,
-      alt: "Transfer Service - Private & Group Transportation",
+      alt: items.transferService.alt,
     },
     {
       id: "vip-airport",
-      title: "VIP Services-Hurghada Airport",
+      title: items.vipAirport.title,
       image: "/homepage/services/AirportM.png",
       floatingImage: "/homepage/services/AirportC.png",
       href: `/${locale}/services/vip-airport`,
-      alt: "VIP Services - Hurghada Airport Meet & Assist",
+      alt: items.vipAirport.alt,
     },
   ];
 }

@@ -3,20 +3,27 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { ServiceItem } from "@/shared/utils/servicesData";
 
 interface ServiceCardProps {
   item: ServiceItem;
+  exploreText?: string;
 }
 
-export function ServiceCard({ item }: ServiceCardProps) {
+export function ServiceCard({ item, exploreText = "Explore" }: ServiceCardProps) {
   return (
-    <div className="relative pt-[74px] sm:pt-[82px] xl:pt-[88px] w-full flex-shrink-0 group">
+    <motion.div
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="relative pt-[74px] sm:pt-[82px] xl:pt-[88px] w-full flex-shrink-0 group"
+    >
       <Link
         href={item.href}
         draggable={false}
         onDragStart={(e) => e.preventDefault()}
-        aria-label={`${item.title} - Explore service`}
+        aria-label={`${item.title} - ${exploreText}`}
         className="block relative w-full cursor-pointer focus-visible:outline-2 focus-visible:outline-[#D48C28] rounded-[22px] select-none"
       >
         {/* Floating Circular Image (Ellipse): Fades out smoothly on hover */}
@@ -32,7 +39,7 @@ export function ServiceCard({ item }: ServiceCardProps) {
         </div>
 
         {/* Card Body: Balanced portrait card */}
-        <div className="relative w-full h-[385px] sm:h-[415px] xl:h-[435px] rounded-[20px] sm:rounded-[22px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out group-hover:-translate-y-3 group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.2)]">
+        <div className="relative w-full h-[385px] sm:h-[415px] xl:h-[435px] rounded-[20px] sm:rounded-[22px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:shadow-[0_16px_40px_rgba(0,0,0,0.2)]">
           {/* Main Card Background Photo */}
           <Image
             src={item.image}
@@ -75,12 +82,12 @@ export function ServiceCard({ item }: ServiceCardProps) {
                 border: "0.31px solid #000000",
               }}
             >
-              Explore
+              {exploreText}
             </div>
           </div>
         </div>
       </Link>
-    </div>
+    </motion.div>
   );
 }
 
