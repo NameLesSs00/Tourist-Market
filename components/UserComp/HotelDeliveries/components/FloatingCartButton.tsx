@@ -1,16 +1,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FiShoppingCart } from "react-icons/fi";
-import { toast } from "sonner";
 import { useCart } from "@/features/cart/useCart";
 
 interface FloatingCartButtonProps {
   className?: string;
+  locale?: string;
 }
 
-export function FloatingCartButton({ className = "" }: FloatingCartButtonProps) {
-  const { isHydrated, totalCount, subtotal } = useCart();
+export function FloatingCartButton({
+  className = "",
+  locale,
+}: FloatingCartButtonProps) {
+  const pathname = usePathname();
+  const { isHydrated, totalCount } = useCart();
   const [bounced, setBounced] = useState(false);
 
   // Trigger brief bounce animation whenever count increments
@@ -24,24 +30,20 @@ export function FloatingCartButton({ className = "" }: FloatingCartButtonProps) 
 
   if (!isHydrated) return null;
 
-  const handleClick = () => {
-    if (totalCount === 0) {
-      toast.info("Your cart is currently empty.");
-      return;
-    }
-    toast.info(
-      `Cart contains ${totalCount} item${totalCount > 1 ? "s" : ""} · Subtotal: $${subtotal.toFixed(2)}`
-    );
-  };
+  // Determine locale from props or pathname
+  const resolvedLocale =
+    locale ||
+    (pathname ? pathname.split("/").filter(Boolean)[0] : "en") ||
+    "en";
+  const cartHref = `/${resolvedLocale}/cart`;
 
   return (
     <div
       className={`fixed bottom-6 left-6 z-40 select-none ${className}`}
       dir="ltr"
     >
-      <button
-        type="button"
-        onClick={handleClick}
+      <Link
+        href={cartHref}
         aria-label={`Shopping cart with ${totalCount} items`}
         className={`group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#D48C28] text-white shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8741D] hover:shadow-2xl active:scale-95 cursor-pointer ring-2 ring-white/90 ${
           bounced ? "scale-110" : "scale-100"
@@ -56,7 +58,7 @@ export function FloatingCartButton({ className = "" }: FloatingCartButtonProps) 
             {totalCount > 99 ? "99+" : totalCount}
           </span>
         )}
-      </button>
+      </Link>
     </div>
   );
 }

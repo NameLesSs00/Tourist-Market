@@ -32,13 +32,19 @@ export const useCartStore = create<CartStoreState>()(
         });
 
         const label = item.title ? `"${item.title}"` : "Item";
-        toast.success(`Added ${label} to your cart.`);
+        const quantityText = quantityToAdd > 1 ? `${quantityToAdd}x ${label}` : label;
+        toast.success(`Added ${quantityText} to your cart.`);
       },
 
       removeItem: (productId: number) => {
+        const itemToRemove = get().items.find((i) => i.productId === productId);
         set((state) => ({
           items: state.items.filter((i) => i.productId !== productId),
         }));
+        if (itemToRemove) {
+          const label = itemToRemove.title ? `"${itemToRemove.title}"` : "Item";
+          toast.info(`Removed ${label} from your cart.`);
+        }
       },
 
       updateQuantity: (productId: number, newQuantity: number) => {
@@ -76,4 +82,3 @@ export const useCartStore = create<CartStoreState>()(
     }
   )
 );
-

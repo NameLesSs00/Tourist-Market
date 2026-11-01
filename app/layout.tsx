@@ -1,9 +1,11 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { Poppins, Manrope, Montserrat, Caveat } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 import { Header } from "@/components/UserComp/Header";
 import { Footer } from "@/components/UserComp/Footer";
+import { WhatsAppFloatingButton } from "@/components/UserComp/Shared/WhatsAppFloatingButton";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 
 const poppins = Poppins({
@@ -52,6 +54,13 @@ export default function RootLayout({
           </Suspense>
           <main className="flex-1 pt-20">{children}</main>
           <Footer />
+          <WhatsAppFloatingButton />
+          <Toaster
+            richColors
+            closeButton
+            position="top-right"
+            toastOptions={{ className: "font-poppins" }}
+          />
         </QueryProvider>
       </body>
     </html>

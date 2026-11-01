@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { FiX } from "react-icons/fi";
 import { HotelDeliveriesHero } from "../components/HotelDeliveriesHero";
 import { HotelDeliveriesCategories } from "../components/HotelDeliveriesCategories";
 import { HotelDeliveriesProducts } from "../components/HotelDeliveriesProducts";
@@ -61,10 +62,10 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
                 <button
                   type="button"
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 text-[18px] transition-colors"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 transition-colors"
                   aria-label="Close filters"
                 >
-                  ✕
+                  <FiX size={18} />
                 </button>
               </div>
 
@@ -91,7 +92,7 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
       )}
 
       {/* ─── 4. Floating Cart Button ─── */}
-      <FloatingCartButton />
+      <FloatingCartButton locale={locale} />
     </div>
   );
 }

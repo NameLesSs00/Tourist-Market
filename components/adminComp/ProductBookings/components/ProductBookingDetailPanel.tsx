@@ -102,8 +102,29 @@ export function ProductBookingDetailPanel({
               <span className="text-gray-400">Hotel:</span> <span className="font-medium text-gray-800">{booking.hotelName || "—"}</span>
             </div>
             <div>
-              <span className="text-gray-400">Address:</span> <span className="font-medium text-gray-800">{booking.address || "—"}</span>
+              <span className="text-gray-400">Room No:</span> <span className="font-medium text-gray-800">{booking.roomNo || "—"}</span>
             </div>
+            <div>
+              <span className="text-gray-400">Delivery Zone:</span> <span className="font-semibold text-[#0E4A68]">{booking.deliveryArea || "—"}</span>
+            </div>
+            <div>
+              <span className="text-gray-400">Preferred Contact:</span> <span className="font-medium text-gray-800">{booking.communicationMethod || "—"}</span>
+            </div>
+            <div>
+              <span className="text-gray-400">Delivery Date:</span>{" "}
+              <span className="font-medium text-gray-800">
+                {booking.deliveryDate ? new Date(booking.deliveryDate).toLocaleDateString() : "—"}
+              </span>
+            </div>
+            <div>
+              <span className="text-gray-400">Delivery Time:</span>{" "}
+              <span className="font-medium text-gray-800">{booking.deliveryTime || "—"}</span>
+            </div>
+            {booking.address && (
+              <div className="sm:col-span-2 text-gray-500">
+                <span className="text-gray-400">Address Details:</span> {booking.address}
+              </div>
+            )}
             {booking.notes && (
               <div className="sm:col-span-2 rounded-lg bg-amber-50/70 p-2 border border-amber-100 text-xs">
                 <span className="font-semibold text-amber-800">Notes:</span> {booking.notes}
@@ -133,12 +154,25 @@ export function ProductBookingDetailPanel({
           </div>
 
           <div className="border-t border-gray-200 pt-2 space-y-1 text-xs">
-            <div className="flex justify-between text-gray-500"><span>Subtotal:</span><span>${booking.subtotalUsd}</span></div>
-            {booking.discountAmountUsd > 0 && (
-              <div className="flex justify-between text-emerald-600 font-medium"><span>Discount:</span><span>-${booking.discountAmountUsd}</span></div>
+            <div className="flex justify-between text-gray-500">
+              <span>Subtotal:</span>
+              <span>${booking.subtotalUsd}</span>
+            </div>
+            {booking.deliveryFeeUsd > 0 && (
+              <div className="flex justify-between text-gray-500">
+                <span>Delivery Fee ({booking.deliveryArea || "Shipping"}):</span>
+                <span>${booking.deliveryFeeUsd.toFixed(2)}</span>
+              </div>
             )}
-            <div className="flex justify-between text-sm font-bold text-[#0E4A68] pt-1">
-              <span>Total Price:</span><span>{curr} {booking.displayFinalPrice ?? booking.finalPriceUsd}</span>
+            {booking.discountAmountUsd > 0 && (
+              <div className="flex justify-between text-emerald-600 font-medium">
+                <span>Discount:</span>
+                <span>-${booking.discountAmountUsd}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-sm font-bold text-[#0E4A68] pt-1 border-t border-gray-100">
+              <span>Total Price:</span>
+              <span>{curr} {booking.displayFinalPrice ?? booking.finalPriceUsd}</span>
             </div>
           </div>
         </div>

@@ -29,17 +29,24 @@ export interface ProductBookingItem {
   countryId?: string;
   hotelName: string;
   roomNo?: string;
-  address: string;
+  deliveryProductId?: number | null;
+  deliveryArea?: string | null;
+  deliveryDate?: string | null;
+  deliveryTime?: string | null;
+  address?: string;
   communicationMethod?: string;
-  notes: string;
+  notes?: string;
   bookingDate: string;
   status: BookingStatus;
   statusName: string;
   subtotalUsd: number;
+  deliveryFeeUsd: number;
   discountAmountUsd: number;
   finalPriceUsd: number;
   currency: string;
   exchangeRate: number;
+  displaySubtotal?: number | null;
+  displayDeliveryFee?: number | null;
   displayFinalPrice: number;
   items: ProductBookingLineItem[];
 }
@@ -77,10 +84,13 @@ export interface CreateProductBookingRequest {
   phoneNumber: string;
   email: string;
   countryId?: string;
+  communicationMethod?: string;
   hotelName: string;
   roomNo: string;
-  address: string;
-  communicationMethod?: string;
+  deliveryProductId?: number;
+  deliveryDate?: string;
+  deliveryTime?: string;
+  address?: string;
   notes?: string;
   items: CreateProductBookingItemRequest[];
 }

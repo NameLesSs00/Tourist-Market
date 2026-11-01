@@ -13,9 +13,9 @@ interface NeedHelpCardProps {
 
 export function NeedHelpCard({
   className = "",
-  whatsappNumber = "201289494715",
-  telegramLink = "https://t.me/egypttouristmarket",
-  viberNumber = "201289494715",
+  whatsappNumber = "201036232021",
+  telegramLink = "https://t.me/Touristmarketegypt",
+  viberNumber = "201036232021",
 }: NeedHelpCardProps) {
   const cleanPhone = whatsappNumber.replace(/[^0-9]/g, "");
   const cleanViber = viberNumber.replace(/[^0-9]/g, "");

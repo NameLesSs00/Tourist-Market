@@ -4,7 +4,13 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaYoutube,
+  FaTelegramPlane,
+  FaTiktok,
+} from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 interface FooterProps {
@@ -35,18 +41,43 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
   ];
 
   const contactItems = [
-    { label: "+20 01289494715", href: "tel:+2001289494715" },
-    { label: "WhatsApp Chat", href: "https://wa.me/2001289494715" },
-    { label: "info@etouristmarket .com", href: "mailto:info@etouristmarket.com" },
-    { label: "El Kawther , Hurghada, Egypt", href: "#" },
-    { label: "Daily: 9:00 AM - 9:00 PM", href: "#" },
+    { label: "+201036234030", href: "tel:+201036234030" },
+    { label: "WhatsApp Chat", href: "https://wa.me/201036232021" },
+    { label: "info@touristmarket-egypt.com", href: "mailto:info@touristmarket-egypt.com" },
+    { label: "Hurghada, Egypt", href: "#" },
   ];
 
   const socialLinks = [
-    { icon: <FaFacebookF className="h-4 w-4" />, href: "https://facebook.com", label: "Facebook" },
-    { icon: <FaInstagram className="h-4 w-4" />, href: "https://instagram.com", label: "Instagram" },
-    { icon: <FaXTwitter className="h-4 w-4" />, href: "https://x.com", label: "X" },
-    { icon: <FaYoutube className="h-4 w-4" />, href: "https://youtube.com", label: "YouTube" },
+    {
+      icon: <FaFacebookF className="h-4 w-4" />,
+      href: "https://www.facebook.com/touristmarketegypt",
+      label: "Facebook",
+    },
+    {
+      icon: <FaInstagram className="h-4 w-4" />,
+      href: "https://www.instagram.com/touristmarketegypt/",
+      label: "Instagram",
+    },
+    {
+      icon: <FaXTwitter className="h-4 w-4" />,
+      href: "https://x.com/touristmarketeg",
+      label: "X",
+    },
+    {
+      icon: <FaYoutube className="h-4 w-4" />,
+      href: "https://www.youtube.com/@touristmarketegypt",
+      label: "YouTube",
+    },
+    {
+      icon: <FaTelegramPlane className="h-4 w-4" />,
+      href: "https://t.me/Touristmarketegypt",
+      label: "Telegram",
+    },
+    {
+      icon: <FaTiktok className="h-4 w-4" />,
+      href: "https://www.tiktok.com/@touristmarketegypt",
+      label: "TikTok",
+    },
   ];
 
   return (
@@ -59,14 +90,13 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
               <Image
                 src="/shared/LogoFooter.svg"
                 alt="Egypt Tourist Market"
-                width={200}
-                height={65}
-                className="h-14 w-auto object-contain"
+                width={160}
+                height={50}
+                className="h-auto w-[160px]"
               />
             </Link>
-            <p className="font-poppins text-[14px] font-normal leading-relaxed text-[#FFFFFFD9]">
-              Enjoy your vacation in Egypt with creative services that take care of your comfort,
-              time, and budget.
+            <p className="font-poppins-regular-14 text-white/80">
+              Your gateway to authentic Egyptian experiences, local bazaars, and memorable adventures.
             </p>
           </div>
 
@@ -75,8 +105,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Quick Links
             </h3>
-            <div className="mt-2.5 mb-5 h-[2px] w-10 bg-gradient-to-r from-[#D48C28] to-white" />
-            <ul className="flex flex-col gap-4">
+            <ul className="mt-5 space-y-3">
               {quickLinks.map((link) => (
                 <li key={link.label}>
                   <Link
@@ -90,20 +119,19 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             </ul>
           </div>
 
-          {/* Column 3: Our Services */}
+          {/* Column 3: Services */}
           <div>
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
-              Our services
+              Services
             </h3>
-            <div className="mt-2.5 mb-5 h-[2px] w-10 bg-gradient-to-r from-[#D48C28] to-white" />
-            <ul className="flex flex-col gap-4">
-              {services.map((item) => (
-                <li key={item.label}>
+            <ul className="mt-5 space-y-3">
+              {services.map((service) => (
+                <li key={service.label}>
                   <Link
-                    href={item.href}
+                    href={service.href}
                     className="font-poppins-semibold-16 text-white transition-colors hover:text-[#F4DAB6]"
                   >
-                    {item.label}
+                    {service.label}
                   </Link>
                 </li>
               ))}
@@ -115,8 +143,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Contact Us
             </h3>
-            <div className="mt-2.5 mb-5 h-[2px] w-10 bg-gradient-to-r from-[#D48C28] to-white" />
-            <ul className="flex flex-col gap-4">
+            <ul className="mt-5 space-y-3">
               {contactItems.map((item) => (
                 <li key={item.label}>
                   <a
@@ -135,7 +162,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
               Follow Us
             </h3>
-            <div className="mt-5 flex items-center gap-3">
+            <div className="mt-5 flex flex-wrap items-center gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -143,7 +170,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white text-white transition-all duration-200 hover:bg-white hover:text-[#0E4A68]"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white text-white transition-all duration-200 hover:bg-white hover:text-[#0E4A68]"
                 >
                   {social.icon}
                 </a>

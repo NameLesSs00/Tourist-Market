@@ -114,6 +114,7 @@ export function ProductDetailsSection({
               category={subcategory?.name || "Hotel Delivery"}
               unitPrice={product?.price}
               unitName={product?.priceFor}
+              imageUrl={galleryImages?.[0]}
               locale={locale}
             />
 
@@ -134,7 +135,7 @@ export function ProductDetailsSection({
       </div>
 
       {/* ─── Floating Cart Button ─── */}
-      <FloatingCartButton />
+      <FloatingCartButton locale={locale} />
     </div>
   );
 }

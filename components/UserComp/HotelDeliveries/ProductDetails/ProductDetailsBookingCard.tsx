@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "@/features/cart/useCart";
+import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 
 interface ProductDetailsBookingCardProps {
   productId?: number;
@@ -12,6 +14,7 @@ interface ProductDetailsBookingCardProps {
   available?: number;
   unitPrice?: number;
   unitName?: string;
+  imageUrl?: string;
   locale?: string;
 }
 
@@ -22,8 +25,10 @@ export function ProductDetailsBookingCard({
   available = 99,
   unitPrice = 0,
   unitName = "Piece",
+  imageUrl,
   locale = "en",
 }: ProductDetailsBookingCardProps) {
+  const router = useRouter();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
@@ -35,20 +40,27 @@ export function ProductDetailsBookingCard({
     setQuantity((prev) => (prev < available ? prev + 1 : prev));
   };
 
+  const displayUnit = unitName?.trim() || "Piece";
+  const total = (quantity * unitPrice).toFixed(2);
+
   const handleAddToCart = () => {
+    const resolvedImage = imageUrl ? getBackendImageUrl(imageUrl) || imageUrl : undefined;
     addItem(
       {
         productId,
         title: itemTitle,
         price: unitPrice,
         unitName: displayUnit,
+        image: resolvedImage,
       },
       quantity
     );
   };
 
-  const total = (quantity * unitPrice).toFixed(2);
-  const displayUnit = unitName?.trim() || "Piece";
+  const handleOrderNow = () => {
+    handleAddToCart();
+    router.push(`/${locale}/cart`);
+  };
 
   return (
     <>
@@ -178,7 +190,7 @@ export function ProductDetailsBookingCard({
             {/* Buy Now Button */}
             <button
               type="button"
-              onClick={handleAddToCart}
+              onClick={handleOrderNow}
               className="w-full py-2.5 text-center text-white font-semibold text-[15px] hover:opacity-95 active:scale-[0.99] transition-all cursor-pointer shadow-sm"
               style={{
                 background: "#0E4A68",

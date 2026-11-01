@@ -56,16 +56,25 @@ export function buildProductBookingColumns({
     {
       key: "delivery",
       header: "Delivery Location",
-      render: (row) => (
-        <div className="flex flex-col max-w-[200px]">
-          <span className="font-medium text-gray-800 truncate" title={row.hotelName}>
-            {row.hotelName || "—"}
-          </span>
-          <span className="text-xs text-gray-500 truncate" title={row.address}>
-            {row.address || "—"}
-          </span>
-        </div>
-      ),
+      render: (row) => {
+        const hotelWithRoom = row.roomNo
+          ? `${row.hotelName || "Hotel"} (Room ${row.roomNo})`
+          : row.hotelName || "—";
+        const areaInfo = row.deliveryArea
+          ? `${row.deliveryArea}${row.deliveryTime ? ` · ${row.deliveryTime.substring(0, 5)}` : ""}`
+          : row.address || "—";
+
+        return (
+          <div className="flex flex-col max-w-[220px]">
+            <span className="font-medium text-gray-800 truncate" title={hotelWithRoom}>
+              {hotelWithRoom}
+            </span>
+            <span className="text-xs text-[#0E4A68] font-medium truncate" title={areaInfo}>
+              {areaInfo}
+            </span>
+          </div>
+        );
+      },
     },
     {
       key: "items",
@@ -105,6 +114,11 @@ export function buildProductBookingColumns({
             <span className="font-bold text-[#0E4A68]">
               {curr} {Number(amount).toFixed(2)}
             </span>
+            {row.deliveryFeeUsd > 0 && (
+              <span className="text-[11px] text-gray-400">
+                incl. ${row.deliveryFeeUsd.toFixed(2)} delivery
+              </span>
+            )}
             {row.discountAmountUsd > 0 && (
               <span className="text-[11px] text-emerald-600">
                 Saved ${row.discountAmountUsd}

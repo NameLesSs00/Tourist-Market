@@ -78,6 +78,7 @@ export const NAV_CATEGORIES: NavCategory[] = [
       { label: "Categories", href: "/admin/dashboard/product-categories", icon: FiLayers },
       { label: "Subcategories", href: "/admin/dashboard/product-subcategories", icon: FiTag },
       { label: "Product Bookings", href: "/admin/dashboard/product-bookings", icon: FiClipboard },
+      { label: "Delivery Pricing", href: "/admin/dashboard/delivery-products", icon: FiMapPin },
       { label: "Product Reviews", href: "/admin/dashboard/product-reviews", icon: FiStar },
     ],
   },
