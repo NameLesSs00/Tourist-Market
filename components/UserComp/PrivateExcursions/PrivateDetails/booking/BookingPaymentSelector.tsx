@@ -4,27 +4,33 @@ import React from "react";
 import { FiDollarSign } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import { PrivatePaymentMethod } from "@/models/privateBooking";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BookingPaymentSelectorProps {
   paymentMethod: number;
   onPaymentMethodChange: (val: number) => void;
+  locale?: string;
 }
 
 export function BookingPaymentSelector({
   paymentMethod,
   onPaymentMethodChange,
+  locale = "en",
 }: BookingPaymentSelectorProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.bookingForm;
+
   const options = [
     {
       id: PrivatePaymentMethod.CashOnArrival,
-      title: "Cash on Arrival",
-      desc: "Pay cash directly to your tour guide or driver on trip day",
+      title: t.cashOnArrival || "Cash on Arrival",
+      desc: t.cashOnArrivalDesc || "Pay cash directly to your tour guide or driver on trip day",
       icon: <FiDollarSign size={18} className="text-[#DE7423] shrink-0" />,
     },
     {
       id: PrivatePaymentMethod.WhatsAppDirect,
-      title: "WhatsApp Direct",
-      desc: "Coordinate payment and trip confirmation directly with our team on WhatsApp",
+      title: t.whatsAppDirect || "WhatsApp Direct",
+      desc: t.whatsAppDirectDesc || "Coordinate payment and trip confirmation directly with our team on WhatsApp",
       icon: <FaWhatsapp size={18} className="text-[#16A34A] shrink-0" />,
     },
   ];
@@ -33,7 +39,7 @@ export function BookingPaymentSelector({
     <div className="space-y-4 pt-4 border-t border-[#E5E5E5]">
       <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
         <FiDollarSign className="text-[#DE7423]" />
-        <span>4. Payment Method</span>
+        <span>{t.paymentMethod || "4. Payment Method"}</span>
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -76,3 +82,4 @@ export function BookingPaymentSelector({
   );
 }
 
+export default BookingPaymentSelector;

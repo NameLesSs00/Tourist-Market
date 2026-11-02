@@ -6,9 +6,13 @@ import type { FaqItem } from "@/models/faq";
 
 interface FaqAnswerPanelProps {
   item?: FaqItem;
+  selectQuestionText?: string;
 }
 
-export function FaqAnswerPanel({ item }: FaqAnswerPanelProps) {
+export function FaqAnswerPanel({
+  item,
+  selectQuestionText = "Select a question on the left to read the answer.",
+}: FaqAnswerPanelProps) {
   const answerKey = item ? item.id || item.question : "empty";
 
   return (
@@ -60,7 +64,7 @@ export function FaqAnswerPanel({ item }: FaqAnswerPanelProps) {
               className="flex flex-1 flex-col items-center justify-center text-center py-8"
             >
               <p className="font-poppins text-sm text-[#0E4A6899]">
-                Select a question on the left to read the answer.
+                {selectQuestionText}
               </p>
             </motion.div>
           )}

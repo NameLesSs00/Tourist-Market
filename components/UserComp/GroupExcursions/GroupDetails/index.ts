@@ -1,6 +1,7 @@
 export * from "./GroupDetailsHero";
 export * from "./GroupDetailsGallery";
 export * from "./GroupDetailsTabs";
+export * from "./GroupDetailsFaqList";
 export * from "./GroupDetailsIncludes";
 export * from "./GroupDetailsReviews";
 export * from "./GroupDetailsBookingSidebar";

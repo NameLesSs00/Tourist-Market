@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface DropdownOption {
   value: string;
@@ -76,8 +77,9 @@ export function CustomDropdown({
       </span>
 
       {/* Trigger Button */}
-      <button
+      <motion.button
         type="button"
+        whileTap={{ scale: 0.99 }}
         disabled={disabled}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="listbox"
@@ -128,50 +130,56 @@ export function CustomDropdown({
             <path strokeLinecap="round" strokeLinejoin="round" d="m19 9-7 7-7-7" />
           </svg>
         </div>
-      </button>
+      </motion.button>
 
-      {/* Popover Dropdown Menu */}
-      {isOpen && (
-        <div
-          role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 bg-white rounded-[10px] border border-[#0E4A68]/20 shadow-[0_12px_28px_rgba(0,0,0,0.18)] py-1.5 max-h-[260px] overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
-        >
-          {options.map((opt) => {
-            const isSelected = opt.value === value;
-            return (
-              <button
-                key={opt.value}
-                type="button"
-                role="option"
-                aria-selected={isSelected}
-                onClick={() => handleSelect(opt.value)}
-                className={`w-full px-3.5 py-2 text-left font-poppins text-xs sm:text-sm flex items-center justify-between transition-colors cursor-pointer select-none ${
-                  isSelected
-                    ? "bg-[#0E4A68]/10 text-[#0E4A68] font-semibold"
-                    : "text-[#444444] hover:bg-slate-50 hover:text-[#0E4A68]"
-                }`}
-              >
-                <span className="truncate">{opt.label}</span>
-                {isSelected && (
-                  <svg
-                    className="w-4 h-4 text-[#0E4A68] shrink-0 ml-2"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      )}
+      {/* Popover Dropdown Menu with AnimatePresence */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
+            role="listbox"
+            className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 bg-white rounded-[10px] border border-[#0E4A68]/20 shadow-[0_12px_28px_rgba(0,0,0,0.18)] py-1.5 max-h-[260px] overflow-y-auto"
+          >
+            {options.map((opt) => {
+              const isSelected = opt.value === value;
+              return (
+                <button
+                  key={opt.value}
+                  type="button"
+                  role="option"
+                  aria-selected={isSelected}
+                  onClick={() => handleSelect(opt.value)}
+                  className={`w-full px-3.5 py-2 text-left font-poppins text-xs sm:text-sm flex items-center justify-between transition-colors cursor-pointer select-none ${
+                    isSelected
+                      ? "bg-[#0E4A68]/10 text-[#0E4A68] font-semibold"
+                      : "text-[#444444] hover:bg-slate-50 hover:text-[#0E4A68]"
+                  }`}
+                >
+                  <span className="truncate">{opt.label}</span>
+                  {isSelected && (
+                    <svg
+                      className="w-4 h-4 text-[#0E4A68] shrink-0 ml-2"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  )}
+                </button>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

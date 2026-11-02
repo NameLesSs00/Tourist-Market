@@ -3,6 +3,7 @@
 import React from "react";
 import { PrivateExcursion } from "../types";
 import { PrivateExcursionCard } from "./PrivateExcursionCard";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateExcursionsGridProps {
   excursions: PrivateExcursion[];
@@ -15,6 +16,9 @@ export function PrivateExcursionsGrid({
   isLoading = false,
   locale = "en",
 }: PrivateExcursionsGridProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.grid;
+
   if (isLoading) {
     return (
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pb-16">
@@ -52,10 +56,10 @@ export function PrivateExcursionsGrid({
             <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35" />
           </svg>
           <h3 className="font-poppins text-lg font-bold text-[#0E4A68] mb-2">
-            No Private Excursions Found
+            {t.noExcursions || "No Private Excursions Found"}
           </h3>
           <p className="font-poppins text-xs sm:text-sm text-[#646464]">
-            Try adjusting your search criteria or resetting filters to see available tours.
+            {t.noExcursionsDesc || "Try adjusting your search criteria or resetting filters to see available tours."}
           </p>
         </div>
       </div>
@@ -66,11 +70,12 @@ export function PrivateExcursionsGrid({
     <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-20 lg:pb-24">
       {/* 3 Columns Grid matching reference screenshot */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-        {excursions.map((excursion) => (
+        {excursions.map((excursion, idx) => (
           <PrivateExcursionCard
             key={excursion.id}
             excursion={excursion}
             locale={locale}
+            index={idx}
           />
         ))}
       </div>

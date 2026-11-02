@@ -95,20 +95,18 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
           <NavLinks currentLocale={activeLocale} />
         </div>
 
-        {/* Right: Desktop Currency & Language Selectors */}
-        <div className="hidden lg:flex lg:shrink-0 lg:items-center lg:gap-3">
+        {/* Right: Currency, Language Selectors & Mobile Hamburger Button */}
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2.5 lg:gap-3">
           <CurrencySelector />
           <LanguageSelector currentLocale={activeLocale} />
-        </div>
 
-        {/* Mobile & Tablet Hamburger Menu Button */}
-        <div className="flex items-center lg:hidden">
+          {/* Mobile & Tablet Hamburger Menu Button */}
           <motion.button
             type="button"
             onClick={() => setIsMobileMenuOpen(true)}
             whileTap={{ scale: 0.9 }}
             aria-label="Open Navigation Menu"
-            className="rounded-xl p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer"
+            className="flex lg:hidden rounded-xl p-1.5 sm:p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer shrink-0"
           >
             <svg
               className="h-6 w-6"

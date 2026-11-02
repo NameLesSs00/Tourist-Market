@@ -19,6 +19,7 @@ import { PrivateDetailsBookingSidebar } from "./PrivateDetailsBookingSidebar";
 import { PrivateDetailsReviews } from "./PrivateDetailsReviews";
 import { PrivateDetailsRelated } from "./PrivateDetailsRelated";
 import { PrivateBookingForm } from "./PrivateBookingForm";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsSectionProps {
   excursionId?: string;
@@ -31,6 +32,8 @@ export function PrivateDetailsSection({
   slug,
   locale = "en",
 }: PrivateDetailsSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details;
   const identifier = excursionId || slug || "";
 
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -61,14 +64,8 @@ export function PrivateDetailsSection({
 
   const handleToggleAttraction = (id: string) => {
     setSelectedAttractionIds((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter((item) => item !== id);
-      }
-      const maxAllowed = detail?.maxAttractions || 4;
-      if (prev.length >= maxAllowed) {
-        return prev;
-      }
-      return [...prev, id];
+      if (prev.includes(id)) return prev.filter((item) => item !== id);
+      return prev.length >= (detail?.maxAttractions || 4) ? prev : [...prev, id];
     });
   };
 
@@ -80,16 +77,12 @@ export function PrivateDetailsSection({
 
   const handleOpenBooking = () => {
     setIsBookingOpen(true);
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleCloseBooking = () => {
     setIsBookingOpen(false);
-    if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (isLoading) {
@@ -98,7 +91,7 @@ export function PrivateDetailsSection({
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 rounded-full border-4 border-[#DE7423] border-t-transparent animate-spin" />
           <p className="font-poppins text-base font-semibold text-[#083952]">
-            Loading Excursion Details...
+            {t.loadingDetails || "Loading Excursion Details..."}
           </p>
         </div>
       </div>
@@ -108,7 +101,7 @@ export function PrivateDetailsSection({
   if (isError || !detail) {
     const message = isError
       ? extractErrorMessage(error) || "Failed to load excursion details"
-      : "Private excursion not found";
+      : t.notFound || "Private excursion not found";
 
     return (
       <div className="w-full min-h-screen bg-[#FFF8ED] font-poppins flex items-center justify-center py-32">
@@ -120,7 +113,7 @@ export function PrivateDetailsSection({
             href={`/${locale}/private-excursions`}
             className="px-6 py-2.5 bg-[#DE7423] text-white rounded-lg hover:bg-[#C9641B] transition font-medium text-sm"
           >
-            Back to Excursions
+            {t.backToExcursions || "Back to Excursions"}
           </Link>
         </div>
       </div>
@@ -173,6 +166,7 @@ export function PrivateDetailsSection({
                 initialInfants={infants}
                 selectedAttractionIds={selectedAttractionIds}
                 selectedExtraServiceIds={selectedExtraServiceIds}
+                locale={locale}
               />
             ) : (
               <>
@@ -181,6 +175,7 @@ export function PrivateDetailsSection({
                   images={detail.gallery}
                   badge={detail.badge}
                   title={detail.title}
+                  locale={locale}
                 />
 
                 {/* Mobile / Tablet Booking Sidebar (visible below gallery on screens < lg) */}
@@ -216,6 +211,7 @@ export function PrivateDetailsSection({
                   highlights={detail.highlights}
                   whatToBring={detail.whatToBring}
                   cancellationPolicy={detail.cancellationPolicy}
+                  locale={locale}
                 />
 
                 {/* Attractions Section */}
@@ -224,6 +220,7 @@ export function PrivateDetailsSection({
                   maxAttractions={detail.maxAttractions}
                   selectedIds={selectedAttractionIds}
                   onToggleSelect={handleToggleAttraction}
+                  locale={locale}
                 />
 
                 {/* Extra Services Section */}
@@ -231,12 +228,14 @@ export function PrivateDetailsSection({
                   services={detail.extraServices}
                   selectedIds={selectedExtraServiceIds}
                   onToggleSelect={handleToggleExtraService}
+                  locale={locale}
                 />
 
                 {/* Price Includes & Excludes */}
                 <PrivateDetailsIncludes
                   includes={detail.priceIncludes}
                   excludes={detail.priceExcludes}
+                  locale={locale}
                 />
               </>
             )}
@@ -276,6 +275,7 @@ export function PrivateDetailsSection({
             averageRating={detail.rating}
             distribution={detail.ratingDistribution}
             comments={detail.comments}
+            locale={locale}
           />
         </div>
 

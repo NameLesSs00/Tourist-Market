@@ -169,7 +169,7 @@ export function mapGroupExcursionFullDetail(
       findLiteralValue(details?.literally, "bestSeason") ||
       "Year-round",
     pickup:
-      findLiteralValue(details?.literally, "pickupLocation") || "Hotel pickup available",
+      findLiteralValue(details?.literally, "pickupLocation") || "",
     maxParticipants:
       typeof excursion.maxParticipants === "number" && excursion.maxParticipants > 0
         ? excursion.maxParticipants

@@ -3,18 +3,25 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { PrivateExcursion } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateExcursionCardProps {
   excursion: PrivateExcursion;
   locale?: string;
+  index?: number;
 }
 
 export function PrivateExcursionCard({
   excursion,
   locale = "en",
+  index = 0,
 }: PrivateExcursionCardProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.grid;
+
   const {
     id,
     slug,
@@ -48,7 +55,11 @@ export function PrivateExcursionCard({
   const fullStars = Math.floor(rating);
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.3), ease: "easeOut" }}
       style={{
         backgroundColor: "#FFFFFF",
         borderRadius: "12px",
@@ -143,9 +154,9 @@ export function PrivateExcursionCard({
         {/* Pricing Row */}
         {(() => {
           const priceItems = [
-            adultPrice > 0 ? { label: "Adult", value: adultPrice } : null,
-            childPrice > 0 ? { label: "Child", value: childPrice } : null,
-            infantPrice > 0 ? { label: "Infant", value: infantPrice } : null,
+            adultPrice > 0 ? { label: t.adult || "Adult", value: adultPrice } : null,
+            childPrice > 0 ? { label: t.child || "Child", value: childPrice } : null,
+            infantPrice > 0 ? { label: t.infant || "Infant", value: infantPrice } : null,
           ].filter(Boolean) as { label: string; value: number }[];
 
           if (priceItems.length === 0) return null;
@@ -177,18 +188,18 @@ export function PrivateExcursionCard({
           }}
           className="w-full mt-1 py-2.5 px-4 text-white font-poppins text-sm font-semibold tracking-wide text-center transition-all duration-200 hover:brightness-105 active:scale-[0.99] block cursor-pointer"
         >
-          View Details
+          {t.viewDetails || "View Details"}
         </Link>
       </div>
 
       {/* Entire Card Clickable Overlay */}
       <Link
         href={targetLink}
-        aria-label={`View details for ${title}`}
+        aria-label={`${t.viewDetails || "View details"} - ${title}`}
         className="absolute inset-0 z-0 opacity-0"
         tabIndex={-1}
       />
-    </div>
+    </motion.div>
   );
 }
 

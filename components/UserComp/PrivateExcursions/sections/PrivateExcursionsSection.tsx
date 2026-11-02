@@ -11,6 +11,7 @@ import type { PrivateExcursionFilterValues } from "../components/PrivateExcursio
 import { useClientInfinitePrivateExcursionsQuery } from "@/features/privateExcursions/useClientPrivateExcursions";
 import { useExcursionCategoriesQuery } from "@/features/groupExcursions/useClientGroupExcursions";
 import { mapBackendPrivateExcursionToCard } from "../utils/privateExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateExcursionsSectionProps {
   locale?: string;
@@ -19,6 +20,8 @@ interface PrivateExcursionsSectionProps {
 export function PrivateExcursionsSection({
   locale = "en",
 }: PrivateExcursionsSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.grid;
   const router = useRouter();
   const searchParams = useSearchParams();
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -65,21 +68,9 @@ export function PrivateExcursionsSection({
   // Sync internal filter values when URL search param or categories change
   useEffect(() => {
     if (matchedCategoryId && matchedCategoryId !== "all") {
-      setFilterValues((prev) => {
-        if (prev.category === matchedCategoryId) return prev;
-        return {
-          ...prev,
-          category: matchedCategoryId,
-        };
-      });
+      setFilterValues((prev) => (prev.category === matchedCategoryId ? prev : { ...prev, category: matchedCategoryId }));
     } else if (!urlCategoryParam) {
-      setFilterValues((prev) => {
-        if (prev.category === "all") return prev;
-        return {
-          ...prev,
-          category: "all",
-        };
-      });
+      setFilterValues((prev) => (prev.category === "all" ? prev : { ...prev, category: "all" }));
     }
   }, [matchedCategoryId, urlCategoryParam]);
 
@@ -238,23 +229,24 @@ export function PrivateExcursionsSection({
           selectedCategory={filterValues.category}
           onFilterChange={handleFilterChange}
           disabled={isLoading}
+          locale={locale}
         />
 
         {/* Error State */}
         {!isLoading && isError && (
           <div className="w-full max-w-xl mx-auto my-8 p-8 sm:p-10 text-center bg-white rounded-[18px] border-[0.5px] border-[#888888] shadow-sm">
             <h3 className="font-poppins text-xl sm:text-2xl font-semibold text-[#0E4A68]">
-              Unable to Load Private Excursions
+              {t.errorTitle || "Unable to Load Private Excursions"}
             </h3>
             <p className="font-poppins text-sm sm:text-base text-[#646464] mt-2 mb-6 max-w-md mx-auto">
-              We encountered a temporary connection issue reaching the excursions server. Please try again or check back shortly.
+              {t.errorDesc || "We encountered a temporary connection issue reaching the excursions server. Please try again or check back shortly."}
             </p>
             <button
               type="button"
               onClick={() => refetch()}
               className="inline-flex items-center justify-center bg-[#DE7423] hover:bg-[#c46116] active:scale-95 text-white font-poppins font-semibold text-sm sm:text-base py-2.5 px-8 rounded-[12px] shadow-sm transition-all duration-200 cursor-pointer"
             >
-              Try Again
+              {t.tryAgain || "Try Again"}
             </button>
           </div>
         )}
@@ -275,7 +267,7 @@ export function PrivateExcursionsSection({
             <div className="flex flex-col items-center gap-3 py-6">
               <div className="w-9 h-9 rounded-full border-3 border-[#0E4A68] border-t-transparent animate-spin" />
               <span className="font-poppins text-xs sm:text-sm font-medium text-[#0E4A68] tracking-wide">
-                Loading more private experiences...
+                {t.loadingMore || "Loading more private experiences..."}
               </span>
             </div>
           )}
@@ -284,7 +276,7 @@ export function PrivateExcursionsSection({
           {!isLoading && !hasNextPage && displayedExcursions.length > 0 && (
             <div className="pt-8 pb-4 text-center">
               <span className="font-poppins text-xs sm:text-sm text-[#888888] bg-white px-4 py-1.5 rounded-full border border-[#888888]/30">
-                You have reached the end of the private excursions catalog
+                {t.endOfCatalog || "You have reached the end of the private excursions catalog"}
               </span>
             </div>
           )}

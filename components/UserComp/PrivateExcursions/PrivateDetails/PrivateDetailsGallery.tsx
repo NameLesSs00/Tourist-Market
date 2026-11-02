@@ -3,18 +3,25 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiCamera } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsGalleryProps {
   images: string[];
   badge?: string;
   title?: string;
+  locale?: string;
 }
 
 export function PrivateDetailsGallery({
   images,
-  badge = "Featured",
-  title = "Private Hurghada City Tour",
+  badge,
+  title = "Private Excursion Tour",
+  locale = "en",
 }: PrivateDetailsGalleryProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.gallery;
+  const resolvedBadge = badge || t.featured || "Featured";
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const safeImages = images && images.length > 0 ? images : [
@@ -45,18 +52,18 @@ export function PrivateDetailsGallery({
       >
         <Image
           src={safeImages[activeIndex]}
-          alt={`${title} - Photo ${activeIndex + 1}`}
+          alt={`${title} - ${t.photoCount || "Photo"} ${activeIndex + 1}`}
           fill
           priority
           sizes="(max-width: 1024px) 100vw, 55vw"
           className="object-cover transition-opacity duration-300"
         />
 
-        {/* Top-Left Badge: Featured */}
-        {badge && (
+        {/* Top-Left Badge */}
+        {resolvedBadge && (
           <div className="absolute top-4 left-4 z-10">
             <span className="inline-block px-4 py-1.5 rounded-full bg-white/95 text-[#0E4A68] text-[13px] font-semibold shadow-sm backdrop-blur-sm">
-              {badge}
+              {resolvedBadge}
             </span>
           </div>
         )}
@@ -67,7 +74,7 @@ export function PrivateDetailsGallery({
           <button
             type="button"
             onClick={handlePrev}
-            aria-label="Previous image"
+            aria-label={t.prevImage || "Previous image"}
             className="pointer-events-auto w-9 h-9 flex items-center justify-center transition-all hover:scale-105 active:scale-95 text-[#0E4A68] shadow-sm"
             style={{
               background: "#F5F5F5",
@@ -90,7 +97,7 @@ export function PrivateDetailsGallery({
           <button
             type="button"
             onClick={handleNext}
-            aria-label="Next image"
+            aria-label={t.nextImage || "Next image"}
             className="pointer-events-auto w-9 h-9 flex items-center justify-center transition-all hover:scale-105 active:scale-95 text-[#0E4A68] shadow-sm"
             style={{
               background: "#F5F5F5",
@@ -103,36 +110,35 @@ export function PrivateDetailsGallery({
         </div>
       </div>
 
-      {/* ─── 4 THUMBNAILS (Vertical on desktop/tablet, horizontal on mobile) ─── */}
-      <div className="flex md:flex-col gap-3.5 shrink-0 overflow-x-auto md:overflow-visible pb-1 md:pb-0 w-full md:w-[150px] lg:w-[170px]">
-        {displayThumbnails.map((thumbUrl, idx) => {
-          const isSelected = idx === activeIndex;
-          return (
-            <button
-              key={`thumb-${idx}`}
-              type="button"
-              onClick={() => setActiveIndex(idx)}
-              className={`relative aspect-[16/10] md:h-[102px] w-[110px] md:w-full shrink-0 overflow-hidden cursor-pointer transition-all duration-200 hover:opacity-90 ${
-                isSelected ? "ring-2 ring-[#DE7423] scale-[1.02]" : "opacity-95"
-              }`}
-              style={{
-                borderRadius: "10px",
-                border: "3px solid #FFFFFF",
-                boxShadow: "0px 1px 10px 2px rgba(0, 0, 0, 0.3)",
-                backgroundColor: "#FFFFFF",
-              }}
-            >
-              <Image
-                src={thumbUrl}
-                alt={`Thumbnail ${idx + 1}`}
-                fill
-                sizes="170px"
-                className="object-cover"
-              />
-            </button>
-          );
-        })}
+      {/* ─── RIGHT VERTICAL THUMBNAILS (Up to 4 images) ─── */}
+      <div className="flex md:flex-col gap-3 justify-between overflow-x-auto md:overflow-visible no-scrollbar">
+        {displayThumbnails.map((img, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => setActiveIndex(idx)}
+            className={`relative w-[75px] sm:w-[95px] md:w-[110px] h-[65px] sm:h-[85px] md:h-[98px] rounded-[14px] overflow-hidden transition-all duration-200 cursor-pointer shrink-0 ${
+              activeIndex === idx
+                ? "ring-2 ring-[#DE7423] scale-102 opacity-100 shadow-md"
+                : "opacity-75 hover:opacity-100"
+            }`}
+            style={{
+              border: "2px solid #FFFFFF",
+              boxShadow: "0px 2px 10px 0px rgba(0, 0, 0, 0.15)",
+            }}
+          >
+            <Image
+              src={img}
+              alt={`${title} - Thumbnail ${idx + 1}`}
+              fill
+              sizes="110px"
+              className="object-cover"
+            />
+          </button>
+        ))}
       </div>
     </div>
   );
 }
+
+export default PrivateDetailsGallery;

@@ -3,6 +3,7 @@
 import React from "react";
 import { FiHome, FiMessageSquare, FiPhone, FiUser } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BookingContactFieldsProps {
   customerName: string;
@@ -19,6 +20,7 @@ interface BookingContactFieldsProps {
   onRoomNumberChange: (val: string) => void;
   notes: string;
   onNotesChange: (val: string) => void;
+  locale?: string;
 }
 
 export function BookingContactFields({
@@ -36,34 +38,38 @@ export function BookingContactFields({
   onRoomNumberChange,
   notes,
   onNotesChange,
+  locale = "en",
 }: BookingContactFieldsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.bookingForm;
+
   return (
     <div className="space-y-6 pt-4 border-t border-[#E5E5E5]">
       {/* 2. Lead Traveler Information */}
       <div className="space-y-4">
         <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
           <FiUser className="text-[#DE7423]" />
-          <span>2. Lead Traveler Information</span>
+          <span>{t.leadTraveler || "2. Lead Traveler Information"}</span>
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="sm:col-span-2">
             <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-              Full Name *
+              {t.fullName || "Full Name *"}
             </label>
             <input
               type="text"
               required
               value={customerName}
               onChange={(e) => onCustomerNameChange(e.target.value)}
-              placeholder="e.g. John Doe"
+              placeholder={t.fullNamePlaceholder || "e.g. John Doe"}
               className="w-full px-3.5 py-2.5 rounded-lg border border-[#BBBBBB] text-xs sm:text-sm text-[#0E4A68] placeholder-gray-400 focus:outline-none focus:border-[#DE7423] bg-white"
             />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-              Phone Number *
+              {t.phoneNumber || "Phone Number *"}
             </label>
             <div className="relative">
               <FiPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -81,7 +87,7 @@ export function BookingContactFields({
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="block text-xs font-semibold text-[#0E4A68]">
-                WhatsApp Number *
+                {t.whatsAppNumber || "WhatsApp Number *"}
               </label>
               <label className="flex items-center gap-1.5 text-[11px] text-[#444444] cursor-pointer select-none">
                 <input
@@ -90,7 +96,7 @@ export function BookingContactFields({
                   onChange={(e) => onSameAsPhoneChange(e.target.checked)}
                   className="rounded border-gray-300 text-[#DE7423] focus:ring-[#DE7423]"
                 />
-                <span>Same as phone</span>
+                <span>{t.sameAsPhone || "Same as phone"}</span>
               </label>
             </div>
             <div className="relative">
@@ -113,33 +119,33 @@ export function BookingContactFields({
       <div className="space-y-4 pt-4 border-t border-[#E5E5E5]">
         <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
           <FiHome className="text-[#DE7423]" />
-          <span>3. Hotel Pickup Details</span>
+          <span>{t.hotelPickup || "3. Hotel Pickup Details"}</span>
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="sm:col-span-2">
             <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-              Hotel / Resort Name *
+              {t.hotelName || "Hotel / Resort Name *"}
             </label>
             <input
               type="text"
               required
               value={hotelName}
               onChange={(e) => onHotelNameChange(e.target.value)}
-              placeholder="e.g. Steigenberger ALDAU Beach Hotel"
+              placeholder={t.hotelNamePlaceholder || "e.g. Sunrise Crystal Bay Resort"}
               className="w-full px-3.5 py-2.5 rounded-lg border border-[#BBBBBB] text-xs sm:text-sm text-[#0E4A68] placeholder-gray-400 focus:outline-none focus:border-[#DE7423] bg-white"
             />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-              Room Number
+              {t.roomNumber || "Room Number"}
             </label>
             <input
               type="text"
               value={roomNumber}
               onChange={(e) => onRoomNumberChange(e.target.value)}
-              placeholder="e.g. 1402 (or leave empty if not checked in)"
+              placeholder={t.roomNumberPlaceholder || "e.g. 2104"}
               className="w-full px-3.5 py-2.5 rounded-lg border border-[#BBBBBB] text-xs sm:text-sm text-[#0E4A68] placeholder-gray-400 focus:outline-none focus:border-[#DE7423] bg-white"
             />
           </div>
@@ -150,13 +156,13 @@ export function BookingContactFields({
       <div className="space-y-2 pt-2">
         <label className="block text-xs font-semibold text-[#0E4A68] flex items-center gap-1.5">
           <FiMessageSquare className="text-[#DE7423]" />
-          <span>Special Requests or Notes (Optional)</span>
+          <span>{t.notes || "Special Requests or Notes (Optional)"}</span>
         </label>
         <textarea
           rows={3}
           value={notes}
           onChange={(e) => onNotesChange(e.target.value)}
-          placeholder="Flight details, dietary requirements, infant seat request, etc."
+          placeholder={t.notesPlaceholder || "Any specific dietary requirements, accessibility needs, or pickup notes..."}
           className="w-full px-3.5 py-2.5 rounded-lg border border-[#BBBBBB] text-xs sm:text-sm text-[#0E4A68] placeholder-gray-400 focus:outline-none focus:border-[#DE7423] bg-white resize-y"
         />
       </div>
@@ -164,3 +170,4 @@ export function BookingContactFields({
   );
 }
 
+export default BookingContactFields;

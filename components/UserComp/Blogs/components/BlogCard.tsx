@@ -9,6 +9,7 @@ import {
   DEFAULT_BLOG_FALLBACK_IMAGE,
   getBlogImageUrl,
 } from "../utils/blogImage";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BlogCardProps {
   blog: BlogItem;
@@ -17,6 +18,9 @@ interface BlogCardProps {
 
 export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
   const isRTL = locale === "ar";
+  const dict = getDictionary(locale);
+  const t = dict.blogs;
+
   const [imgSrc, setImgSrc] = useState(() => getBlogImageUrl(blog.imageUrl));
 
   React.useEffect(() => {
@@ -54,11 +58,11 @@ export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
           draggable={false}
           onDragStart={(e) => e.preventDefault()}
           className="relative block w-full aspect-[16/10] sm:aspect-[16/9.5] overflow-hidden rounded-t-[20px] cursor-pointer select-none"
-          aria-label={`Read article: ${blog.title}`}
+          aria-label={`${t.readArticle}: ${blog.title}`}
         >
           <Image
             src={imgSrc}
-            alt={blog.title || "Egypt travel story"}
+            alt={blog.title || t.fallbackAlt}
             fill
             draggable={false}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
@@ -106,7 +110,7 @@ export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
                 }}
                 className="inline-flex items-center justify-center px-6 py-2 font-['Poppins'] text-[13px] sm:text-[14px] font-medium tracking-normal transition-colors hover:bg-white select-none cursor-pointer"
               >
-                Read article
+                {t.readArticle}
               </Link>
             </motion.div>
           </div>

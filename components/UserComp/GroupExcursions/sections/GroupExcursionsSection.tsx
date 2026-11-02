@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
   GroupExcursionsHero,
   GroupExcursionsFilter,
@@ -12,6 +13,7 @@ import {
   useExcursionCategoriesQuery,
 } from "@/features/groupExcursions/useClientGroupExcursions";
 import { mapBackendGroupExcursionToCard } from "../utils/groupExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface GroupExcursionsSectionProps {
   locale?: string;
@@ -20,6 +22,8 @@ interface GroupExcursionsSectionProps {
 export function GroupExcursionsSection({
   locale = "en",
 }: GroupExcursionsSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.groupExcursions;
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const [filterValues, setFilterValues] = useState<GroupExcursionFilterValues>({
@@ -159,26 +163,34 @@ export function GroupExcursionsSection({
             categories={categoryOptions}
             onFilterChange={handleFilterChange}
             disabled={isLoading}
+            locale={locale}
           />
         </div>
 
         {/* Error State */}
         {!isLoading && isError && (
-          <div className="w-full max-w-xl mx-auto my-8 p-8 sm:p-10 text-center bg-white rounded-[18px] border-[0.5px] border-[#888888] shadow-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="w-full max-w-xl mx-auto my-8 p-8 sm:p-10 text-center bg-white rounded-[18px] border-[0.5px] border-[#888888] shadow-sm"
+          >
             <h3 className="font-poppins text-xl sm:text-2xl font-semibold text-[#0E4A68]">
-              Unable to Load Excursions
+              {t.error.title}
             </h3>
             <p className="font-poppins text-sm sm:text-base text-[#646464] mt-2 mb-6 max-w-md mx-auto">
-              We encountered a temporary connection issue reaching the excursions server. Please try again or check back shortly.
+              {t.error.description}
             </p>
-            <button
+            <motion.button
               type="button"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
               onClick={() => refetch()}
-              className="inline-flex items-center justify-center bg-[#165F84] hover:bg-[#0E4A68] active:scale-95 text-white font-poppins font-semibold text-sm sm:text-base py-2.5 px-8 rounded-[12px] shadow-sm transition-all duration-200 cursor-pointer"
+              className="inline-flex items-center justify-center bg-[#165F84] hover:bg-[#0E4A68] text-white font-poppins font-semibold text-sm sm:text-base py-2.5 px-8 rounded-[12px] shadow-sm transition-all duration-200 cursor-pointer"
             >
-              Try Again
-            </button>
-          </div>
+              {t.error.retry}
+            </motion.button>
+          </motion.div>
         )}
 
         {/* Excursions Cards Grid */}
@@ -194,18 +206,23 @@ export function GroupExcursionsSection({
             <div className="flex flex-col items-center gap-3 py-6">
               <div className="w-9 h-9 rounded-full border-3 border-[#0E4A68] border-t-transparent animate-spin" />
               <span className="font-poppins text-xs sm:text-sm font-medium text-[#0E4A68] tracking-wide">
-                Loading more adventures...
+                {t.endless.loadingMore}
               </span>
             </div>
           )}
 
           {/* End of Catalog Indicator */}
           {!isLoading && !hasNextPage && displayedExcursions.length > 0 && (
-            <div className="pt-8 pb-4 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="pt-8 pb-4 text-center"
+            >
               <span className="font-poppins text-xs sm:text-sm text-[#888888] bg-[#F4F1D5] px-4 py-1.5 rounded-full border border-[#888888]/30">
-                You have reached the end of the excursions catalog
+                {t.endless.endOfCatalog}
               </span>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

@@ -7,7 +7,9 @@ import { GroupExcursionDetail } from "../../types";
 import {
   CreateGroupBookingResponse,
   GROUP_PAYMENT_METHOD_LABELS,
+  GroupPaymentMethod,
 } from "@/models/groupBooking";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BookingConfirmationCardProps {
   confirmedBooking: CreateGroupBookingResponse;
@@ -22,6 +24,7 @@ interface BookingConfirmationCardProps {
   paymentMethod: number;
   contactNumber: string;
   onBack: () => void;
+  locale?: string;
 }
 
 export function BookingConfirmationCard({
@@ -37,9 +40,24 @@ export function BookingConfirmationCard({
   paymentMethod,
   contactNumber,
   onBack,
+  locale = "en",
 }: BookingConfirmationCardProps) {
+  const dict = getDictionary(locale);
+  const t = dict.groupExcursions.details.bookingForm;
   const paymentLabel =
-    GROUP_PAYMENT_METHOD_LABELS[paymentMethod] || "Cash on Arrival";
+    paymentMethod === GroupPaymentMethod.CashOnArrival
+      ? t.cashOnArrival
+      : paymentMethod === GroupPaymentMethod.WhatsAppDirect
+      ? t.whatsAppDirect
+      : GROUP_PAYMENT_METHOD_LABELS[paymentMethod] || t.cashOnArrival;
+
+  const guestSummary = [
+    `${adults} ${dict.groupExcursions.details.sidebar.adult}`,
+    children > 0 ? `${children} ${dict.groupExcursions.details.sidebar.child}` : "",
+    infants > 0 ? `${infants} ${dict.groupExcursions.details.sidebar.infant}` : "",
+  ].filter(Boolean).join(", ");
+
+  const whatsappNoticeText = t.whatsappNotice.replace("{phone}", contactNumber);
 
   return (
     <div className="w-full bg-[#FFFFFF] rounded-[14px] border border-[#BBBBBB] p-5 sm:p-8 shadow-sm font-poppins">
@@ -49,10 +67,10 @@ export function BookingConfirmationCard({
           <FiCheck size={32} />
         </div>
         <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0E4A68] tracking-tight">
-          Booking Confirmed!
+          {t.confirmedTitle}
         </h2>
         <p className="mt-1 text-sm text-[#444444]">
-          Thank you for choosing our tour service. We have received your booking request.
+          {t.confirmedSubtitle}
         </p>
       </div>
 
@@ -60,13 +78,13 @@ export function BookingConfirmationCard({
       <div className="my-6 p-4 sm:p-5 rounded-xl bg-[#FFF8ED] border border-[#DE7423]/30 space-y-3">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-[#DE7423]/20 pb-3">
           <div>
-            <div className="text-xs text-[#646464] font-medium">Booking Reference</div>
+            <div className="text-xs text-[#646464] font-medium">{t.bookingReference}</div>
             <div className="text-lg sm:text-xl font-extrabold text-[#0E4A68] tracking-wider">
               {confirmedBooking.bookingReference}
             </div>
           </div>
           <div className="text-left sm:text-right">
-            <div className="text-xs text-[#646464] font-medium">Total Price</div>
+            <div className="text-xs text-[#646464] font-medium">{t.totalPrice}</div>
             <div className="text-lg sm:text-xl font-extrabold text-[#16A34A]">
               ${confirmedBooking.totalPrice.toFixed(2)} {confirmedBooking.currency}
             </div>
@@ -75,24 +93,22 @@ export function BookingConfirmationCard({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 text-xs sm:text-sm text-[#0E4A68]">
           <div>
-            <span className="font-semibold">Excursion:</span> {detail.title}
+            <span className="font-semibold">{t.excursionLabel}</span> {detail.title}
           </div>
           <div>
-            <span className="font-semibold">Date:</span> {date}
+            <span className="font-semibold">{t.dateLabelSummary}</span> {date}
           </div>
           <div>
-            <span className="font-semibold">Customer:</span> {customerName}
+            <span className="font-semibold">{t.customerLabel}</span> {customerName}
           </div>
           <div>
-            <span className="font-semibold">Hotel:</span> {hotelName} (Room {roomNumber})
+            <span className="font-semibold">{t.hotelLabel}</span> {hotelName} ({t.roomLabel} {roomNumber})
           </div>
           <div>
-            <span className="font-semibold">Guests:</span> {adults} Adult{adults > 1 ? "s" : ""}
-            {children > 0 ? `, ${children} Child${children > 1 ? "ren" : ""}` : ""}
-            {infants > 0 ? `, ${infants} Infant${infants > 1 ? "s" : ""}` : ""}
+            <span className="font-semibold">{t.guestsLabel}</span> {guestSummary}
           </div>
           <div>
-            <span className="font-semibold">Payment:</span> {paymentLabel}
+            <span className="font-semibold">{t.paymentLabel}</span> {paymentLabel}
           </div>
         </div>
       </div>
@@ -101,8 +117,7 @@ export function BookingConfirmationCard({
       <div className="p-4 rounded-xl bg-[#16A34A]/10 border border-[#16A34A]/30 flex items-start gap-3 text-xs sm:text-sm text-[#083952]">
         <FaWhatsapp className="text-[#16A34A] shrink-0 mt-0.5" size={20} />
         <div>
-          <span className="font-bold">Next Step:</span> Our operations team will contact you on WhatsApp (
-          <span className="font-semibold">{contactNumber}</span>) within a few hours to confirm your exact hotel lobby pickup time.
+          <span className="font-bold">{t.nextStep}</span> {whatsappNoticeText}
         </div>
       </div>
 
@@ -113,7 +128,7 @@ export function BookingConfirmationCard({
           onClick={onBack}
           className="px-6 py-3 rounded-xl bg-[#0E4A68] hover:bg-[#09354b] text-white font-bold text-sm sm:text-base transition cursor-pointer"
         >
-          Back to Excursion Details
+          {t.back}
         </button>
       </div>
     </div>

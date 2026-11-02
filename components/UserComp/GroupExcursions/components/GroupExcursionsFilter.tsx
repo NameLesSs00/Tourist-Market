@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { CustomDropdown, DropdownOption } from "./CustomDropdown";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export interface ExcursionCategoryOption {
   id: string;
@@ -20,98 +22,67 @@ interface GroupExcursionsFilterProps {
   categories?: ExcursionCategoryOption[];
   onFilterChange: (filters: GroupExcursionFilterValues) => void;
   disabled?: boolean;
+  locale?: string;
 }
-
-const PRICE_OPTIONS: DropdownOption[] = [
-  { value: "all", label: "All Prices" },
-  { value: "0-50", label: "Under $50" },
-  { value: "50-100", label: "$50 - $100" },
-  { value: "100+", label: "$100+" },
-];
-
-const DURATION_OPTIONS: DropdownOption[] = [
-  { value: "all", label: "All Durations" },
-  { value: "under-12", label: "Under 12 hours" },
-  { value: "12-18", label: "12 - 18 hours" },
-  { value: "18+", label: "18+ hours" },
-];
 
 export function GroupExcursionsFilter({
   categories = [],
   onFilterChange,
   disabled = false,
+  locale = "en",
 }: GroupExcursionsFilterProps) {
+  const dict = getDictionary(locale);
+  const tf = dict.groupExcursions.filter;
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [price, setPrice] = useState("all");
   const [duration, setDuration] = useState("all");
 
-  // Construct Category dropdown options from backend categories
-  const categoryOptions: DropdownOption[] = useMemo(() => {
-    return [
-      { value: "all", label: "All Categories" },
-      ...categories.map((cat) => ({
-        value: cat.id,
-        label: cat.name,
-      })),
-    ];
-  }, [categories]);
+  const priceOptions: DropdownOption[] = useMemo(() => [
+    { value: "all", label: tf.allPrices },
+    { value: "0-50", label: tf.under50 },
+    { value: "50-100", label: tf.price50to100 },
+    { value: "100+", label: tf.price100plus },
+  ], [tf]);
 
-  // Notify parent immediately when Category changes
+  const durationOptions: DropdownOption[] = useMemo(() => [
+    { value: "all", label: tf.allDurations },
+    { value: "under-12", label: tf.under12 },
+    { value: "12-18", label: tf.duration12to18 },
+    { value: "18+", label: tf.duration18plus },
+  ], [tf]);
+
+  const categoryOptions: DropdownOption[] = useMemo(() => [
+    { value: "all", label: tf.allCategories },
+    ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+  ], [categories, tf.allCategories]);
+
   const handleCategoryChange = (newCat: string) => {
     setCategory(newCat);
-    onFilterChange({
-      search,
-      category: newCat,
-      price,
-      duration,
-    });
+    onFilterChange({ search, category: newCat, price, duration });
   };
 
-  // Notify parent immediately when Price changes
   const handlePriceChange = (newPrice: string) => {
     setPrice(newPrice);
-    onFilterChange({
-      search,
-      category,
-      price: newPrice,
-      duration,
-    });
+    onFilterChange({ search, category, price: newPrice, duration });
   };
 
-  // Notify parent immediately when Duration changes
   const handleDurationChange = (newDuration: string) => {
     setDuration(newDuration);
-    onFilterChange({
-      search,
-      category,
-      price,
-      duration: newDuration,
-    });
+    onFilterChange({ search, category, price, duration: newDuration });
   };
 
-  // Debounced search input (350ms)
   useEffect(() => {
     const handler = setTimeout(() => {
-      onFilterChange({
-        search,
-        category,
-        price,
-        duration,
-      });
+      onFilterChange({ search, category, price, duration });
     }, 350);
-
     return () => clearTimeout(handler);
   }, [search]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onFilterChange({
-      search,
-      category,
-      price,
-      duration,
-    });
+    onFilterChange({ search, category, price, duration });
   };
 
   const isFilterActive =
@@ -125,28 +96,33 @@ export function GroupExcursionsFilter({
     setCategory("all");
     setPrice("all");
     setDuration("all");
-    onFilterChange({
-      search: "",
-      category: "all",
-      price: "all",
-      duration: "all",
-    });
+    onFilterChange({ search: "", category: "all", price: "all", duration: "all" });
   };
 
   return (
     <div className="w-full">
       {/* Section Header */}
-      <div className="text-center mb-8">
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="text-center mb-8"
+      >
         <h2 className="font-poppins text-2xl sm:text-3xl md:text-[34px] font-bold text-[#0E4A68] tracking-tight">
-          Find Your Perfect Trip
+          {tf.title}
         </h2>
         <p className="font-poppins text-sm sm:text-base text-[#646464] mt-1.5 sm:mt-2">
-          Use the filters below to find the trip that suits you
+          {tf.subtitle}
         </p>
-      </div>
+      </motion.div>
 
       {/* Filter Form Container */}
-      <form
+      <motion.form
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.55, ease: "easeOut" }}
         onSubmit={handleFormSubmit}
         className="w-full bg-[#FFFFFF] text-[#444444] rounded-[18px] border-[0.5px] border-[#888888] p-4 sm:p-5 lg:p-6 transition-all"
         style={{
@@ -160,7 +136,7 @@ export function GroupExcursionsFilter({
               htmlFor="search-excursions"
               className="font-poppins text-xs sm:text-sm font-medium text-[#444444] mb-1.5"
             >
-              Search
+              {tf.searchLabel}
             </label>
             <div className="relative flex items-center">
               <input
@@ -168,7 +144,7 @@ export function GroupExcursionsFilter({
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search in Excursions..."
+                placeholder={tf.searchPlaceholder}
                 disabled={disabled}
                 className="w-full h-11 pl-3.5 pr-10 font-poppins text-sm text-[#444444] placeholder-[#888888] bg-white rounded-[8px] border-[0.5px] border-[#888888] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] focus:border-[#0E4A68] transition"
               />
@@ -177,7 +153,7 @@ export function GroupExcursionsFilter({
                   type="button"
                   onClick={() => setSearch("")}
                   className="absolute right-3 text-[#888888] hover:text-[#0E4A68] cursor-pointer"
-                  aria-label="Clear search"
+                  aria-label={tf.clearSearch}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -200,7 +176,7 @@ export function GroupExcursionsFilter({
           {/* 2. Category Custom Dropdown */}
           <div className="lg:col-span-3">
             <CustomDropdown
-              label="Category"
+              label={tf.categoryLabel}
               value={category}
               onChange={handleCategoryChange}
               disabled={disabled}
@@ -219,11 +195,11 @@ export function GroupExcursionsFilter({
           {/* 3. Price Custom Dropdown */}
           <div className="lg:col-span-2">
             <CustomDropdown
-              label="Price"
+              label={tf.priceLabel}
               value={price}
               onChange={handlePriceChange}
               disabled={disabled}
-              options={PRICE_OPTIONS}
+              options={priceOptions}
               icon={
                 <Image
                   src="/GroupExcursions/Vector (1).svg"
@@ -238,11 +214,11 @@ export function GroupExcursionsFilter({
           {/* 4. Duration Custom Dropdown */}
           <div className="lg:col-span-2">
             <CustomDropdown
-              label="Duration"
+              label={tf.durationLabel}
               value={duration}
               onChange={handleDurationChange}
               disabled={disabled}
-              options={DURATION_OPTIONS}
+              options={durationOptions}
               icon={
                 <svg
                   className="w-4 h-4 text-[#888888]"
@@ -264,25 +240,29 @@ export function GroupExcursionsFilter({
           {/* 5. Action / Reset Button */}
           <div className="lg:col-span-2 flex flex-col">
             <span className="font-poppins text-xs sm:text-sm font-medium text-[#444444] mb-1.5 hidden lg:block select-none">
-              Action
+              {tf.actionLabel}
             </span>
             {isFilterActive ? (
-              <button
+              <motion.button
                 type="button"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={handleResetFilters}
                 disabled={disabled}
-                className="w-full h-11 flex items-center justify-center gap-1.5 bg-[#FFF4E5] hover:bg-[#ffe7cc] active:scale-[0.98] text-[#D48C28] border border-[#D48C28] font-poppins text-sm font-semibold rounded-[8px] transition-all cursor-pointer shadow-sm"
+                className="w-full h-11 flex items-center justify-center gap-1.5 bg-[#FFF4E5] hover:bg-[#ffe7cc] text-[#D48C28] border border-[#D48C28] font-poppins text-sm font-semibold rounded-[8px] transition-all cursor-pointer shadow-sm"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                <span>Reset</span>
-              </button>
+                <span>{tf.reset}</span>
+              </motion.button>
             ) : (
-              <button
+              <motion.button
                 type="submit"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
                 disabled={disabled}
-                className="w-full h-11 flex items-center justify-center gap-2 bg-[#0E4A68] hover:bg-[#09354b] active:scale-[0.98] text-white font-poppins text-sm font-medium rounded-[8px] border-[0.5px] border-[#555555] transition-all cursor-pointer"
+                className="w-full h-11 flex items-center justify-center gap-2 bg-[#0E4A68] hover:bg-[#09354b] text-white font-poppins text-sm font-medium rounded-[8px] border-[0.5px] border-[#555555] transition-all cursor-pointer"
                 style={{
                   boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.3)",
                 }}
@@ -293,12 +273,12 @@ export function GroupExcursionsFilter({
                   width={14}
                   height={14}
                 />
-                <span>Search</span>
-              </button>
+                <span>{tf.searchBtn}</span>
+              </motion.button>
             )}
           </div>
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 }

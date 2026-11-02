@@ -4,27 +4,33 @@ import React from "react";
 import { FiDollarSign } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import { GroupPaymentMethod } from "@/models/groupBooking";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BookingPaymentSelectorProps {
   paymentMethod: number;
   onPaymentMethodChange: (val: number) => void;
+  locale?: string;
 }
 
 export function BookingPaymentSelector({
   paymentMethod,
   onPaymentMethodChange,
+  locale = "en",
 }: BookingPaymentSelectorProps) {
+  const dict = getDictionary(locale);
+  const t = dict.groupExcursions.details.bookingForm;
+
   const options = [
     {
       id: GroupPaymentMethod.CashOnArrival,
-      title: "Cash on Arrival",
-      desc: "Pay cash directly to your tour guide on trip day",
+      title: t.cashOnArrival,
+      desc: t.cashDesc,
       icon: <FiDollarSign size={18} className="text-[#0E4A68] shrink-0" />,
     },
     {
       id: GroupPaymentMethod.WhatsAppDirect,
-      title: "WhatsApp Direct",
-      desc: "Coordinate payment details directly with our team on WhatsApp",
+      title: t.whatsAppDirect,
+      desc: t.whatsAppDesc,
       icon: <FaWhatsapp size={18} className="text-[#16A34A] shrink-0" />,
     },
   ];
@@ -33,7 +39,7 @@ export function BookingPaymentSelector({
     <div className="space-y-4 pt-4 border-t border-[#E5E5E5]">
       <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
         <FiDollarSign className="text-[#0E4A68]" />
-        <span>4. Payment Method</span>
+        <span>{t.step4Title}</span>
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

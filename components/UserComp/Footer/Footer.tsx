@@ -13,6 +13,7 @@ import {
   FaTiktok,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface FooterProps {
   currentLocale?: string;
@@ -48,28 +49,38 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
     return null;
   }
 
+  // Detect active locale from pathname (e.g. /en/..., /fr/..., /de/..., /ru/...)
+  const segments = pathname?.split("/").filter(Boolean) || [];
+  const activeLocale =
+    segments[0] && ["en", "ru", "de", "fr"].includes(segments[0])
+      ? segments[0]
+      : currentLocale;
+
+  const dict = getDictionary(activeLocale);
+  const t = dict.footer;
+
   const quickLinks = [
-    { label: "Home", href: `/${currentLocale}` },
-    { label: "Services", href: `/${currentLocale}/services` },
-    { label: "Blogs", href: `/${currentLocale}/blogs` },
-    { label: "FAQ", href: `/${currentLocale}/faq` },
-    { label: "Contact", href: `/${currentLocale}/contact` },
+    { label: t.quickLinks.home, href: `/${activeLocale}` },
+    { label: t.quickLinks.services, href: `/${activeLocale}/services/tourist` },
+    { label: t.quickLinks.blogs, href: `/${activeLocale}/Blogs` },
+    { label: t.quickLinks.faq, href: `/${activeLocale}/faq` },
+    { label: t.quickLinks.contact, href: `/${activeLocale}/Contact` },
   ];
 
   const services = [
-    { label: "Hotel Deliveries", href: `/${currentLocale}/hotel-deliveries` },
-    { label: "Tourist Services", href: `/${currentLocale}/services/tourist` },
-    { label: "Red Sea Real Estate", href: `/${currentLocale}/services/real-estate` },
-    { label: "Car Rental", href: `/${currentLocale}/services/car-rental` },
-    { label: "VIP Services-Hurghada Airport", href: `/${currentLocale}/services/vip-airport` },
-    { label: "Transfer Service", href: `/${currentLocale}/services/transfer` },
+    { label: t.services.hotelDeliveries, href: `/${activeLocale}/hotel-deliveries` },
+    { label: t.services.touristServices, href: `/${activeLocale}/services/tourist` },
+    { label: t.services.realEstate, href: `/${activeLocale}/services/real-estate` },
+    { label: t.services.carRental, href: `/${activeLocale}/services/car-rental` },
+    { label: t.services.vipAirport, href: `/${activeLocale}/services/vip-airport` },
+    { label: t.services.transferService, href: `/${activeLocale}/services/transfer` },
   ];
 
   const contactItems = [
     { label: "+201036234030", href: "tel:+201036234030" },
-    { label: "WhatsApp Chat", href: "https://wa.me/201036232021" },
+    { label: t.contact.whatsAppChat, href: "https://wa.me/201036232021" },
     { label: "info@touristmarket-egypt.com", href: "mailto:info@touristmarket-egypt.com" },
-    { label: "Hurghada, Egypt", href: "#" },
+    { label: t.contact.location, href: "#" },
   ];
 
   const socialLinks = [
@@ -106,7 +117,10 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
   ];
 
   return (
-    <footer className="w-full bg-[#0E4A68] text-white font-poppins overflow-hidden">
+    <footer
+      style={{ overflowAnchor: "none" }}
+      className="w-full bg-[#0E4A68] text-white font-poppins overflow-hidden"
+    >
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <motion.div
           variants={containerVariants}
@@ -118,7 +132,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
           {/* Column 1: Logo & Tagline */}
           <motion.div variants={columnVariants} className="flex flex-col items-start lg:col-span-1">
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-              <Link href={`/${currentLocale}`} className="mb-6 block">
+              <Link href={`/${activeLocale}`} className="mb-6 block">
                 <Image
                   src="/shared/LogoFooter.svg"
                   alt="Egypt Tourist Market"
@@ -129,14 +143,14 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
               </Link>
             </motion.div>
             <p className="font-poppins-regular-14 text-white/80">
-              Your gateway to authentic Egyptian experiences, local bazaars, and memorable adventures.
+              {t.tagline}
             </p>
           </motion.div>
 
           {/* Column 2: Quick Links */}
           <motion.div variants={columnVariants}>
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
-              Quick Links
+              {t.quickLinksTitle}
             </h3>
             <ul className="mt-5 space-y-3">
               {quickLinks.map((link) => (
@@ -157,7 +171,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
           {/* Column 3: Services */}
           <motion.div variants={columnVariants}>
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
-              Services
+              {t.servicesTitle}
             </h3>
             <ul className="mt-5 space-y-3">
               {services.map((service) => (
@@ -178,7 +192,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
           {/* Column 4: Contact Us */}
           <motion.div variants={columnVariants}>
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
-              Contact Us
+              {t.contactTitle}
             </h3>
             <ul className="mt-5 space-y-3">
               {contactItems.map((item) => (
@@ -199,7 +213,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
           {/* Column 5: Follow Us */}
           <motion.div variants={columnVariants}>
             <h3 className="font-poppins text-[20px] font-bold leading-[100%] text-white">
-              Follow Us
+              {t.followUsTitle}
             </h3>
             <div className="mt-5 flex flex-wrap items-center gap-3">
               {socialLinks.map((social) => (
@@ -230,10 +244,10 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
           className="mt-12 border-t border-white/15 pt-8 text-center text-xs text-white/75"
         >
           <div className="flex flex-wrap items-center justify-center gap-1.5">
-            <span>© 2026 Egypt Tourist Market. All rights reserved.</span>
+            <span>{t.copyright}</span>
             <span>·</span>
             <span>
-              Powered by{" "}
+              {t.poweredBy}{" "}
               <a
                 href="https://tech-gear.net/en"
                 target="_blank"

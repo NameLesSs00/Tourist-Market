@@ -3,6 +3,7 @@
 import React from "react";
 import { FiPhone, FiUser } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BookingContactFieldsProps {
   customerName: string;
@@ -13,6 +14,7 @@ interface BookingContactFieldsProps {
   onWhatsAppChange: (val: string) => void;
   sameAsPhone: boolean;
   onSameAsPhoneToggle: (val: boolean) => void;
+  locale?: string;
 }
 
 export function BookingContactFields({
@@ -24,23 +26,27 @@ export function BookingContactFields({
   onWhatsAppChange,
   sameAsPhone,
   onSameAsPhoneToggle,
+  locale = "en",
 }: BookingContactFieldsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.groupExcursions.details.bookingForm;
+
   return (
     <div className="space-y-4 pt-4 border-t border-[#E5E5E5]">
       <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
         <FiUser className="text-[#DE7423]" />
-        <span>2. Lead Traveler Information</span>
+        <span>{t.step2Title}</span>
       </h3>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Full Name */}
         <div>
           <label className="block text-xs font-semibold text-[#083952] mb-1">
-            Full Name *
+            {t.fullName}
           </label>
           <input
             type="text"
-            placeholder="e.g. John Doe"
+            placeholder={t.namePlaceholder}
             value={customerName}
             onChange={(e) => onCustomerNameChange(e.target.value)}
             required
@@ -51,7 +57,7 @@ export function BookingContactFields({
         {/* Phone */}
         <div>
           <label className="block text-xs font-semibold text-[#083952] mb-1">
-            Phone Number *
+            {t.phone}
           </label>
           <div className="relative">
             <FiPhone className="absolute left-3 top-3 text-gray-400" size={16} />
@@ -70,7 +76,7 @@ export function BookingContactFields({
         <div className="sm:col-span-2">
           <div className="flex items-center justify-between mb-1">
             <label className="block text-xs font-semibold text-[#083952]">
-              WhatsApp Number *
+              {t.whatsApp}
             </label>
             <label className="flex items-center gap-1.5 text-xs text-[#0E4A68] cursor-pointer">
               <input
@@ -79,7 +85,7 @@ export function BookingContactFields({
                 onChange={(e) => onSameAsPhoneToggle(e.target.checked)}
                 className="rounded border-[#BBBBBB] accent-[#0E4A68]"
               />
-              <span>Same as phone number</span>
+              <span>{t.sameAsPhone}</span>
             </label>
           </div>
 

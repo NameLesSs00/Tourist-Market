@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FiClock, FiStar } from "react-icons/fi";
 import type { PrivateExcursion } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsRelatedProps {
   excursions: PrivateExcursion[];
@@ -16,6 +17,9 @@ export function PrivateDetailsRelated({
   excursions = [],
   locale = "en",
 }: PrivateDetailsRelatedProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.related;
+
   const displayExcursions = (excursions || []).slice(0, 3);
 
   if (displayExcursions.length === 0) return null;
@@ -25,12 +29,12 @@ export function PrivateDetailsRelated({
       {/* Title */}
       <div className="mb-8">
         <h2 className="text-[26px] sm:text-[32px] font-bold text-[#083952] tracking-tight">
-          EXPLORE RELATED TRIPS
+          {t.title || "EXPLORE RELATED TRIPS"}
         </h2>
       </div>
 
-      {/* Excursions Grid (3 Cards Max) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+      {/* Excursions Grid (3 Cards Max, centered 3rd card on 2-col semi-small screens) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 [&>*:last-child]:md:max-lg:col-span-2 [&>*:last-child]:md:max-lg:w-1/2 [&>*:last-child]:md:max-lg:mx-auto">
         {displayExcursions.map((item) => {
           const targetUrl = `/${locale}/private-excursions/${item.slug || item.id}`;
 
@@ -102,16 +106,16 @@ export function PrivateDetailsRelated({
               <div className="p-5 sm:p-6 pt-2">
                 {/* Price Breakdown Row */}
                 <div className="py-3 border-t border-gray-100 flex items-center justify-between text-[12px] sm:text-[13px] text-[#083952] font-semibold">
-                  <span>Adult: {item.adultPrice.toFixed(2)} $</span>
+                  <span>{t.adult || "Adult"}: {item.adultPrice.toFixed(2)} $</span>
                   <span className="text-gray-300">|</span>
-                  <span>Child: {item.childPrice.toFixed(2)} $</span>
+                  <span>{t.child || "Child"}: {item.childPrice.toFixed(2)} $</span>
                   <span className="text-gray-300">|</span>
-                  <span>Infant: {item.infantPrice.toFixed(2)} $</span>
+                  <span>{t.infant || "Infant"}: {item.infantPrice.toFixed(2)} $</span>
                 </div>
 
                 {/* View Details Action Button */}
                 <div className="mt-2 w-full py-3 rounded-xl bg-[#DE7423] group-hover:bg-[#C9641B] text-white font-bold text-[15px] flex items-center justify-center transition-colors shadow-sm active:scale-[0.99]">
-                  View Details
+                  {t.viewDetails || "View Details"}
                 </div>
               </div>
             </Link>
@@ -121,3 +125,5 @@ export function PrivateDetailsRelated({
     </section>
   );
 }
+
+export default PrivateDetailsRelated;

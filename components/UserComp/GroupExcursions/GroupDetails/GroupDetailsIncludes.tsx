@@ -1,27 +1,59 @@
 "use client";
 
 import React from "react";
+import { motion, type Variants } from "framer-motion";
 import { GroupExcursionDetail } from "../types";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface GroupDetailsIncludesProps {
   detail: GroupExcursionDetail;
+  locale?: string;
 }
 
-export function GroupDetailsIncludes({ detail }: GroupDetailsIncludesProps) {
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
+};
+
+export function GroupDetailsIncludes({
+  detail,
+  locale = "en",
+}: GroupDetailsIncludesProps) {
   const { priceIncludes, priceExcludes } = detail;
+  const dict = getDictionary(locale);
+  const t = dict.groupExcursions.details.includes;
 
   return (
-    <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-7">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ staggerChildren: 0.12 }}
+      className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-7"
+    >
       {/* 1. Price Includes Card */}
-      <div className="w-full bg-[#FFFFFF] rounded-[12px] border-[0.8px] border-[#BBBBBB] p-4 sm:p-6 flex flex-col justify-start">
+      <motion.div
+        variants={cardVariants}
+        className="w-full bg-[#FFFFFF] rounded-[12px] border-[0.8px] border-[#BBBBBB] p-4 sm:p-6 flex flex-col justify-start"
+      >
         <div className="flex items-center gap-2.5 pb-3 sm:pb-4 border-b border-[#BBBBBB]/60 mb-4 sm:mb-5">
           <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#0E4A68] text-white shrink-0">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <h3 className="font-poppins text-base sm:text-lg lg:text-xl font-bold text-[#0E4A68]">
-            Price Includes
+            {t.priceIncludes}
           </h3>
         </div>
 
@@ -33,18 +65,27 @@ export function GroupDetailsIncludes({ detail }: GroupDetailsIncludesProps) {
             </li>
           ))}
         </ul>
-      </div>
+      </motion.div>
 
       {/* 2. Price Excludes Card */}
-      <div className="w-full bg-[#FFFFFF] rounded-[12px] border-[0.8px] border-[#BBBBBB] p-4 sm:p-6 flex flex-col justify-start">
+      <motion.div
+        variants={cardVariants}
+        className="w-full bg-[#FFFFFF] rounded-[12px] border-[0.8px] border-[#BBBBBB] p-4 sm:p-6 flex flex-col justify-start"
+      >
         <div className="flex items-center gap-2.5 pb-3 sm:pb-4 border-b border-[#BBBBBB]/60 mb-4 sm:mb-5">
           <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#E53E3E] text-white shrink-0">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <svg
+              className="w-3.5 h-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              viewBox="0 0 24 24"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
           <h3 className="font-poppins text-base sm:text-lg lg:text-xl font-bold text-[#0E4A68]">
-            Price Excludes
+            {t.priceExcludes}
           </h3>
         </div>
 
@@ -53,7 +94,7 @@ export function GroupDetailsIncludes({ detail }: GroupDetailsIncludesProps) {
           <div>
             <div className="font-bold text-[#000000] flex items-center gap-2">
               <span className="shrink-0">•</span>
-              <span className="break-words">Round trip transfer:</span>
+              <span className="break-words">{t.roundTripTransfer}</span>
             </div>
             <ul className="pl-5 space-y-1 mt-1 text-[#333333]">
               {priceExcludes.roundTripTransfer.map((subItem, sIdx) => (
@@ -68,7 +109,7 @@ export function GroupDetailsIncludes({ detail }: GroupDetailsIncludesProps) {
           <div>
             <div className="font-bold text-[#000000] flex items-center gap-2">
               <span className="shrink-0">•</span>
-              <span className="break-words">Entrance inside the Pyramids:</span>
+              <span className="break-words">{t.entranceTickets}</span>
             </div>
             <ul className="pl-5 space-y-1 mt-1 text-[#333333]">
               {priceExcludes.entranceTickets.map((ticket, tIdx) => (
@@ -87,8 +128,8 @@ export function GroupDetailsIncludes({ detail }: GroupDetailsIncludesProps) {
             </div>
           ))}
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

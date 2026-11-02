@@ -7,12 +7,14 @@ import type {
   PreviewGroupPriceResponse,
   PreviewPrivatePriceResponse,
 } from "@/models/excursionPricePreview";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export interface BookingPriceBreakdownCardProps {
   privateResult?: PreviewPrivatePriceResponse | null;
   groupResult?: PreviewGroupPriceResponse | null;
   isLoading?: boolean;
   className?: string;
+  locale?: string;
 }
 
 export function BookingPriceBreakdownCard({
@@ -20,13 +22,18 @@ export function BookingPriceBreakdownCard({
   groupResult,
   isLoading = false,
   className = "",
+  locale = "en",
 }: BookingPriceBreakdownCardProps) {
+  const dict = getDictionary(locale);
+  const tGroup = dict.groupExcursions.details.bookingForm;
+  const tPrivSidebar = dict.privateExcursions.details.sidebar;
+
   if (isLoading) {
     return (
       <div className={`rounded-2xl border border-[#E2E8F0] bg-[#FFFFFF] p-6 text-center shadow-xs ${className}`}>
         <div className="flex flex-col items-center justify-center gap-2.5 py-6 text-xs text-[#64748B]">
           <FiLoader className="h-6 w-6 animate-spin text-[#0E4A68]" />
-          <span>Calculating total price...</span>
+          <span>{tGroup.calculating || "Calculating..."}</span>
         </div>
       </div>
     );
@@ -39,16 +46,16 @@ export function BookingPriceBreakdownCard({
         <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
           <div className="flex items-center gap-1.5 font-semibold text-[#083952]">
             <FaCar className="h-3.5 w-3.5 text-[#0E4A68]" />
-            <span>Private Transfer ({privateResult.vehicleType})</span>
+            <span>{tPrivSidebar.vehicleType || "Private Transfer"} ({privateResult.vehicleType})</span>
           </div>
           <span className="text-[11px] text-[#64748B]">
-            {privateResult.totalPassengers} Passenger{privateResult.totalPassengers === 1 ? "" : "s"}
+            {privateResult.totalPassengers} {tPrivSidebar.passengers || "Passengers"}
           </span>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between text-[#475569]">
-            <span>Base Excursion Fare</span>
+            <span>{tPrivSidebar.vehicle || "Base Excursion Fare"}</span>
             <span className="font-semibold text-[#083952]">{privateResult.baseExcursionPrice} {curr}</span>
           </div>
 
@@ -57,7 +64,7 @@ export function BookingPriceBreakdownCard({
               <div className="flex items-center justify-between font-semibold text-[#083952]">
                 <span className="flex items-center gap-1">
                   <FiMapPin className="h-3 w-3 text-[#D48C28]" />
-                  Attractions ({privateResult.attractionItems.length})
+                  {tPrivSidebar.attractions || "Attractions"} ({privateResult.attractionItems.length})
                 </span>
                 <span>{privateResult.attractionsTotal} {curr}</span>
               </div>
@@ -75,7 +82,7 @@ export function BookingPriceBreakdownCard({
               <div className="flex items-center justify-between font-semibold text-[#083952]">
                 <span className="flex items-center gap-1">
                   <FiPackage className="h-3 w-3 text-[#0E4A68]" />
-                  Extra Services ({privateResult.serviceItems.length})
+                  {tPrivSidebar.extraServices || "Extra Services"} ({privateResult.serviceItems.length})
                 </span>
                 <span>{privateResult.servicesTotal} {curr}</span>
               </div>
@@ -93,7 +100,7 @@ export function BookingPriceBreakdownCard({
           <div className="flex items-center justify-between text-sm font-bold text-[#16A34A]">
             <span className="flex items-center gap-1.5">
               <FiCheck className="h-4 w-4" />
-              Total Price
+              {tPrivSidebar.totalPrice || "Total Price"}
             </span>
             <span className="text-lg font-extrabold">{privateResult.finalPrice} {curr}</span>
           </div>
@@ -109,23 +116,23 @@ export function BookingPriceBreakdownCard({
         <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3">
           <div className="flex items-center gap-1.5 font-semibold text-[#083952]">
             <FiUsers className="h-3.5 w-3.5 text-[#0E4A68]" />
-            <span>Group Tour Rates</span>
+            <span>{tGroup.groupRates}</span>
           </div>
           <span className="text-[11px] text-[#64748B]">
-            {groupResult.totalPassengers} Passenger{groupResult.totalPassengers === 1 ? "" : "s"}
+            {groupResult.totalPassengers} {groupResult.totalPassengers === 1 ? tGroup.passenger : tGroup.passengers}
           </span>
         </div>
 
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-[#475569]">
-            <span>Adults ({groupResult.adults} x {groupResult.adultPricePerPerson} {curr})</span>
+            <span>{tGroup.adultsLabel} ({groupResult.adults} x {groupResult.adultPricePerPerson} {curr})</span>
             <span className="font-semibold text-[#083952]">
               {groupResult.adults * groupResult.adultPricePerPerson} {curr}
             </span>
           </div>
           {groupResult.children > 0 && (
             <div className="flex items-center justify-between text-[#475569]">
-              <span>Children ({groupResult.children} x {groupResult.childPricePerPerson} {curr})</span>
+              <span>{tGroup.childrenLabel} ({groupResult.children} x {groupResult.childPricePerPerson} {curr})</span>
               <span className="font-semibold text-[#083952]">
                 {groupResult.children * groupResult.childPricePerPerson} {curr}
               </span>
@@ -133,7 +140,7 @@ export function BookingPriceBreakdownCard({
           )}
           {groupResult.infants > 0 && (
             <div className="flex items-center justify-between text-[#475569]">
-              <span>Infants ({groupResult.infants} x {groupResult.infantPricePerPerson} {curr})</span>
+              <span>{tGroup.infantsLabel} ({groupResult.infants} x {groupResult.infantPricePerPerson} {curr})</span>
               <span className="font-semibold text-[#083952]">
                 {groupResult.infants * groupResult.infantPricePerPerson} {curr}
               </span>
@@ -145,7 +152,7 @@ export function BookingPriceBreakdownCard({
           <div className="flex items-center justify-between text-sm font-bold text-[#16A34A]">
             <span className="flex items-center gap-1.5">
               <FiCheck className="h-4 w-4" />
-              Total Price
+              {tGroup.totalPrice}
             </span>
             <span className="text-lg font-extrabold">{groupResult.finalPrice} {curr}</span>
           </div>

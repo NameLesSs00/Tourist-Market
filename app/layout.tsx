@@ -6,7 +6,7 @@ import "./globals.css";
 import { Header } from "@/components/UserComp/Header";
 import { Footer } from "@/components/UserComp/Footer";
 import { WhatsAppFloatingButton } from "@/components/UserComp/Shared/WhatsAppFloatingButton";
-import { QueryProvider } from "@/shared/providers/QueryProvider";
+import { QueryProvider, ScrollToTop } from "@/shared/providers";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -49,10 +49,11 @@ export default function RootLayout({
     >
       <body className={`${poppins.className} min-h-full flex flex-col bg-[#FFF4E5] text-[#083952]`}>
         <QueryProvider>
+          <ScrollToTop />
           <Suspense fallback={<div className="h-20 w-full" />}>
             <Header />
           </Suspense>
-          <main className="flex-1 pt-20">{children}</main>
+          <main className="flex-1 pt-20 min-h-[calc(100vh-5rem)]">{children}</main>
           <Footer />
           <WhatsAppFloatingButton />
           <Toaster

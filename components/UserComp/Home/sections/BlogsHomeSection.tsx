@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import { BlogCard } from "@/components/UserComp/Blogs/components/BlogCard";
 import { useClientBlogsQuery } from "@/features/blogs/useClientBlogs";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BlogsHomeSectionProps {
   locale?: string;
@@ -35,6 +36,9 @@ const cardItemVariants: Variants = {
 };
 
 export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.blogs;
+
   // Fetch only 3 blogs for the home section grid
   const { data, isLoading } = useClientBlogsQuery(
     { pageNumber: 1, pageSize: 3 },
@@ -48,13 +52,13 @@ export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
     <section
       id="home-blogs"
       className="relative w-full py-16 sm:py-20 lg:py-24 overflow-hidden"
-      aria-label="Blogs and Stories"
+      aria-label={t.sectionAria}
     >
       {/* Background with Natural Sand & Palm Leaf Shadows matching Hero */}
       <div className="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
         <Image
           src="/homepage/hero/homeHeroBg.webp"
-          alt="Egyptian Desert Background"
+          alt={t.altBackground}
           fill
           sizes="100vw"
           className="object-cover object-center"
@@ -74,13 +78,13 @@ export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
             className="font-poppins font-semibold text-[28px] sm:text-[32px] lg:text-[36px] text-center tracking-normal align-middle"
             style={{ lineHeight: "42px" }}
           >
-            <span className="text-[#003D5B]">From</span>{" "}
-            <span className="text-[#D48C28]">Destinations</span>{" "}
-            <span className="text-[#003D5B]">to</span>{" "}
-            <span className="text-[#D48C28]">Memories</span>
+            <span className="text-[#003D5B]">{t.titleFrom}</span>{" "}
+            <span className="text-[#D48C28]">{t.titleDestinations}</span>{" "}
+            <span className="text-[#003D5B]">{t.titleTo}</span>{" "}
+            <span className="text-[#D48C28]">{t.titleMemories}</span>
           </h2>
           <p className="font-poppins text-sm sm:text-base text-[#646464] mt-2 font-normal">
-            A World to Explore
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -145,7 +149,7 @@ export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
                 boxShadow: "0px 4px 16px 0px rgba(0, 0, 0, 0.2)",
               }}
             >
-              Read More
+              {t.readMore}
             </Link>
           </motion.div>
         </motion.div>

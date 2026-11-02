@@ -5,20 +5,31 @@ import Image from "next/image";
 import { FiPlusCircle, FiCheck } from "react-icons/fi";
 import { PrivateExtraService } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsExtraServicesProps {
   services: PrivateExtraService[];
   selectedIds: string[];
   onToggleSelect: (serviceId: string) => void;
+  locale?: string;
 }
 
 interface ExtraServiceCardProps {
   service: PrivateExtraService;
   isSelected: boolean;
   onToggle: () => void;
+  locale?: string;
 }
 
-function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardProps) {
+function ExtraServiceCard({
+  service,
+  isSelected,
+  onToggle,
+  locale = "en",
+}: ExtraServiceCardProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.extraServices;
+
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -50,7 +61,6 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
         onClick={onToggle}
         className="flex items-center gap-3.5 mb-4 cursor-pointer select-none group"
       >
-        {/* Custom Square Checkbox */}
         <div
           className={`w-[26px] h-[26px] rounded-[4px] flex items-center justify-center transition-all ${
             isSelected
@@ -66,11 +76,10 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
         </h3>
       </div>
 
-      {/* 2-Column Grid: Left Sub-Gallery, Right Description & Price Actions */}
+      {/* 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Column: Sub-Gallery */}
         <div className="lg:col-span-7 flex flex-col gap-3">
-          {/* Main Photo */}
           <div
             className="relative w-full aspect-[16/10] sm:h-[260px] overflow-hidden bg-gray-100"
             style={{
@@ -88,7 +97,7 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
             />
           </div>
 
-          {/* Thumbnails Row with Assets Arrows */}
+          {/* Thumbnails Row */}
           <div className="flex items-center w-full">
             <button
               type="button"
@@ -149,7 +158,7 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
           </div>
         </div>
 
-        {/* Right Column: Description, Price Boxes & Select Button */}
+        {/* Right Column: Description & Price */}
         <div className="lg:col-span-5 flex flex-col justify-between h-full pt-1">
           <div>
             <p
@@ -165,46 +174,43 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
               onClick={() => setIsExpanded(!isExpanded)}
               className="text-[#155F98] text-[14px] font-semibold mt-2 inline-flex items-center gap-1 hover:underline cursor-pointer"
             >
-              {isExpanded ? "Read less ⌃" : "Read more ⌵"}
+              {isExpanded ? t.readLess || "Read less ⌃" : t.readMore || "Read more ⌵"}
             </button>
           </div>
 
           <div className="mt-6 pt-4 border-t border-gray-100">
             {/* Price boxes row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-              {/* Adult */}
               <div
                 className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
                 style={{ border: "0.8px solid #BBBBBB" }}
               >
                 <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  Adult
+                  {t.adult || "Adult"}
                 </span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
                   {service.adultPrice.toFixed(2)}$
                 </span>
               </div>
 
-              {/* Child */}
               <div
                 className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
                 style={{ border: "0.8px solid #BBBBBB" }}
               >
                 <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  Child
+                  {t.child || "Child"}
                 </span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
                   {service.childPrice.toFixed(2)}$
                 </span>
               </div>
 
-              {/* Infant */}
               <div
                 className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
                 style={{ border: "0.8px solid #BBBBBB" }}
               >
                 <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  Infant
+                  {t.infant || "Infant"}
                 </span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
                   {service.infantPrice.toFixed(2)}$
@@ -223,7 +229,7 @@ function ExtraServiceCard({ service, isSelected, onToggle }: ExtraServiceCardPro
                     : "bg-[#DE7423] text-white hover:bg-[#C9641B]"
                 }`}
               >
-                {isSelected ? "Selected" : "Select"}
+                {isSelected ? t.selected || "Selected" : t.select || "Select"}
               </button>
             </div>
           </div>
@@ -237,20 +243,24 @@ export function PrivateDetailsExtraServices({
   services,
   selectedIds,
   onToggleSelect,
+  locale = "en",
 }: PrivateDetailsExtraServicesProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.extraServices;
+
   return (
     <div className="w-full overflow-hidden rounded-2xl shadow-sm">
-      {/* ─── ORANGE HEADER BANNER ─── */}
+      {/* Orange Header Banner */}
       <div className="bg-[#DE7423] px-6 sm:px-8 py-4 flex items-center justify-between text-white rounded-t-2xl">
         <div className="flex items-center gap-2.5">
           <FiPlusCircle size={22} className="text-white" />
           <h2 className="text-[18px] sm:text-[22px] font-bold tracking-wide">
-            Extra Services
+            {t.title || "Extra Services"}
           </h2>
         </div>
       </div>
 
-      {/* ─── EXTRA SERVICES CARDS CONTAINER ─── */}
+      {/* Extra Services Cards Container */}
       <div className="bg-[#FFF8ED] p-4 sm:p-6 space-y-6 rounded-b-2xl border-x border-b border-[#DE7423]/30">
         {services.map((service) => {
           const isSelected = selectedIds.includes(service.id);
@@ -260,6 +270,7 @@ export function PrivateDetailsExtraServices({
               service={service}
               isSelected={isSelected}
               onToggle={() => onToggleSelect(service.id)}
+              locale={locale}
             />
           );
         })}
@@ -267,3 +278,5 @@ export function PrivateDetailsExtraServices({
     </div>
   );
 }
+
+export default PrivateDetailsExtraServices;

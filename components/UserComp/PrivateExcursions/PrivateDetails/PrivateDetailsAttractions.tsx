@@ -4,12 +4,14 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { PrivateAttraction } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsAttractionsProps {
   attractions: PrivateAttraction[];
   maxAttractions?: number;
   selectedIds: string[];
   onToggleSelect: (attractionId: string) => void;
+  locale?: string;
 }
 
 interface AttractionCardProps {
@@ -17,6 +19,7 @@ interface AttractionCardProps {
   isSelected: boolean;
   onToggle: () => void;
   canSelect: boolean;
+  locale?: string;
 }
 
 function AttractionCard({
@@ -24,7 +27,11 @@ function AttractionCard({
   isSelected,
   onToggle,
   canSelect,
+  locale = "en",
 }: AttractionCardProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.attractions;
+
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -56,11 +63,10 @@ function AttractionCard({
         {attraction.title}
       </h3>
 
-      {/* 2-Column Grid: Left Sub-Gallery, Right Description & Price Actions */}
+      {/* 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Column: Sub-Gallery */}
         <div className="lg:col-span-7 flex flex-col gap-3">
-          {/* Main Photo */}
           <div
             className="relative w-full aspect-[16/10] sm:h-[260px] overflow-hidden bg-gray-100"
             style={{
@@ -78,8 +84,8 @@ function AttractionCard({
             />
           </div>
 
-          {/* Thumbnails Row with Assets Arrows */}
-          <div className="flex items-center w-full  ">
+          {/* Thumbnails Row */}
+          <div className="flex items-center w-full">
             <button
               type="button"
               onClick={handlePrevImage}
@@ -139,7 +145,7 @@ function AttractionCard({
           </div>
         </div>
 
-        {/* Right Column: Description, Price Boxes & Select Button */}
+        {/* Right Column: Description & Price */}
         <div className="lg:col-span-5 flex flex-col justify-between h-full pt-1">
           <div>
             <p
@@ -155,46 +161,43 @@ function AttractionCard({
               onClick={() => setIsExpanded(!isExpanded)}
               className="text-[#155F98] text-[14px] font-semibold mt-2 inline-flex items-center gap-1 hover:underline cursor-pointer"
             >
-              {isExpanded ? "Read less -" : "Read more -"}
+              {isExpanded ? t.readLess || "Read less -" : t.readMore || "Read more -"}
             </button>
           </div>
 
           <div className="mt-6 pt-4 border-t border-gray-100">
             {/* Price boxes row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-              {/* Adult */}
               <div
                 className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
                 style={{ border: "0.8px solid #BBBBBB" }}
               >
                 <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  Adult
+                  {t.adult || "Adult"}
                 </span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
                   {attraction.adultPrice.toFixed(2)}$
                 </span>
               </div>
 
-              {/* Child */}
               <div
                 className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
                 style={{ border: "0.8px solid #BBBBBB" }}
               >
                 <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  Child
+                  {t.child || "Child"}
                 </span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
                   {attraction.childPrice.toFixed(2)}$
                 </span>
               </div>
 
-              {/* Infant */}
               <div
                 className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
                 style={{ border: "0.8px solid #BBBBBB" }}
               >
                 <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  Infant
+                  {t.infant || "Infant"}
                 </span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
                   {attraction.infantPrice.toFixed(2)}$
@@ -216,7 +219,7 @@ function AttractionCard({
                     : "bg-[#DE7423] text-white hover:bg-[#C9641B]"
                 }`}
               >
-                {isSelected ? "Selected" : "Select"}
+                {isSelected ? t.selected || "Selected" : t.select || "Select"}
               </button>
             </div>
           </div>
@@ -231,7 +234,10 @@ export function PrivateDetailsAttractions({
   maxAttractions = 5,
   selectedIds,
   onToggleSelect,
+  locale = "en",
 }: PrivateDetailsAttractionsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.attractions;
   const canSelectMore = selectedIds.length < maxAttractions;
 
   return (
@@ -239,7 +245,7 @@ export function PrivateDetailsAttractions({
       id="private-attractions-section"
       className="w-full overflow-hidden rounded-2xl shadow-sm scroll-mt-28"
     >
-      {/* --- ORANGE HEADER BANNER --- */}
+      {/* Orange Header Banner */}
       <div className="bg-[#DE7423] px-6 sm:px-8 py-4 flex items-center justify-between text-white rounded-t-2xl">
         <div className="flex items-center gap-2.5">
           <svg
@@ -255,16 +261,16 @@ export function PrivateDetailsAttractions({
             />
           </svg>
           <h2 className="text-[18px] sm:text-[22px] font-bold tracking-wide">
-            Select Attractions
+            {t.title || "Select Attractions"}
           </h2>
         </div>
 
         <span className="text-[15px] sm:text-[17px] font-semibold bg-white/15 px-3 py-1 rounded-full">
-          {selectedIds.length} / {maxAttractions} Max per trip
+          {selectedIds.length} / {maxAttractions} {t.maxBadge || "Max per trip"}
         </span>
       </div>
 
-      {/* --- ATTRACTION CARDS CONTAINER --- */}
+      {/* Cards Container */}
       <div className="bg-[#FFF8ED] p-4 sm:p-6 space-y-6 rounded-b-2xl border-x border-b border-[#DE7423]/30">
         {attractions.map((attraction) => {
           const isSelected = selectedIds.includes(attraction.id);
@@ -275,6 +281,7 @@ export function PrivateDetailsAttractions({
               isSelected={isSelected}
               onToggle={() => onToggleSelect(attraction.id)}
               canSelect={canSelectMore}
+              locale={locale}
             />
           );
         })}
@@ -282,3 +289,5 @@ export function PrivateDetailsAttractions({
     </div>
   );
 }
+
+export default PrivateDetailsAttractions;

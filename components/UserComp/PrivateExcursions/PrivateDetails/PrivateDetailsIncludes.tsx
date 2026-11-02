@@ -2,10 +2,12 @@
 
 import React from "react";
 import Image from "next/image";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsIncludesProps {
   includes?: string[];
   excludes?: string[];
+  locale?: string;
 }
 
 export function PrivateDetailsIncludes({
@@ -17,7 +19,11 @@ export function PrivateDetailsIncludes({
     "Lunch during the tour at a local restaurant (open buffet – drinks are paid separately).",
   ],
   excludes,
+  locale = "en",
 }: PrivateDetailsIncludesProps) {
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details.includes;
+
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch font-poppins">
       {/* ─── PRICE INCLUDES CARD ─── */}
@@ -39,7 +45,7 @@ export function PrivateDetailsIncludes({
             />
           </div>
           <h3 className="text-[20px] sm:text-[22px] font-bold text-[#DE7423]">
-            Price Includes
+            {t.priceIncludes || "Price Includes"}
           </h3>
         </div>
 
@@ -76,7 +82,7 @@ export function PrivateDetailsIncludes({
             />
           </div>
           <h3 className="text-[20px] sm:text-[22px] font-bold text-[#DE7423]">
-            Price Excludes
+            {t.priceExcludes || "Price Excludes"}
           </h3>
         </div>
 
@@ -112,41 +118,41 @@ export function PrivateDetailsIncludes({
                 </ul>
               </li>
 
-          {/* Entrance inside pyramids */}
-          <li className="text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-            <div className="flex items-start gap-3">
-              <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-              <span className="font-bold text-[#000000]">Entrance inside the Pyramids:</span>
-            </div>
-            <ul className="pl-6 mt-1.5 space-y-1 text-[13.5px] sm:text-[14px] text-[#222222]">
-              <li className="flex items-start gap-2">
-                <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                <span>Khufu Pyramid – $20</span>
+              {/* Entrance inside pyramids */}
+              <li className="text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
+                <div className="flex items-start gap-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
+                  <span className="font-bold text-[#000000]">Entrance inside the Pyramids:</span>
+                </div>
+                <ul className="pl-6 mt-1.5 space-y-1 text-[13.5px] sm:text-[14px] text-[#222222]">
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
+                    <span>Khufu Pyramid – $20</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
+                    <span>Khafre Pyramid – $6</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
+                    <span>Menkaure Pyramid – $6</span>
+                  </li>
+                </ul>
               </li>
-              <li className="flex items-start gap-2">
-                <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                <span>Khafre Pyramid – $6</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                <span>Menkaure Pyramid – $6</span>
-              </li>
-            </ul>
-          </li>
 
-          {/* Other excluded items */}
-          <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-            <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-            <span>Camel and horse riding at the Pyramids (optional).</span>
-          </li>
-          <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-            <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-            <span>Entrance tickets to any other places not included in the program.</span>
-          </li>
-          <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-            <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-            <span>Hot & cold beverages, tips, and personal expenses are not included.</span>
-          </li>
+              {/* Other excluded items */}
+              <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
+                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
+                <span>Camel and horse riding at the Pyramids (optional).</span>
+              </li>
+              <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
+                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
+                <span>Entrance tickets to any other places not included in the program.</span>
+              </li>
+              <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
+                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
+                <span>Hot & cold beverages, tips, and personal expenses are not included.</span>
+              </li>
             </>
           )}
         </ul>
@@ -154,3 +160,5 @@ export function PrivateDetailsIncludes({
     </div>
   );
 }
+
+export default PrivateDetailsIncludes;

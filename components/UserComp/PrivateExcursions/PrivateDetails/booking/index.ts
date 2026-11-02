@@ -1,4 +1,4 @@
-export { BookingContactFields } from "./BookingContactFields";
-export { BookingPaymentSelector } from "./BookingPaymentSelector";
-export { BookingConfirmationCard } from "./BookingConfirmationCard";
-
+export * from "./BookingConfirmationCard";
+export * from "./BookingContactFields";
+export * from "./BookingPaymentSelector";
+export * from "./BookingDateGuestsSelector";

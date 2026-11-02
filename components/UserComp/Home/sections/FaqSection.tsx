@@ -48,8 +48,41 @@ const itemVariants: Variants = {
   },
 };
 
+function ViewAllFaqButton({ href, label }: { href: string; label: string }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.05, y: -1 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Link
+        href={href}
+        className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-colors cursor-pointer"
+      >
+        <span>{label}</span>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M6 12L10 8L6 4"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </Link>
+    </motion.div>
+  );
+}
+
 export function FaqSection({ locale = "en" }: FaqSectionProps) {
   const dict = getDictionary(locale);
+  const t = dict.faq;
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   // Fetch strictly 5 questions for the homepage to minimize payload size
@@ -88,17 +121,17 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
         {!isLoading && isError && (
           <div className="mt-12 mx-auto max-w-xl rounded-2xl border border-[#0E4A6840] bg-[#FFF8EF] p-8 text-center shadow-xs">
             <h3 className="font-poppins text-lg font-semibold text-[#0E4A68]">
-              Unable to load frequently asked questions
+              {t.error.title}
             </h3>
             <p className="mt-2 text-sm text-[#0E4A6899]">
-              Something went wrong while fetching FAQs from the server.
+              {t.error.description}
             </p>
             <button
               type="button"
               onClick={() => refetch()}
               className="mt-5 inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-6 py-2.5 font-poppins text-sm font-medium text-white shadow-sm transition hover:bg-[#083952] active:scale-95 cursor-pointer"
             >
-              Try Again
+              {t.error.retry}
             </button>
           </div>
         )}
@@ -107,18 +140,17 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
         {!isLoading && !isError && displayItems.length === 0 && (
           <div className="mt-12 mx-auto max-w-xl rounded-2xl border border-[#0E4A6833] bg-[#FFF8EF] p-8 text-center shadow-xs">
             <h3 className="font-poppins text-lg font-semibold text-[#0E4A68]">
-              No Questions Available
+              {t.empty.title}
             </h3>
             <p className="mt-2 text-sm text-[#0E4A6899]">
-              Frequently asked questions are currently being updated. If you
-              have any inquiries, feel free to contact us directly.
+              {t.empty.description}
             </p>
             <div className="mt-5 flex justify-center">
               <Link
                 href={`/${locale}/contact`}
                 className="inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-6 py-2.5 font-poppins text-sm font-medium text-white shadow-sm transition hover:bg-[#083952] active:scale-95 cursor-pointer"
               >
-                Contact Us
+                {t.empty.contact}
               </Link>
             </div>
           </div>
@@ -175,33 +207,10 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
 
                 {/* View All FAQs Link */}
                 <div className="pt-5 flex justify-center">
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -1 }}
-                    whileTap={{ scale: 0.97 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Link
-                      href={`/${locale}/faq`}
-                      className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-colors cursor-pointer"
-                    >
-                      <span>View All FAQs</span>
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M6 12L10 8L6 4"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </Link>
-                  </motion.div>
+                  <ViewAllFaqButton
+                    href={`/${locale}/faq`}
+                    label={t.viewAll}
+                  />
                 </div>
               </div>
 
@@ -213,7 +222,10 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
                 transition={{ duration: 0.5, ease: "easeOut" }}
                 className="flex-1 max-w-[420px] 2xl:max-w-[450px] sticky top-28 self-start"
               >
-                <FaqAnswerPanel item={activeItem ?? undefined} />
+                <FaqAnswerPanel
+                  item={activeItem ?? undefined}
+                  selectQuestionText={t.selectQuestion}
+                />
               </motion.div>
             </div>
 
@@ -255,33 +267,10 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
 
               {/* View All FAQs Link on Mobile */}
               <div className="mt-6 flex justify-center">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Link
-                    href={`/${locale}/faq`}
-                    className="inline-flex items-center gap-2 rounded-xl border border-[#0E4A6840] bg-[#FFF8EF] px-5 py-2.5 font-poppins text-xs font-semibold text-[#0E4A68] shadow-2xs hover:bg-[#0E4A68] hover:text-white transition-colors cursor-pointer"
-                  >
-                    <span>View All FAQs</span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M6 12L10 8L6 4"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </Link>
-                </motion.div>
+                <ViewAllFaqButton
+                  href={`/${locale}/faq`}
+                  label={t.viewAll}
+                />
               </div>
 
               {/* Centered Help Card below questions */}

@@ -46,12 +46,12 @@ export function CurrencySelector({
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="flex items-center gap-1.5 xl:gap-2 rounded-full border border-[#08395240] bg-transparent px-2.5 py-1.5 xl:px-4 xl:py-2 text-xs xl:text-sm 2xl:text-base font-semibold text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer whitespace-nowrap"
+        className="flex items-center gap-1 sm:gap-1.5 xl:gap-2 rounded-full border border-[#08395240] bg-transparent px-2 py-1 sm:px-2.5 sm:py-1.5 xl:px-4 xl:py-2 text-xs xl:text-sm 2xl:text-base font-semibold text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer whitespace-nowrap"
       >
-        <span className="font-bold">{selected.symbol}</span>
-        <span>{selected.label}</span>
+        <span className="font-bold text-xs sm:text-sm">{selected.symbol}</span>
+        <span className="text-xs sm:text-sm">{selected.label}</span>
         <svg
-          className={`h-4 w-4 text-[#083952] transition-transform duration-200 ${
+          className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#083952] transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
           fill="none"

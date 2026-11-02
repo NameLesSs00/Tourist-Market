@@ -3,12 +3,16 @@
 import React from "react";
 import { FiChevronRight, FiHeadphones } from "react-icons/fi";
 import { FaTelegramPlane, FaViber, FaWhatsapp } from "react-icons/fa";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface NeedHelpCardProps {
   className?: string;
   whatsappNumber?: string;
   telegramLink?: string;
   viberNumber?: string;
+  locale?: string;
+  title?: string;
+  subtitle?: string;
 }
 
 export function NeedHelpCard({
@@ -16,7 +20,16 @@ export function NeedHelpCard({
   whatsappNumber = "201036232021",
   telegramLink = "https://t.me/Touristmarketegypt",
   viberNumber = "201036232021",
+  locale = "en",
+  title,
+  subtitle,
 }: NeedHelpCardProps) {
+  const dict = getDictionary(locale);
+  const defaultTitle = dict.groupExcursions?.details?.sidebar?.needHelp || "Need Help ?";
+  const defaultSubtitle = dict.groupExcursions?.details?.sidebar?.contactUsForHelp || "contact us for Help ?";
+  const headerTitle = title || defaultTitle;
+  const headerSubtitle = subtitle || defaultSubtitle;
+
   const cleanPhone = whatsappNumber.replace(/[^0-9]/g, "");
   const cleanViber = viberNumber.replace(/[^0-9]/g, "");
 
@@ -43,10 +56,10 @@ export function NeedHelpCard({
           </div>
           <div className="flex flex-col">
             <h4 className="text-[16px] font-bold text-[#124885] leading-tight">
-              Need Help ?
+              {headerTitle}
             </h4>
             <span className="text-[12px] text-[#083043] font-normal">
-              contact us for Help ?
+              {headerSubtitle}
             </span>
           </div>
         </div>
