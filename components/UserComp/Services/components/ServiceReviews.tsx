@@ -14,6 +14,7 @@ import {
 } from "@/shared/utils/helpfulReviews";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { isValidEmail, isValidPhoneNumber } from "@/shared/utils/phoneUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import type { ServiceReviewItem } from "@/models/serviceReview";
 import {
   ServiceReviewRatingSummary,
@@ -24,9 +25,13 @@ import {
 
 export interface ServiceReviewsProps {
   subServiceId: string;
+  locale?: string;
 }
 
-export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
+export function ServiceReviews({ subServiceId, locale = "en" }: ServiceReviewsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   const { data: reviewsData, isLoading, isError, error: queryError } =
     useClientServiceReviewsQuery(subServiceId);
 
@@ -65,10 +70,10 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
   useEffect(() => {
     if (isError && queryError) {
       toast.error(
-        extractErrorMessage(queryError, "Unable to load reviews for this service.")
+        extractErrorMessage(queryError, t.toastLoadError)
       );
     }
-  }, [isError, queryError]);
+  }, [isError, queryError, t.toastLoadError]);
 
   const averageRating = useMemo(() => {
     if (items.length === 0) return 0;
@@ -115,7 +120,7 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
       onError: (err: unknown) => {
         setLikedMap((prev) => ({ ...prev, [id]: false }));
         setLikeOverrides((prev) => ({ ...prev, [id]: currentLikes }));
-        toast.error(extractErrorMessage(err, "Unable to register helpful vote."));
+        toast.error(extractErrorMessage(err, t.toastHelpfulError));
       },
     });
   };
@@ -125,25 +130,23 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
     if (!subServiceId || alreadySubmitted) return;
 
     if (!userRating || userRating < 1) {
-      toast.error("Please select a star rating.");
+      toast.error(t.toastRatingRequired);
       return;
     }
     if (!userName.trim() || userName.trim().length < 2) {
-      toast.error("Please enter your name (at least 2 characters).");
+      toast.error(t.toastNameMin);
       return;
     }
     if (!userEmail.trim() || !isValidEmail(userEmail)) {
-      toast.error("Please enter a valid email address.");
+      toast.error(t.toastEmailInvalid);
       return;
     }
     if (!userPhone.trim() || !isValidPhoneNumber(userPhone)) {
-      toast.error(
-        "Please enter a valid phone number (7 to 15 digits)."
-      );
+      toast.error(t.toastPhoneInvalid);
       return;
     }
     if (!userReview.trim() || userReview.trim().length < 5) {
-      toast.error("Please write your review before submitting (at least 5 characters).");
+      toast.error(t.toastReviewMin);
       return;
     }
 
@@ -164,15 +167,13 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
           setUserEmail("");
           setUserPhone("");
           setUserReview("");
-          toast.success(
-            "Thank you! Your review has been submitted for approval and will appear once reviewed."
-          );
+          toast.success(t.toastReviewSuccess);
         },
         onError: (err: unknown) => {
           toast.error(
             extractErrorMessage(
               err,
-              "We could not submit your review. Please try again."
+              t.toastReviewError
             )
           );
         },
@@ -189,6 +190,7 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
             averageRating={averageRating}
             totalReviews={totalReviews}
             distribution={distribution}
+            locale={locale}
           />
 
           <ServiceReviewForm
@@ -206,6 +208,7 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
             onPhoneChange={setUserPhone}
             onReviewChange={setUserReview}
             onSubmit={handleSubmitReview}
+            locale={locale}
           />
         </div>
 
@@ -220,6 +223,7 @@ export function ServiceReviews({ subServiceId }: ServiceReviewsProps) {
             visibleCountMobile={visibleCountMobile}
             onHelpful={handleHelpful}
             onLoadMoreMobile={() => setVisibleCountMobile((prev) => prev + 5)}
+            locale={locale}
           />
         </div>
       </div>

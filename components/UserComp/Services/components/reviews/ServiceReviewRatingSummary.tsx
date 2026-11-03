@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { FiStar } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export interface RatingDistributionItem {
   star: number;
@@ -13,13 +15,18 @@ interface ServiceReviewRatingSummaryProps {
   averageRating: number;
   totalReviews: number;
   distribution: RatingDistributionItem[];
+  locale?: string;
 }
 
 export function ServiceReviewRatingSummary({
   averageRating,
   totalReviews,
   distribution,
+  locale = "en",
 }: ServiceReviewRatingSummaryProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <div
       className="w-full bg-white rounded-2xl p-4 sm:p-6 sm:p-7 shrink-0"
@@ -50,13 +57,13 @@ export function ServiceReviewRatingSummary({
 
         <div className="text-center sm:text-right">
           <p className="text-xs sm:text-[13px] font-semibold text-[#083952]">
-            Total Reviews
+            {t.totalReviewsLabel}
           </p>
           <p className="text-base sm:text-xl font-bold text-[#DE7423] mt-0.5">
-            {totalReviews} {totalReviews === 1 ? "Review" : "Reviews"}
+            {totalReviews} {totalReviews === 1 ? t.reviewSingle : t.reviewPlural}
           </p>
           <span className="text-[11px] text-gray-400 mt-1 block">
-            Verified Experiences
+            {t.verifiedExperiences}
           </span>
         </div>
       </div>
@@ -68,9 +75,12 @@ export function ServiceReviewRatingSummary({
             <span className="w-4 font-semibold text-right">{star}</span>
             <FiStar size={13} className="text-[#F5A623] fill-[#F5A623] shrink-0" />
             <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#F5A623] rounded-full transition-all duration-300"
-                style={{ width: `${percentage}%` }}
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{ width: `${percentage}%` }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="h-full bg-[#F5A623] rounded-full"
               />
             </div>
             <span className="w-8 text-right text-gray-500 font-medium">

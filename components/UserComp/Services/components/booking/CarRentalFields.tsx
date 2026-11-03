@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -14,6 +15,7 @@ interface CarRentalFieldsProps {
   fieldErrors: ServiceFieldErrors;
   todayStr: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  locale?: string;
 }
 
 export function CarRentalFields({
@@ -21,12 +23,16 @@ export function CarRentalFields({
   fieldErrors,
   todayStr,
   onChange,
+  locale = "en",
 }: CarRentalFieldsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <>
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Pick-up Date <span className="text-red-500">*</span>
+          {t.pickupDateLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="date"
@@ -47,7 +53,7 @@ export function CarRentalFields({
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Rental Duration (Days) <span className="text-red-500">*</span>
+          {t.rentalDurationLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="number"
@@ -57,7 +63,7 @@ export function CarRentalFields({
           required
           value={formData.numberOfDays}
           onChange={onChange}
-          placeholder="e.g. 3"
+          placeholder={t.rentalDurationPlaceholder}
           className={getFieldInputClass(Boolean(fieldErrors.numberOfDays))}
         />
         {fieldErrors.numberOfDays && (

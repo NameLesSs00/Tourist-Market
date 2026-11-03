@@ -70,6 +70,7 @@ export function BlogsSection({
             meta={paginationMeta}
             onPageChange={handlePageChange}
             disabled={isFetching}
+            locale={locale}
           />
         )}
       </div>

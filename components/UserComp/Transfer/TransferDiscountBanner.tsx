@@ -2,7 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { TransferTripType } from "@/models/transferBooking";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface TransferDiscountBannerProps {
   tripType: TransferTripType;
@@ -10,6 +12,8 @@ interface TransferDiscountBannerProps {
   additionalHourRate?: number;
   vehicleName?: string;
   onSelectRoundTrip?: () => void;
+  locale?: string;
+  currencySymbol?: string;
 }
 
 export function TransferDiscountBanner({
@@ -18,20 +22,30 @@ export function TransferDiscountBanner({
   additionalHourRate = 10,
   vehicleName,
   onSelectRoundTrip,
+  locale = "en",
+  currencySymbol = "$",
 }: TransferDiscountBannerProps) {
+  const dict = getDictionary(locale);
+  const t = dict.transfer.discount;
   const isRoundTrip = tripType === TransferTripType.RoundTrip;
   const displayDiscount = discountPercentage > 0 ? discountPercentage : 15;
   const displayExtraHour = additionalHourRate > 0 ? additionalHourRate : 10;
 
   if (isRoundTrip) {
     return (
-      <div className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins">
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins"
+      >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-1 border-b border-[#00000010]">
           <h2 className="text-base sm:text-lg font-bold text-[#0E4A68]">
-            Waiting Information & Perks
+            {t.waitingTitle}
           </h2>
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-auto">
-            {displayDiscount}% Round-Trip Discount Active
+            {displayDiscount}% {t.discountActive}
           </span>
         </div>
 
@@ -46,7 +60,7 @@ export function TransferDiscountBanner({
               height={22}
               className="object-contain shrink-0"
             />
-            <span>3 Hours Free Waiting Included with Round-Trip</span>
+            <span>{t.freeWaiting}</span>
           </div>
         </div>
 
@@ -54,19 +68,25 @@ export function TransferDiscountBanner({
         <div className="text-xs sm:text-sm font-semibold text-[#0E4A68] flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#0E4A68]" />
           <span>
-            Additional hour: <span className="font-bold text-[#0E4A68]">${displayExtraHour.toFixed(2)}/hour</span>
-            {vehicleName ? ` (specific to ${vehicleName})` : ""}
+            {t.additionalHour} <span className="font-bold text-[#0E4A68]">{currencySymbol}{displayExtraHour.toFixed(2)}/hour</span>
+            {vehicleName ? ` (${t.specificTo} ${vehicleName})` : ""}
           </span>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div
+    <motion.div
       onClick={onSelectRoundTrip}
       role="button"
       tabIndex={0}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      whileHover={{ scale: 1.015, y: -2 }}
+      whileTap={{ scale: 0.985 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -86,13 +106,13 @@ export function TransferDiscountBanner({
           />
         </div>
         <span className="text-sm sm:text-base md:text-lg font-bold tracking-wide text-white">
-          Save {displayDiscount}% when choosing Round Trip + 3 hours free waiting
+          {t.saveCallout.replace("{discount}", String(displayDiscount))}
         </span>
       </div>
       <span className="text-xs text-white/80 underline decoration-white/50">
-        Click here to switch to Round-Trip and claim your discount
+        {t.clickToSwitch}
       </span>
-    </div>
+    </motion.div>
   );
 }
 

@@ -106,6 +106,7 @@
         "fullDay": "Ganztägig",
         "hours": "Stunden",
         "hour": "Stunde",
+        "hoursGen": "Stunden",
         "allWeek": "Ganze Woche",
         "daily": "Täglich",
         "flexible": "Flexibel",
@@ -311,6 +312,8 @@
       "applyNow": "Filter anwenden"
     },
     "grid": {
+      "defaultBadge": "Private Tour",
+      "hours": "Stunden",
       "adult": "Erwachsener",
       "child": "Kind",
       "infant": "Kleinkind",
@@ -343,7 +346,9 @@
         "whatToBring": "Mitzubringen",
         "cancellation": "Stornierungsbedingungen",
         "readMore": "Mehr anzeigen -",
-        "readLess": "Weniger anzeigen -"
+        "readLess": "Weniger anzeigen -",
+        "noDescription": "Eine detaillierte Beschreibung wird nach der Buchungsbestaetigung bereitgestellt.",
+        "noItinerary": "Der Ablauf dieses privaten Ausflugs wird individuell an Ihren Zeitplan angepasst."
       },
       "attractions": {
         "title": "Attraktionen auswaehlen",
@@ -368,7 +373,18 @@
       },
       "includes": {
         "priceIncludes": "Im Preis inbegriffen",
-        "priceExcludes": "Nicht im Preis inbegriffen"
+        "priceExcludes": "Nicht im Preis inbegriffen",
+        "defaultIncludes": [
+          "Abholung und Rücktransfer zum Hotel",
+          "Alle Transfers in klimatisierten Fahrzeugen",
+          "Professionelle Reiseleitung",
+          "Eintrittskarten gemäß Programm"
+        ],
+        "defaultExcludes": [
+          "Persönliche Ausgaben und Souvenirs",
+          "Optionale Aktivitäten und zusätzliche Eintrittsgelder",
+          "Trinkgelder und Getränke"
+        ]
       },
       "sidebar": {
         "bookThis": "Diesen Ausflug buchen",
@@ -430,7 +446,15 @@
         "submitting": "Wird gesendet...",
         "commentsTitle": "Bewertungen & Kommentare",
         "showLess": "Weniger anzeigen",
-        "viewMore": "Weitere Kommentare anzeigen"
+        "viewMore": "Weitere Kommentare anzeigen",
+        "justNow": "Gerade eben",
+        "toastMissingId": "Bewertung kann nicht gesendet werden: Ausflugs-ID fehlt.",
+        "toastSelectRating": "Bitte wählen Sie eine Bewertung zwischen 1 und 5 Sternen.",
+        "toastEnterName": "Bitte geben Sie Ihren Namen ein.",
+        "toastValidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+        "toastWriteReview": "Bitte schreiben Sie Ihre Bewertung vor dem Absenden.",
+        "toastSuccess": "Vielen Dank! Ihre Bewertung wurde übermittelt.",
+        "toastFailed": "Bewertung konnte nicht gesendet werden."
       },
       "related": {
         "title": "VERWANDTE REISEN ENTDECKEN",
@@ -482,8 +506,30 @@
         "whatsAppHelpTitle": "Brauchen Sie eine schnelle Bestaetigung oder haben Sie Fragen?",
         "whatsAppHelpDesc": "Unser Team hat eine Kopie an Ihr WhatsApp gesendet. Sie koennen unserer Einsatzleitung auch direkt mit Ihrer Buchungsreferenz schreiben, um sofortige Hilfe zu erhalten.",
         "backToExcursionBtn": "Zurueck zu den Ausflugsdetails",
-        "chatWhatsAppBtn": "Auf WhatsApp chatten"
-      }
+        "chatWhatsAppBtn": "Auf WhatsApp chatten",
+        "valSelectDate": "Bitte wählen Sie ein gültiges Buchungsdatum.",
+        "valMinAdult": "Mindestens 1 Erwachsener ist erforderlich.",
+        "valFullName": "Bitte geben Sie Ihren vollständigen Namen ein (mindestens 2 Zeichen).",
+        "valPhone": "Bitte geben Sie Ihre Telefonnummer ein.",
+        "valPhoneDigits": "Bitte geben Sie eine gültige Telefonnummer ein (7 bis 15 Ziffern).",
+        "valWhatsApp": "Bitte geben Sie Ihre WhatsApp-Nummer ein.",
+        "valWhatsAppDigits": "Bitte geben Sie eine gültige WhatsApp-Nummer ein (7 bis 15 Ziffern).",
+        "valHotel": "Bitte geben Sie Ihren Hotel- oder Resortnamen für die Abholung ein (mindestens 2 Zeichen).",
+        "valSuccess": "Private Tour erfolgreich gebucht!",
+        "noAttractionsSelected": "Keine Sehenswürdigkeiten ausgewählt. Sie können zurückgehen und Sehenswürdigkeiten auswählen."
+      },
+      "defaultBadge": "Private Tour",
+      "aboutExperience": "Über dieses Erlebnis",
+      "defaultCancellation": "Kostenlose Stornierung bis zu 24 Stunden vor Beginn der Tour.",
+      "hour": "Stunde",
+      "hours": "Stunden",
+      "hoursGen": "Stunden",
+      "upTo": "Bis zu",
+      "person": "Person",
+      "people": "Personen",
+      "daily": "Täglich",
+      "allWeek": "Ganze Woche",
+      "flexible": "Flexibel"
     }
   },
   "services": {
@@ -520,6 +566,158 @@
       }
     }
   },
+  "touristServices": {
+    "heroAlt": "Touristenservices in Hurghada",
+    "title": "TOURISTENSERVICES",
+    "subtitle": "Entdecken Sie unser umfassendes Angebot an touristischen Dienstleistungen für Ihr perfektes Ägypten-Erlebnis.",
+    "viewDetails": "Details ansehen",
+    "whatsapp": "WhatsApp",
+    "whatsappGreeting": "Hallo, ich interessiere mich für",
+    "ariaViewDetails": "Details ansehen für",
+    "errorLoading": "Dienste konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emptyState": "Zurzeit sind keine Dienste verfügbar. Bitte schauen Sie später wieder vorbei."
+  },
+  "realEstate": {
+    "heroAlt": "Rotes Meer Immobilien",
+    "title": "ROTES MEER IMMOBILIEN",
+    "subtitle": "Träumen Sie davon, ein Stück Paradies am Roten Meer zu besitzen? Wir begleiten Sie bei jedem Schritt.",
+    "viewDetails": "Details ansehen",
+    "whatsapp": "WhatsApp",
+    "whatsappGreeting": "Hallo, ich interessiere mich für die Immobilie:",
+    "ariaViewDetails": "Details ansehen für",
+    "errorLoading": "Immobilienangebote konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emptyState": "Zurzeit sind keine Immobilien verfügbar. Bitte schauen Sie später wieder vorbei."
+  },
+  "serviceDetail": {
+    "back": "Zurück",
+    "notFound": "Service nicht gefunden.",
+    "backToListing": "Zurück zur Liste",
+    "bookingFormTitle": "Buchungsformular",
+    "submittingButton": "Wird gesendet...",
+    "submitButton": "Reservierung absenden",
+    "availableLanguages": "Verfügbare Sprachen:",
+    "specificationsTitle": "Spezifikationen & Details",
+    "inclusionsTitle": "Im Service enthalten",
+    "pricingTitle": "Preispakete & Optionen",
+    "notesTitle": "Bedingungen & Betriebsrichtlinien",
+    "specModelYear": "Modelljahr",
+    "specTransmission": "Getriebe",
+    "specAirConditioning": "Klimaanlage",
+    "billingPerHour": "Pro Stunde",
+    "billingPerDay": "Pro Tag",
+    "formTitleTourist": "Touristenservices",
+    "formTitleCarRental": "Mietwagen",
+    "formTitleVip": "VIP-Dienste",
+    "formTitleRealEstate": "Immobilien",
+    "bookingButtonTourist": "Diesen Service buchen \u2193",
+    "bookingButtonCarRental": "Dieses Auto buchen \u2193",
+    "bookingButtonRealEstate": "Dieses Objekt anfragen \u2193",
+    "contactUs": "Kontaktieren Sie uns",
+    "workingHours": "+20 01289494715 · Täglich 9:00 – 21:00 Uhr",
+    "fullNameLabel": "Vollständiger Name",
+    "fullNamePlaceholder": "z. B. Max Mustermann",
+    "countryLabel": "Land",
+    "countryPlaceholder": "z. B. Deutschland",
+    "hotelLabel": "Hotel / Unterkunftsstandort",
+    "hotelPlaceholder": "Name des Hotels oder der Residenz",
+    "roomNumberLabel": "Zimmernummer",
+    "optionalLabel": "(optional)",
+    "roomNumberPlaceholder": "Zimmernummer falls zutreffend",
+    "phoneLabel": "Telefonnummer",
+    "phonePlaceholder": "z. B. +49 170 1234567",
+    "emailLabel": "E-Mail-Adresse",
+    "emailPlaceholder": "ihre.email@beispiel.de",
+    "preferredChannelLabel": "Bevorzugter Kontaktkanal",
+    "channelWhatsapp": "WhatsApp",
+    "channelViber": "Viber",
+    "channelPhone": "Telefonanruf",
+    "channelEmail": "E-Mail",
+    "serviceDateLabel": "Servicedatum",
+    "guideLanguageLabel": "Sprache des Guides",
+    "langEnglish": "Englisch",
+    "langGerman": "Deutsch",
+    "langRussian": "Russisch",
+    "langFrench": "Französisch",
+    "timeFromLabel": "Uhrzeit von",
+    "timeToLabel": "Uhrzeit bis",
+    "pickupDateLabel": "Abholdatum",
+    "rentalDurationLabel": "Mietdauer (Tage)",
+    "rentalDurationPlaceholder": "z. B. 3",
+    "flightNumberLabel": "Flugnummer",
+    "flightNumberPlaceholder": "z. B. MS703",
+    "departureDateTimeLabel": "Abflugdatum und -uhrzeit",
+    "passengersLabel": "Anzahl der Passagiere",
+    "passengersPlaceholder": "z. B. 2",
+    "destinationTerminalLabel": "Zielort / Terminal",
+    "destinationTerminalPlaceholder": "z. B. Flughafen Hurghada Terminal 1",
+    "realEstateInquiryLabel": "Anfrage- und Immobiliendetails",
+    "realEstateInquiryPlaceholder": "Beschreiben Sie die Immobilie (z. B. Budget, Zimmeranzahl, Kauf- oder Mietzeitraum)...",
+    "specialRequestsLabel": "Besondere Wünsche oder Hinweise",
+    "specialRequestsPlaceholder": "Besondere Anfragen oder Anweisungen...",
+    "errNameRequired": "Vollständiger Name ist erforderlich.",
+    "errNameMin": "Der Name muss mindestens 2 Zeichen lang sein.",
+    "errCountryRequired": "Land ist erforderlich.",
+    "errCountryMin": "Das Land muss mindestens 2 Zeichen lang sein.",
+    "errHotelRequired": "Hotel oder Unterkunft ist erforderlich.",
+    "errHotelMin": "Der Standort muss mindestens 2 Zeichen lang sein.",
+    "errPhoneRequired": "Telefonnummer ist erforderlich.",
+    "errPhoneInvalid": "Bitte geben Sie eine gültige Telefonnummer ein (7 bis 15 Ziffern).",
+    "errEmailRequired": "E-Mail-Adresse ist erforderlich.",
+    "errEmailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein (z. B. name@beispiel.de).",
+    "errChannelRequired": "Bitte wählen Sie Ihren bevorzugten Kontaktkanal.",
+    "errRentalDateRequired": "Abholdatum ist erforderlich.",
+    "errRentalDatePast": "Das Abholdatum darf nicht in der Vergangenheit liegen.",
+    "errDaysInvalid": "Die Dauer muss zwischen 1 und 365 Tagen liegen.",
+    "errTourDateRequired": "Tourdatum ist erforderlich.",
+    "errTourDatePast": "Das Tourdatum darf nicht in der Vergangenheit liegen.",
+    "errGuideLangRequired": "Bitte wählen Sie die Sprache des Guides.",
+    "errTimeFromRequired": "Startzeit ist erforderlich.",
+    "errTimeToRequired": "Endzeit ist erforderlich.",
+    "errFlightNumberRequired": "Flugnummer ist erforderlich.",
+    "errDepartureRequired": "Abflugdatum und -uhrzeit sind erforderlich.",
+    "errDeparturePast": "Die Abflugzeit darf nicht in der Vergangenheit liegen.",
+    "errPersonsInvalid": "Die Personenanzahl muss zwischen 1 und 50 liegen.",
+    "errDestinationRequired": "Zielort / Terminal ist erforderlich.",
+    "errNoteRequired": "Bitte geben Sie Details zu Ihrer Immobilienanfrage an.",
+    "bookingSuccess": "Ihre Buchungsanfrage wurde erfolgreich übermittelt!",
+    "bookingError": "Beim Absenden Ihrer Buchung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "reviewsTitle": "Kundenbewertungen",
+    "totalReviewsLabel": "Gesamte Bewertungen",
+    "reviewSingle": "Bewertung",
+    "reviewPlural": "Bewertungen",
+    "verifiedExperiences": "Verifizierte Erfahrungen",
+    "mostRecent": "Neueste",
+    "noReviewsYet": "Noch keine Bewertungen",
+    "noReviewsDesc": "Seien Sie der erste Kunde, der seine Erfahrung mit diesem Service teilt!",
+    "shareOpinionTitle": "Ihre Meinung teilen",
+    "shareOpinionSubtitle": "Haben Sie diesen Service gebucht? Hinterlassen Sie Ihr Feedback, um anderen Reisenden zu helfen.",
+    "alreadySubmittedMessage": "Vielen Dank! Ihre Bewertung wurde übermittelt und wird derzeit geprüft.",
+    "writeAnotherReview": "Weitere Bewertung schreiben",
+    "yourRatingLabel": "Ihre Bewertung *",
+    "ofFive": "von 5",
+    "reviewerNameLabel": "Ihr Name *",
+    "reviewerNamePlaceholder": "z. B. Max Mustermann",
+    "reviewerEmailLabel": "Ihre E-Mail *",
+    "reviewerEmailPlaceholder": "name@beispiel.de",
+    "reviewerPhoneLabel": "Telefonnummer *",
+    "reviewerPhonePlaceholder": "z. B. +49 170 1234567",
+    "reviewerCommentLabel": "Ihre Bewertung *",
+    "reviewerCommentPlaceholder": "Erzählen Sie anderen von Ihren Erfahrungen mit diesem Service...",
+    "submittingReview": "Bewertung wird übermittelt...",
+    "submitReview": "Bewertung absenden",
+    "showMoreReviews": "Mehr Bewertungen anzeigen",
+    "remainingCount": "verbleibend",
+    "customerDefaultName": "Kunde",
+    "toastRatingRequired": "Bitte wählen Sie eine Sternebewertung.",
+    "toastNameMin": "Bitte geben Sie Ihren Namen ein (mindestens 2 Zeichen).",
+    "toastEmailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "toastPhoneInvalid": "Bitte geben Sie eine gültige Telefonnummer ein (7 bis 15 Ziffern).",
+    "toastReviewMin": "Bitte schreiben Sie Ihre Bewertung (mindestens 5 Zeichen).",
+    "toastReviewSuccess": "Vielen Dank! Ihre Bewertung wurde zur Prüfung eingereicht und erscheint nach Freigabe.",
+    "toastReviewError": "Ihre Bewertung konnte nicht übermittelt werden. Bitte versuchen Sie es erneut.",
+    "toastLoadError": "Bewertungen für diesen Service konnten nicht geladen werden.",
+    "toastHelpfulError": "Hilfreich-Stimme konnte nicht registriert werden."
+  },
   "blogs": {
     "titleFrom": "Von",
     "titleDestinations": "Reisezielen",
@@ -530,7 +728,165 @@
     "readArticle": "Artikel lesen",
     "sectionAria": "Blogs und Reisegeschichten",
     "altBackground": "Hintergrund der ägyptischen Wüste",
-    "fallbackAlt": "Ägypten Reisebericht"
+    "fallbackAlt": "Ägypten Reisebericht",
+    "hero": {
+      "headingLine1": "Reisegeschichten,",
+      "headingLine2": "Tipps &",
+      "headingAccent": "Inspiration",
+      "subtitle": "Entdecken Sie neue Orte, erhalten Sie Reisetipps und lesen Sie echte Geschichten unserer Reisenden aus aller Welt.",
+      "flourish": "Worte, die Geister verbinden !",
+      "heroImageAlt": "Reisegeschichten und inspirierende Momente"
+    },
+    "grid": {
+      "emptyTitle": "Keine Reisegeschichten gefunden",
+      "emptySubtext": "Wählen Sie eine andere Kategorie, um mehr Artikel zu entdecken."
+    },
+    "pagination": {
+      "ariaLabel": "Blog-Seitennavigation",
+      "prevPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite"
+    },
+    "detail": {
+      "tagline": "ENTDECKEN SIE DIE ÄGYPTISCHE SEELE. IHR ABENTEUER WARTET.",
+      "coverAlt": "Blog-Cover",
+      "share": "TEILEN :",
+      "copyLinkTitle": "Artikellink kopieren",
+      "copiedTitle": "Link kopiert",
+      "copyAriaLabel": "Link kopieren",
+      "copySuccess": "Artikellink in die Zwischenablage kopiert!",
+      "copyError": "Link konnte nicht kopiert werden.",
+      "notFoundTitle": "Artikel nicht gefunden",
+      "notFoundText": "Die gesuchte Reisegeschichte existiert nicht oder wurde möglicherweise verschoben.",
+      "backToBlogs": "Zurück zu den Blogs",
+      "moreStoriesEyebrow": "Mehr Geschichten & Abenteuer",
+      "relatedArticlesHeading": "Ähnliche Artikel:"
+    }
+  },
+  "about": {
+    "hero": {
+      "headingLine1": "Mehr als eine Reise",
+      "headingLine2": "Es ist eine ",
+      "headingAccent": "Geschichte",
+      "subtitle": "Wir glauben, dass Reisen nicht nur das Besuchen neuer Orte bedeutet, sondern das Entdecken neuer Perspektiven, das Schaffen unvergesslicher Erinnerungen und Erlebnisse, die für immer bleiben.",
+      "handwrittenNote": "Reisen\nverbindet\nMenschen",
+      "heroImageAlt": "Reisender mit Rucksack mit Blick auf das Rote Meer"
+    },
+    "whoWeAre": {
+      "title": "Wer wir sind",
+      "paragraph1": "Bei Tourist Market sind wir eine innovative Tourismusplattform, die auf Leidenschaft, tiefem lokalem Wissen und einer endlosen Liebe zum Reisen basiert.",
+      "paragraph2": "Wir vereinen alle wichtigen Reisedienstleistungen, die Sie benötigen – bequem, sicher und aus einer einzigen vertrauenswürdigen Hand. Unsere Mission ist es, Besuchern absolute Wahlfreiheit, transparente Preise und absolute Zuverlässigkeit zu bieten und den Stress endloser Suche und Preisunsicherheiten zu beseitigen.",
+      "imageAlt": "Tourist Market Reiseleiter und Reisende an der Marina"
+    },
+    "ourMission": {
+      "title": "Unsere Mission",
+      "statement": "Reisen einfach, sicher und unvergesslich zu machen, indem wir Menschen mit den schönsten Orten der Welt und einzigartigen Erlebnissen verbinden. Unser Ziel ist es, jeden Reisenden zu inspirieren, zu unterstützen und bleibende Erinnerungen zu schaffen.",
+      "imageAlt": "Reisender auf einer Klippe mit Blick auf die Küstenstadt bei Sonnenuntergang"
+    },
+    "ourServices": {
+      "title": "Unsere Dienstleistungen",
+      "badgeText": "Was wir bieten",
+      "hotelDeliveries": {
+        "title": "Hotellieferungen",
+        "description": "Komfortable Aufenthalte, wohin Sie auch reisen."
+      },
+      "touristServices": {
+        "title": "Touristenservices",
+        "description": "Geführte Touren und authentische lokale Erlebnisse."
+      },
+      "redSeaRealEstate": {
+        "title": "Immobilien am Roten Meer",
+        "description": "Investieren Sie in einen Lebensstil direkt am Meer."
+      },
+      "carRental": {
+        "title": "Mietwagen",
+        "description": "Die Freiheit, in Ihrem eigenen Tempo zu reisen."
+      },
+      "vipServices": {
+        "title": "VIP-Dienste",
+        "description": "Flughafen Hurghada und private VIP-Transfers."
+      },
+      "transferServices": {
+        "title": "Transferservices",
+        "description": "Zuverlässige Fahrten vom Flughafen direkt ans Ziel."
+      }
+    },
+    "whyChooseUs": {
+      "title": "Warum wir",
+      "paragraph1": "Ein persönlicher Ansatz, der genau auf Ihre Wünsche zugeschnitten ist. Unser Ruf für Integrität sorgt für eine sorgenfreie Reise. Tiefe lokale Verbindungen bieten unvergleichliche Zugänge und Einblicke.",
+      "paragraph2": "Weil wir über das Gewöhnliche hinausgehen. Wir planen nicht nur Reisen – wir schaffen bedeutungsvolle Erlebnisse mit Sorgfalt, Vertrauen und lokaler Expertise.",
+      "imageAlt": "Warum wir - Reisefotocollage",
+      "localExpertise": {
+        "title": "Lokale Expertise",
+        "description": "Wir kennen die besten Orte, verborgene Schätze und echte lokale Erlebnisse."
+      },
+      "trustedReliable": {
+        "title": "Vertrauenswürdig & Zuverlässig",
+        "description": "Ihre Sicherheit und Ihr Komfort stehen für uns immer an erster Stelle."
+      },
+      "greatValue": {
+        "title": "Hervorragendes Preis-Leistungs-Verhältnis",
+        "description": "Hochwertige Erlebnisse zu fairen und transparenten Preisen."
+      },
+      "support24": {
+        "title": "24-Stunden-Support",
+        "description": "Wir sind rund um die Uhr für Sie da, wann immer Sie uns brauchen."
+      }
+    },
+    "coverage": {
+      "title": "Standorte & Expansion",
+      "currentLocationsTitle": "Aktuelle Standorte",
+      "currentLocationsText": "Hurghada, Sahl Hasheesh, El Gouna, Makadi Bay, Soma Bay und Safaga",
+      "comingSoonTitle": "Demnächst verfügbar",
+      "comingSoonText": "Marsa Alam, Sharm El Sheikh und Luxor",
+      "mapTitle": "Tourist Market Standort",
+      "openMap": "El Kawther, Hurghada",
+      "openMapAria": "Tourist Market Standort auf Google Maps öffnen"
+    }
+  },
+  "contact": {
+    "hero": {
+      "headingLine1": "Lassen Sie uns Ihre",
+      "headingLine2": "Nächste ",
+      "headingAccent": "Reise planen",
+      "subtitle": "Fragen, Ideen oder ein besonderer Wunsch? Unser lokales Team hilft Ihnen gerne, Ägypten mit Vertrauen zu entdecken.",
+      "callout": "Nur eine Nachricht entfernt",
+      "heroImageAlt": "Ägyptisches Küstenresort",
+      "flightRouteAlt": "Flugrouten-Animation",
+      "polaroid1Alt": "Ägyptische Küste und Steg",
+      "polaroid2Alt": "Antike ägyptische Tempelsäulen"
+    },
+    "cards": {
+      "callUs": "Rufen Sie uns an",
+      "emailUs": "E-Mail an uns",
+      "visitUs": "Besuchen Sie uns",
+      "workingHours": "Öffnungszeiten",
+      "phone": "+20 123 456 7890",
+      "email": "info@etouristmarket.com",
+      "address": "El Kawther, Hurghada, Ägypten",
+      "workingDays": "Sa – Di",
+      "workingTime": "09:00 – 22:00 Uhr"
+    },
+    "form": {
+      "title": "Senden Sie uns eine Nachricht",
+      "subtitle": "Füllen Sie das untenstehende Formular aus und wir melden uns schnellstmöglich bei Ihnen",
+      "nameLabel": "Name",
+      "namePlaceholder": "Ihr vollständiger Name",
+      "emailLabel": "E-Mail",
+      "emailPlaceholder": "ihre@adresse.com",
+      "subjectLabel": "Betreff",
+      "subjectPlaceholder": "Betreff auswählen",
+      "messageLabel": "Nachricht",
+      "messagePlaceholder": "Sagen Sie uns, wonach Sie suchen, oder stellen Sie eine Frage...",
+      "submitButton": "Nachricht senden",
+      "submittingButton": "Wird gesendet...",
+      "successMessage": "Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet.",
+      "errorMessage": "Nachricht konnte nicht gesendet werden. Bitte versuchen Sie es später erneut."
+    },
+    "map": {
+      "title": "Finden Sie uns auf der Karte",
+      "mapAriaTitle": "Standortkarte - El Kawther, Hurghada, Ägypten",
+      "resortImageAlt": "Hurghada Ägypten Küstenresort"
+    }
   },
   "faq": {
     "titlePrefix": "Häufig gestellte",
@@ -578,5 +934,203 @@
     },
     "copyright": "© 2026 Egypt Tourist Market. Alle Rechte vorbehalten.",
     "poweredBy": "Bereitgestellt von"
+  },
+  "transfer": {
+    "hero": {
+      "title": "Transfer-Services",
+      "subtitle": "Komfortable & zuverlässige Flughafentransfers in Hurghada",
+      "description": "Professioneller Tür-zu-Tür-Transferservice zwischen dem Flughafen Hurghada und Hotels an der gesamten Riviera des Roten Meeres. Buchen Sie im Voraus und reisen Sie stressfrei."
+    },
+    "form": {
+      "title": "Buchungsformular",
+      "pickup": "Abholort (Von) *",
+      "loadingLocations": "Orte werden geladen...",
+      "selectPickup": "Abholort auswählen",
+      "destination": "Zielort (Nach) *",
+      "selectDestination": "Zielort auswählen",
+      "adults": "Erwachsene *",
+      "children": "Kinder (0-11 J.)",
+      "tripType": "Fahrttyp *",
+      "oneWay": "Einfache Fahrt",
+      "roundTrip": "Hin- und Rückfahrt"
+    },
+    "vehicle": {
+      "assignment": "Fahrzeugzuweisung",
+      "awaitingRoute": "Wählen Sie oben Ihren Abhol- und Zielort, um das passende Fahrzeug und die Preise zu sehen.",
+      "awaitingBadge": "Warten auf Routenauswahl",
+      "routeUnavailable": "Routenpreis nicht verfügbar",
+      "alternativeHelp": "Bitte wählen Sie eine alternative Route oder kontaktieren Sie unser Team per WhatsApp für eine individuelle Buchung.",
+      "calculatingVehicle": "Fahrzeug wird ermittelt...",
+      "matchedFor": "Passend für",
+      "adult": "Erwachsener",
+      "adults": "Erwachsene",
+      "child": "Kind",
+      "children": "Kinder",
+      "farePrefix": "Fahrpreis —",
+      "calculating": "Wird berechnet...",
+      "additionalHour": "Zusätzliche Wartezeit pro Stunde:",
+      "perHour": "/ Std.",
+      "rateSpecific": "Tarif spezifisch für",
+      "route": "Route:",
+      "totalPassengers": "Gesamtanzahl Fahrgäste:",
+      "passenger": "Fahrgast",
+      "passengers": "Fahrgäste",
+      "standardFare": "Standardtarif:",
+      "discountApplied": "Rabatt für Hin- und Rückfahrt angewendet:"
+    },
+    "discount": {
+      "waitingTitle": "Wartezeit & Vorteile",
+      "discountActive": "Rabatt für Hin- und Rückfahrt aktiv",
+      "freeWaiting": "3 Stunden kostenlose Wartezeit bei Hin- und Rückfahrt inklusive",
+      "additionalHour": "Zusätzliche Stunde:",
+      "specificTo": "spezifisch für",
+      "saveCallout": "Sparen Sie {discount}% bei Wahl von Hin- und Rückfahrt + 3 Stunden kostenlose Wartezeit",
+      "clickToSwitch": "Klicken Sie hier, um zu Hin- und Rückfahrt zu wechseln und Ihren Rabatt zu sichern"
+    },
+    "schedule": {
+      "title": "Fahrplan",
+      "roundTripBadge": "Hin- und Rückfahrt",
+      "outboundSchedule": "Abholplan Hinfahrt",
+      "pickupSchedule": "Abholplan",
+      "tripDate": "Fahrtdatum *",
+      "tripTime": "Abholzeit *",
+      "returnSchedule": "Abholplan Rückfahrt",
+      "returnDate": "Rückfahrtdatum *",
+      "returnTime": "Rückfahrzeit *",
+      "additionalHours": "Zusätzliche Wartezimmerstunden (Optional)",
+      "noExtraHours": "Keine zusätzlichen Wartezimmerstunden ausgewählt"
+    },
+    "customer": {
+      "title": "Kundendaten",
+      "name": "Name *",
+      "namePlaceholder": "Ihr vollständiger Name",
+      "country": "Land *",
+      "selectCountry": "Land auswählen",
+      "loadingCountries": "Länder werden geladen...",
+      "email": "E-Mail *",
+      "emailPlaceholder": "ihre@beispiel.de",
+      "commMethod": "Bevorzugte Kontaktaufnahme *",
+      "phone": "Telefonnummer (WhatsApp bevorzugt) *",
+      "phonePlaceholder": "+20 123 456 7890",
+      "luggage": "Anzahl Gepäckstücke / Koffer"
+    },
+    "notes": {
+      "title": "Hinweise & Sonderwünsche",
+      "label": "Hinweise",
+      "placeholder": "Ihre Hinweise oder Sonderwünsche..."
+    },
+    "summary": {
+      "title": "Buchungsübersicht",
+      "vehicleType": "Fahrzeugtyp:",
+      "unavailable": "Nicht verfügbar",
+      "pendingRoute": "Warten auf Routenauswahl",
+      "baseFare": "Routen-Grundpreis:",
+      "discount": "Hin- und Rückfahrt Rabatt",
+      "extraWaiting": "Zusätzliche Wartezeit",
+      "totalFare": "Gesamtfahrpreis:",
+      "discountBanner": "{discount}% Rabatt für Hin- und Rückfahrt angewendet + 3 Stunden kostenlose Wartezeit",
+      "saveBanner": "Sparen Sie {discount}% bei Wahl von Hin- und Rückfahrt + 3 Stunden kostenlose Wartezeit",
+      "noRoutePrice": "Für diese Kombination ist kein Routenpreis verfügbar.",
+      "submitting": "Buchung wird gesendet...",
+      "selectPrompt": "Bitte Abhol- und Zielort auswählen",
+      "submit": "Transferbuchung absenden"
+    },
+    "contact": {
+      "title": "Kontaktieren Sie uns",
+      "whatsapp": "WhatsApp",
+      "viber": "Viber",
+      "telegram": "Telegram",
+      "hours": "+20 01289494715 · Täglich 9:00 – 21:00 Uhr"
+    },
+    "confirmation": {
+      "title": "Transferbuchung übermittelt!",
+      "defaultMessage": "Ihre Transferreservierung wurde erfolgreich empfangen.",
+      "routeInfo": "Routeninformationen",
+      "pickup": "Abholung:",
+      "destination": "Zielort:",
+      "type": "Typ:",
+      "roundTrip": "Hin- und Rückfahrt",
+      "oneWay": "Einfache Fahrt",
+      "vehiclePax": "Fahrzeug & Fahrgäste",
+      "vehicle": "Fahrzeug:",
+      "passengers": "Fahrgäste:",
+      "total": "gesamt",
+      "schedule": "Zeitplan",
+      "outbound": "Hinfahrt:",
+      "at": "um",
+      "return": "Rückfahrt:",
+      "extraWaiting": "Zusätzliche Wartezeit:",
+      "hours": "Stunde(n)",
+      "contactDetails": "Kontaktdaten",
+      "name": "Name:",
+      "email": "E-Mail:",
+      "phone": "Telefon:",
+      "luggage": "Gepäck:",
+      "bags": "Koffer",
+      "notes": "Sonderwünsche / Hinweise:",
+      "totalFare": "Gesamtfahrpreis",
+      "paymentNote": "Zahlung bei Ankunft / wenden Sie sich an den Koordinator.",
+      "bookAnother": "Weiteren Transfer buchen"
+    },
+    "reviews": {
+      "title": "Bewertungen —",
+      "reviewSingle": "Bewertung",
+      "reviewPlural": "Bewertungen",
+      "noReviews": "Noch keine Bewertungen",
+      "commentsTitle": "Bewertungen & Kommentare",
+      "loading": "Verifizierte Bewertungen werden geladen...",
+      "emptyMessage": "Für Transfer-Services wurden bisher noch keine Bewertungen abgegeben. Teilen Sie als Erster Ihre Erfahrung!",
+      "showLess": "Weniger anzeigen",
+      "viewMore": "Weitere Kommentare anzeigen",
+      "shareOpinion": "Teilen Sie Ihre Meinung",
+      "yourRating": "Ihre Bewertung",
+      "name": "Name *",
+      "namePlaceholder": "Ihr Name",
+      "email": "E-Mail *",
+      "emailPlaceholder": "ihre@beispiel.de",
+      "phone": "Telefon *",
+      "phonePlaceholder": "+20 123 456 7890",
+      "yourReview": "Ihre Bewertung *",
+      "reviewPlaceholder": "Schreiben Sie Ihre Bewertung...",
+      "alreadySubmitted": "Sie haben bereits eine Bewertung für die Transfer-Services abgegeben. Vielen Dank!",
+      "submitting": "Wird gesendet...",
+      "submit": "Absenden"
+    },
+    "validation": {
+      "pickupRequired": "Bitte wählen Sie einen Abholort (Von).",
+      "destinationRequired": "Bitte wählen Sie einen Zielort (Nach).",
+      "sameLocation": "Abhol- und Zielort dürfen nicht identisch sein.",
+      "dateRequired": "Bitte wählen Sie ein Fahrtdatum.",
+      "pastDate": "Das Fahrtdatum darf nicht in der Vergangenheit liegen.",
+      "timeRequired": "Bitte wählen Sie eine Abholzeit.",
+      "returnDateRequired": "Bitte wählen Sie ein Rückfahrtdatum für die Hin- und Rückfahrt.",
+      "returnDateBefore": "Das Rückfahrtdatum darf nicht vor dem Hinfahrtsdatum liegen.",
+      "returnTimeRequired": "Bitte wählen Sie eine Rückfahrzeit für die Hin- und Rückfahrt.",
+      "returnTimeBefore": "Die Rückfahrzeit muss am selben Tag nach der Hinfahrtszeit liegen.",
+      "nameRequired": "Bitte geben Sie Ihren Namen ein.",
+      "countryRequired": "Bitte wählen Sie Ihr Land aus.",
+      "validEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "validPhone": "Bitte geben Sie eine gültige Telefon- oder WhatsApp-Nummer ein (mind. 7 Ziffern).",
+      "bookingSuccess": "Ihre Transferbuchung wurde bestätigt! Wir haben Ihre Anfrage erhalten.",
+      "bookingFailed": "Fehler beim Absenden der Buchung. Bitte prüfen Sie Ihre Angaben und versuchen Sie es erneut."
+    }
+  },
+  "carRental": {
+    "heroAlt": "Autovermietung Hurghada",
+    "title": "AUTOVERMIETUNG HURGHADA",
+    "subtitle": "Erkunden Sie Hurghada und Umgebung in Ihrem eigenen Tempo mit unserem großen Angebot an Premium-Mietwagen.",
+    "viewDetails": "Details ansehen",
+    "whatsapp": "WhatsApp",
+    "errorLoading": "Mietwagenoptionen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emptyState": "Derzeit sind keine Mietwagenoptionen verfügbar. Schauen Sie bald wieder vorbei."
+  },
+  "vipAirport": {
+    "heroAlt": "VIP-Dienste Flughafen Hurghada",
+    "title": "VIP-DIENSTE FLUGHAFEN HURGHADA",
+    "subtitle": "Erleben Sie Ihren Abflug aus Hurghada mit unseren nahtlosen, exklusiven VIP-Services.",
+    "viewDetails": "Details ansehen",
+    "whatsapp": "WhatsApp",
+    "errorLoading": "VIP-Flughafendienste konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emptyState": "Derzeit sind keine VIP-Flughafendienste verfügbar. Schauen Sie bald wieder vorbei."
   }
 }

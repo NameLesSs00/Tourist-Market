@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { FiSend } from "react-icons/fi";
 import { FaCar, FaConciergeBell, FaBuilding, FaLanguage } from "react-icons/fa";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { ServiceDetailItem } from "../types";
 import {
   useServiceBookingForm,
@@ -16,6 +18,8 @@ interface ServiceBookingFormProps {
 }
 
 export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingFormProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
   const { serviceType, formTitle, formSubtitle } = detail;
 
   const {
@@ -47,7 +51,7 @@ export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingForm
   return (
     <div id="booking-form" className="w-full max-w-[960px] mx-auto my-8 sm:my-12 font-poppins">
       <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-[#0E4A68] mb-4 sm:mb-6">
-        Booking Form
+        {t.bookingFormTitle}
       </h2>
 
       <div
@@ -87,6 +91,7 @@ export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingForm
               fieldErrors={fieldErrors}
               onChange={handleChange}
               onPhoneChange={handlePhoneChange}
+              locale={locale}
             />
 
             <ServiceSpecificFields
@@ -96,22 +101,25 @@ export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingForm
               todayStr={todayStr}
               nowDateTimeStr={nowDateTimeStr}
               onChange={handleChange}
+              locale={locale}
             />
           </div>
 
           {/* Submit Button */}
-          <button
+          <motion.button
             type="submit"
             disabled={isPending}
+            whileHover={{ scale: isPending ? 1 : 1.01 }}
+            whileTap={{ scale: isPending ? 1 : 0.99 }}
             style={{
               backgroundColor: "#134B68",
               borderRadius: "5px",
             }}
-            className="w-full py-3 px-4 flex items-center justify-center gap-2 text-white font-semibold text-xs sm:text-sm md:text-base transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer mt-2 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full py-3 px-4 flex items-center justify-center gap-2 text-white font-semibold text-xs sm:text-sm md:text-base transition-all duration-200 hover:brightness-110 cursor-pointer mt-2 shadow-sm disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <FiSend className="w-4 h-4 shrink-0" />
-            <span>{isPending ? "Submitting Request..." : "Submit Reservation"}</span>
-          </button>
+            <span>{isPending ? t.submittingButton : t.submitButton}</span>
+          </motion.button>
         </form>
       </div>
     </div>

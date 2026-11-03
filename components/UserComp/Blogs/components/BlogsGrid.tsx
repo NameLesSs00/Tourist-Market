@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import { motion, type Variants } from "framer-motion";
 import type { BlogItem } from "@/models/blog";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { BlogCard } from "./BlogCard";
 
 interface BlogsGridProps {
@@ -10,7 +12,30 @@ interface BlogsGridProps {
   locale?: string;
 }
 
+const gridVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 28, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1] },
+  },
+};
+
 export function BlogsGrid({ blogs, isLoading, locale = "en" }: BlogsGridProps) {
+  const dict = getDictionary(locale);
+  const t = dict.blogs.grid;
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8 lg:gap-10 w-full py-2 sm:py-3">
@@ -27,23 +52,35 @@ export function BlogsGrid({ blogs, isLoading, locale = "en" }: BlogsGridProps) {
 
   if (blogs.length === 0) {
     return (
-      <div className="w-full py-16 text-center">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="w-full py-16 text-center"
+      >
         <h4 className="font-['Poppins'] text-xl font-semibold text-[#0E4A68]">
-          No travel stories found
+          {t.emptyTitle}
         </h4>
         <p className="mt-2 font-['Poppins'] text-sm text-[#0E4A68]/75">
-          Try selecting another category to discover more articles.
+          {t.emptySubtext}
         </p>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8 lg:gap-10 w-full py-2 sm:py-3">
+    <motion.div
+      variants={gridVariants}
+      initial="hidden"
+      animate="visible"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8 lg:gap-10 w-full py-2 sm:py-3"
+    >
       {blogs.map((blog) => (
-        <BlogCard key={blog.id} blog={blog} locale={locale} />
+        <motion.div key={blog.id} variants={cardVariants}>
+          <BlogCard blog={blog} locale={locale} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 

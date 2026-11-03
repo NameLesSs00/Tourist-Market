@@ -3,6 +3,7 @@ import {
   useGroupPricePreviewMutation,
   usePrivatePricePreviewMutation,
 } from "./useExcursionPricePreview";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import type {
   PreviewGroupPriceResponse,
   PreviewPrivatePriceResponse,
@@ -29,10 +30,13 @@ export function useBookingPriceCalculator({
   infants,
   selectedAttractionIds = [],
   selectedServiceIds = [],
-  currency = "USD",
+  currency: currencyParam,
   debounceMs = 350,
   enabled = true,
 }: BookingCalculatorParams) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   const [privateResult, setPrivateResult] = useState<PreviewPrivatePriceResponse | null>(null);
   const [groupResult, setGroupResult] = useState<PreviewGroupPriceResponse | null>(null);
 

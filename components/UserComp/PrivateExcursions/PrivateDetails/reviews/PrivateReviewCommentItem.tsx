@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { FiStar, FiThumbsUp, FiUser } from "react-icons/fi";
 import type { ReviewComment } from "../../types";
 
@@ -16,7 +17,11 @@ export function PrivateReviewCommentItem({
   onLike,
 }: PrivateReviewCommentItemProps) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       className="p-4 sm:p-5 rounded-xl bg-white border border-[#E5E5E5] space-y-3 transition-shadow hover:shadow-xs"
     >
       <div className="flex items-start justify-between gap-3">
@@ -71,7 +76,7 @@ export function PrivateReviewCommentItem({
           <span>{comment.likes}</span>
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

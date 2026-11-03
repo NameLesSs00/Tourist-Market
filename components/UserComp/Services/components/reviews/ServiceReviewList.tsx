@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { FiStar, FiThumbsUp, FiUser } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import type { ServiceReviewItem } from "@/models/serviceReview";
 
 interface ServiceReviewListProps {
@@ -13,11 +15,12 @@ interface ServiceReviewListProps {
   visibleCountMobile: number;
   onHelpful: (id: string) => void;
   onLoadMoreMobile: () => void;
+  locale?: string;
 }
 
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string = "en"): string {
   try {
-    return new Date(iso).toLocaleDateString("en-US", {
+    return new Date(iso).toLocaleDateString(locale, {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -36,7 +39,11 @@ export function ServiceReviewList({
   visibleCountMobile,
   onHelpful,
   onLoadMoreMobile,
+  locale = "en",
 }: ServiceReviewListProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <div
       className="w-full bg-white rounded-2xl p-4 sm:p-6 sm:p-8 flex flex-col min-h-[480px]"
@@ -47,9 +54,9 @@ export function ServiceReviewList({
     >
       <div className="flex items-center justify-between pb-4 border-b border-gray-100">
         <h3 className="text-base sm:text-lg font-bold text-[#083952]">
-          Customer Reviews ({totalReviews})
+          {t.reviewsTitle} ({totalReviews})
         </h3>
-        <span className="text-xs text-gray-500">Most Recent</span>
+        <span className="text-xs text-gray-500">{t.mostRecent}</span>
       </div>
 
       {/* Loading Skeleton */}
@@ -75,9 +82,9 @@ export function ServiceReviewList({
       {!isLoading && items.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center py-12 text-center text-gray-400">
           <FiStar size={40} className="stroke-[1.5] text-gray-300 mb-3" />
-          <p className="text-sm font-semibold text-[#083952]">No reviews yet</p>
+          <p className="text-sm font-semibold text-[#083952]">{t.noReviewsYet}</p>
           <p className="text-xs text-gray-400 mt-1 max-w-xs">
-            Be the first customer to share your experience with this service!
+            {t.noReviewsDesc}
           </p>
         </div>
       )}
@@ -94,8 +101,11 @@ export function ServiceReviewList({
                 : review.helpfulCount || 0;
 
             return (
-              <div
+              <motion.div
                 key={review.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
                 className={`pt-5 first:pt-0 ${
                   isHiddenOnMobile ? "hidden lg:block" : "block"
                 }`}
@@ -107,10 +117,10 @@ export function ServiceReviewList({
                     </div>
                     <div>
                       <h4 className="text-sm sm:text-[16px] font-bold text-[#083952] leading-snug">
-                        {review.fullName || "Customer"}
+                        {review.fullName || t.customerDefaultName}
                       </h4>
                       <span className="text-[11px] sm:text-[12px] text-gray-500">
-                        {formatDate(review.createdAt)}
+                        {formatDate(review.createdAt, locale)}
                       </span>
                     </div>
                   </div>
@@ -135,10 +145,11 @@ export function ServiceReviewList({
                     ))}
                   </div>
 
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() => onHelpful(review.id)}
                     disabled={isHelpfulClicked}
+                    whileTap={isHelpfulClicked ? undefined : { scale: 1.25 }}
                     className="flex items-center gap-1.5 text-xs sm:text-[13px] text-gray-500 hover:text-[#083952] transition-colors cursor-pointer disabled:cursor-default"
                   >
                     <FiThumbsUp
@@ -150,9 +161,9 @@ export function ServiceReviewList({
                       }
                     />
                     <span>{helpfulCount}</span>
-                  </button>
+                  </motion.button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
@@ -166,7 +177,7 @@ export function ServiceReviewList({
             onClick={onLoadMoreMobile}
             className="text-xs font-semibold text-[#0E4A68] hover:underline cursor-pointer"
           >
-            Show More Reviews ({items.length - visibleCountMobile} remaining)
+            {t.showMoreReviews} ({items.length - visibleCountMobile} {t.remainingCount})
           </button>
         </div>
       )}

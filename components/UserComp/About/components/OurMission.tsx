@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface OurMissionProps {
   locale?: string;
@@ -10,6 +11,8 @@ interface OurMissionProps {
 
 export function OurMission({ locale = "en" }: OurMissionProps) {
   const isRTL = locale === "ar";
+  const dict = getDictionary(locale);
+  const t = dict.about.ourMission;
 
   return (
     <section
@@ -18,21 +21,25 @@ export function OurMission({ locale = "en" }: OurMissionProps) {
     >
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-          {/* Left Column: Heading with flourish & Mission Text matching who we are.png */}
+          {/* Left Column */}
           <motion.div
-            initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
+            initial={{ opacity: 0, x: isRTL ? 24 : -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
             className="lg:col-span-6 flex flex-col items-start"
           >
-            {/* Heading with flourish matching who we are.png */}
+            {/* Heading with flourish */}
             <div className="relative inline-block mb-6 sm:mb-8 pr-6">
               <h2 className="font-['Poppins'] text-3xl sm:text-4xl lg:text-[42px] font-bold tracking-tight text-[#0E4A68] leading-tight">
-                Our Mission
+                {t.title}
               </h2>
-              {/* Loop flourish wrapper matching who we are.png */}
-              <div
+              {/* Loop flourish wrapper */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
                 className="absolute pointer-events-none select-none"
                 style={{
                   left: isRTL ? "auto" : "-10px",
@@ -51,34 +58,42 @@ export function OurMission({ locale = "en" }: OurMissionProps) {
                     transform: isRTL ? "scaleX(-1)" : "none",
                   }}
                 />
-              </div>
+              </motion.div>
             </div>
 
-            {/* Mission Statement matching who we are.png exactly */}
-            <p className="text-[#0E4A68] font-['Poppins'] text-[15px] sm:text-[17px] leading-[1.8] max-w-[540px]">
-              To make travel simple, safe and unforgettable by connecting people with
-              the world&apos;s most beautiful places and unique experiences. We aim to
-              inspire, support and create lasting memories for every traveler.
-            </p>
+            {/* Mission Statement */}
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: 0.15, ease: "easeOut" }}
+              className="text-[#0E4A68] font-['Poppins'] text-[15px] sm:text-[17px] leading-[1.8] max-w-[540px]"
+            >
+              {t.statement}
+            </motion.p>
           </motion.div>
 
-          {/* Right Column: Mission Image with border-radius: 15px */}
+          {/* Right Column: Mission Image */}
           <motion.div
-            initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: isRTL ? -24 : 24, scale: 0.96 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
             className="lg:col-span-6 flex justify-center lg:justify-end"
           >
-            <div className="relative w-full max-w-[540px] aspect-[16/10] sm:aspect-[16/9.5] rounded-[15px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)]">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="relative w-full max-w-[540px] aspect-[16/10] sm:aspect-[16/9.5] rounded-[15px] overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer"
+            >
               <Image
                 src="/about/OurMission.jpg"
-                alt="Traveler standing on cliff overlooking coastal town at sunset"
+                alt={t.imageAlt}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 540px"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 hover:scale-105"
               />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

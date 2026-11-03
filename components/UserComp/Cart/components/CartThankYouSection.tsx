@@ -4,24 +4,19 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
-  FiCheck,
-  FiPackage,
-  FiCalendar,
-  FiClock,
-  FiMapPin,
-  FiUser,
-  FiTruck,
-  FiShoppingBag,
-  FiHome,
+  FiCheck, FiPackage, FiCalendar, FiClock, FiMapPin,
+  FiUser, FiTruck, FiShoppingBag, FiHome
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import type { ProductBookingItem } from "@/models/productBooking";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface CartThankYouSectionProps {
   locale?: string;
 }
 
 export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps) {
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
   const searchParams = useSearchParams();
   const queryRef = searchParams.get("ref") || "";
   const queryFee = searchParams.get("fee");
@@ -62,28 +57,19 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
   const deliveryFee =
     booking?.deliveryFeeUsd !== undefined && booking?.deliveryFeeUsd !== null
       ? Number(booking.deliveryFeeUsd)
-      : queryFee !== null && queryFee !== undefined && queryFee !== ""
-      ? Number(queryFee)
-      : null;
+      : queryFee ? Number(queryFee) : null;
 
   const finalPrice = booking?.finalPriceUsd ?? null;
   const subtotal =
     booking?.subtotalUsd ??
-    (finalPrice !== null && deliveryFee !== null
-      ? finalPrice - deliveryFee
-      : null);
+    (finalPrice !== null && deliveryFee !== null ? finalPrice - deliveryFee : null);
   const items = booking?.items || [];
 
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] py-10 sm:py-16 font-poppins">
       <div className="mx-auto w-full max-w-[900px] px-4 sm:px-6 lg:px-8">
-        {/* Main Confirmation Card */}
         <div
-          style={{
-            border: "0.5px solid #888888",
-            borderRadius: "12px",
-            backgroundColor: "#FFFFFF",
-          }}
+          style={{ border: "0.5px solid #888888", borderRadius: "12px", backgroundColor: "#FFFFFF" }}
           className="p-6 sm:p-10 shadow-sm"
         >
           {/* Header with Success Checkmark */}
@@ -119,13 +105,13 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                   </span>
                   {finalPrice !== null && (
                     <span className="text-lg sm:text-2xl font-bold text-[#0E4A68]">
-                      ${Number(finalPrice).toFixed(2)} USD
+                      {formatPrice(Number(finalPrice))}
                     </span>
                   )}
                 </div>
                 {deliveryFee !== null && (
                   <span className="text-xs text-[#64748B] mt-0.5">
-                    Includes ${Number(deliveryFee).toFixed(2)} delivery
+                    Includes {formatPrice(Number(deliveryFee))} delivery
                   </span>
                 )}
               </div>
@@ -166,7 +152,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                   <span>
                     <strong className="font-semibold">Delivery Price:</strong>{" "}
                     <span className="font-bold text-[#0E4A68]">
-                      ${Number(deliveryFee).toFixed(2)} USD
+                      {formatPrice(Number(deliveryFee))}
                     </span>
                   </span>
                 </div>
@@ -208,11 +194,11 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                         {line.productTitle || line.productName || `Product #${line.productId}`}
                       </div>
                       <div className="text-[#64748B] text-xs mt-0.5">
-                        Qty: {line.quantity} × ${Number(line.unitPriceUsd || 0).toFixed(2)}
+                        Qty: {line.quantity} × {formatPrice(Number(line.unitPriceUsd || 0))}
                       </div>
                     </div>
                     <div className="font-bold text-[#0E4A68]">
-                      ${Number(line.lineTotalUsd || 0).toFixed(2)}
+                      {formatPrice(Number(line.lineTotalUsd || 0))}
                     </div>
                   </div>
                 ))}
@@ -230,7 +216,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               <div className="flex items-center justify-between text-xs sm:text-sm text-[#475569]">
                 <span>Products Subtotal</span>
                 <span className="font-medium text-[#083952]">
-                  ${Number(subtotal).toFixed(2)} USD
+                  {formatPrice(Number(subtotal))}
                 </span>
               </div>
             )}
@@ -244,7 +230,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                   </span>
                 </span>
                 <span className="font-medium text-[#0E4A68]">
-                  ${Number(deliveryFee).toFixed(2)} USD
+                  {formatPrice(Number(deliveryFee))}
                 </span>
               </div>
             )}
@@ -253,7 +239,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               <div className="border-t border-[#CBD5E1] pt-2.5 flex items-center justify-between text-sm sm:text-base font-bold text-[#0E4A68]">
                 <span>Total Due on Delivery</span>
                 <span className="text-lg text-[#16A34A]">
-                  ${Number(finalPrice).toFixed(2)} USD
+                  {formatPrice(Number(finalPrice))}
                 </span>
               </div>
             )}
@@ -276,9 +262,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
             </div>
 
             <a
-              href={`https://wa.me/201036234030?text=${encodeURIComponent(
-                `Hello, I would like to inquire about my booking reference ${bookingReference}`
-              )}`}
+              href={`https://wa.me/201036234030?text=${encodeURIComponent(`Hello, I would like to inquire about my booking reference ${bookingReference}`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[6px] bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer shrink-0"
@@ -295,16 +279,13 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               style={{ backgroundColor: "#0E4A68" }}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[6px] text-white text-sm font-semibold shadow-sm hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer text-center"
             >
-              <FiShoppingBag size={16} />
-              <span>Continue Shopping</span>
+              <FiShoppingBag size={16} /> <span>Continue Shopping</span>
             </Link>
-
             <Link
               href={`/${locale}`}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[6px] border border-[#0E4A68] text-[#0E4A68] hover:bg-[#0E4A68]/5 text-sm font-semibold transition-colors cursor-pointer text-center"
             >
-              <FiHome size={16} />
-              <span>Back to Home</span>
+              <FiHome size={16} /> <span>Back to Home</span>
             </Link>
           </div>
         </div>

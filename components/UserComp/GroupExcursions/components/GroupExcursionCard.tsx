@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { GroupExcursion } from "../types";
 import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
 import { getDictionary, type Dictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface GroupExcursionCardProps {
   excursion: GroupExcursion;
@@ -53,7 +54,7 @@ export function GroupExcursionCard({
   ].filter(Boolean) as { label: string; value: number }[];
 
   const hasAllPrices = priceItems.length >= 3;
-  const displayCurrency = currency === "USD" ? "$" : (currency || "$");
+  const formatPrice = useCurrencyStore((state) => state.formatPrice);
 
   const renderStars = () => (
     <div className="flex items-center gap-0.5 sm:gap-1">
@@ -195,7 +196,7 @@ export function GroupExcursionCard({
                 {priceItems.map((item, idx) => (
                   <React.Fragment key={item.label}>
                     <span>
-                      {item.label}: {item.value.toFixed(2)} {displayCurrency}
+                      {item.label}: {formatPrice(item.value)}
                     </span>
                     {idx < priceItems.length - 1 && (
                       <span className="text-[#0E4A68]/40 select-none">|</span>

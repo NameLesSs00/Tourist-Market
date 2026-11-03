@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { ServiceHero, ServiceGrid } from "../components";
 import {
   usePublicServiceSubItems,
   mapSubItemToCard,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { SITE_SERVICES_CONFIG } from "../config/siteServicesConfig";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface RealEstateSectionProps {
   locale?: string;
@@ -14,6 +16,8 @@ interface RealEstateSectionProps {
 
 export function RealEstateSection({ locale = "en" }: RealEstateSectionProps) {
   const serviceId = SITE_SERVICES_CONFIG.realEstate.id;
+  const dict = getDictionary(locale);
+  const t = dict.realEstate;
 
   const { data: subItems, isLoading, isError } = usePublicServiceSubItems(
     serviceId,
@@ -26,20 +30,29 @@ export function RealEstateSection({ locale = "en" }: RealEstateSectionProps) {
     : [];
 
   return (
-    <div className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8"
+    >
       <ServiceHero
         imageSrc="/Services/RealEstate/hero.png"
-        altText="Red Sea Real Estate"
+        altText={t.heroAlt}
       />
       <ServiceGrid
-        title="RED SEA REAL ESTATE"
-        subtitle="Do you dream of owning a piece of Red Sea paradise? We are here to guide you every step of the way."
+        title={t.title}
+        subtitle={t.subtitle}
         cards={cards}
         locale={locale}
         isLoading={isLoading}
         isError={isError}
+        errorText={t.errorLoading}
+        emptyText={t.emptyState}
+        viewDetailsText={t.viewDetails}
+        whatsappText={t.whatsapp}
       />
-    </div>
+    </motion.div>
   );
 }
 

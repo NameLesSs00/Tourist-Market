@@ -3,8 +3,16 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
-export function TransferHero() {
+interface TransferHeroProps {
+  locale?: string;
+}
+
+export function TransferHero({ locale = "en" }: TransferHeroProps) {
+  const dict = getDictionary(locale);
+  const t = dict.transfer.hero;
+
   return (
     <div className="w-full max-w-[1200px] mx-auto">
       {/* Curved Hero Image with subtle scale & fade-in entrance */}
@@ -16,7 +24,7 @@ export function TransferHero() {
       >
         <Image
           src="/transfer/hero-image.png"
-          alt="Transfer Services"
+          alt={t.title || "Transfer Services"}
           fill
           priority
           sizes="(max-width: 1400px) 100vw, 1200px"
@@ -32,7 +40,7 @@ export function TransferHero() {
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
           className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#0E4A68] tracking-tight font-poppins"
         >
-          Transfer Services
+          {t.title || "Transfer Services"}
         </motion.h1>
 
         <motion.p
@@ -41,7 +49,7 @@ export function TransferHero() {
           transition={{ duration: 0.5, delay: 0.32, ease: "easeOut" }}
           className="text-sm sm:text-base md:text-lg font-semibold text-[#52646B] font-poppins"
         >
-          Comfortable &amp; Reliable Airport Transfers in Hurghada
+          {t.subtitle || "Comfortable & Reliable Airport Transfers in Hurghada"}
         </motion.p>
 
         <motion.p
@@ -50,10 +58,11 @@ export function TransferHero() {
           transition={{ duration: 0.5, delay: 0.44, ease: "easeOut" }}
           className="text-xs sm:text-sm text-[#52646B] max-w-2xl mx-auto leading-relaxed font-poppins"
         >
-          Professional door-to-door transfer service between Hurghada Airport and hotels across
-          the Red Sea Riviera. Book your ride in advance and travel stress-free.
+          {t.description || "Professional door-to-door transfer service between Hurghada Airport and hotels across the Red Sea Riviera. Book your ride in advance and travel stress-free."}
         </motion.p>
       </div>
     </div>
   );
 }
+
+export default TransferHero;

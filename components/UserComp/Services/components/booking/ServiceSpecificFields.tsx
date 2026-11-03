@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { ServiceType } from "../../types";
 import {
   ServiceBookingFormData,
@@ -20,6 +21,7 @@ interface ServiceSpecificFieldsProps {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => void;
+  locale?: string;
 }
 
 export function ServiceSpecificFields({
@@ -29,7 +31,11 @@ export function ServiceSpecificFields({
   todayStr,
   nowDateTimeStr,
   onChange,
+  locale = "en",
 }: ServiceSpecificFieldsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <>
       {serviceType === "car-rental" && (
@@ -38,6 +44,7 @@ export function ServiceSpecificFields({
           fieldErrors={fieldErrors}
           todayStr={todayStr}
           onChange={onChange}
+          locale={locale}
         />
       )}
 
@@ -47,6 +54,7 @@ export function ServiceSpecificFields({
           fieldErrors={fieldErrors}
           todayStr={todayStr}
           onChange={onChange}
+          locale={locale}
         />
       )}
 
@@ -56,6 +64,7 @@ export function ServiceSpecificFields({
           fieldErrors={fieldErrors}
           nowDateTimeStr={nowDateTimeStr}
           onChange={onChange}
+          locale={locale}
         />
       )}
 
@@ -64,11 +73,11 @@ export function ServiceSpecificFields({
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
           {serviceType === "real-estate" ? (
             <>
-              Inquiry and Property Details <span className="text-red-500">*</span>
+              {t.realEstateInquiryLabel} <span className="text-red-500">*</span>
             </>
           ) : (
             <>
-              Special Requests or Notes <span className="text-gray-400 font-normal">(optional)</span>
+              {t.specialRequestsLabel} <span className="text-gray-400 font-normal">{t.optionalLabel}</span>
             </>
           )}
         </label>
@@ -80,8 +89,8 @@ export function ServiceSpecificFields({
           onChange={onChange}
           placeholder={
             serviceType === "real-estate"
-              ? "Describe the property you are interested in (e.g. budget, number of rooms, purchase or rent timeline)..."
-              : "Any special requests or instructions..."
+              ? t.realEstateInquiryPlaceholder
+              : t.specialRequestsPlaceholder
           }
           className={`${getFieldInputClass(Boolean(fieldErrors.note))} resize-none`}
         />

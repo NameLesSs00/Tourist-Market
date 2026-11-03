@@ -75,7 +75,6 @@ export function PrivateExcursionFormPanel({
             categoryId={form.categoryId}
             slug={form.slug}
             stars={form.stars}
-            maxAttractions={form.maxAttractions}
             durationHours={form.durationHours}
             videoUrl={form.videoUrl}
             isFeatured={form.isFeatured}
@@ -84,7 +83,6 @@ export function PrivateExcursionFormPanel({
             onCategoryIdChange={form.setCategoryId}
             onSlugChange={form.setSlug}
             onStarsChange={form.setStars}
-            onMaxAttractionsChange={form.setMaxAttractions}
             onDurationHoursChange={form.setDurationHours}
             onVideoUrlChange={form.setVideoUrl}
             onIsFeaturedChange={form.setIsFeatured}
@@ -93,7 +91,6 @@ export function PrivateExcursionFormPanel({
 
           <PrivateExcursionAttractionPicker
             selectedAttractions={form.selectedAttractions}
-            maxAttractions={form.maxAttractions}
             onAddAttraction={(attr) => form.setSelectedAttractions((prev) => [...prev, attr])}
             onRemoveAttraction={(id) => form.setSelectedAttractions((prev) => prev.filter((a) => a.id !== id))}
           />

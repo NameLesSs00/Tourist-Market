@@ -5,12 +5,14 @@ import Image from "next/image";
 import { PrivateAttraction } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateDetailsAttractionsProps {
   attractions: PrivateAttraction[];
   maxAttractions?: number;
   selectedIds: string[];
   onToggleSelect: (attractionId: string) => void;
+  currency?: string;
   locale?: string;
 }
 
@@ -19,6 +21,7 @@ interface AttractionCardProps {
   isSelected: boolean;
   onToggle: () => void;
   canSelect: boolean;
+  currency?: string;
   locale?: string;
 }
 
@@ -27,10 +30,12 @@ function AttractionCard({
   isSelected,
   onToggle,
   canSelect,
+  currency = "$",
   locale = "en",
 }: AttractionCardProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.attractions;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -168,39 +173,22 @@ function AttractionCard({
           <div className="mt-6 pt-4 border-t border-gray-100">
             {/* Price boxes row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-              <div
-                className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
-                style={{ border: "0.8px solid #BBBBBB" }}
-              >
-                <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  {t.adult || "Adult"}
-                </span>
+              <div className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white border border-[#BBBBBB]">
+                <span className="text-[12px] text-[#083952] font-medium font-poppins">{t.adult || "Adult"}</span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
-                  {attraction.adultPrice.toFixed(2)}$
+                  {formatPrice(attraction.adultPrice)}
                 </span>
               </div>
-
-              <div
-                className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
-                style={{ border: "0.8px solid #BBBBBB" }}
-              >
-                <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  {t.child || "Child"}
-                </span>
+              <div className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white border border-[#BBBBBB]">
+                <span className="text-[12px] text-[#083952] font-medium font-poppins">{t.child || "Child"}</span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
-                  {attraction.childPrice.toFixed(2)}$
+                  {formatPrice(attraction.childPrice)}
                 </span>
               </div>
-
-              <div
-                className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
-                style={{ border: "0.8px solid #BBBBBB" }}
-              >
-                <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  {t.infant || "Infant"}
-                </span>
+              <div className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white border border-[#BBBBBB]">
+                <span className="text-[12px] text-[#083952] font-medium font-poppins">{t.infant || "Infant"}</span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
-                  {attraction.infantPrice.toFixed(2)}$
+                  {formatPrice(attraction.infantPrice)}
                 </span>
               </div>
             </div>
@@ -234,6 +222,7 @@ export function PrivateDetailsAttractions({
   maxAttractions = 5,
   selectedIds,
   onToggleSelect,
+  currency = "$",
   locale = "en",
 }: PrivateDetailsAttractionsProps) {
   const dict = getDictionary(locale);
@@ -281,6 +270,7 @@ export function PrivateDetailsAttractions({
               isSelected={isSelected}
               onToggle={() => onToggleSelect(attraction.id)}
               canSelect={canSelectMore}
+              currency={currency}
               locale={locale}
             />
           );

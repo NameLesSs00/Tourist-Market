@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { FiStar } from "react-icons/fi";
 import { getDictionary } from "@/shared/utils/getDictionary";
 
@@ -41,7 +42,11 @@ export function PrivateReviewOpinionForm({
   const t = dict.privateExcursions.details.reviews;
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
       className="w-full bg-white rounded-2xl p-4 sm:p-6 lg:p-7 flex flex-col justify-between"
       style={{
         border: "0.8px solid #BBBBBB",
@@ -141,25 +146,25 @@ export function PrivateReviewOpinionForm({
             />
           </div>
 
-          {alreadySubmitted && (
-            <p className="text-xs text-[#DE7423] font-semibold bg-[#FFF8ED] p-2.5 rounded-lg border border-[#DE7423]/30">
-              {t.alreadySubmitted || "You have already shared a review for this trip. Thank you!"}
-            </p>
-          )}
-
-          {/* Submit Button */}
+          {/* Submit Button or In-Session Confirmation */}
           <div className="pt-2">
-            <button
-              type="submit"
-              disabled={alreadySubmitted || isSubmitting}
-              className="w-full sm:w-auto px-8 py-2.5 rounded-lg bg-[#DE7423] text-white font-bold text-xs sm:text-[14px] hover:bg-[#C9641B] transition shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-            >
-              {isSubmitting ? t.submitting || "Submitting..." : t.submit || "Submit"}
-            </button>
+            {alreadySubmitted ? (
+              <p className="text-xs sm:text-[13px] text-[#083952] font-semibold bg-[#FFF1E0] p-3 rounded-lg border border-[#DE7423]/30">
+                {t.alreadySubmitted || "You have already shared a review for this trip. Thank you!"}
+              </p>
+            ) : (
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto px-8 py-2.5 rounded-lg bg-[#DE7423] text-white font-bold text-xs sm:text-[14px] hover:bg-[#C9641B] transition shadow-xs disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              >
+                {isSubmitting ? t.submitting || "Submitting..." : t.submit || "Submit"}
+              </button>
+            )}
           </div>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -62,7 +62,7 @@ export function useGroupExcursionForm({
         setMaxParticipants(excursion.maxParticipants);
       }
       setIsFeatured(Boolean(excursion.isFeatured));
-      setIsActive(true);
+      setIsActive(excursion.isActive !== undefined ? excursion.isActive : true);
     }
   }, [isEdit, excursion]);
 
@@ -87,6 +87,9 @@ export function useGroupExcursionForm({
           setMaxParticipants(base.maxParticipants);
         }
         setIsFeatured(Boolean(base.isFeatured));
+        if (base.isActive !== undefined) {
+          setIsActive(base.isActive);
+        }
         if (base.price) {
           setAdultPriceUsd(base.price.adultPrice ?? 0);
           setChildPriceUsd(base.price.childPrice ?? 0);

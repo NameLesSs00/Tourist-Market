@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ProductListItem } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 export interface HotelProduct {
   id: string | number;
@@ -27,6 +28,7 @@ export function HotelDeliveriesCard({
   locale = "en",
   onAddToCart,
 }: HotelDeliveriesCardProps) {
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
   // Determine if product is ProductListItem or legacy HotelProduct
   const isListItem = "subCategoryId" in product;
 
@@ -37,9 +39,10 @@ export function HotelDeliveriesCard({
   if (isListItem) {
     const p = product as ProductListItem;
     const unit = p.priceFor?.trim() ? ` / ${p.priceFor.trim()}` : "";
-    priceFormatted = `$${Number(p.price || 0).toFixed(2)}${unit}`;
+    priceFormatted = `${formatPrice(Number(p.price || 0))}${unit}`;
   } else {
-    priceFormatted = (product as HotelProduct).price || "$0.00";
+    const legacyNum = parseFloat(String((product as HotelProduct).price || "0").replace(/[^0-9.]/g, "")) || 0;
+    priceFormatted = formatPrice(legacyNum);
   }
 
   // Determine initial image url with default fallback

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsIncludesProps {
@@ -11,23 +12,27 @@ interface PrivateDetailsIncludesProps {
 }
 
 export function PrivateDetailsIncludes({
-  includes = [
-    "Hotel pickup and drop-off",
-    "All transfers are provided by air-conditioned vehicles.",
-    "Egyptologist guide available in English, French, German, and Russian.",
-    "Entrance tickets to all places and activities included in the program.",
-    "Lunch during the tour at a local restaurant (open buffet – drinks are paid separately).",
-  ],
+  includes,
   excludes,
   locale = "en",
 }: PrivateDetailsIncludesProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.includes;
 
+  const fallbackIncludes = ((t as any).defaultIncludes as string[]) || [];
+  const fallbackExcludes = ((t as any).defaultExcludes as string[]) || [];
+
+  const displayIncludes = includes && includes.length > 0 ? includes : fallbackIncludes;
+  const displayExcludes = excludes && excludes.length > 0 ? excludes : fallbackExcludes;
+
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch font-poppins">
       {/* ─── PRICE INCLUDES CARD ─── */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
         className="w-full bg-white rounded-2xl p-6 sm:p-7 flex flex-col"
         style={{
           border: "0.8px solid #BBBBBB",
@@ -51,7 +56,7 @@ export function PrivateDetailsIncludes({
 
         {/* Bullets List */}
         <ul className="mt-5 space-y-3.5 flex-1">
-          {includes.map((item, idx) => (
+          {displayIncludes.map((item, idx) => (
             <li
               key={idx}
               className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]"
@@ -61,10 +66,14 @@ export function PrivateDetailsIncludes({
             </li>
           ))}
         </ul>
-      </div>
+      </motion.div>
 
       {/* ─── PRICE EXCLUDES CARD ─── */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
         className="w-full bg-white rounded-2xl p-6 sm:p-7 flex flex-col"
         style={{
           border: "0.8px solid #BBBBBB",
@@ -88,75 +97,17 @@ export function PrivateDetailsIncludes({
 
         {/* Bullets List */}
         <ul className="mt-5 space-y-3.5 flex-1">
-          {excludes && excludes.length > 0 ? (
-            excludes.map((item, idx) => (
-              <li
-                key={idx}
-                className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-                <span>{item}</span>
-              </li>
-            ))
-          ) : (
-            <>
-              {/* Round trip transfers */}
-              <li className="text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-                <div className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-                  <span className="font-bold text-[#000000]">Round trip transfer:</span>
-                </div>
-                <ul className="pl-6 mt-1.5 space-y-1 text-[13.5px] sm:text-[14px] text-[#222222]">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                    <span>From Safaga and Soma Bay with an extra charge of $10 per person (minimum 2 persons).</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                    <span>From Makadi Bay, Sahl Hasheesh, and El Gouna with an extra charge of $5 per person (minimum 2 persons).</span>
-                  </li>
-                </ul>
-              </li>
-
-              {/* Entrance inside pyramids */}
-              <li className="text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-                <div className="flex items-start gap-3">
-                  <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-                  <span className="font-bold text-[#000000]">Entrance inside the Pyramids:</span>
-                </div>
-                <ul className="pl-6 mt-1.5 space-y-1 text-[13.5px] sm:text-[14px] text-[#222222]">
-                  <li className="flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                    <span>Khufu Pyramid – $20</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                    <span>Khafre Pyramid – $6</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="w-1 h-1 rounded-full bg-gray-600 shrink-0 mt-2" />
-                    <span>Menkaure Pyramid – $6</span>
-                  </li>
-                </ul>
-              </li>
-
-              {/* Other excluded items */}
-              <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-                <span>Camel and horse riding at the Pyramids (optional).</span>
-              </li>
-              <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-                <span>Entrance tickets to any other places not included in the program.</span>
-              </li>
-              <li className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]">
-                <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
-                <span>Hot & cold beverages, tips, and personal expenses are not included.</span>
-              </li>
-            </>
-          )}
+          {displayExcludes.map((item, idx) => (
+            <li
+              key={idx}
+              className="flex items-start gap-3 text-[14px] sm:text-[15px] text-[#000000] leading-[1.6]"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-black shrink-0 mt-2" />
+              <span>{item}</span>
+            </li>
+          ))}
         </ul>
-      </div>
+      </motion.div>
     </div>
   );
 }

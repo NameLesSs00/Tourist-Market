@@ -45,7 +45,7 @@ export function usePrivateExcursionForm({
   const [categoryId, setCategoryId] = useState("");
   const [slug, setSlug] = useState("");
   const [stars, setStars] = useState("5");
-  const [maxAttractions, setMaxAttractions] = useState(3);
+  const [maxAttractions, setMaxAttractions] = useState(99);
   const [durationHours, setDurationHours] = useState(5);
   const [videoUrl, setVideoUrl] = useState("");
   const [isFeatured, setIsFeatured] = useState(false);
@@ -69,7 +69,7 @@ export function usePrivateExcursionForm({
         setFullProgram(detailData.fullProgram || emptyLocalized());
         setSlug(detailData.slug || excursion.slug || "");
         setStars(detailData.stars || "5");
-        setMaxAttractions(detailData.maxAttractions ?? 3);
+        setMaxAttractions(detailData.maxAttractions ?? 99);
         setDurationHours(detailData.durationHours ?? 5);
         setVideoUrl(detailData.videoUrl || "");
         setIsFeatured(detailData.isFeatured ?? false);
@@ -87,9 +87,10 @@ export function usePrivateExcursionForm({
         setShortDescription({ en: excursion.shortDescription || "", ru: "", de: "", fr: "" });
         setSlug(excursion.slug || "");
         setStars(excursion.stars || "5");
-        setMaxAttractions(excursion.maxAttractions ?? 3);
+        setMaxAttractions(excursion.maxAttractions ?? 99);
         setDurationHours(excursion.durationHours ?? 5);
         setIsFeatured(excursion.isFeatured ?? false);
+        setIsActive(excursion.isActive ?? true);
       }
     } else if (!isEdit) {
       setTitle(emptyLocalized());
@@ -100,7 +101,7 @@ export function usePrivateExcursionForm({
       setCategoryId("");
       setSlug("");
       setStars("5");
-      setMaxAttractions(3);
+      setMaxAttractions(99);
       setDurationHours(5);
       setVideoUrl("");
       setIsFeatured(false);
@@ -144,7 +145,7 @@ export function usePrivateExcursionForm({
 
     const body: PrivateExcursionUpsertRequest = {
       slug: autoSlug, categoryId: categoryId.trim(), stars: String(stars).trim() || "5",
-      maxAttractions, durationHours, videoUrl: videoUrl.trim() || "", isFeatured, isActive,
+      maxAttractions: 99, durationHours, videoUrl: videoUrl.trim() || "", isFeatured, isActive,
       title, subtitle, excursionType, shortDescription, fullProgram,
     };
 

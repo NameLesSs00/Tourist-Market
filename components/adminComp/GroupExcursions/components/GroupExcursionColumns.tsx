@@ -109,6 +109,24 @@ export function buildGroupExcursionColumns({
       ),
     },
     {
+      key: "status",
+      header: "Status",
+      render: (item) => {
+        const isPublished = item.isActive !== false;
+        return (
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+              isPublished
+                ? "bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]"
+                : "bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]"
+            }`}
+          >
+            {isPublished ? "Published" : "Unpublished"}
+          </span>
+        );
+      },
+    },
+    {
       key: "actions",
       header: "Media & Details",
       render: (item) => (

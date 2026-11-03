@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { BlogItem } from "@/models/blog";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { BlogCard } from "./BlogCard";
 
 interface BlogDetailRelatedProps {
@@ -15,12 +16,15 @@ export function BlogDetailRelated({
 }: BlogDetailRelatedProps) {
   if (!blogs || blogs.length === 0) return null;
 
+  const dict = getDictionary(locale);
+  const t = dict.blogs.detail;
+
   return (
     <section className="w-full mt-12 sm:mt-18 lg:mt-24">
       {/* Eyebrow */}
       <div className="text-center px-4">
         <p className="font-['Poppins'] font-medium text-[18px] sm:text-[22px] md:text-[26px] lg:text-[30px] leading-tight text-[#D48C28]">
-          More Stories & Adventures
+          {t.moreStoriesEyebrow}
         </p>
         <div
           className="mx-auto mt-2 sm:mt-2.5 w-20 sm:w-28 lg:w-36"
@@ -28,10 +32,10 @@ export function BlogDetailRelated({
         />
       </div>
 
-      {/* Heading (Left-aligned with matching underline color) */}
+      {/* Heading */}
       <div className="mt-6 sm:mt-8 lg:mt-10 text-left">
         <h3 className="inline-block font-['Poppins'] font-semibold text-[22px] sm:text-[28px] md:text-[34px] lg:text-[40px] text-[#0A3951] leading-tight underline decoration-[#0A3951] underline-offset-8">
-          Related Articles:
+          {t.relatedArticlesHeading}
         </h3>
       </div>
 

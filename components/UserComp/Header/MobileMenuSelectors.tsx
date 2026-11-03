@@ -4,18 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { FiCheck, FiChevronDown } from "react-icons/fi";
-
-interface CurrencyOption {
-  code: string;
-  symbol: string;
-  label: string;
-}
-
-const CURRENCIES: CurrencyOption[] = [
-  { code: "USD", symbol: "$", label: "USD - US Dollar" },
-  { code: "EUR", symbol: "€", label: "EUR - Euro" },
-  { code: "GBP", symbol: "£", label: "GBP - British Pound" },
-];
+import { useClientCurrencies } from "@/features/currencies";
 
 interface LanguageOption {
   code: string;
@@ -46,7 +35,7 @@ export function MobileMenuSelectors({
 
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyOption>(CURRENCIES[0]);
+  const { currencies, selectedCurrency, setCurrency } = useClientCurrencies();
 
   const initialLang = LANGUAGES.find((l) => l.code === currentLocale) || LANGUAGES[0];
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption>(initialLang);
@@ -107,7 +96,7 @@ export function MobileMenuSelectors({
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-[#08395210] font-bold text-[#083952]">
               {selectedCurrency.symbol}
             </span>
-            <span>{selectedCurrency.label}</span>
+            <span>{selectedCurrency.code} - {selectedCurrency.name}</span>
           </div>
           <FiChevronDown
             className={`h-4 w-4 text-[#083952] transition-transform duration-200 ${
@@ -118,14 +107,14 @@ export function MobileMenuSelectors({
 
         {currencyOpen && (
           <div className="mt-1.5 w-full overflow-hidden rounded-xl border border-[#08395220] bg-[#FFFDF9] p-1.5 shadow-lg animate-in fade-in duration-150">
-            {CURRENCIES.map((item) => {
+            {currencies.map((item) => {
               const isActive = item.code === selectedCurrency.code;
               return (
                 <button
                   key={item.code}
                   type="button"
                   onClick={() => {
-                    setSelectedCurrency(item);
+                    setCurrency(item);
                     setCurrencyOpen(false);
                   }}
                   className={`flex w-full items-center justify-between rounded-lg px-3.5 py-2.5 text-sm font-semibold transition cursor-pointer ${
@@ -138,7 +127,7 @@ export function MobileMenuSelectors({
                     <span className={`font-bold ${isActive ? "text-[#D48C28]" : "text-[#083952]"}`}>
                       {item.symbol}
                     </span>
-                    <span>{item.label}</span>
+                    <span>{item.code} - {item.name}</span>
                   </div>
                   {isActive && <FiCheck className="h-4 w-4 text-[#D48C28]" />}
                 </button>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FiCheckCircle, FiInfo } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { ServiceSpecification } from "../../types";
 
 interface ServiceSpecificationsGridProps {
@@ -10,6 +11,7 @@ interface ServiceSpecificationsGridProps {
   modelYear?: string;
   transmission?: string;
   airConditioning?: string;
+  locale?: string;
 }
 
 export function ServiceSpecificationsGrid({
@@ -18,15 +20,19 @@ export function ServiceSpecificationsGrid({
   modelYear,
   transmission,
   airConditioning,
+  locale = "en",
 }: ServiceSpecificationsGridProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   // Consolidate legacy specs if structured specifications are missing
   const specs =
     specifications && specifications.length > 0
       ? specifications
       : [
-          modelYear ? { label: "Model Year", value: modelYear } : null,
-          transmission ? { label: "Transmission", value: transmission } : null,
-          airConditioning ? { label: "Air Conditioning", value: airConditioning } : null,
+          modelYear ? { label: t.specModelYear, value: modelYear } : null,
+          transmission ? { label: t.specTransmission, value: transmission } : null,
+          airConditioning ? { label: t.specAirConditioning, value: airConditioning } : null,
         ].filter(Boolean) as ServiceSpecification[];
 
   if (specs.length === 0 && (!inclusions || inclusions.length === 0)) {
@@ -40,7 +46,7 @@ export function ServiceSpecificationsGrid({
         <div className="flex flex-col gap-2.5 w-full min-w-0">
           <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
             <FiInfo className="text-[#DE7423] shrink-0" />
-            <span>Specifications & Details</span>
+            <span>{t.specificationsTitle}</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3 w-full min-w-0">
             {specs.map((spec, idx) => (
@@ -65,7 +71,7 @@ export function ServiceSpecificationsGrid({
         <div className="flex flex-col gap-2.5 w-full min-w-0">
           <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
             <FiCheckCircle className="text-emerald-600 shrink-0" />
-            <span>Included in This Service</span>
+            <span>{t.inclusionsTitle}</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm text-[#0E4A68] w-full min-w-0">
             {inclusions.map((inc, idx) => (

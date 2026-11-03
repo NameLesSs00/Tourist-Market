@@ -31,6 +31,7 @@ export function PrivateExcursionManagerComp() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "unpublished">("all");
 
   const listQuery = usePrivateExcursionsQuery({
     page,
@@ -56,16 +57,23 @@ export function PrivateExcursionManagerComp() {
   const rawItems = listQuery.data?.data?.items ?? [];
 
   const displayedItems = useMemo(() => {
-    if (!search.trim()) return rawItems;
+    let items = rawItems;
+    if (statusFilter === "published") {
+      items = items.filter((item) => item.isActive !== false);
+    } else if (statusFilter === "unpublished") {
+      items = items.filter((item) => item.isActive === false);
+    }
+
+    if (!search.trim()) return items;
     const q = search.trim().toLowerCase();
-    return rawItems.filter(
+    return items.filter(
       (item) =>
         item.title?.toLowerCase().includes(q) ||
         item.subtitle?.toLowerCase().includes(q) ||
         item.excursionType?.toLowerCase().includes(q) ||
         item.slug?.toLowerCase().includes(q)
     );
-  }, [rawItems, search]);
+  }, [rawItems, search, statusFilter]);
 
   const totalCount = listQuery.data?.data?.totalCount ?? displayedItems.length;
   const totalPages = Math.max(1, listQuery.data?.data?.totalPages ?? 1);
@@ -108,6 +116,25 @@ export function PrivateExcursionManagerComp() {
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
           </select>
+          <div className="inline-flex rounded-xl bg-[#F1F5F9] p-1 text-xs font-semibold text-[#64748B]">
+            {(["all", "published", "unpublished"] as const).map((filterKey) => (
+              <button
+                key={filterKey}
+                type="button"
+                onClick={() => {
+                  setStatusFilter(filterKey);
+                  setPage(1);
+                }}
+                className={`rounded-lg px-3 py-1.5 capitalize transition-all cursor-pointer ${
+                  statusFilter === filterKey
+                    ? "bg-white text-[#0F172A] shadow-xs"
+                    : "hover:text-[#0F172A]"
+                }`}
+              >
+                {filterKey}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="text-xs font-medium text-[#64748B]">
           Total: <span className="font-semibold text-[#083952]">{totalCount}</span> excursions

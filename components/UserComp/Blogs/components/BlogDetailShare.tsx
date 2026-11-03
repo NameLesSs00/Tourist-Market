@@ -3,13 +3,17 @@
 import React, { useState } from "react";
 import { FaCheck, FaLink } from "react-icons/fa";
 import { toast } from "sonner";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BlogDetailShareProps {
   title?: string;
+  locale?: string;
 }
 
-export function BlogDetailShare({ title: _title }: BlogDetailShareProps) {
+export function BlogDetailShare({ title: _title, locale = "en" }: BlogDetailShareProps) {
   const [copied, setCopied] = useState(false);
+  const dict = getDictionary(locale);
+  const t = dict.blogs.detail;
 
   const getShareUrl = () => {
     if (typeof window !== "undefined") return window.location.href;
@@ -22,25 +26,25 @@ export function BlogDetailShare({ title: _title }: BlogDetailShareProps) {
     try {
       await navigator.clipboard.writeText(url);
       setCopied(true);
-      toast.success("Article link copied to clipboard!");
+      toast.success(t.copySuccess);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      toast.error("Failed to copy link.");
+      toast.error(t.copyError);
     }
   };
 
   return (
     <div className="flex items-center justify-between sm:justify-end gap-2.5 sm:gap-3 py-2 sm:py-3">
       <span className="font-['Poppins'] text-xs sm:text-sm md:text-base font-semibold text-[#0A3951] tracking-wide">
-        SHARE :
+        {t.share}
       </span>
 
       {/* Copy Link Button */}
       <button
         type="button"
         onClick={handleCopyLink}
-        title={copied ? "Link Copied" : "Copy Article Link"}
-        aria-label="Copy link"
+        title={copied ? t.copiedTitle : t.copyLinkTitle}
+        aria-label={t.copyAriaLabel}
         className={`h-10 w-10 sm:h-9 sm:w-9 rounded-full border flex items-center justify-center transition-all cursor-pointer ${
           copied
             ? "border-emerald-500 bg-emerald-50 text-emerald-600 scale-105"

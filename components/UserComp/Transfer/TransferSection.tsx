@@ -25,7 +25,7 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
   return (
     <div className="min-h-screen bg-[#FFF8ED] pt-6 sm:pt-8 md:pt-10 pb-16 sm:pb-20 md:pb-28 lg:pb-32 px-4 sm:px-6 lg:px-8 font-poppins">
       <div className="max-w-[1200px] mx-auto mb-6 sm:mb-8 md:mb-10">
-        <TransferHero />
+        <TransferHero locale={locale} />
       </div>
 
       <div className="w-full max-w-[1200px] mx-auto space-y-5 sm:space-y-6 md:space-y-8">
@@ -33,6 +33,7 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
           <TransferBookingConfirmationCard
             booking={form.confirmedBooking}
             onBookAnother={form.handleReset}
+            locale={locale}
           />
         ) : (
           <>
@@ -50,6 +51,7 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
               onAdultsChange={form.setAdults}
               onChildrenChange={form.setChildrenCount}
               onTripTypeChange={form.setTripType}
+              locale={locale}
             />
 
             <TransferVehicleCard
@@ -67,6 +69,8 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
               isMatchError={form.isMatchError}
               matchErrorMessage={form.matchErrorMessage}
               isLoading={form.isCalculatingPrice}
+              locale={locale}
+              currencySymbol={form.currencySymbol}
             />
 
             <TransferDiscountBanner
@@ -75,6 +79,8 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
               additionalHourRate={form.additionalHourRate}
               vehicleName={form.currentVehicleType || undefined}
               onSelectRoundTrip={() => form.setTripType(TransferTripType.RoundTrip)}
+              locale={locale}
+              currencySymbol={form.currencySymbol}
             />
 
             <TransferScheduleCard
@@ -91,6 +97,8 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
               onReturnDateChange={form.setReturnDate}
               onReturnTimeChange={form.setReturnTime}
               onAdditionalHoursChange={form.setAdditionalHours}
+              locale={locale}
+              currencySymbol={form.currencySymbol}
             />
 
             <TransferCustomerCard
@@ -108,11 +116,13 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
               onCommunicationMethodChange={form.setCommunicationMethod}
               onPhoneNumberChange={form.setPhoneNumber}
               onLuggageCountChange={form.setLuggageCount}
+              locale={locale}
             />
 
             <TransferNotesCard
               notes={form.notes}
               onNotesChange={form.setNotes}
+              locale={locale}
             />
 
             <TransferSummaryCard
@@ -129,11 +139,13 @@ export function TransferSection({ locale = "en" }: TransferSectionProps) {
               matchErrorMessage={form.matchErrorMessage}
               isSubmitting={form.isSubmitting}
               onSubmit={form.handleSubmitBooking}
+              locale={locale}
+              currencySymbol={form.currencySymbol}
             />
           </>
         )}
 
-        <TransferContactUs />
+        <TransferContactUs locale={locale} />
         <TransferReviews locale={locale} />
       </div>
     </div>

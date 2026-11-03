@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FaCar } from "react-icons/fa6";
-import { FiCalendar, FiClock, FiFileText, FiHelpCircle, FiImage, FiMapPin, FiStar } from "react-icons/fi";
+import { FiCalendar, FiClock, FiFileText, FiHelpCircle, FiImage, FiStar } from "react-icons/fi";
 import type { DataTableColumn } from "@/components/adminComp/Shared";
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
 
@@ -79,12 +79,26 @@ export function buildPrivateExcursionColumns({
             <FiClock className="h-3 w-3 text-[#0E4A68]" />
             <span>{item.durationHours} hrs</span>
           </div>
-          <div className="flex items-center gap-1 text-[11px]">
-            <FiMapPin className="h-3 w-3 text-[#D48C28]" />
-            <span>Max {item.maxAttractions} attractions</span>
-          </div>
         </div>
       ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      render: (item) => {
+        const isPublished = item.isActive !== false;
+        return (
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+              isPublished
+                ? "bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]"
+                : "bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]"
+            }`}
+          >
+            {isPublished ? "Published" : "Unpublished"}
+          </span>
+        );
+      },
     },
     {
       key: "vehicleRates",

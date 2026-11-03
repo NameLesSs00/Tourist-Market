@@ -1,5 +1,6 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getClientPrivateExcursions } from "@/clientApi/privateExcursionApi";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import type {
   PrivateExcursionListResponse,
   PrivateExcursionQueryParams,
@@ -12,14 +13,18 @@ export const CLIENT_PRIVATE_EXCURSIONS_KEY = ["client", "private-excursions"] as
  */
 export function useClientPrivateExcursionsQuery(
   params: PrivateExcursionQueryParams = {},
-  locale: string = "en"
+  locale: string = "en",
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery<PrivateExcursionListResponse>({
-    queryKey: [...CLIENT_PRIVATE_EXCURSIONS_KEY, "list", params, locale],
+    queryKey: [...CLIENT_PRIVATE_EXCURSIONS_KEY, "list", params, locale, currency],
     queryFn: async () => {
       return await getClientPrivateExcursions({
         lang: locale,
-        currency: "USD",
+        currency,
         ...params,
       });
     },
@@ -33,16 +38,19 @@ export function useClientPrivateExcursionsQuery(
  */
 export function useClientInfinitePrivateExcursionsQuery(
   params: Omit<PrivateExcursionQueryParams, "page"> = {},
-  locale: string = "en"
+  locale: string = "en",
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
   const pageSize = params.pageSize ?? 9;
 
   return useInfiniteQuery<PrivateExcursionListResponse>({
-    queryKey: [...CLIENT_PRIVATE_EXCURSIONS_KEY, "infinite", params, locale],
+    queryKey: [...CLIENT_PRIVATE_EXCURSIONS_KEY, "infinite", params, locale, currency],
     queryFn: async ({ pageParam = 1 }) => {
       return await getClientPrivateExcursions({
         lang: locale,
-        currency: "USD",
+        currency,
         ...params,
         page: pageParam as number,
         pageSize,

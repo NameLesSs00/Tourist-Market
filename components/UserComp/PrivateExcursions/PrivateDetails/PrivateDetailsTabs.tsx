@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   FiInfo,
   FiMapPin,
@@ -25,16 +26,23 @@ interface PrivateDetailsTabsProps {
 type TabKey = "description" | "itinerary" | "highlights" | "whatToBring" | "cancellation";
 
 export function PrivateDetailsTabs({
-  title = "Private Excursion Details",
+  title,
   paragraphs = [],
   itinerary = [],
   highlights = [],
   whatToBring = [],
-  cancellationPolicy = "Free cancellation up to 24 hours before the excursion start time.",
+  cancellationPolicy,
   locale = "en",
 }: PrivateDetailsTabsProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.tabs;
+  const tDetails = dict.privateExcursions.details;
+
+  const resolvedTitle = title || tDetails?.aboutExperience || t.description || "Description";
+  const resolvedCancellation =
+    cancellationPolicy ||
+    tDetails?.defaultCancellation ||
+    "Free cancellation up to 24 hours before the excursion start time.";
 
   const [activeTab, setActiveTab] = useState<TabKey>("description");
 
@@ -75,7 +83,11 @@ export function PrivateDetailsTabs({
                 </span>
                 <span>{tab.label}</span>
                 {isActive && (
-                  <span className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DE7423] rounded-full" />
+                  <motion.span
+                    layoutId="private-details-active-tab-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#DE7423] rounded-full"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
                 )}
               </button>
             );
@@ -85,104 +97,146 @@ export function PrivateDetailsTabs({
 
       {/* ─── TAB CONTENT ─── */}
       <div className="pt-8">
-        {/* TAB 1: DESCRIPTION */}
-        {activeTab === "description" && (
-          <div className="space-y-6">
-            <h2 className="text-[24px] sm:text-[30px] lg:text-[32px] font-bold text-[#000000] leading-[1.25] tracking-tight">
-              {title}
-            </h2>
+        <AnimatePresence mode="wait">
+          {activeTab === "description" && (
+            <motion.div
+              key="description"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <h2 className="text-[24px] sm:text-[30px] lg:text-[32px] font-bold text-[#000000] leading-[1.25] tracking-tight">
+                {resolvedTitle}
+              </h2>
 
-            <div className="space-y-4 text-[15px] sm:text-[16px] text-[#000000] leading-[1.75]">
-              {paragraphs.map((p, index) => (
-                <p key={index}>{p}</p>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* TAB 2: ITINERARY */}
-        {activeTab === "itinerary" && (
-          <div className="space-y-6">
-            <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
-              {t.itinerary || "Itinerary"}
-            </h2>
-
-            <div className="relative pl-6 sm:pl-8 space-y-6 border-l-2 border-[#DE7423]">
-              {itinerary.map((item, idx) => (
-                <div key={idx} className="relative">
-                  <span className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-[#DE7423] border-2 border-white ring-2 ring-[#DE7423]/20" />
-                  <div className="text-xs sm:text-sm font-bold text-[#DE7423] uppercase tracking-wider mb-1">
-                    {item.time}
-                  </div>
-                  <h3 className="text-[16px] sm:text-[18px] font-bold text-[#000000] mb-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-[14px] sm:text-[15px] text-[#444444] leading-relaxed">
-                    {item.description}
+              <div className="space-y-4 text-[15px] sm:text-[16px] text-[#000000] leading-[1.75]">
+                {paragraphs.length > 0 ? (
+                  paragraphs.map((p, index) => <p key={index}>{p}</p>)
+                ) : (
+                  <p className="text-[#646464] italic">
+                    {t.noDescription || "Detailed description will be provided upon booking confirmation."}
                   </p>
+                )}
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === "itinerary" && (
+            <motion.div
+              key="itinerary"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
+                {t.itinerary || "Itinerary"}
+              </h2>
+
+              {itinerary.length > 0 ? (
+                <div className="relative pl-6 sm:pl-8 space-y-6 border-l-2 border-[#DE7423]">
+                  {itinerary.map((item, idx) => (
+                    <div key={idx} className="relative">
+                      <span className="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-[#DE7423] border-2 border-white ring-2 ring-[#DE7423]/20" />
+                      <div className="text-xs sm:text-sm font-bold text-[#DE7423] uppercase tracking-wider mb-1">
+                        {item.time}
+                      </div>
+                      <h3 className="text-[16px] sm:text-[18px] font-bold text-[#000000] mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-[14px] sm:text-[15px] text-[#444444] leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
+              ) : (
+                <p className="text-[#646464] italic">
+                  {t.noItinerary || "The itinerary for this private excursion will be tailored to your schedule."}
+                </p>
+              )}
+            </motion.div>
+          )}
 
-        {/* TAB 3: HIGHLIGHTS */}
-        {activeTab === "highlights" && (
-          <div className="space-y-6">
-            <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
-              {t.highlights || "Highlights"}
-            </h2>
+          {activeTab === "highlights" && (
+            <motion.div
+              key="highlights"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
+                {t.highlights || "Highlights"}
+              </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {highlights.map((highlight, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-[#FFF8ED] border border-[#DE7423]/20"
-                >
-                  <FiCheckCircle
-                    size={20}
-                    className="text-[#DE7423] shrink-0 mt-0.5"
-                  />
-                  <span className="text-[15px] text-[#000000] font-medium leading-snug">
-                    {highlight}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {highlights.map((highlight, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-start gap-3 p-4 rounded-xl bg-[#FFF8ED] border border-[#DE7423]/20"
+                  >
+                    <FiCheckCircle
+                      size={20}
+                      className="text-[#DE7423] shrink-0 mt-0.5"
+                    />
+                    <span className="text-[15px] text-[#000000] font-medium leading-snug">
+                      {highlight}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
-        {/* TAB 4: WHAT TO BRING */}
-        {activeTab === "whatToBring" && (
-          <div className="space-y-6">
-            <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
-              {t.whatToBring || "What to Bring"}
-            </h2>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              {whatToBring.map((item, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-[#F9F9F9] border border-[#EEEEEE] text-[15px] text-[#000000]"
-                >
-                  <span className="w-2 h-2 rounded-full bg-[#DE7423] shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+          {activeTab === "whatToBring" && (
+            <motion.div
+              key="whatToBring"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="space-y-6"
+            >
+              <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
+                {t.whatToBring || "What to Bring"}
+              </h2>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                {whatToBring.map((item, idx) => (
+                  <li
+                    key={idx}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-[#F9F9F9] border border-[#EEEEEE] text-[15px] text-[#000000]"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-[#DE7423] shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
 
-        {/* TAB 5: CANCELLATION POLICY */}
-        {activeTab === "cancellation" && (
-          <div className="space-y-4">
-            <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
-              {t.cancellation || "Cancellation Policy"}
-            </h2>
-            <div className="p-5 rounded-xl bg-[#FFF8ED] border border-[#DE7423]/30 text-[15px] text-[#000000] leading-relaxed">
-              <p>{cancellationPolicy}</p>
-            </div>
-          </div>
-        )}
+          {activeTab === "cancellation" && (
+            <motion.div
+              key="cancellation"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="space-y-4"
+            >
+              <h2 className="text-[22px] sm:text-[28px] font-bold text-[#000000]">
+                {t.cancellation || "Cancellation Policy"}
+              </h2>
+              <div className="p-5 rounded-xl bg-[#FFF8ED] border border-[#DE7423]/30 text-[15px] text-[#000000] leading-relaxed">
+                <p>{resolvedCancellation}</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

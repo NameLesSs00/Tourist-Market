@@ -33,7 +33,7 @@ export async function getGroupExcursions(
   });
 
   const rawItems = response.items || [];
-  const items = rawItems.map(mapBackendGroupExcursionToCard);
+  const items = rawItems.map((item) => mapBackendGroupExcursionToCard(item));
 
   return {
     items,

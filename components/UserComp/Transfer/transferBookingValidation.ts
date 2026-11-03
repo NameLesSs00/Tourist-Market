@@ -12,6 +12,7 @@ import {
   isValidPhoneNumber,
   sanitizePhoneNumber,
 } from "@/shared/utils/phoneUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export interface ConfirmedTransferBooking extends CreateTransferBookingResponse {
   fromName: string;
@@ -29,6 +30,8 @@ export interface ConfirmedTransferBooking extends CreateTransferBookingResponse 
   customerName: string;
   email: string;
   phoneNumber: string;
+  currencySymbol?: string;
+  currencyCode?: string;
 }
 
 export function formatTimeToSeconds(timeStr: string): string {
@@ -54,66 +57,72 @@ export interface ValidateTransferParams {
   phoneNumber: string;
 }
 
-export function validateTransferBookingFields(params: ValidateTransferParams): boolean {
+export function validateTransferBookingFields(
+  params: ValidateTransferParams,
+  locale: string = "en"
+): boolean {
+  const dict = getDictionary(locale);
+  const v = dict.transfer.validation;
+
   if (!params.fromLocationId) {
-    toast.error("Please select a pickup location (From).");
+    toast.error(v.pickupRequired);
     return false;
   }
   if (!params.toLocationId) {
-    toast.error("Please select a destination (To).");
+    toast.error(v.destinationRequired);
     return false;
   }
   if (params.fromLocationId === params.toLocationId) {
-    toast.error("Pickup and destination locations cannot be the same.");
+    toast.error(v.sameLocation);
     return false;
   }
   if (!params.tripDate) {
-    toast.error("Please select a trip date.");
+    toast.error(v.dateRequired);
     return false;
   }
   const todayStr = new Date().toISOString().split("T")[0];
   if (params.tripDate < todayStr) {
-    toast.error("Trip date cannot be in the past.");
+    toast.error(v.pastDate);
     return false;
   }
   if (!params.tripTime) {
-    toast.error("Please select a trip time.");
+    toast.error(v.timeRequired);
     return false;
   }
 
   if (params.tripType === TransferTripType.RoundTrip) {
     if (!params.returnDate) {
-      toast.error("Please select a return trip date.");
+      toast.error(v.returnDateRequired);
       return false;
     }
     if (params.returnDate < params.tripDate) {
-      toast.error("Return date cannot be earlier than outbound trip date.");
+      toast.error(v.returnDateBefore);
       return false;
     }
     if (!params.returnTime) {
-      toast.error("Please select a return trip time.");
+      toast.error(v.returnTimeRequired);
       return false;
     }
   }
 
   if (!params.customerName.trim() || params.customerName.trim().length < 2) {
-    toast.error("Please enter your full name (at least 2 characters).");
+    toast.error(v.nameRequired);
     return false;
   }
   if (!params.countryId) {
-    toast.error("Please select your country.");
+    toast.error(v.countryRequired);
     return false;
   }
   if (!params.email.trim() || !isValidEmail(params.email)) {
-    toast.error("Please provide a valid email address.");
+    toast.error(v.validEmail);
     return false;
   }
   if (!params.phoneNumber.trim()) {
-    toast.error("Please provide your phone number.");
+    toast.error(v.validPhone);
     return false;
   }
   if (!isValidPhoneNumber(params.phoneNumber)) {
-    toast.error("Please provide a valid phone number (7 to 15 digits).");
+    toast.error(v.validPhone);
     return false;
   }
 

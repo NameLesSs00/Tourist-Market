@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "@/features/cart/useCart";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface ProductDetailsBookingCardProps {
   productId?: number;
@@ -30,6 +31,7 @@ export function ProductDetailsBookingCard({
 }: ProductDetailsBookingCardProps) {
   const router = useRouter();
   const { addItem } = useCart();
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
   const [quantity, setQuantity] = useState(1);
 
   const handleDecrease = () => {
@@ -102,7 +104,7 @@ export function ProductDetailsBookingCard({
             <div className="flex items-center justify-between">
               <span className="font-bold">Price :</span>
               <span className="font-bold">
-                ${Number(unitPrice || 0).toFixed(2)} / {displayUnit}
+                {formatPrice(Number(unitPrice || 0))} / {displayUnit}
               </span>
             </div>
           </div>
@@ -179,7 +181,7 @@ export function ProductDetailsBookingCard({
               <div className="flex items-center gap-2">
                 <span className="text-[13px] text-[#646464]">Total :</span>
                 <span className="text-[18px] font-extrabold text-[#0E4A68]">
-                  ${total}
+                  {formatPrice(quantity * Number(unitPrice || 0))}
                 </span>
               </div>
             </div>

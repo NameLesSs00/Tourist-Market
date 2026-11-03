@@ -18,6 +18,8 @@ import {
 } from "@/features/transferBookings/useClientTransferBooking";
 import { sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import {
   buildTransferBookingPayload,
   resolveVehiclePerks,
@@ -28,13 +30,12 @@ import {
 export type { ConfirmedTransferBooking };
 
 export function useTransferBookingForm(locale: string = "en") {
+  const selectedCurrency = useCurrencyStore((s) => s.selectedCurrency);
+
   // Remote Reference Data
-  const { data: fromLocations = [], isLoading: isLoadingFrom } =
-    useTransferFromLocations(locale);
-  const { data: toLocations = [], isLoading: isLoadingTo } =
-    useTransferToLocations(locale);
-  const { data: countries = [], isLoading: isLoadingCountries } =
-    useTransferCountries(locale);
+  const { data: fromLocations = [], isLoading: isLoadingFrom } = useTransferFromLocations(locale);
+  const { data: toLocations = [], isLoading: isLoadingTo } = useTransferToLocations(locale);
+  const { data: countries = [], isLoading: isLoadingCountries } = useTransferCountries(locale);
 
   // Vehicle Types for perks
   const { data: vehicleTypesResult } = useQuery({
@@ -48,9 +49,7 @@ export function useTransferBookingForm(locale: string = "en") {
   const [toLocationId, setToLocationId] = useState<string>("");
   const [adults, setAdults] = useState<number>(1);
   const [childrenCount, setChildrenCount] = useState<number>(0);
-  const [tripType, setTripType] = useState<TransferTripType>(
-    TransferTripType.OneWay
-  );
+  const [tripType, setTripType] = useState<TransferTripType>(TransferTripType.OneWay);
   const [additionalHours, setAdditionalHours] = useState<number>(0);
 
   const [tripDate, setTripDate] = useState<string>("");
@@ -61,14 +60,12 @@ export function useTransferBookingForm(locale: string = "en") {
   const [customerName, setCustomerName] = useState<string>("");
   const [countryId, setCountryId] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [communicationMethod, setCommunicationMethod] =
-    useState<TransferCommunicationMethod>(TransferCommunicationMethod.WhatsApp);
+  const [communicationMethod, setCommunicationMethod] = useState<TransferCommunicationMethod>(TransferCommunicationMethod.WhatsApp);
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [luggageCount, setLuggageCount] = useState<number>(0);
   const [notes, setNotes] = useState<string>("");
 
-  const [confirmedBooking, setConfirmedBooking] =
-    useState<ConfirmedTransferBooking | null>(null);
+  const [confirmedBooking, setConfirmedBooking] = useState<ConfirmedTransferBooking | null>(null);
 
   // Set default country only (phoneCode assistance)
   useEffect(() => {
@@ -104,8 +101,12 @@ export function useTransferBookingForm(locale: string = "en") {
     children: childrenCount,
     tripType,
     additionalHours,
+    currency: selectedCurrency.code,
     lang: locale,
   });
+
+  const currencySymbol = matchData?.currencySymbol || selectedCurrency.symbol || "$";
+  const currencyCode = matchData?.currency || selectedCurrency.code || "USD";
 
   // Extract exact backend error message (e.g. "No route price found for vehicle type...")
   const matchErrorMessage = useMemo(() => {
@@ -151,17 +152,11 @@ export function useTransferBookingForm(locale: string = "en") {
 
   const handleReset = () => {
     setConfirmedBooking(null);
-    setFromLocationId("");
-    setToLocationId("");
-    setTripDate("");
-    setTripTime("");
-    setReturnDate("");
-    setReturnTime("");
-    setAdditionalHours(0);
-    setCustomerName("");
-    setEmail("");
-    setPhoneNumber("");
-    setNotes("");
+    setFromLocationId(""); setToLocationId("");
+    setTripDate(""); setTripTime("");
+    setReturnDate(""); setReturnTime("");
+    setAdditionalHours(0); setCustomerName("");
+    setEmail(""); setPhoneNumber(""); setNotes("");
   };
 
   const handleSubmitBooking = async () => {
@@ -170,19 +165,22 @@ export function useTransferBookingForm(locale: string = "en") {
       return;
     }
 
-    const isValid = validateTransferBookingFields({
-      fromLocationId,
-      toLocationId,
-      tripDate,
-      tripTime,
-      tripType,
-      returnDate,
-      returnTime,
-      customerName,
-      countryId,
-      email,
-      phoneNumber,
-    });
+    const isValid = validateTransferBookingFields(
+      {
+        fromLocationId,
+        toLocationId,
+        tripDate,
+        tripTime,
+        tripType,
+        returnDate,
+        returnTime,
+        customerName,
+        countryId,
+        email,
+        phoneNumber,
+      },
+      locale
+    );
     if (!isValid) return;
 
     const payload = buildTransferBookingPayload({
@@ -224,12 +222,15 @@ export function useTransferBookingForm(locale: string = "en") {
         customerName: customerName.trim(),
         email: email.trim(),
         phoneNumber: sanitizePhoneNumber(phoneNumber),
+        currencySymbol,
+        currencyCode,
       });
     } catch (err) {
+      const dict = getDictionary(locale);
       toast.error(
         extractErrorMessage(
           err,
-          "Failed to submit transfer booking. Please check your information and try again."
+          dict.transfer.validation.bookingFailed
         )
       );
     }
@@ -271,26 +272,15 @@ export function useTransferBookingForm(locale: string = "en") {
     phoneNumber,
     luggageCount,
     notes,
+    currencySymbol,
+    currencyCode,
     confirmedBooking,
     isSubmitting: createBookingMutation.isPending,
-    setFromLocationId,
-    setToLocationId,
-    setAdults,
-    setChildrenCount,
-    setTripType,
-    setAdditionalHours,
-    setTripDate,
-    setTripTime,
-    setReturnDate,
-    setReturnTime,
-    setCustomerName,
-    handleCountryChange,
-    setEmail,
-    setCommunicationMethod,
+    setFromLocationId, setToLocationId, setAdults, setChildrenCount,
+    setTripType, setAdditionalHours, setTripDate, setTripTime,
+    setReturnDate, setReturnTime, setCustomerName, handleCountryChange,
+    setEmail, setCommunicationMethod,
     setPhoneNumber: (val: string) => setPhoneNumber(sanitizePhoneNumber(val)),
-    setLuggageCount,
-    setNotes,
-    handleSubmitBooking,
-    handleReset,
+    setLuggageCount, setNotes, handleSubmitBooking, handleReset,
   };
 }

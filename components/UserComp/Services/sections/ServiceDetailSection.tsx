@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { FiArrowLeft } from "react-icons/fi";
 import {
   ServiceDetailCard,
@@ -15,6 +16,7 @@ import {
   SERVICE_FALLBACK_IMAGE,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import type { ServiceDetailItem } from "../types";
 import type { SiteServiceSubItem } from "@/models/siteServiceItem";
 
@@ -27,7 +29,8 @@ interface ServiceDetailSectionProps {
 /** Maps the API SiteServiceSubItem to the local ServiceDetailItem view model */
 function mapSubItemToDetail(
   item: SiteServiceSubItem,
-  serviceType: ServiceDetailItem["serviceType"]
+  serviceType: ServiceDetailItem["serviceType"],
+  t: ReturnType<typeof getDictionary>["serviceDetail"]
 ): ServiceDetailItem {
   const sortedImages = item.images && item.images.length > 0
     ? [...item.images].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
@@ -66,7 +69,7 @@ function mapSubItemToDetail(
 
   // Structured options and duration tiers
   const optionsTiers = item.options.map((opt) => ({
-    name: opt.name || "Pricing Options",
+    name: opt.name || t.pricingTitle,
     tiers: opt.values.map((v) => ({ key: v.key, value: v.value })),
   }));
 
@@ -86,12 +89,12 @@ function mapSubItemToDetail(
 
   const formTitle =
     serviceType === "car-rental"
-      ? "Car Rental"
+      ? t.formTitleCarRental
       : serviceType === "vip-airport"
-      ? "VIP Services"
+      ? t.formTitleVip
       : serviceType === "real-estate"
-      ? "Real Estate"
-      : "Tourist Services";
+      ? t.formTitleRealEstate
+      : t.formTitleTourist;
 
   return {
     id: item.id,
@@ -112,22 +115,27 @@ function mapSubItemToDetail(
     detailedDescription: item.description,
     notes: notes.length > 0 ? notes : undefined,
     priceFormatted,
-    billingPeriod: serviceType === "tourist" ? "Per Hour" : "Per Day",
+    billingPeriod: serviceType === "tourist" ? t.billingPerHour : t.billingPerDay,
     bookingButtonText:
       serviceType === "car-rental"
-        ? "Book This Car ↓"
+        ? t.bookingButtonCarRental
         : serviceType === "real-estate"
-        ? "Inquire This Property ↓"
-        : "Book This Service ↓",
+        ? t.bookingButtonRealEstate
+        : t.bookingButtonTourist,
     formTitle,
     formSubtitle: item.title,
     costServices: costServices.length > 0 ? costServices : undefined,
   };
 }
 
-function BackButton({ href }: { href: string }) {
+function BackButton({ href, label }: { href: string; label: string }) {
   return (
-    <div className="mb-4 sm:mb-6 max-w-[960px] mx-auto">
+    <motion.div
+      initial={{ opacity: 0, x: -10 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="mb-4 sm:mb-6 max-w-[960px] mx-auto"
+    >
       <Link
         href={href}
         style={{
@@ -135,12 +143,12 @@ function BackButton({ href }: { href: string }) {
           border: "0.5px solid #888888",
           borderRadius: "5px",
         }}
-        className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#0E4A68] hover:bg-slate-50 transition-colors shadow-sm"
+        className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-semibold text-[#0E4A68] hover:bg-slate-50 transition-colors shadow-sm active:scale-95"
       >
         <FiArrowLeft className="w-4 h-4" />
-        <span>Back</span>
+        <span>{label}</span>
       </Link>
-    </div>
+    </motion.div>
   );
 }
 
@@ -163,6 +171,8 @@ export function ServiceDetailSection({
   slug,
   locale = "en",
 }: ServiceDetailSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
   const backHref = `/${locale}/services/${serviceType}`;
   const validId = isUUID(slug);
 
@@ -173,15 +183,20 @@ export function ServiceDetailSection({
   } = usePublicServiceSubItemById(slug, locale);
 
   const detail: ServiceDetailItem | null = subItem
-    ? mapSubItemToDetail(subItem, serviceType)
+    ? mapSubItemToDetail(subItem, serviceType, t)
     : null;
 
   const isNotFound = !isLoading && (!subItem || !validId || isError);
 
   return (
-    <div className="w-full min-h-screen bg-[#FFF8ED] pt-4 sm:pt-8 md:pt-10 pb-16 sm:pb-24 md:pb-32 font-poppins text-[#0E4A68]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="w-full min-h-screen bg-[#FFF8ED] pt-4 sm:pt-8 md:pt-10 pb-16 sm:pb-24 md:pb-32 font-poppins text-[#0E4A68]"
+    >
       <div className="w-full max-w-[1320px] mx-auto px-3 sm:px-4 lg:px-6">
-        <BackButton href={backHref} />
+        <BackButton href={backHref} label={t.back} />
 
         {/* Loading */}
         {isLoading && <DetailSkeleton />}
@@ -190,35 +205,62 @@ export function ServiceDetailSection({
         {isNotFound && (
           <div className="w-full max-w-[960px] mx-auto text-center py-16 sm:py-20">
             <p className="text-[#0E4A68] text-sm sm:text-base font-semibold opacity-60">
-              Service not found.
+              {t.notFound}
             </p>
             <Link
               href={backHref}
               className="mt-4 inline-block text-xs sm:text-sm text-[#134B68] underline"
             >
-              Back to listing
+              {t.backToListing}
             </Link>
           </div>
         )}
 
         {/* Loaded successfully */}
         {!isLoading && detail && (
-          <>
+          <div className="space-y-6 sm:space-y-8">
             {/* 1. Service Details Card */}
-            <ServiceDetailCard detail={detail} />
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <ServiceDetailCard detail={detail} locale={locale} />
+            </motion.div>
 
             {/* 2. Booking Form */}
-            <ServiceBookingForm detail={detail} locale={locale} />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <ServiceBookingForm detail={detail} locale={locale} />
+            </motion.div>
 
             {/* 3. Contact Us */}
-            <ServiceContactUs />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <ServiceContactUs locale={locale} />
+            </motion.div>
 
             {/* 4. Reviews — pass real sub-item UUID */}
-            <ServiceReviews subServiceId={subItem!.id} />
-          </>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            >
+              <ServiceReviews subServiceId={subItem!.id} locale={locale} />
+            </motion.div>
+          </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 

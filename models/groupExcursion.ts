@@ -32,6 +32,7 @@ export interface GroupExcursionListItem {
   categorySlug?: string | null;
   categoryTitle?: string;
   isFeatured: boolean;
+  isActive?: boolean;
   rating: number;
   price: GroupExcursionPrice;
 }
@@ -53,6 +54,7 @@ export interface GroupExcursionQueryParams {
   page?: number;
   pageSize?: number;
   search?: string;
+  isActive?: boolean;
 }
 
 export interface GroupExcursionCreateRequest {
@@ -122,6 +124,7 @@ export interface GroupExcursionDetailItem {
   categorySlug?: string | null;
   categoryTitle?: string;
   isFeatured: boolean;
+  isActive?: boolean;
   rating: number;
   price: GroupExcursionPrice;
 }

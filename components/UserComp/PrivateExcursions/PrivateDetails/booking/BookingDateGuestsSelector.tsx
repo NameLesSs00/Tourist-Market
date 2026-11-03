@@ -176,7 +176,7 @@ export function BookingDateGuestsSelector({
           </div>
         ) : (
           <p className="text-xs text-[#888888] italic">
-            No attractions selected. You can go back to pick up to {maxAttractions} attractions.
+            {t.noAttractionsSelected || `No attractions selected. You can go back to pick up to ${maxAttractions} attractions.`}
           </p>
         )}
 

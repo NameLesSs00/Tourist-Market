@@ -9,6 +9,11 @@ import type {
   VehicleOption,
 } from "@/components/UserComp/PrivateExcursions/types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "@/components/UserComp/PrivateExcursions/utils/privateExcursionAdapter";
+import {
+  formatPrivateDuration,
+  formatPrivateAvailability,
+  formatPrivateReviewDate,
+} from "@/components/UserComp/PrivateExcursions/utils/privateDetailLocalization";
 
 const REVIEW_DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
@@ -94,8 +99,11 @@ const DEFAULT_VEHICLES: VehicleOption[] = [
 ];
 
 export function mapPrivateExcursionFullDetail(
-  full: PrivateExcursionFullDetail
+  full: PrivateExcursionFullDetail,
+  locale: string = "en",
+  dict?: any
 ): PrivateExcursionDetail {
+  const tDetails = dict?.privateExcursions?.details;
   const { excursion, details, attractions, services, reviews, reviewStats, availabilityDays } = full;
 
   const rawGallery = (excursion.imageList || [])
@@ -112,7 +120,12 @@ export function mapPrivateExcursionFullDetail(
   }
 
   const durationHours = excursion.durationHours || 6;
-  const durationLabel = `${durationHours} hours`;
+  const durationLabel = formatPrivateDuration(
+    durationHours,
+    (excursion as any).duration || "",
+    locale,
+    tDetails
+  );
 
   const prices = excursion.prices || [];
   const primaryPrice = prices[0];
@@ -148,18 +161,48 @@ export function mapPrivateExcursionFullDetail(
     infantPrice: srv.infantPrice ?? 0,
   }));
 
-  const badge =
+  const localizedExcursionType = sanitizeText(excursion.excursionType);
+  const rawCategoryTitle =
     sanitizeText(excursion.category?.categoryTitle) ||
-    sanitizeText(excursion.categoryTitle) ||
-    sanitizeText(excursion.excursionType) ||
-    "Private Tour";
+    sanitizeText(excursion.categoryTitle);
+
+  const defaultBadge = tDetails?.defaultBadge || "Private Tour";
+  const badge =
+    localizedExcursionType ||
+    rawCategoryTitle ||
+    defaultBadge;
+
+  const rawWeeklyAvailability = formatWeeklyAvailability(availabilityDays);
+  const localizedAvailability = formatPrivateAvailability(rawWeeklyAvailability, tDetails);
+
+  const sanitizedSubtitle = sanitizeText(excursion.subtitle);
+  const sanitizedShortDesc = sanitizeText(excursion.shortDescription);
+  const cleanSubtitle =
+    sanitizedSubtitle && sanitizedSubtitle.toLowerCase() !== "sub"
+      ? sanitizedSubtitle
+      : sanitizedShortDesc && sanitizedShortDesc.toLowerCase() !== "desc"
+      ? sanitizedShortDesc
+      : sanitizeText(excursion.title);
+
+  const cleanShortDesc =
+    sanitizedShortDesc && sanitizedShortDesc.toLowerCase() !== "desc"
+      ? sanitizedShortDesc
+      : cleanSubtitle;
+
+  const parsedParagraphs = fullProgramToParagraphs(excursion.fullProgram);
+  const aboutParagraphs =
+    parsedParagraphs.length > 0
+      ? parsedParagraphs
+      : cleanShortDesc
+      ? [cleanShortDesc]
+      : [];
 
   return {
     id: excursion.id,
     slug: excursion.slug || excursion.id,
     title: sanitizeText(excursion.title),
-    subtitle: sanitizeText(excursion.subtitle),
-    shortDescription: sanitizeText(excursion.shortDescription),
+    subtitle: cleanSubtitle,
+    shortDescription: cleanShortDesc,
     excursionType: sanitizeText(excursion.excursionType) || badge,
     duration: durationLabel,
     durationHours,
@@ -177,15 +220,15 @@ export function mapPrivateExcursionFullDetail(
     currency,
 
     gallery,
-    aboutTitle: "About This Experience",
-    aboutParagraphs: fullProgramToParagraphs(excursion.fullProgram),
+    aboutTitle: tDetails?.aboutExperience || "About This Experience",
+    aboutParagraphs,
     itinerary: parseItinerary(excursion.fullProgram),
     highlights: sanitizeList(details?.highlights),
     whatToBring: sanitizeList(details?.whatToBring),
     cancellationPolicy:
       (details?.cancellationPolicy && details.cancellationPolicy.length > 0)
         ? details.cancellationPolicy.join("\n")
-        : "Free cancellation up to 24 hours before the excursion start time.",
+        : (tDetails?.defaultCancellation || "Free cancellation up to 24 hours before the excursion start time."),
     priceIncludes: sanitizeList(details?.includes),
     priceExcludes: sanitizeList(details?.excludes),
 
@@ -194,7 +237,7 @@ export function mapPrivateExcursionFullDetail(
     comments: reviews.map((rev) => ({
       id: rev.id,
       author: sanitizeText(rev.customerName),
-      date: formatReviewDate(rev.createdAt),
+      date: formatPrivateReviewDate(rev.createdAt, locale),
       content: sanitizeText(rev.comment),
       rating: rev.rating,
       likes: rev.helpfulCount,
@@ -205,7 +248,7 @@ export function mapPrivateExcursionFullDetail(
     extraServices: mappedServices,
     vehicles: DEFAULT_VEHICLES,
     availabilityDays: availabilityDays || [],
-    availability: formatWeeklyAvailability(availabilityDays),
+    availability: localizedAvailability,
   };
 }
 

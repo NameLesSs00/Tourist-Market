@@ -8,6 +8,7 @@ import { useSubmitServiceBooking } from "@/features/servicesBookings/usePublicSe
 import { useServiceBookingStore } from "@/features/servicesBookings/serviceBookingStore";
 import { sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -20,6 +21,8 @@ import {
 
 export function useServiceBookingForm(detail: ServiceDetailItem, locale: string = "en") {
   const router = useRouter();
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
   const { serviceType, formTitle, formSubtitle, id: subServiceId } = detail;
 
   // Zustand Store Selectors & Actions
@@ -137,6 +140,7 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
       serviceType,
       todayStr,
       nowDateTimeStr,
+      locale,
     });
 
     setFieldErrors(errors);
@@ -179,13 +183,13 @@ export function useServiceBookingForm(detail: ServiceDetailItem, locale: string 
       const confirmed = buildConfirmedServiceBooking(payloadParams);
       setLastBooking(confirmed);
 
-      toast.success("Your booking request has been submitted successfully!");
+      toast.success(t.bookingSuccess);
       router.push(`/${locale}/services/thank-you`);
     } catch (err: unknown) {
       toast.error(
         extractErrorMessage(
           err,
-          "Something went wrong while submitting your booking. Please try again."
+          t.bookingError
         )
       );
     }

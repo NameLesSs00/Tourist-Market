@@ -75,11 +75,11 @@ export function ProductReviewFilters({
             className="rounded-xl border border-[#CBD5E1] bg-[#FFFFFF] px-3 py-2 text-xs font-medium text-[#334155] focus:border-[#0E4A68] focus:outline-none"
           >
             <option value="">All Ratings</option>
-            <option value="5">⭐⭐⭐⭐⭐ (5 Stars)</option>
-            <option value="4">⭐⭐⭐⭐ (4 Stars)</option>
-            <option value="3">⭐⭐⭐ (3 Stars)</option>
-            <option value="2">⭐⭐ (2 Stars)</option>
-            <option value="1">⭐ (1 Star)</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
           </select>
 
           {/* Published Status Filter */}

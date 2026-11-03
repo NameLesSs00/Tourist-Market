@@ -113,9 +113,11 @@ export function PrivateExcursionsSection({
   const allLoadedExcursions = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) =>
-      (page.items || []).map(mapBackendPrivateExcursionToCard)
+      (page.items || []).map((item) =>
+        mapBackendPrivateExcursionToCard(item, categories, t.defaultBadge || "Private Tour")
+      )
     );
-  }, [data]);
+  }, [data, categories, t.defaultBadge]);
 
   // 6. Apply real-time client filters for search and duration
   const displayedExcursions = useMemo(() => {
@@ -219,7 +221,7 @@ export function PrivateExcursionsSection({
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] text-[#0E4A68] font-poppins">
       {/* 1. Hero Banner with animated traveling arrow and 5 hexagons */}
-      <PrivateExcursionsHero />
+      <PrivateExcursionsHero locale={locale} />
 
       {/* 2. Main Content: Filter, Cards Grid, and Endless Scroll */}
       <div className="w-full">

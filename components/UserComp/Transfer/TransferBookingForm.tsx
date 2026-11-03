@@ -2,8 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { TransferTripType } from "@/models/transferBooking";
 import type { TransferLocationItem } from "@/models/transferLocation";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface TransferBookingFormProps {
   fromLocations: TransferLocationItem[];
@@ -19,6 +21,7 @@ interface TransferBookingFormProps {
   onAdultsChange: (count: number) => void;
   onChildrenChange: (count: number) => void;
   onTripTypeChange: (type: TransferTripType) => void;
+  locale?: string;
 }
 
 export function TransferBookingForm({
@@ -35,13 +38,23 @@ export function TransferBookingForm({
   onAdultsChange,
   onChildrenChange,
   onTripTypeChange,
+  locale = "en",
 }: TransferBookingFormProps) {
+  const dict = getDictionary(locale);
+  const t = dict.transfer.form;
+
   return (
-    <div className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins"
+    >
       {/* Header Row */}
       <div className="flex items-center justify-between pb-1">
         <h2 className="text-base sm:text-lg font-bold text-[#0E4A68]">
-          Booking Form
+          {t.title || "Booking Form"}
         </h2>
       </div>
 
@@ -49,7 +62,7 @@ export function TransferBookingForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Pickup Location (From) *
+            {t.pickup || "Pickup Location (From) *"}
           </label>
           <div className="relative">
             <select
@@ -59,7 +72,7 @@ export function TransferBookingForm({
               className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition appearance-none cursor-pointer"
             >
               <option value="">
-                {isLoadingLocations ? "Loading locations..." : "Select Pickup Location"}
+                {isLoadingLocations ? (t.loadingLocations || "Loading locations...") : (t.selectPickup || "Select Pickup Location")}
               </option>
               {fromLocations.map((loc) => (
                 <option key={loc.id} value={loc.id}>
@@ -81,7 +94,7 @@ export function TransferBookingForm({
 
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Destination (To) *
+            {t.destination || "Destination (To) *"}
           </label>
           <div className="relative">
             <select
@@ -91,7 +104,7 @@ export function TransferBookingForm({
               className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition appearance-none cursor-pointer"
             >
               <option value="">
-                {isLoadingLocations ? "Loading locations..." : "Select Destination"}
+                {isLoadingLocations ? (t.loadingLocations || "Loading locations...") : (t.selectDestination || "Select Destination")}
               </option>
               {toLocations.map((loc) => (
                 <option key={loc.id} value={loc.id}>
@@ -116,7 +129,7 @@ export function TransferBookingForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Adults *
+            {t.adults || "Adults *"}
           </label>
           <input
             type="number"
@@ -134,7 +147,7 @@ export function TransferBookingForm({
 
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Children (0-11 yrs)
+            {t.children || "Children (0-11 yrs)"}
           </label>
           <input
             type="number"
@@ -154,11 +167,12 @@ export function TransferBookingForm({
       {/* Row 3: Trip Type */}
       <div>
         <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-          Trip Type *
+          {t.tripType || "Trip Type *"}
         </label>
         <div className="flex w-full h-11 sm:h-12">
-          <button
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.98 }}
             onClick={() => onTripTypeChange(TransferTripType.OneWay)}
             className={`flex-1 h-full rounded-l-[5.24px] rounded-r-none text-xs sm:text-sm md:text-base font-semibold transition cursor-pointer flex items-center justify-center ${
               tripType === TransferTripType.OneWay
@@ -166,10 +180,11 @@ export function TransferBookingForm({
                 : "bg-[#FFFFFF] text-[#0E4A68]/70 border border-[#00000030] hover:bg-slate-50"
             }`}
           >
-            One Way
-          </button>
-          <button
+            {t.oneWay || "One Way"}
+          </motion.button>
+          <motion.button
             type="button"
+            whileTap={{ scale: 0.98 }}
             onClick={() => onTripTypeChange(TransferTripType.RoundTrip)}
             className={`flex-1 h-full rounded-r-[5.24px] rounded-l-none text-xs sm:text-sm md:text-base font-semibold transition cursor-pointer flex items-center justify-center -ml-[1px] ${
               tripType === TransferTripType.RoundTrip
@@ -177,11 +192,11 @@ export function TransferBookingForm({
                 : "bg-[#FFFFFF] text-[#0E4A68]/70 border border-[#00000030] hover:bg-slate-50"
             }`}
           >
-            Round Trip
-          </button>
+            {t.roundTrip || "Round Trip"}
+          </motion.button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

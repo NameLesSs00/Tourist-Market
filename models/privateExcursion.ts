@@ -29,6 +29,7 @@ export interface PrivateExcursionListItem {
   categorySlug?: string | null;
   categoryTitle?: string;
   isFeatured: boolean;
+  isActive?: boolean;
   rating: number;
   prices?: PrivateExcursionPriceItem[];
 }
@@ -102,6 +103,7 @@ export interface PrivateExcursionQueryParams {
   currency?: string;
   page?: number;
   pageSize?: number;
+  isActive?: boolean;
 }
 
 export interface PrivateExcursionListResponse {

@@ -22,9 +22,9 @@ interface PrivateSidebarChecklistProps {
 }
 
 export function PrivateSidebarChecklist({
-  maxParticipants = "35 Person",
+  maxParticipants,
   availability,
-  duration = "20 Hours",
+  duration,
   isReadyToBook,
   isDateValid,
   bookingDate,
@@ -39,29 +39,39 @@ export function PrivateSidebarChecklist({
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.sidebar;
 
+  const resolvedMaxParticipants = maxParticipants || null;
+  const resolvedDuration =
+    duration || null;
+
   const buttonLabel = isReadyToBook
     ? t.bookNow || "Book Now"
     : !bookingDate || dateError
     ? t.selectDateToBook || "Select Date to Book"
     : t.selectAttractionToBook || "Select Attraction to Book";
 
+  const badgeCount = (resolvedMaxParticipants ? 1 : 0) + 1 + (resolvedDuration ? 1 : 0);
+  const gridCols =
+    badgeCount === 3 ? "grid-cols-3" : badgeCount === 2 ? "grid-cols-2" : "grid-cols-1";
+
   return (
     <div className="space-y-4">
-      {/* 3 Circular Badges Row */}
-      <div className="pt-3 border-t border-gray-100 grid grid-cols-3 gap-2 text-center">
-        <div className="flex flex-col items-center">
-          <div className="relative w-10 h-10 mb-1">
-            <Image
-              src="/PrivateExcursions/Privatedetails/Frame 585.svg"
-              alt="Participants"
-              fill
-              className="object-contain"
-            />
+      {/* Circular Badges Row — only renders badges that have real data */}
+      <div className={`pt-3 border-t border-gray-100 grid ${gridCols} gap-2 text-center`}>
+        {resolvedMaxParticipants && (
+          <div className="flex flex-col items-center">
+            <div className="relative w-10 h-10 mb-1">
+              <Image
+                src="/PrivateExcursions/Privatedetails/Frame 585.svg"
+                alt="Participants"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <span className="text-[12px] font-semibold text-[#666666]">
+              {resolvedMaxParticipants}
+            </span>
           </div>
-          <span className="text-[12px] font-semibold text-[#666666]">
-            {maxParticipants}
-          </span>
-        </div>
+        )}
 
         <div className="flex flex-col items-center">
           <div className="w-10 h-10 rounded-full bg-[#DE7423] flex items-center justify-center text-white mb-1">
@@ -72,14 +82,16 @@ export function PrivateSidebarChecklist({
           </span>
         </div>
 
-        <div className="flex flex-col items-center">
-          <div className="w-10 h-10 rounded-full bg-[#DE7423] flex items-center justify-center text-white mb-1">
-            <FiClock size={18} />
+        {resolvedDuration && (
+          <div className="flex flex-col items-center">
+            <div className="w-10 h-10 rounded-full bg-[#DE7423] flex items-center justify-center text-white mb-1">
+              <FiClock size={18} />
+            </div>
+            <span className="text-[12px] font-semibold text-[#666666]">
+              {resolvedDuration}
+            </span>
           </div>
-          <span className="text-[12px] font-semibold text-[#666666]">
-            {duration}
-          </span>
-        </div>
+        )}
       </div>
 
       {/* Booking Requirements Checklist Card */}

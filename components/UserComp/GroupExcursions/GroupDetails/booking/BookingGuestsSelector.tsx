@@ -3,6 +3,7 @@
 import React from "react";
 import { FiCalendar, FiUsers } from "react-icons/fi";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface BookingGuestsSelectorProps {
   date: string;
@@ -39,6 +40,7 @@ export function BookingGuestsSelector({
 }: BookingGuestsSelectorProps) {
   const dict = getDictionary(locale);
   const t = dict.groupExcursions.details.bookingForm;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const totalGuests = adults + children + infants;
   const isCapped = typeof maxParticipants === "number" && maxParticipants > 0;
@@ -78,7 +80,7 @@ export function BookingGuestsSelector({
         {/* Adults Stepper */}
         <div>
           <label className="block text-xs font-semibold text-[#083952] mb-1">
-            {t.adultsLabel} (${adultPrice.toFixed(2)}{t.perPerson}) *
+            {t.adultsLabel} ({formatPrice(adultPrice)}{t.perPerson}) *
           </label>
           <div className="flex items-center gap-2">
             <button
@@ -112,7 +114,7 @@ export function BookingGuestsSelector({
         {childPrice > 0 && (
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              {t.childrenLabel} (${childPrice.toFixed(2)}{t.perChild})
+              {t.childrenLabel} ({formatPrice(childPrice)}{t.perChild})
             </label>
             <div className="flex items-center gap-2">
               <button
@@ -147,7 +149,7 @@ export function BookingGuestsSelector({
         {infantPrice > 0 && (
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              {t.infantsLabel} (${infantPrice.toFixed(2)}{t.perInfant})
+              {t.infantsLabel} ({formatPrice(infantPrice)}{t.perInfant})
             </label>
             <div className="flex items-center gap-2">
               <button

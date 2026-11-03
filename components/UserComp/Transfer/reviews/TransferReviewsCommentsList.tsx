@@ -4,17 +4,19 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { FiStar, FiUser, FiMessageSquare } from "react-icons/fi";
 import type { TransferReviewItem } from "@/models/transferReview";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface TransferReviewsCommentsListProps {
   items: TransferReviewItem[];
   isLoading?: boolean;
+  locale?: string;
 }
 
-function formatDate(dateStr?: string): string {
+function formatDate(dateStr?: string, locale: string = "en"): string {
   if (!dateStr) return "";
   try {
     const d = new Date(dateStr);
-    return d.toLocaleDateString("en-US", {
+    return d.toLocaleDateString(locale, {
       year: "numeric",
       month: "short",
       day: "numeric",
@@ -27,8 +29,11 @@ function formatDate(dateStr?: string): string {
 export function TransferReviewsCommentsList({
   items,
   isLoading = false,
+  locale = "en",
 }: TransferReviewsCommentsListProps) {
   const [visibleCountMobile, setVisibleCountMobile] = useState<number>(3);
+  const dict = getDictionary(locale);
+  const t = dict.transfer.reviews;
 
   return (
     <div
@@ -48,7 +53,7 @@ export function TransferReviewsCommentsList({
           className="object-contain"
         />
         <h3 className="text-[20px] font-bold text-[#083952]">
-          Reviews & comments
+          {t.commentsTitle}
         </h3>
       </div>
 
@@ -56,7 +61,7 @@ export function TransferReviewsCommentsList({
       {isLoading && (
         <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-sm text-[#083952]/60">
           <div className="w-8 h-8 rounded-full border-2 border-[#0E4A68] border-t-transparent animate-spin mb-2" />
-          <span>Loading verified reviews...</span>
+          <span>{t.loading}</span>
         </div>
       )}
 
@@ -67,10 +72,10 @@ export function TransferReviewsCommentsList({
             <FiMessageSquare className="w-5 h-5" />
           </div>
           <div className="text-[16px] font-bold text-[#083952]">
-            No Reviews Yet
+            {t.noReviews}
           </div>
           <p className="text-[13px] text-gray-500 max-w-sm">
-            Be the first customer to share your transfer experience with us!
+            {t.emptyMessage}
           </p>
         </div>
       )}
@@ -99,7 +104,7 @@ export function TransferReviewsCommentsList({
                         {comment.fullName || "Verified Traveler"}
                       </h4>
                       <span className="text-[12px] text-gray-500">
-                        {formatDate(comment.createdAt)}
+                        {formatDate(comment.createdAt, locale)}
                       </span>
                     </div>
                   </div>
@@ -145,10 +150,8 @@ export function TransferReviewsCommentsList({
             className="text-[#DE7423] font-bold text-[14px] hover:underline"
           >
             {visibleCountMobile >= items.length
-              ? "Show Less"
-              : `View More Comments (${
-                  items.length - visibleCountMobile
-                } more)`}
+              ? t.showLess
+              : `${t.viewMore} (${items.length - visibleCountMobile})`}
           </button>
         </div>
       )}

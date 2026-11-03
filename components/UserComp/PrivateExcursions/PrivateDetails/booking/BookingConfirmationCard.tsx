@@ -9,6 +9,7 @@ import {
   PrivatePaymentMethod,
 } from "@/models/privateBooking";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface BookingConfirmationCardProps {
   confirmedBooking: CreatePrivateBookingResponse;
@@ -48,6 +49,7 @@ export function BookingConfirmationCard({
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.bookingForm;
   const tGrid = dict.privateExcursions.grid;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const paymentLabel =
     paymentMethod === PrivatePaymentMethod.CashOnArrival
@@ -85,7 +87,7 @@ export function BookingConfirmationCard({
               {t.totalPrice || "Total Price"}
             </div>
             <div className="text-lg sm:text-xl font-extrabold text-[#DE7423]">
-              {confirmedBooking.totalPrice} {confirmedBooking.currency}
+              {formatPrice(confirmedBooking.totalPrice)}
             </div>
           </div>
         </div>
@@ -108,9 +110,10 @@ export function BookingConfirmationCard({
             {roomNumber ? ` (${roomNumber})` : ""}
           </div>
           <div>
-            <span className="font-semibold text-[#0E4A68]">{t.passengersLabel || "Passengers:"}</span> {adults} {tGrid.adult || "Adult"}{adults > 1 ? "s" : ""}
-            {children > 0 ? `, ${children} ${tGrid.child || "Child"}${children > 1 ? "ren" : ""}` : ""}
-            {infants > 0 ? `, ${infants} ${tGrid.infant || "Infant"}${infants > 1 ? "s" : ""}` : ""}
+            <span className="font-semibold text-[#0E4A68]">{t.passengersLabel || "Passengers:"}</span>{" "}
+            {adults} {adults > 1 ? (t.adults || "Adults") : (tGrid.adult || "Adult")}
+            {children > 0 ? `, ${children} ${children > 1 ? (t.children || "Children") : (tGrid.child || "Child")}` : ""}
+            {infants > 0 ? `, ${infants} ${infants > 1 ? (t.infants || "Infants") : (tGrid.infant || "Infant")}` : ""}
           </div>
           <div>
             <span className="font-semibold text-[#0E4A68]">{t.attractionsLabel || "Attractions:"}</span> {selectedAttractionsCount}

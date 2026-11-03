@@ -1,6 +1,7 @@
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getGroupExcursions } from "@/clientApi/groupExcursionApi";
 import { getExcursionCategories } from "@/clientApi/excursionCategoryApi";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import type {
   GroupExcursionListResponse,
   GroupExcursionQueryParams,
@@ -15,14 +16,18 @@ export const CLIENT_EXCURSION_CATEGORIES_KEY = ["client", "excursion-categories"
  */
 export function useClientGroupExcursionsQuery(
   params: GroupExcursionQueryParams = {},
-  locale: string = "en"
+  locale: string = "en",
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery<GroupExcursionListResponse>({
-    queryKey: [...CLIENT_GROUP_EXCURSIONS_KEY, "list", params, locale],
+    queryKey: [...CLIENT_GROUP_EXCURSIONS_KEY, "list", params, locale, currency],
     queryFn: async () => {
       return await getGroupExcursions({
         lang: locale,
-        currency: "USD",
+        currency,
         ...params,
       });
     },
@@ -36,16 +41,19 @@ export function useClientGroupExcursionsQuery(
  */
 export function useClientInfiniteGroupExcursionsQuery(
   params: Omit<GroupExcursionQueryParams, "page"> = {},
-  locale: string = "en"
+  locale: string = "en",
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
   const pageSize = params.pageSize ?? 9;
 
   return useInfiniteQuery<GroupExcursionListResponse>({
-    queryKey: [...CLIENT_GROUP_EXCURSIONS_KEY, "infinite", params, locale],
+    queryKey: [...CLIENT_GROUP_EXCURSIONS_KEY, "infinite", params, locale, currency],
     queryFn: async ({ pageParam = 1 }) => {
       return await getGroupExcursions({
         lang: locale,
-        currency: "USD",
+        currency,
         ...params,
         page: pageParam as number,
         pageSize,

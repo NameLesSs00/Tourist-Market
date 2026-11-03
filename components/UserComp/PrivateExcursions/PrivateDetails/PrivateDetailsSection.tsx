@@ -51,18 +51,14 @@ export function PrivateDetailsSection({
   );
 
   const detail = useMemo(
-    () => (data ? mapPrivateExcursionFullDetail(data) : null),
-    [data]
+    () => (data ? mapPrivateExcursionFullDetail(data, locale, dict) : null),
+    [data, locale, dict]
   );
 
   const { data: relatedExcursions = [] } = useRelatedPrivateExcursionsQuery(
     detail?.id || identifier,
     locale
-  );
-
-
-
-  const handleToggleAttraction = (id: string) => {
+  );  const handleToggleAttraction = (id: string) => {
     setSelectedAttractionIds((prev) => {
       if (prev.includes(id)) return prev.filter((item) => item !== id);
       return prev.length >= (detail?.maxAttractions || 4) ? prev : [...prev, id];
@@ -123,11 +119,9 @@ export function PrivateDetailsSection({
   const selectedAttractions = detail.attractions.filter((att) =>
     selectedAttractionIds.includes(att.id)
   );
-
   const selectedExtraServices = detail.extraServices.filter((ext) =>
     selectedExtraServiceIds.includes(ext.id)
   );
-
   const dateValidation = isBookingDateValid(bookingDate, detail.availabilityDays);
   const canBook = dateValidation.isValid && selectedAttractionIds.length > 0;
 
@@ -138,8 +132,9 @@ export function PrivateDetailsSection({
         <PrivateDetailsHero
           title={detail.title}
           subtitle={detail.subtitle}
+          badge={detail.badge}
           duration={detail.duration}
-          pickup="From Your Hotel"
+          pickup={t.defaultPickup || "From Your Hotel"}
           heroImage={detail.imageUrl}
           locale={locale}
         />
@@ -185,7 +180,6 @@ export function PrivateDetailsSection({
                     selectedAttractions={selectedAttractions}
                     selectedExtraServices={selectedExtraServices}
                     duration={detail.duration}
-                    maxParticipants="35 Person"
                     bookingDate={bookingDate}
                     onBookingDateChange={setBookingDate}
                     adults={adults}
@@ -220,6 +214,7 @@ export function PrivateDetailsSection({
                   maxAttractions={detail.maxAttractions}
                   selectedIds={selectedAttractionIds}
                   onToggleSelect={handleToggleAttraction}
+                  currency={detail.currency}
                   locale={locale}
                 />
 
@@ -228,6 +223,7 @@ export function PrivateDetailsSection({
                   services={detail.extraServices}
                   selectedIds={selectedExtraServiceIds}
                   onToggleSelect={handleToggleExtraService}
+                  currency={detail.currency}
                   locale={locale}
                 />
 
@@ -248,7 +244,6 @@ export function PrivateDetailsSection({
               selectedAttractions={selectedAttractions}
               selectedExtraServices={selectedExtraServices}
               duration={detail.duration}
-              maxParticipants="35 Person"
               bookingDate={bookingDate}
               onBookingDateChange={setBookingDate}
               adults={adults}

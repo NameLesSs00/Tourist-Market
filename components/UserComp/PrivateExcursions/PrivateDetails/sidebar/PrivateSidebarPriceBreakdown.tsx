@@ -3,6 +3,7 @@
 import React from "react";
 import { PrivateAttraction, PrivateExtraService } from "../../types";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateSidebarPriceBreakdownProps {
   selectedAttractions: PrivateAttraction[];
@@ -43,6 +44,7 @@ export function PrivateSidebarPriceBreakdown({
 }: PrivateSidebarPriceBreakdownProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.sidebar;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   return (
     <div className="space-y-3 pt-1">
@@ -92,7 +94,7 @@ export function PrivateSidebarPriceBreakdown({
                     {att.title}
                   </span>
                   <span className="shrink-0 font-bold text-[#DE7423]">
-                    {sub} {currency}
+                    {formatPrice(sub)}
                   </span>
                 </div>
               );
@@ -101,7 +103,7 @@ export function PrivateSidebarPriceBreakdown({
         )}
         <div className="border-t border-gray-100 pt-1.5 flex items-center justify-between text-[13px] font-bold text-[#DE7423]">
           <span>{t.attractionsTotal || "Attractions Total :"}</span>
-          <span>{attractionsTotal} {currency}</span>
+          <span>{formatPrice(attractionsTotal)}</span>
         </div>
       </div>
 
@@ -146,7 +148,7 @@ export function PrivateSidebarPriceBreakdown({
                     {ext.title}
                   </span>
                   <span className="shrink-0 font-bold text-[#DE7423]">
-                    {sub} {currency}
+                    {formatPrice(sub)}
                   </span>
                 </div>
               );
@@ -155,7 +157,7 @@ export function PrivateSidebarPriceBreakdown({
         )}
         <div className="border-t border-gray-100 pt-1.5 flex items-center justify-between text-[13px] font-bold text-[#DE7423]">
           <span>{t.extrasTotal || "Extras Total :"}</span>
-          <span>{extrasTotal} {currency}</span>
+          <span>{formatPrice(extrasTotal)}</span>
         </div>
       </div>
 
@@ -193,7 +195,7 @@ export function PrivateSidebarPriceBreakdown({
               {matchedVehicle.vehicleName} ({matchedVehicle.from}-{matchedVehicle.to} {t.passengers || "pax"})
             </span>
             <span className="font-bold text-[#DE7423]">
-              {matchedVehicle.price} {matchedVehicle.currency}
+              {formatPrice(matchedVehicle.price)}
             </span>
           </div>
         ) : (
@@ -203,7 +205,7 @@ export function PrivateSidebarPriceBreakdown({
         )}
         <div className="border-t border-gray-100 pt-1.5 flex items-center justify-between text-[13px] font-bold text-[#DE7423]">
           <span>{t.vehicleTotal || "Vehicle Total :"}</span>
-          <span>{vehiclePrice} {matchedVehicle?.currency ?? currency}</span>
+          <span>{formatPrice(vehiclePrice)}</span>
         </div>
       </div>
 
@@ -213,7 +215,7 @@ export function PrivateSidebarPriceBreakdown({
           {t.totalPrice || "Total Price:"}
         </span>
         <span className="text-[26px] sm:text-[28px] font-extrabold text-[#DE7423]">
-          {totalPrice} {matchedVehicle?.currency ?? currency}
+          {formatPrice(totalPrice)}
         </span>
       </div>
     </div>

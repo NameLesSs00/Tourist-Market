@@ -2,19 +2,24 @@
 
 import React from "react";
 import { BlogPaginationMeta } from "../types";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface BlogsPaginationProps {
   meta: BlogPaginationMeta;
   onPageChange: (page: number) => void;
   disabled?: boolean;
+  locale?: string;
 }
 
 export function BlogsPagination({
   meta,
   onPageChange,
   disabled = false,
+  locale = "en",
 }: BlogsPaginationProps) {
   const { currentPage, totalPages, hasNextPage, hasPrevPage } = meta;
+  const dict = getDictionary(locale);
+  const t = dict.blogs.pagination;
 
   if (totalPages <= 1) {
     return null;
@@ -45,16 +50,16 @@ export function BlogsPagination({
 
   return (
     <nav
-      aria-label="Blog pagination"
+      aria-label={t.ariaLabel}
       className="flex items-center justify-center gap-2 sm:gap-2.5 mt-10 sm:mt-14"
     >
-      {/* Previous Button (if page > 1) */}
+      {/* Previous Button */}
       {hasPrevPage && (
         <button
           type="button"
           disabled={disabled}
           onClick={() => onPageChange(currentPage - 1)}
-          aria-label="Previous page"
+          aria-label={t.prevPage}
           style={{
             borderRadius: "15.65px",
             backgroundColor: "#FFFFFF",
@@ -63,11 +68,7 @@ export function BlogsPagination({
           }}
           className="w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-xs transition-all hover:bg-neutral-50 active:scale-95 disabled:opacity-50 cursor-pointer"
         >
-          <svg
-            className="w-3.5 h-3.5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path
               fillRule="evenodd"
               d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
@@ -130,7 +131,7 @@ export function BlogsPagination({
           type="button"
           disabled={disabled}
           onClick={() => onPageChange(currentPage + 1)}
-          aria-label="Next page"
+          aria-label={t.nextPage}
           style={{
             borderRadius: "15.65px",
             backgroundColor: "#FFFFFF",
@@ -139,11 +140,7 @@ export function BlogsPagination({
           }}
           className="w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-xs transition-all hover:bg-neutral-50 active:scale-95 disabled:opacity-50 cursor-pointer"
         >
-          <svg
-            className="w-3.5 h-3.5"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path
               fillRule="evenodd"
               d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"

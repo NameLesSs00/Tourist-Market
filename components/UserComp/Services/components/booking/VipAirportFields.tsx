@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -14,6 +15,7 @@ interface VipAirportFieldsProps {
   fieldErrors: ServiceFieldErrors;
   nowDateTimeStr: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  locale?: string;
 }
 
 export function VipAirportFields({
@@ -21,12 +23,16 @@ export function VipAirportFields({
   fieldErrors,
   nowDateTimeStr,
   onChange,
+  locale = "en",
 }: VipAirportFieldsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <>
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Flight Number <span className="text-red-500">*</span>
+          {t.flightNumberLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
@@ -34,7 +40,7 @@ export function VipAirportFields({
           required
           value={formData.flightNumber}
           onChange={onChange}
-          placeholder="e.g. MS703"
+          placeholder={t.flightNumberPlaceholder}
           className={getFieldInputClass(Boolean(fieldErrors.flightNumber))}
         />
         {fieldErrors.flightNumber && (
@@ -46,7 +52,7 @@ export function VipAirportFields({
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Flight Departure Date and Time <span className="text-red-500">*</span>
+          {t.departureDateTimeLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="datetime-local"
@@ -67,7 +73,7 @@ export function VipAirportFields({
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Number of Passengers <span className="text-red-500">*</span>
+          {t.passengersLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="number"
@@ -77,7 +83,7 @@ export function VipAirportFields({
           required
           value={formData.noOfPersons}
           onChange={onChange}
-          placeholder="e.g. 2"
+          placeholder={t.passengersPlaceholder}
           className={getFieldInputClass(Boolean(fieldErrors.noOfPersons))}
         />
         {fieldErrors.noOfPersons && (
@@ -89,7 +95,7 @@ export function VipAirportFields({
 
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Destination / Terminal <span className="text-red-500">*</span>
+          {t.destinationTerminalLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
@@ -97,7 +103,7 @@ export function VipAirportFields({
           required
           value={formData.destinationTo}
           onChange={onChange}
-          placeholder="e.g. Hurghada Airport Terminal 1"
+          placeholder={t.destinationTerminalPlaceholder}
           className={getFieldInputClass(Boolean(fieldErrors.destinationTo))}
         />
         {fieldErrors.destinationTo && (

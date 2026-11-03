@@ -19,15 +19,28 @@ export async function getPrivateExcursions(
     currency: params.currency || "USD",
   };
   if (params.categoryId?.trim()) queryParams.categoryId = params.categoryId.trim();
-  const { data } = await apiClient.get<PagedPrivateExcursionsResult>("/private-excursions", { params: queryParams });
-  return data;
+  const { data } = await apiClient.get<any>("/admin/excursions/private", { params: queryParams });
+  const innerData = data?.data || data;
+  return {
+    success: true,
+    isSuccess: true,
+    message: null,
+    data: innerData,
+  };
 }
 
 export async function getClientPrivateExcursions(
   params: PrivateExcursionQueryParams = {}
 ): Promise<PrivateExcursionListResponse> {
-  const response = await getPrivateExcursions(params);
-  return response.data;
+  const queryParams: Record<string, string | number> = {
+    page: params.page ?? 1,
+    pageSize: params.pageSize ?? 10,
+    lang: params.lang || "en",
+    currency: params.currency || "USD",
+  };
+  if (params.categoryId?.trim()) queryParams.categoryId = params.categoryId.trim();
+  const { data } = await apiClient.get<any>("/private-excursions", { params: queryParams });
+  return (data?.data || data) as PrivateExcursionListResponse;
 }
 
 export async function getPrivateExcursionById(
@@ -140,7 +153,7 @@ export async function getPrivateExcursionAllLanguages(id: string): Promise<Priva
     durationHours: baseItem?.durationHours ?? 5,
     videoUrl: baseItem?.videoUrl ?? "",
     isFeatured: baseItem?.isFeatured ?? false,
-    isActive: true,
+    isActive: (baseItem as any)?.isActive ?? true,
     title,
     subtitle,
     excursionType,
@@ -151,13 +164,32 @@ export async function getPrivateExcursionAllLanguages(id: string): Promise<Priva
   };
 }
 
+function toTranslationInput(val: unknown): { en: string; ru: string; de: string; fr: string } {
+  if (val && typeof val === "object") {
+    const obj = val as Record<string, any>;
+    return {
+      en: String(obj.en ?? ""),
+      ru: String(obj.ru ?? ""),
+      de: String(obj.de ?? ""),
+      fr: String(obj.fr ?? ""),
+    };
+  }
+  const str = String(val ?? "");
+  return { en: str, ru: str, de: str, fr: str };
+}
+
 export async function createPrivateExcursion(
   body: PrivateExcursionUpsertRequest,
   lang: string = "en"
 ): Promise<{ success: boolean; data: PrivateExcursionDetail }> {
   const payload = {
     ...body,
-    excursionType: typeof body.excursionType === "string" ? body.excursionType : body.excursionType?.en || "",
+    maxAttractions: 99,
+    excursionType: toTranslationInput(body.excursionType),
+    title: toTranslationInput(body.title),
+    subtitle: toTranslationInput(body.subtitle),
+    shortDescription: toTranslationInput(body.shortDescription),
+    fullProgram: toTranslationInput(body.fullProgram),
   };
   const { data } = await apiClient.post<any>("/private-excursions", payload, { params: { lang } });
   return data?.data ? data : { success: true, data };
@@ -170,7 +202,12 @@ export async function updatePrivateExcursion(
 ): Promise<{ success: boolean; data: PrivateExcursionDetail }> {
   const payload = {
     ...body,
-    excursionType: typeof body.excursionType === "string" ? body.excursionType : body.excursionType?.en || "",
+    maxAttractions: 99,
+    excursionType: toTranslationInput(body.excursionType),
+    title: toTranslationInput(body.title),
+    subtitle: toTranslationInput(body.subtitle),
+    shortDescription: toTranslationInput(body.shortDescription),
+    fullProgram: toTranslationInput(body.fullProgram),
   };
   const { data } = await apiClient.put<any>(`/private-excursions/${id}`, payload, { params: { lang } });
   return data?.data ? data : { success: true, data };

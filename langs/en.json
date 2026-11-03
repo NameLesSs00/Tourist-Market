@@ -106,6 +106,7 @@
         "fullDay": "Full Day",
         "hours": "hours",
         "hour": "hour",
+        "hoursGen": "hours",
         "allWeek": "All week",
         "daily": "Daily",
         "flexible": "Flexible",
@@ -311,6 +312,8 @@
       "applyNow": "Apply Filters"
     },
     "grid": {
+      "defaultBadge": "Private Tour",
+      "hours": "hours",
       "adult": "Adult",
       "child": "Child",
       "infant": "Infant",
@@ -343,7 +346,9 @@
         "whatToBring": "What to Bring",
         "cancellation": "Cancellation Policy",
         "readMore": "Read more -",
-        "readLess": "Read less -"
+        "readLess": "Read less -",
+        "noDescription": "Detailed description will be provided upon booking confirmation.",
+        "noItinerary": "The itinerary for this private excursion will be tailored to your schedule."
       },
       "attractions": {
         "title": "Select Attractions",
@@ -368,7 +373,18 @@
       },
       "includes": {
         "priceIncludes": "Price Includes",
-        "priceExcludes": "Price Excludes"
+        "priceExcludes": "Price Excludes",
+        "defaultIncludes": [
+          "Hotel pickup and drop-off",
+          "All transfers provided by air-conditioned vehicles",
+          "Professional guide assistance",
+          "Entrance tickets included in the program"
+        ],
+        "defaultExcludes": [
+          "Personal expenses and souvenirs",
+          "Optional activities and additional entrance tickets",
+          "Tips and gratuities"
+        ]
       },
       "sidebar": {
         "bookThis": "Book This Excursion",
@@ -430,7 +446,15 @@
         "submitting": "Submitting...",
         "commentsTitle": "Reviews & comments",
         "showLess": "Show Less",
-        "viewMore": "View More Comments"
+        "viewMore": "View More Comments",
+        "justNow": "Just now",
+        "toastMissingId": "Cannot submit review: missing excursion ID.",
+        "toastSelectRating": "Please choose a star rating between 1 and 5.",
+        "toastEnterName": "Please enter your name.",
+        "toastValidEmail": "Please enter a valid email address.",
+        "toastWriteReview": "Please write your review before submitting.",
+        "toastSuccess": "Thank you! Your review has been submitted.",
+        "toastFailed": "Failed to submit review."
       },
       "related": {
         "title": "EXPLORE RELATED TRIPS",
@@ -482,8 +506,30 @@
         "whatsAppHelpTitle": "Need fast confirmation or have questions?",
         "whatsAppHelpDesc": "Our team has sent a copy to your WhatsApp. You can also message our operations desk directly with your booking reference for immediate assistance.",
         "backToExcursionBtn": "Back to Excursion Details",
-        "chatWhatsAppBtn": "Chat on WhatsApp"
-      }
+        "chatWhatsAppBtn": "Chat on WhatsApp",
+        "valSelectDate": "Please select a valid booking date.",
+        "valMinAdult": "At least 1 adult is required.",
+        "valFullName": "Please enter your full name (at least 2 characters).",
+        "valPhone": "Please enter your phone number.",
+        "valPhoneDigits": "Please enter a valid phone number (7 to 15 digits).",
+        "valWhatsApp": "Please enter your WhatsApp number.",
+        "valWhatsAppDigits": "Please enter a valid WhatsApp number (7 to 15 digits).",
+        "valHotel": "Please enter your hotel or resort name for pickup (at least 2 characters).",
+        "valSuccess": "Private tour booked successfully!",
+        "noAttractionsSelected": "No attractions selected. You can go back to pick up attractions."
+      },
+      "defaultBadge": "Private Tour",
+      "aboutExperience": "About This Experience",
+      "defaultCancellation": "Free cancellation up to 24 hours before the excursion start time.",
+      "hour": "hour",
+      "hours": "hours",
+      "hoursGen": "hours",
+      "upTo": "Up to",
+      "person": "Person",
+      "people": "People",
+      "daily": "Daily",
+      "allWeek": "All week",
+      "flexible": "Flexible"
     }
   },
   "services": {
@@ -520,6 +566,158 @@
       }
     }
   },
+  "touristServices": {
+    "heroAlt": "Tourist Services in Hurghada",
+    "title": "TOURIST SERVICES",
+    "subtitle": "Discover our comprehensive range of tourist services tailored for your perfect Egyptian experience.",
+    "viewDetails": "View Details",
+    "whatsapp": "WhatsApp",
+    "whatsappGreeting": "Hello, I am interested in",
+    "ariaViewDetails": "View details for",
+    "errorLoading": "Failed to load services. Please try again later.",
+    "emptyState": "No services available at the moment. Please check back later."
+  },
+  "realEstate": {
+    "heroAlt": "Red Sea Real Estate",
+    "title": "RED SEA REAL ESTATE",
+    "subtitle": "Do you dream of owning a piece of Red Sea paradise? We are here to guide you every step of the way.",
+    "viewDetails": "View Details",
+    "whatsapp": "WhatsApp",
+    "whatsappGreeting": "Hello, I am interested in property:",
+    "ariaViewDetails": "View details for",
+    "errorLoading": "Failed to load real estate listings. Please try again later.",
+    "emptyState": "No real estate properties available at the moment. Please check back later."
+  },
+  "serviceDetail": {
+    "back": "Back",
+    "notFound": "Service not found.",
+    "backToListing": "Back to listing",
+    "bookingFormTitle": "Booking Form",
+    "submittingButton": "Submitting Request...",
+    "submitButton": "Submit Reservation",
+    "availableLanguages": "Available Languages:",
+    "specificationsTitle": "Specifications & Details",
+    "inclusionsTitle": "Included in This Service",
+    "pricingTitle": "Pricing Packages & Options",
+    "notesTitle": "Terms & Operational Guidelines",
+    "specModelYear": "Model Year",
+    "specTransmission": "Transmission",
+    "specAirConditioning": "Air Conditioning",
+    "billingPerHour": "Per Hour",
+    "billingPerDay": "Per Day",
+    "formTitleTourist": "Tourist Services",
+    "formTitleCarRental": "Car Rental",
+    "formTitleVip": "VIP Services",
+    "formTitleRealEstate": "Real Estate",
+    "bookingButtonTourist": "Book This Service \u2193",
+    "bookingButtonCarRental": "Book This Car \u2193",
+    "bookingButtonRealEstate": "Inquire This Property \u2193",
+    "contactUs": "Contact Us",
+    "workingHours": "+20 01289494715 · Daily 9:00 AM – 9:00 PM",
+    "fullNameLabel": "Full Name",
+    "fullNamePlaceholder": "e.g. John Doe",
+    "countryLabel": "Country",
+    "countryPlaceholder": "e.g. Germany",
+    "hotelLabel": "Hotel / Accommodation Location",
+    "hotelPlaceholder": "Hotel or Residence name",
+    "roomNumberLabel": "Room Number",
+    "optionalLabel": "(optional)",
+    "roomNumberPlaceholder": "Room number if applicable",
+    "phoneLabel": "Phone Number",
+    "phonePlaceholder": "e.g. +20 123 456 7890",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "your.email@example.com",
+    "preferredChannelLabel": "Preferred Contact Channel",
+    "channelWhatsapp": "WhatsApp",
+    "channelViber": "Viber",
+    "channelPhone": "Phone Call",
+    "channelEmail": "Email",
+    "serviceDateLabel": "Service Date",
+    "guideLanguageLabel": "Guide Language",
+    "langEnglish": "English",
+    "langGerman": "German",
+    "langRussian": "Russian",
+    "langFrench": "French",
+    "timeFromLabel": "Time From",
+    "timeToLabel": "Time To",
+    "pickupDateLabel": "Pick-up Date",
+    "rentalDurationLabel": "Rental Duration (Days)",
+    "rentalDurationPlaceholder": "e.g. 3",
+    "flightNumberLabel": "Flight Number",
+    "flightNumberPlaceholder": "e.g. MS703",
+    "departureDateTimeLabel": "Flight Departure Date and Time",
+    "passengersLabel": "Number of Passengers",
+    "passengersPlaceholder": "e.g. 2",
+    "destinationTerminalLabel": "Destination / Terminal",
+    "destinationTerminalPlaceholder": "e.g. Hurghada Airport Terminal 1",
+    "realEstateInquiryLabel": "Inquiry and Property Details",
+    "realEstateInquiryPlaceholder": "Describe the property you are interested in (e.g. budget, number of rooms, purchase or rent timeline)...",
+    "specialRequestsLabel": "Special Requests or Notes",
+    "specialRequestsPlaceholder": "Any special requests or instructions...",
+    "errNameRequired": "Full name is required.",
+    "errNameMin": "Full name must be at least 2 characters.",
+    "errCountryRequired": "Country is required.",
+    "errCountryMin": "Country must be at least 2 characters.",
+    "errHotelRequired": "Hotel or accommodation location is required.",
+    "errHotelMin": "Hotel location must be at least 2 characters.",
+    "errPhoneRequired": "Phone number is required.",
+    "errPhoneInvalid": "Please enter a valid phone number (7 to 15 digits).",
+    "errEmailRequired": "Email address is required.",
+    "errEmailInvalid": "Please enter a valid email address (e.g. name@example.com).",
+    "errChannelRequired": "Please select your preferred contact channel.",
+    "errRentalDateRequired": "Pick-up date is required.",
+    "errRentalDatePast": "Pick-up date cannot be in the past.",
+    "errDaysInvalid": "Duration must be between 1 and 365 days.",
+    "errTourDateRequired": "Tour date is required.",
+    "errTourDatePast": "Tour date cannot be in the past.",
+    "errGuideLangRequired": "Please select your guide language.",
+    "errTimeFromRequired": "Start time is required.",
+    "errTimeToRequired": "End time is required.",
+    "errFlightNumberRequired": "Flight number is required.",
+    "errDepartureRequired": "Departure date and time is required.",
+    "errDeparturePast": "Departure time cannot be in the past.",
+    "errPersonsInvalid": "Number of persons must be between 1 and 50.",
+    "errDestinationRequired": "Destination / Terminal is required.",
+    "errNoteRequired": "Please specify details about your real estate inquiry.",
+    "bookingSuccess": "Your booking request has been submitted successfully!",
+    "bookingError": "Something went wrong while submitting your booking. Please try again.",
+    "reviewsTitle": "Customer Reviews",
+    "totalReviewsLabel": "Total Reviews",
+    "reviewSingle": "Review",
+    "reviewPlural": "Reviews",
+    "verifiedExperiences": "Verified Experiences",
+    "mostRecent": "Most Recent",
+    "noReviewsYet": "No reviews yet",
+    "noReviewsDesc": "Be the first customer to share your experience with this service!",
+    "shareOpinionTitle": "Share Your Opinion",
+    "shareOpinionSubtitle": "Have you booked this service? Leave your feedback to help fellow travelers.",
+    "alreadySubmittedMessage": "Thank you! Your review has been submitted and is currently pending review.",
+    "writeAnotherReview": "Write another review",
+    "yourRatingLabel": "Your Rating *",
+    "ofFive": "of 5",
+    "reviewerNameLabel": "Your Name *",
+    "reviewerNamePlaceholder": "e.g. John Doe",
+    "reviewerEmailLabel": "Your Email *",
+    "reviewerEmailPlaceholder": "name@example.com",
+    "reviewerPhoneLabel": "Phone Number *",
+    "reviewerPhonePlaceholder": "e.g. +20 123 456 7890",
+    "reviewerCommentLabel": "Your Review *",
+    "reviewerCommentPlaceholder": "Tell others about your experience with this service...",
+    "submittingReview": "Submitting Review...",
+    "submitReview": "Submit Review",
+    "showMoreReviews": "Show More Reviews",
+    "remainingCount": "remaining",
+    "customerDefaultName": "Customer",
+    "toastRatingRequired": "Please select a star rating.",
+    "toastNameMin": "Please enter your name (at least 2 characters).",
+    "toastEmailInvalid": "Please enter a valid email address.",
+    "toastPhoneInvalid": "Please enter a valid phone number (7 to 15 digits).",
+    "toastReviewMin": "Please write your review before submitting (at least 5 characters).",
+    "toastReviewSuccess": "Thank you! Your review has been submitted for approval and will appear once reviewed.",
+    "toastReviewError": "We could not submit your review. Please try again.",
+    "toastLoadError": "Unable to load reviews for this service.",
+    "toastHelpfulError": "Unable to register helpful vote."
+  },
   "blogs": {
     "titleFrom": "From",
     "titleDestinations": "Destinations",
@@ -530,7 +728,165 @@
     "readArticle": "Read article",
     "sectionAria": "Blogs and Stories",
     "altBackground": "Egyptian Desert Background",
-    "fallbackAlt": "Egypt travel story"
+    "fallbackAlt": "Egypt travel story",
+    "hero": {
+      "headingLine1": "Travel Stories,",
+      "headingLine2": "Tips &",
+      "headingAccent": "Inspiration",
+      "subtitle": "Discover new places, get travel tips, and read real stories from our travelers around the world.",
+      "flourish": "Words that bridge minds !",
+      "heroImageAlt": "Travel stories and inspiring moments"
+    },
+    "grid": {
+      "emptyTitle": "No travel stories found",
+      "emptySubtext": "Try selecting another category to discover more articles."
+    },
+    "pagination": {
+      "ariaLabel": "Blog pagination",
+      "prevPage": "Previous page",
+      "nextPage": "Next page"
+    },
+    "detail": {
+      "tagline": "UNEARTH THE EGYPTIAN SOUL. YOUR ADVENTURE AWAITS.",
+      "coverAlt": "Blog cover",
+      "share": "SHARE :",
+      "copyLinkTitle": "Copy Article Link",
+      "copiedTitle": "Link Copied",
+      "copyAriaLabel": "Copy link",
+      "copySuccess": "Article link copied to clipboard!",
+      "copyError": "Failed to copy link.",
+      "notFoundTitle": "Article Not Found",
+      "notFoundText": "The travel story you are looking for does not exist or may have been moved.",
+      "backToBlogs": "Back to Blogs",
+      "moreStoriesEyebrow": "More Stories & Adventures",
+      "relatedArticlesHeading": "Related Articles:"
+    }
+  },
+  "about": {
+    "hero": {
+      "headingLine1": "More Than a Trip",
+      "headingLine2": "It’s a ",
+      "headingAccent": "Story",
+      "subtitle": "we believe that travel is not just about visiting new places, it's about discovering new perspectives, creating unforgettable memories, and living experiences that stay with you forever.",
+      "handwrittenNote": "Travel\nConnects\nPeople",
+      "heroImageAlt": "Traveler with backpack admiring the Red Sea"
+    },
+    "whoWeAre": {
+      "title": "Who We Are",
+      "paragraph1": "At Tourist Market, we are an innovative tourism platform built on passion, deep local knowledge, and an endless love for travel. .",
+      "paragraph2": "We bring together all the essential travel services you need—conveniently, safely, and from a single trusted source. Our mission is to empower visitors with complete freedom of choice, transparent pricing, and absolute reliability, eliminating the stress of endless search and price uncertainties.",
+      "imageAlt": "Tourist Market guide and travelers at marina"
+    },
+    "ourMission": {
+      "title": "Our Mission",
+      "statement": "To make travel simple, safe and unforgettable by connecting people with the world's most beautiful places and unique experiences. We aim to inspire, support and create lasting memories for every traveler.",
+      "imageAlt": "Traveler standing on cliff overlooking coastal town at sunset"
+    },
+    "ourServices": {
+      "title": "Our Services",
+      "badgeText": "What we serve",
+      "hotelDeliveries": {
+        "title": "Hotel Deliveries",
+        "description": "Comfortable stays, anywhere you go."
+      },
+      "touristServices": {
+        "title": "Tourist Services",
+        "description": "Guided tours & local experiences."
+      },
+      "redSeaRealEstate": {
+        "title": "Red Sea Real Estate",
+        "description": "Invest in a lifestyle by the sea."
+      },
+      "carRental": {
+        "title": "Car Rental",
+        "description": "Freedom to explore at your own pace."
+      },
+      "vipServices": {
+        "title": "VIP Services",
+        "description": "Hurghada Airport & private transfers."
+      },
+      "transferServices": {
+        "title": "Transfer Services",
+        "description": "Reliable rides, from airport to destination"
+      }
+    },
+    "whyChooseUs": {
+      "title": "Why Choose Us",
+      "paragraph1": "A personalized approach tailored to your exact desires. Our reputation for integrity ensures a worry-free journey. Deep local connections provide unparalleled access and insights.",
+      "paragraph2": "Because we go beyond the ordinary. We don't just plan trips — we create meaningful experiences with care, trust and local expertise.",
+      "imageAlt": "Why choose us - scenic travel collage",
+      "localExpertise": {
+        "title": "Local Expertise",
+        "description": "We know the best places, hidden gems and real local experiences."
+      },
+      "trustedReliable": {
+        "title": "Trusted and Reliable",
+        "description": "Your safety and comfort are always our top priority."
+      },
+      "greatValue": {
+        "title": "Great Value",
+        "description": "High-quality experiences at fair and transparent prices."
+      },
+      "support24": {
+        "title": "24 hour Support",
+        "description": "We're always experiences private transfers and here whenever you need us."
+      }
+    },
+    "coverage": {
+      "title": "Coverage & Expansion",
+      "currentLocationsTitle": "Current Locations",
+      "currentLocationsText": "Hurghada, Sahl Hasheesh, El Gouna, Makadi Bay, Soma Bay, and Safaga",
+      "comingSoonTitle": "Coming Soon",
+      "comingSoonText": "Marsa Alam, Sharm El Sheikh, and Luxor",
+      "mapTitle": "Tourist Market Location",
+      "openMap": "El Kawther, Hurghada",
+      "openMapAria": "Open Tourist Market location in Google Maps"
+    }
+  },
+  "contact": {
+    "hero": {
+      "headingLine1": "Let's Plan Your",
+      "headingLine2": "Next ",
+      "headingAccent": "Journey",
+      "subtitle": "Questions, ideas, or a special request? Our local team is here to help you explore Egypt with confidence.",
+      "callout": "We're just a Message away",
+      "heroImageAlt": "Egyptian coastal resort",
+      "flightRouteAlt": "Flight route animation",
+      "polaroid1Alt": "Egyptian coast and pier",
+      "polaroid2Alt": "Ancient Egyptian temple columns"
+    },
+    "cards": {
+      "callUs": "Call Us",
+      "emailUs": "Email Us",
+      "visitUs": "Visit Us",
+      "workingHours": "Working Hours",
+      "phone": "+20 123 456 7890",
+      "email": "info@etouristmarket.com",
+      "address": "El Kawther, Hurghada, Egypt",
+      "workingDays": "Sat – Tues",
+      "workingTime": "9:00 AM – 10:00 PM"
+    },
+    "form": {
+      "title": "Send Us A Message",
+      "subtitle": "Fill out the form below and we will get back to you as soon as possible",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your Full Name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectPlaceholder": "Select a subject",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Tell us what are you looking for , or ask any question....",
+      "submitButton": "Send Message",
+      "submittingButton": "Sending...",
+      "successMessage": "Thank you! Your message has been sent successfully.",
+      "errorMessage": "Failed to send message. Please try again later."
+    },
+    "map": {
+      "title": "Find Us on the Map",
+      "mapAriaTitle": "Location Map - El Kawther, Hurghada, Egypt",
+      "resortImageAlt": "Hurghada Egypt Coastal Resort"
+    }
   },
   "faq": {
     "titlePrefix": "Frequently Asked",
@@ -578,5 +934,203 @@
     },
     "copyright": "© 2026 Egypt Tourist Market. All rights reserved.",
     "poweredBy": "Powered by"
+  },
+  "transfer": {
+    "hero": {
+      "title": "Transfer Services",
+      "subtitle": "Comfortable & Reliable Airport Transfers in Hurghada",
+      "description": "Professional door-to-door transfer service between Hurghada Airport and hotels across the Red Sea Riviera. Book your ride in advance and travel stress-free."
+    },
+    "form": {
+      "title": "Booking Form",
+      "pickup": "Pickup Location (From) *",
+      "loadingLocations": "Loading locations...",
+      "selectPickup": "Select Pickup Location",
+      "destination": "Destination (To) *",
+      "selectDestination": "Select Destination",
+      "adults": "Adults *",
+      "children": "Children (0-11 yrs)",
+      "tripType": "Trip Type *",
+      "oneWay": "One Way",
+      "roundTrip": "Round Trip"
+    },
+    "vehicle": {
+      "assignment": "Vehicle Assignment",
+      "awaitingRoute": "Select your pickup and destination locations above to view your matched vehicle and pricing.",
+      "awaitingBadge": "Awaiting route selection",
+      "routeUnavailable": "Route Price Unavailable",
+      "alternativeHelp": "Please choose an alternative destination/pickup or contact our team via WhatsApp for custom route booking.",
+      "calculatingVehicle": "Calculating vehicle...",
+      "matchedFor": "Matched for",
+      "adult": "adult",
+      "adults": "adults",
+      "child": "child",
+      "children": "children",
+      "farePrefix": "Fare —",
+      "calculating": "Calculating...",
+      "additionalHour": "Additional Waiting Hour:",
+      "perHour": "/ hr",
+      "rateSpecific": "Rate specific to",
+      "route": "Route:",
+      "totalPassengers": "Total Passengers:",
+      "passenger": "passenger",
+      "passengers": "passengers",
+      "standardFare": "Standard Fare:",
+      "discountApplied": "Round-Trip Discount Applied:"
+    },
+    "discount": {
+      "waitingTitle": "Waiting Information & Perks",
+      "discountActive": "Round-Trip Discount Active",
+      "freeWaiting": "3 Hours Free Waiting Included with Round-Trip",
+      "additionalHour": "Additional hour:",
+      "specificTo": "specific to",
+      "saveCallout": "Save {discount}% when choosing Round Trip + 3 hours free waiting",
+      "clickToSwitch": "Click here to switch to Round-Trip and claim your discount"
+    },
+    "schedule": {
+      "title": "Trip Schedule",
+      "roundTripBadge": "Round-Trip Outbound & Return",
+      "outboundSchedule": "Outbound Pickup Schedule",
+      "pickupSchedule": "Pickup Schedule",
+      "tripDate": "Trip Date *",
+      "tripTime": "Trip Time *",
+      "returnSchedule": "Return Pickup Schedule",
+      "returnDate": "Return Date *",
+      "returnTime": "Return Time *",
+      "additionalHours": "Additional Waiting Hours (Optional)",
+      "noExtraHours": "No extra waiting hours selected"
+    },
+    "customer": {
+      "title": "Customer Information",
+      "name": "Name *",
+      "namePlaceholder": "Your Full Name",
+      "country": "Country *",
+      "selectCountry": "Select Country",
+      "loadingCountries": "Loading countries...",
+      "email": "Email *",
+      "emailPlaceholder": "you@example.com",
+      "commMethod": "Communication Method *",
+      "phone": "Phone Number (WhatsApp preferred) *",
+      "phonePlaceholder": "+20 123 456 7890",
+      "luggage": "Number of Luggage / Bags"
+    },
+    "notes": {
+      "title": "Notes & Special Requests",
+      "label": "Notes",
+      "placeholder": "Any notes or special requests..."
+    },
+    "summary": {
+      "title": "Booking Summary",
+      "vehicleType": "Vehicle Type:",
+      "unavailable": "Unavailable",
+      "pendingRoute": "Pending Route Selection",
+      "baseFare": "Route Base Fare:",
+      "discount": "Round-Trip Discount",
+      "extraWaiting": "Extra Waiting",
+      "totalFare": "Total Fare:",
+      "discountBanner": "{discount}% Round-Trip Discount applied + 3 hours free waiting",
+      "saveBanner": "Save {discount}% when choosing Round Trip + 3 hours free waiting",
+      "noRoutePrice": "No route price is available for this combination.",
+      "submitting": "Submitting Booking...",
+      "selectPrompt": "Please Select Pickup & Destination",
+      "submit": "Submit Transfer Booking"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "whatsapp": "WhatsApp",
+      "viber": "Viber",
+      "telegram": "Telegram",
+      "hours": "+20 01289494715 · Daily 9:00 AM – 9:00 PM"
+    },
+    "confirmation": {
+      "title": "Transfer Booking Submitted!",
+      "defaultMessage": "Your transfer reservation has been received successfully.",
+      "routeInfo": "Route Information",
+      "pickup": "Pickup:",
+      "destination": "Destination:",
+      "type": "Type:",
+      "roundTrip": "Round-Trip",
+      "oneWay": "One-Way",
+      "vehiclePax": "Vehicle & Passengers",
+      "vehicle": "Vehicle:",
+      "passengers": "Passengers:",
+      "total": "total",
+      "schedule": "Schedule",
+      "outbound": "Outbound:",
+      "at": "at",
+      "return": "Return:",
+      "extraWaiting": "Extra Waiting:",
+      "hours": "hour(s)",
+      "contactDetails": "Contact Details",
+      "name": "Name:",
+      "email": "Email:",
+      "phone": "Phone:",
+      "luggage": "Luggage:",
+      "bags": "bags",
+      "notes": "Special Requests / Notes:",
+      "totalFare": "Total Fare",
+      "paymentNote": "Payment upon arrival / contact coordinator.",
+      "bookAnother": "Book Another Transfer"
+    },
+    "reviews": {
+      "title": "Reviews —",
+      "reviewSingle": "review",
+      "reviewPlural": "reviews",
+      "noReviews": "No reviews yet",
+      "commentsTitle": "Reviews & comments",
+      "loading": "Loading verified reviews...",
+      "emptyMessage": "No verified reviews have been submitted for transfer services yet. Be the first to share your experience!",
+      "showLess": "Show less",
+      "viewMore": "View More Comments",
+      "shareOpinion": "Share your opinion",
+      "yourRating": "Your Rating",
+      "name": "Name *",
+      "namePlaceholder": "Your Name",
+      "email": "Email *",
+      "emailPlaceholder": "you@example.com",
+      "phone": "Phone *",
+      "phonePlaceholder": "+20 123 456 7890",
+      "yourReview": "Your review *",
+      "reviewPlaceholder": "write your review...",
+      "alreadySubmitted": "You have already shared a review for transfer services. Thank you!",
+      "submitting": "Submitting...",
+      "submit": "Submit"
+    },
+    "validation": {
+      "pickupRequired": "Please select a pickup location (From).",
+      "destinationRequired": "Please select a destination (To).",
+      "sameLocation": "Pickup and destination locations cannot be the same.",
+      "dateRequired": "Please select a trip date.",
+      "pastDate": "Trip date cannot be in the past.",
+      "timeRequired": "Please select a trip time.",
+      "returnDateRequired": "Please select a return date for round trip.",
+      "returnDateBefore": "Return date cannot be before outbound trip date.",
+      "returnTimeRequired": "Please select a return time for round trip.",
+      "returnTimeBefore": "Return time must be after outbound time on the same date.",
+      "nameRequired": "Please enter your name.",
+      "countryRequired": "Please select your country.",
+      "validEmail": "Please enter a valid email address.",
+      "validPhone": "Please enter a valid phone or WhatsApp number (min 7 digits).",
+      "bookingSuccess": "Your transfer booking has been confirmed! We have received your request.",
+      "bookingFailed": "Failed to submit transfer booking. Please check your information and try again."
+    }
+  },
+  "carRental": {
+    "heroAlt": "Car Rental Hurghada",
+    "title": "CAR RENTAL HURGHADA",
+    "subtitle": "Explore Hurghada and beyond at your own pace with our wide selection of premium rental cars.",
+    "viewDetails": "View Details",
+    "whatsapp": "WhatsApp",
+    "errorLoading": "Failed to load car rental options. Please try again later.",
+    "emptyState": "No car rental options available at the moment. Please check back later."
+  },
+  "vipAirport": {
+    "heroAlt": "VIP Hurghada Airport Services",
+    "title": "VIP HURGHADA AIRPORT SERVICES",
+    "subtitle": "Elevate your Hurghada departure with our seamless, exclusive VIP services.",
+    "viewDetails": "View Details",
+    "whatsapp": "WhatsApp",
+    "errorLoading": "Failed to load VIP airport services. Please try again later.",
+    "emptyState": "No VIP airport services available at the moment. Please check back later."
   }
 }

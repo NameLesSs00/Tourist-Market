@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { NeedHelpCard } from "@/components/UserComp/Shared/NeedHelpCard";
 import { toast } from "sonner";
 import { PrivateAttraction, PrivateExtraService } from "../types";
@@ -12,6 +13,7 @@ import {
   isBookingDateValid,
 } from "@/shared/utils/dateAvailability";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import { PrivateSidebarDatePassengers } from "./sidebar/PrivateSidebarDatePassengers";
 import { PrivateSidebarPriceBreakdown } from "./sidebar/PrivateSidebarPriceBreakdown";
 import { PrivateSidebarChecklist } from "./sidebar/PrivateSidebarChecklist";
@@ -42,8 +44,8 @@ export function PrivateDetailsBookingSidebar({
   excursionId,
   selectedAttractions = [],
   selectedExtraServices = [],
-  duration = "20 Hours",
-  maxParticipants = "35 Person",
+  duration,
+  maxParticipants,
   bookingDate: controlledBookingDate,
   onBookingDateChange,
   adults: controlledAdults,
@@ -60,6 +62,7 @@ export function PrivateDetailsBookingSidebar({
 }: PrivateDetailsBookingSidebarProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.sidebar;
+  const selectedCurrency = useCurrencyStore((s) => s.selectedCurrency);
 
   const [internalDate, setInternalDate] = useState<string>("");
   const [internalAdults, setInternalAdults] = useState<number>(1);
@@ -96,7 +99,12 @@ export function PrivateDetailsBookingSidebar({
   const totalPassengers = adults + children + infants;
 
   const { data: matchedVehicle, isLoading: isVehicleLoading } =
-    useVehicleTransferPrivateMatch(excursionId, totalPassengers, locale, currency);
+    useVehicleTransferPrivateMatch(
+      excursionId,
+      totalPassengers,
+      locale,
+      selectedCurrency.code
+    );
 
   const attractionsTotal = selectedAttractions.reduce(
     (acc, att) => acc + att.adultPrice * adults + att.childPrice * children + att.infantPrice * infants,
@@ -154,7 +162,12 @@ export function PrivateDetailsBookingSidebar({
   };
 
   return (
-    <aside className="w-full flex flex-col gap-6 font-poppins lg:sticky lg:top-24 lg:self-start">
+    <motion.aside
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="w-full flex flex-col gap-6 font-poppins lg:sticky lg:top-24 lg:self-start"
+    >
       <div
         className="w-full bg-white overflow-hidden"
         style={{
@@ -208,7 +221,7 @@ export function PrivateDetailsBookingSidebar({
             infants={infants}
             isVehicleLoading={isVehicleLoading}
             matchedVehicle={matchedVehicle}
-            currency={matchedVehicle?.currency ?? (currency === "USD" ? "$" : currency)}
+            currency={matchedVehicle?.currency ?? selectedCurrency.symbol}
             locale={locale}
           />
 
@@ -231,7 +244,7 @@ export function PrivateDetailsBookingSidebar({
       </div>
 
       <NeedHelpCard locale={locale} />
-    </aside>
+    </motion.aside>
   );
 }
 

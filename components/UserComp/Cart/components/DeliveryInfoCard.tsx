@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
 import type { CartDeliveryFormData } from "../types";
 import type { DeliveryProductItem } from "@/models/deliveryProduct";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface DeliveryInfoCardProps {
   formData: CartDeliveryFormData;
@@ -25,6 +26,7 @@ export function DeliveryInfoCard({
   areasLoading = false,
   locale = "en",
 }: DeliveryInfoCardProps) {
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
   const availableAreas = deliveryAreas || [];
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -115,7 +117,7 @@ export function DeliveryInfoCard({
                 </option>
                 {availableAreas.map((areaItem) => (
                   <option key={areaItem.id} value={areaItem.area}>
-                    {areaItem.area} (+${Number(areaItem.priceUsd || 0).toFixed(2)})
+                    {areaItem.area} (+{formatPrice(Number(areaItem.priceUsd || 0))})
                   </option>
                 ))}
               </select>

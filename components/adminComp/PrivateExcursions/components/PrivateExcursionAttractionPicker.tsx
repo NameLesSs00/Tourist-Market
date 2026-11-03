@@ -11,14 +11,12 @@ interface AttractionItemDisplay {
 
 interface PrivateExcursionAttractionPickerProps {
   selectedAttractions: AttractionItemDisplay[];
-  maxAttractions: number;
   onAddAttraction: (attraction: AttractionItemDisplay) => void;
   onRemoveAttraction: (id: string) => void;
 }
 
 export function PrivateExcursionAttractionPicker({
   selectedAttractions,
-  maxAttractions,
   onAddAttraction,
   onRemoveAttraction,
 }: PrivateExcursionAttractionPickerProps) {
@@ -49,7 +47,6 @@ export function PrivateExcursionAttractionPicker({
         </label>
         <span className="text-[11px] font-medium text-[#64748B]">
           {selectedAttractions.length} assigned
-          {maxAttractions > 0 && ` · Customer picks up to ${maxAttractions}`}
         </span>
       </div>
 

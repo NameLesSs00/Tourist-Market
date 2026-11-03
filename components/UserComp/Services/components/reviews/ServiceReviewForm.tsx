@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { FiStar, FiMessageSquare } from "react-icons/fi";
 import { sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ServiceReviewFormProps {
   alreadySubmitted: boolean;
@@ -19,6 +21,7 @@ interface ServiceReviewFormProps {
   onPhoneChange: (val: string) => void;
   onReviewChange: (val: string) => void;
   onSubmit: (e: React.FormEvent) => void;
+  locale?: string;
 }
 
 export function ServiceReviewForm({
@@ -36,7 +39,11 @@ export function ServiceReviewForm({
   onPhoneChange,
   onReviewChange,
   onSubmit,
+  locale = "en",
 }: ServiceReviewFormProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <div
       className="w-full bg-white rounded-2xl p-4 sm:p-6 sm:p-7 shrink-0"
@@ -48,17 +55,17 @@ export function ServiceReviewForm({
       <div className="flex items-center gap-2.5 mb-2">
         <FiMessageSquare className="text-[#DE7423]" size={18} />
         <h3 className="text-base sm:text-lg font-bold text-[#083952]">
-          Share Your Opinion
+          {t.shareOpinionTitle}
         </h3>
       </div>
       <p className="text-xs sm:text-[13px] text-gray-500 mb-5">
-        Have you booked this service? Leave your feedback to help fellow travelers.
+        {t.shareOpinionSubtitle}
       </p>
 
       {alreadySubmitted ? (
         <div className="p-4 sm:p-5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs sm:text-sm text-emerald-800 space-y-2">
           <p>
-            <strong>Thank you!</strong> Your review has been submitted and is currently pending review.
+            {t.alreadySubmittedMessage}
           </p>
           {onResetSubmitted && (
             <button
@@ -66,7 +73,7 @@ export function ServiceReviewForm({
               onClick={onResetSubmitted}
               className="text-xs text-emerald-700 underline font-semibold hover:text-emerald-900 cursor-pointer"
             >
-              Write another review
+              {t.writeAnotherReview}
             </button>
           )}
         </div>
@@ -75,15 +82,17 @@ export function ServiceReviewForm({
           {/* Star Picker */}
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1.5">
-              Your Rating *
+              {t.yourRatingLabel}
             </label>
             <div className="flex items-center gap-1.5">
               {[1, 2, 3, 4, 5].map((star) => (
-                <button
+                <motion.button
                   type="button"
                   key={star}
                   onClick={() => onRatingChange(star)}
-                  className="p-1 -m-1 text-[#F5A623] hover:scale-110 transition-transform cursor-pointer"
+                  whileHover={{ scale: 1.15 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-1 -m-1 text-[#F5A623] cursor-pointer"
                   aria-label={`Rate ${star} star`}
                 >
                   <FiStar
@@ -94,11 +103,11 @@ export function ServiceReviewForm({
                         : "text-gray-300"
                     }
                   />
-                </button>
+                </motion.button>
               ))}
               {userRating > 0 && (
                 <span className="text-xs font-semibold text-[#083952] ml-2">
-                  {userRating} of 5
+                  {userRating} {t.ofFive}
                 </span>
               )}
             </div>
@@ -107,14 +116,14 @@ export function ServiceReviewForm({
           {/* Full Name */}
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              Your Name *
+              {t.reviewerNameLabel}
             </label>
             <input
               type="text"
               required
               value={userName}
               onChange={(e) => onNameChange(e.target.value)}
-              placeholder="e.g. John Doe"
+              placeholder={t.reviewerNamePlaceholder}
               className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-xs sm:text-sm text-[#083952] focus:outline-none focus:border-[#DE7423]"
             />
           </div>
@@ -122,14 +131,14 @@ export function ServiceReviewForm({
           {/* Email */}
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              Your Email *
+              {t.reviewerEmailLabel}
             </label>
             <input
               type="email"
               required
               value={userEmail}
               onChange={(e) => onEmailChange(e.target.value)}
-              placeholder="name@example.com"
+              placeholder={t.reviewerEmailPlaceholder}
               className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-xs sm:text-sm text-[#083952] focus:outline-none focus:border-[#DE7423]"
             />
           </div>
@@ -137,14 +146,14 @@ export function ServiceReviewForm({
           {/* Phone */}
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              Phone Number *
+              {t.reviewerPhoneLabel}
             </label>
             <input
               type="tel"
               required
               value={userPhone}
               onChange={(e) => onPhoneChange(sanitizePhoneNumber(e.target.value))}
-              placeholder="e.g. +20 123 456 7890"
+              placeholder={t.reviewerPhonePlaceholder}
               className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-xs sm:text-sm text-[#083952] focus:outline-none focus:border-[#DE7423]"
             />
           </div>
@@ -152,25 +161,27 @@ export function ServiceReviewForm({
           {/* Comment */}
           <div>
             <label className="block text-xs font-semibold text-[#083952] mb-1">
-              Your Review *
+              {t.reviewerCommentLabel}
             </label>
             <textarea
               required
               rows={4}
               value={userReview}
               onChange={(e) => onReviewChange(e.target.value)}
-              placeholder="Tell others about your experience with this service..."
+              placeholder={t.reviewerCommentPlaceholder}
               className="w-full px-3.5 py-2.5 rounded-lg border border-gray-300 text-xs sm:text-sm text-[#083952] focus:outline-none focus:border-[#DE7423] resize-none"
             />
           </div>
 
-          <button
+          <motion.button
             type="submit"
             disabled={isSubmitting}
+            whileHover={{ scale: isSubmitting ? 1 : 1.01 }}
+            whileTap={{ scale: isSubmitting ? 1 : 0.99 }}
             className="w-full py-3 px-4 rounded-lg bg-[#0E4A68] hover:bg-[#0b384f] text-white font-semibold text-xs sm:text-sm transition-colors cursor-pointer disabled:opacity-60 shadow-sm"
           >
-            {isSubmitting ? "Submitting Review..." : "Submit Review"}
-          </button>
+            {isSubmitting ? t.submittingReview : t.submitReview}
+          </motion.button>
         </form>
       )}
     </div>

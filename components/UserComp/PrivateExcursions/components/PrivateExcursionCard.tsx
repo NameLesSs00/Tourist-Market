@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { PrivateExcursion } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateExcursionCardProps {
   excursion: PrivateExcursion;
@@ -21,6 +22,7 @@ export function PrivateExcursionCard({
 }: PrivateExcursionCardProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.grid;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const {
     id,
@@ -89,7 +91,7 @@ export function PrivateExcursionCard({
         <div className="absolute top-3.5 left-3.5 z-10">
           <span
             className={`inline-block px-3.5 py-1 rounded-[6px] font-poppins text-xs font-semibold shadow-sm ${
-              category === "FUN Trips"
+              category === "FUN Trips" || excursion.categorySlug?.toLowerCase().includes("fun")
                 ? "bg-[#00BCD4] text-white"
                 : "bg-black/60 text-white backdrop-blur-sm"
             }`}
@@ -115,7 +117,7 @@ export function PrivateExcursionCard({
               <circle cx="12" cy="12" r="10" />
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
             </svg>
-            <span>{duration}</span>
+            <span>{excursion.durationHours ? `${excursion.durationHours} ${t.hours || "hours"}` : duration}</span>
           </div>
 
           {/* Star Rating */}
@@ -166,7 +168,7 @@ export function PrivateExcursionCard({
               {priceItems.map((item, idx) => (
                 <React.Fragment key={item.label}>
                   <span>
-                    {item.label}: {item.value.toFixed(2)} {currency}
+                    {item.label}: {formatPrice(item.value)}
                   </span>
                   {idx < priceItems.length - 1 && (
                     <span className="text-[#0E4A68]/40 select-none">|</span>

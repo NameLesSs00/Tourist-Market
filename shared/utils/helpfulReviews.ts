@@ -34,32 +34,51 @@ export function markReviewHelpfulInCookie(reviewId: string): void {
   )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
 }
 
-function readSubmittedExcursionIds(): string[] {
-  if (typeof document === "undefined") return [];
-  const match = document.cookie.match(
-    new RegExp(`(?:^|; )${SUBMITTED_COOKIE_NAME}=([^;]*)`)
-  );
-  if (!match) return [];
-  return decodeURIComponent(match[1])
-    .split(",")
-    .map((id) => id.trim())
-    .filter(Boolean);
+const sessionSubmittedExcursions = new Set<string>();
+
+/** Clears any legacy 1-year submitted_reviews cookie from the browser. */
+export function clearSubmittedReviewsCookie(): void {
+  if (typeof document === "undefined") return;
+  document.cookie = `${SUBMITTED_COOKIE_NAME}=;path=/;max-age=0;SameSite=Lax`;
 }
 
-/** True when this browser already submitted a review for the excursion. */
+/** True when this browser already submitted a review for the excursion during this session. */
 export function hasSubmittedReview(excursionId: string): boolean {
   if (!excursionId) return false;
-  return readSubmittedExcursionIds().includes(excursionId);
+  if (sessionSubmittedExcursions.has(excursionId)) return true;
+
+  if (typeof window !== "undefined" && window.sessionStorage) {
+    try {
+      const stored = window.sessionStorage.getItem(`submitted_review_${excursionId}`);
+      if (stored === "true") {
+        sessionSubmittedExcursions.add(excursionId);
+        return true;
+      }
+    } catch {
+      // sessionStorage might be restricted in some iframe/sandbox environments
+    }
+  }
+
+  // Clear legacy 1-year cookie if it was previously set so it doesn't linger
+  clearSubmittedReviewsCookie();
+  return false;
 }
 
-/** Records that a review was submitted for the excursion (once per browser). */
+/** Records that a review was submitted for the excursion (in-session to avoid permanent lockout). */
 export function markReviewSubmitted(excursionId: string): void {
-  if (typeof document === "undefined" || !excursionId) return;
-  const ids = readSubmittedExcursionIds();
-  if (!ids.includes(excursionId)) ids.push(excursionId);
-  document.cookie = `${SUBMITTED_COOKIE_NAME}=${encodeURIComponent(
-    ids.join(",")
-  )};path=/;max-age=${ONE_YEAR_SECONDS};SameSite=Lax`;
+  if (!excursionId) return;
+  sessionSubmittedExcursions.add(excursionId);
+
+  if (typeof window !== "undefined" && window.sessionStorage) {
+    try {
+      window.sessionStorage.setItem(`submitted_review_${excursionId}`, "true");
+    } catch {
+      // sessionStorage restricted fallback
+    }
+  }
+
+  // Ensure stale 1-year cookie is cleared
+  clearSubmittedReviewsCookie();
 }
 
 // ---------------------------------------------------------------------------

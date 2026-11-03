@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { ServiceDetailItem } from "../types";
 import {
   ServiceImageGallery,
@@ -12,9 +14,12 @@ import {
 
 interface ServiceDetailCardProps {
   detail: ServiceDetailItem;
+  locale?: string;
 }
 
-export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
+export function ServiceDetailCard({ detail, locale = "en" }: ServiceDetailCardProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
   const {
     title,
     imageUrl,
@@ -70,7 +75,12 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase text-[#0E4A68] tracking-tight">
             {title}
           </h1>
-          <div className="w-14 sm:w-16 h-1 bg-[#0E4A68] mt-2 rounded-full" />
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+            className="w-14 sm:w-16 h-1 bg-[#0E4A68] mt-2 rounded-full origin-center"
+          />
         </div>
 
         {/* Important Notice Banner */}
@@ -94,7 +104,7 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
         {availableLanguages && availableLanguages.length > 0 && (
           <div className="flex flex-col gap-2">
             <h3 className="text-sm sm:text-base font-bold text-[#0E4A68]">
-              Available Languages:
+              {t.availableLanguages}
             </h3>
             <div className="flex flex-wrap gap-2">
               {availableLanguages.map((lang, idx) => (
@@ -116,16 +126,18 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
           modelYear={modelYear}
           transmission={transmission}
           airConditioning={airConditioning}
+          locale={locale}
         />
 
         {/* Pricing Packages & Options Matrix */}
         <ServicePricingTiers
           optionsTiers={optionsTiers}
           costServices={costServices}
+          locale={locale}
         />
 
         {/* Terms & Operational Notes */}
-        <ServiceNotesAccordion notes={notes} />
+        <ServiceNotesAccordion notes={notes} locale={locale} />
 
         {/* 3. Bottom Price Banner */}
         <div
@@ -141,13 +153,15 @@ export function ServiceDetailCard({ detail }: ServiceDetailCardProps) {
           <div className="text-xs sm:text-sm font-medium text-white/90">
             {billingPeriod}
           </div>
-          <button
+          <motion.button
             type="button"
             onClick={handleScrollToBooking}
-            className="mt-2.5 sm:mt-3 inline-flex items-center gap-2 bg-white text-[#134B68] font-semibold text-xs sm:text-sm py-2 px-5 sm:px-6 rounded-[5px] shadow-sm transition-all duration-200 hover:bg-slate-100 active:scale-[0.98] cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="mt-2.5 sm:mt-3 inline-flex items-center gap-2 bg-white text-[#134B68] font-semibold text-xs sm:text-sm py-2 px-5 sm:px-6 rounded-[5px] shadow-sm transition-colors duration-200 hover:bg-slate-100 cursor-pointer"
           >
             {bookingButtonText}
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FiChevronDown } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -15,6 +16,7 @@ interface TouristServiceFieldsProps {
   fieldErrors: ServiceFieldErrors;
   todayStr: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  locale?: string;
 }
 
 export function TouristServiceFields({
@@ -22,13 +24,17 @@ export function TouristServiceFields({
   fieldErrors,
   todayStr,
   onChange,
+  locale = "en",
 }: TouristServiceFieldsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
+
   return (
     <>
       {/* Service Date */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Service Date <span className="text-red-500">*</span>
+          {t.serviceDateLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="date"
@@ -50,7 +56,7 @@ export function TouristServiceFields({
       {/* Guide Language */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Guide Language <span className="text-red-500">*</span>
+          {t.guideLanguageLabel} <span className="text-red-500">*</span>
         </label>
         <div className="relative">
           <select
@@ -62,10 +68,10 @@ export function TouristServiceFields({
               Boolean(fieldErrors.guideLanguage)
             )} cursor-pointer pr-10`}
           >
-            <option value="english">English</option>
-            <option value="german">German</option>
-            <option value="russian">Russian</option>
-            <option value="french">French</option>
+            <option value="english">{t.langEnglish}</option>
+            <option value="german">{t.langGerman}</option>
+            <option value="russian">{t.langRussian}</option>
+            <option value="french">{t.langFrench}</option>
           </select>
           <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
         </div>
@@ -79,7 +85,7 @@ export function TouristServiceFields({
       {/* Time From */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Time From <span className="text-red-500">*</span>
+          {t.timeFromLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="time"
@@ -100,7 +106,7 @@ export function TouristServiceFields({
       {/* Time To */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs sm:text-sm font-semibold text-[#0E4A68]">
-          Time To <span className="text-red-500">*</span>
+          {t.timeToLabel} <span className="text-red-500">*</span>
         </label>
         <input
           type="time"

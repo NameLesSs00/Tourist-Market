@@ -2,8 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { TransferCommunicationMethod } from "@/models/transferBooking";
 import type { CountryItem } from "@/models/country";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface TransferCustomerCardProps {
   customerName: string;
@@ -20,6 +22,7 @@ interface TransferCustomerCardProps {
   onCommunicationMethodChange: (val: TransferCommunicationMethod) => void;
   onPhoneNumberChange: (val: string) => void;
   onLuggageCountChange: (val: number) => void;
+  locale?: string;
 }
 
 export function TransferCustomerCard({
@@ -37,22 +40,33 @@ export function TransferCustomerCard({
   onCommunicationMethodChange,
   onPhoneNumberChange,
   onLuggageCountChange,
+  locale = "en",
 }: TransferCustomerCardProps) {
+  const dict = getDictionary(locale);
+  const t = dict.transfer.customer;
+  const contactT = dict.transfer.contact;
+
   return (
-    <div className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.45, ease: "easeOut" }}
+      className="bg-[#FFFFFF] rounded-[8.38px] border-[0.52px] border-[#888888] shadow-[0px_1.05px_8.38px_1.05px_rgba(0,0,0,0.2)] p-4 sm:p-5 md:p-6 space-y-4 font-poppins"
+    >
       <h2 className="text-base sm:text-lg font-bold text-[#0E4A68]">
-        Customer Information
+        {t.title}
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Name */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Name *
+            {t.name}
           </label>
           <input
             type="text"
-            placeholder="Your Full Name"
+            placeholder={t.namePlaceholder}
             value={customerName}
             onChange={(e) => onCustomerNameChange(e.target.value)}
             className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
@@ -62,7 +76,7 @@ export function TransferCustomerCard({
         {/* Country */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Country *
+            {t.country}
           </label>
           <div className="relative">
             <select
@@ -72,7 +86,7 @@ export function TransferCustomerCard({
               className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition appearance-none cursor-pointer"
             >
               <option value="" disabled>
-                {isLoadingCountries ? "Loading countries..." : "Select Country"}
+                {isLoadingCountries ? t.loadingCountries : t.selectCountry}
               </option>
               {countries.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -95,11 +109,11 @@ export function TransferCustomerCard({
         {/* Email */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Email *
+            {t.email}
           </label>
           <input
             type="email"
-            placeholder="you@example.com"
+            placeholder={t.emailPlaceholder}
             value={email}
             onChange={(e) => onEmailChange(e.target.value)}
             className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
@@ -109,7 +123,7 @@ export function TransferCustomerCard({
         {/* Preferred Communication Method */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Preferred Communication Method *
+            {t.commMethod}
           </label>
           <div className="relative">
             <select
@@ -121,7 +135,7 @@ export function TransferCustomerCard({
               }
               className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition appearance-none cursor-pointer"
             >
-              <option value={TransferCommunicationMethod.WhatsApp}>WhatsApp</option>
+              <option value={TransferCommunicationMethod.WhatsApp}>{contactT.whatsapp}</option>
               <option value={TransferCommunicationMethod.Email}>Email</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
@@ -139,11 +153,11 @@ export function TransferCustomerCard({
         {/* Phone */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Phone (preferred WhatsApp) *
+            {t.phone}
           </label>
           <input
             type="tel"
-            placeholder="+20 123 456 7890"
+            placeholder={t.phonePlaceholder}
             value={phoneNumber}
             onChange={(e) => onPhoneNumberChange(e.target.value)}
             className="w-full h-11 px-3 py-2 text-sm text-[#0E4A68] font-medium bg-[#FFFFFF] border-[0.42px] border-[#00000066] rounded-[5.24px] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition placeholder:text-[#00000066]"
@@ -153,7 +167,7 @@ export function TransferCustomerCard({
         {/* Number of Luggage */}
         <div>
           <label className="block text-xs font-semibold text-[#0E4A68] mb-1">
-            Number of Luggage
+            {t.luggage}
           </label>
           <input
             type="number"
@@ -169,7 +183,7 @@ export function TransferCustomerCard({
           />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ContactInfoItem {
   id: string;
@@ -11,52 +12,59 @@ interface ContactInfoItem {
   content: React.ReactNode;
 }
 
-export function ContactInfoCards() {
+interface ContactInfoCardsProps {
+  locale?: string;
+}
+
+export function ContactInfoCards({ locale = "en" }: ContactInfoCardsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.contact.cards;
+
   const infoItems: ContactInfoItem[] = [
     {
       id: "call-us",
-      title: "Call Us",
+      title: t.callUs,
       icon: "/contact/Frame 388.svg",
       content: (
         <a
-          href="tel:+201234567890"
+          href={`tel:${t.phone.replace(/\s+/g, "")}`}
           className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68] hover:text-[#D48C28] transition-colors"
         >
-          +20 123 456 7890
+          {t.phone}
         </a>
       ),
     },
     {
       id: "email-us",
-      title: "Email Us",
+      title: t.emailUs,
       icon: "/contact/Frame 388 (1).svg",
       content: (
         <a
-          href="mailto:info@etouristmarket.com"
+          href={`mailto:${t.email}`}
           className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68] hover:text-[#D48C28] transition-colors break-all"
         >
-          info@etouristmarket .com
+          {t.email}
         </a>
       ),
     },
     {
       id: "visit-us",
-      title: "Visit Us",
+      title: t.visitUs,
       icon: "/contact/Frame 387.svg",
       content: (
         <p className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68]">
-          El Kawther , Hurghada, Egypt
+          {t.address}
         </p>
       ),
     },
     {
       id: "working-hours",
-      title: "Working Hours",
+      title: t.workingHours,
       icon: "/contact/Frame 387 (1).svg",
       content: (
         <div className="font-['Poppins'] text-sm sm:text-base font-semibold text-[#0E4A68] leading-snug">
-          <p>Sat – Tues</p>
-          <p>9:00 AM – 10:00 PM</p>
+          <p>{t.workingDays}</p>
+          <p>{t.workingTime}</p>
         </div>
       ),
     },
@@ -69,17 +77,23 @@ export function ContactInfoCards() {
           key={item.id}
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.45, delay: index * 0.08, ease: "easeOut" }}
-          className="w-full rounded-[18px] p-5 sm:p-6 flex items-center gap-5 transition-transform hover:-translate-y-0.5 duration-200"
+          whileHover={{ y: -4, scale: 1.01 }}
+          whileTap={{ scale: 0.99 }}
+          className="w-full rounded-[18px] p-5 sm:p-6 flex items-center gap-5 transition-shadow duration-300 hover:shadow-[0_8px_24px_rgba(14,74,104,0.14)] cursor-pointer select-none"
           style={{
             backgroundColor: "#FFFEF5",
             border: "0.5px solid #888888",
             boxShadow: "0px 1px 8px 2px rgba(0, 0, 0, 0.2)",
           }}
         >
-          {/* Circular SVG Icon */}
-          <div className="shrink-0 w-[54px] sm:w-[60px] h-[54px] sm:h-[60px] relative">
+          {/* Circular SVG Icon with subtle hover wiggle */}
+          <motion.div
+            whileHover={{ rotate: [0, -8, 8, 0], scale: 1.08 }}
+            transition={{ duration: 0.4 }}
+            className="shrink-0 w-[54px] sm:w-[60px] h-[54px] sm:h-[60px] relative"
+          >
             <Image
               src={item.icon}
               alt={item.title}
@@ -87,7 +101,7 @@ export function ContactInfoCards() {
               height={62}
               className="w-full h-full object-contain"
             />
-          </div>
+          </motion.div>
 
           {/* Details */}
           <div>

@@ -106,7 +106,7 @@ export function PrivateDetailsReviews({
   const handleSubmitReview = (e: React.FormEvent) => {
     e.preventDefault();
     if (!excursionId) {
-      toast.error("Cannot submit review: missing excursion ID.");
+      toast.error(t.toastMissingId || "Cannot submit review: missing excursion ID.");
       return;
     }
     if (alreadySubmitted) {
@@ -114,19 +114,19 @@ export function PrivateDetailsReviews({
       return;
     }
     if (userRating < 1 || userRating > 5) {
-      toast.error("Please choose a star rating between 1 and 5.");
+      toast.error(t.toastSelectRating || "Please choose a star rating between 1 and 5.");
       return;
     }
     if (!userName.trim()) {
-      toast.error("Please enter your name.");
+      toast.error(t.toastEnterName || "Please enter your name.");
       return;
     }
     if (!userEmail.trim() || !EMAIL_PATTERN.test(userEmail.trim())) {
-      toast.error("Please enter a valid email address.");
+      toast.error(t.toastValidEmail || "Please enter a valid email address.");
       return;
     }
     if (!userReview.trim()) {
-      toast.error("Please write your review before submitting.");
+      toast.error(t.toastWriteReview || "Please write your review before submitting.");
       return;
     }
 
@@ -141,7 +141,7 @@ export function PrivateDetailsReviews({
       },
       {
         onSuccess: (res) => {
-          toast.success("Thank you! Your review has been submitted.");
+          toast.success(t.toastSuccess || "Thank you! Your review has been submitted.");
           markReviewSubmitted(excursionId);
           setAlreadySubmitted(true);
           const reviewItem = res?.data;
@@ -149,7 +149,7 @@ export function PrivateDetailsReviews({
             id: reviewItem?.id || String(Date.now()),
             author: reviewItem?.customerName || userName.trim(),
             rating: reviewItem?.rating || userRating,
-            date: "Just now",
+            date: t.justNow || "Just now",
             content: reviewItem?.comment || userReview.trim(),
             likes: reviewItem?.helpfulCount ?? 0,
           };
@@ -161,7 +161,7 @@ export function PrivateDetailsReviews({
           setUserReview("");
         },
         onError: (err) => {
-          toast.error(err instanceof Error ? err.message : "Failed to submit review.");
+          toast.error(err instanceof Error ? err.message : (t.toastFailed || "Failed to submit review."));
         },
       }
     );

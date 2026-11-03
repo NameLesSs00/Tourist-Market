@@ -10,6 +10,7 @@ import {
   GroupPaymentMethod,
 } from "@/models/groupBooking";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface BookingConfirmationCardProps {
   confirmedBooking: CreateGroupBookingResponse;
@@ -44,6 +45,7 @@ export function BookingConfirmationCard({
 }: BookingConfirmationCardProps) {
   const dict = getDictionary(locale);
   const t = dict.groupExcursions.details.bookingForm;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
   const paymentLabel =
     paymentMethod === GroupPaymentMethod.CashOnArrival
       ? t.cashOnArrival
@@ -86,7 +88,7 @@ export function BookingConfirmationCard({
           <div className="text-left sm:text-right">
             <div className="text-xs text-[#646464] font-medium">{t.totalPrice}</div>
             <div className="text-lg sm:text-xl font-extrabold text-[#16A34A]">
-              ${confirmedBooking.totalPrice.toFixed(2)} {confirmedBooking.currency}
+              {formatPrice(confirmedBooking.totalPrice)}
             </div>
           </div>
         </div>

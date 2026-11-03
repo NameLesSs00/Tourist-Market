@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { GroupExcursionDetail } from "../types";
 import { NeedHelpCard } from "@/components/UserComp/Shared/NeedHelpCard";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import {
   formatGroupDuration,
   formatGroupAvailability,
@@ -25,6 +26,7 @@ export function GroupDetailsBookingSidebar({
   const dict = getDictionary(locale);
   const t = dict.groupExcursions.details.sidebar;
   const heroT = dict.groupExcursions.details.hero;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const {
     adultPrice,
@@ -149,7 +151,7 @@ export function GroupDetailsBookingSidebar({
                     )}
                   </div>
                   <div className="font-poppins text-xs sm:text-sm md:text-base font-bold text-[#0E4A68] mt-0.5 truncate">
-                    ${tier.price.toFixed(2)}
+                    {formatPrice(tier.price)}
                   </div>
                 </motion.div>
               ))}

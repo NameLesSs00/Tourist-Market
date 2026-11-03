@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FiX } from "react-icons/fi";
 import type { CartItem } from "@/models/cart";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 const DEFAULT_PRODUCT_IMAGE = "/GroupExcursions/HeroLogo.webp";
 
@@ -58,6 +59,7 @@ export function OrderSummaryCard({
   onProceedToCheckout,
   isSubmitting = false,
 }: OrderSummaryCardProps) {
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
   const isEmpty = items.length === 0;
   const hasShipping = Boolean(selectedAreaName && typeof shipping === "number");
   const shippingAmount = hasShipping ? (shipping as number) : 0;
@@ -130,7 +132,7 @@ export function OrderSummaryCard({
                     {item.title}
                   </h5>
                   <p className="font-poppins text-[12px] sm:text-[13px] text-[#646464] font-normal mt-0.5">
-                    {item.quantity}×{(item.price || 0).toFixed(0)} $
+                    {item.quantity}×{formatPrice(item.price || 0)}
                   </p>
                 </div>
 
@@ -145,7 +147,7 @@ export function OrderSummaryCard({
                     <FiX size={13} />
                   </button>
                   <span className="font-poppins text-[13.5px] sm:text-[14px] font-semibold text-[#0E4A68] leading-none">
-                    {lineTotal.toFixed(0)} $
+                    {formatPrice(lineTotal)}
                   </span>
                 </div>
               </div>
@@ -160,7 +162,7 @@ export function OrderSummaryCard({
         <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[14.5px] sm:text-[15px]">
           <span className="font-medium text-[#0E4A68]">Subtotal :</span>
           <span className="font-medium text-[#0E4A68]">
-            ${subtotal.toFixed(2)}
+            {formatPrice(subtotal)}
           </span>
         </div>
 
@@ -169,7 +171,7 @@ export function OrderSummaryCard({
           <span className="font-medium text-[#0E4A68]">Shipping :</span>
           {hasShipping ? (
             <span className="font-medium text-[#0E4A68]">
-              ${shippingAmount.toFixed(2)}
+              {formatPrice(shippingAmount)}
             </span>
           ) : (
             <span className="font-normal text-[#64748B] text-xs sm:text-[13px]">
@@ -182,7 +184,7 @@ export function OrderSummaryCard({
         <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[15.5px] sm:text-[16px]">
           <span className="font-bold text-[#0E4A68]">Total :</span>
           <span className="font-bold text-[#0E4A68]">
-            ${total.toFixed(2)}
+            {formatPrice(total)}
           </span>
         </div>
 

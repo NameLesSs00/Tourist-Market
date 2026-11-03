@@ -72,9 +72,11 @@ export function GroupExcursionsSection({
   const allLoadedExcursions = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) =>
-      (page.items || []).map(mapBackendGroupExcursionToCard)
+      (page.items || []).map((item) =>
+        mapBackendGroupExcursionToCard(item, categories)
+      )
     );
-  }, [data]);
+  }, [data, categories]);
 
   // 5. Apply real-time client filters for search, price, and duration
   const displayedExcursions = useMemo(() => {

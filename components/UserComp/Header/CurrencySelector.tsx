@@ -2,18 +2,13 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useClientCurrencies } from "@/features/currencies";
 
 export interface CurrencyOption {
   code: string;
   symbol: string;
   label: string;
 }
-
-const CURRENCIES: CurrencyOption[] = [
-  { code: "USD", symbol: "$", label: "USD" },
-  { code: "EUR", symbol: "€", label: "EUR" },
-  { code: "GBP", symbol: "£", label: "GBP" },
-];
 
 export interface CurrencySelectorProps {
   className?: string;
@@ -25,8 +20,8 @@ export function CurrencySelector({
   dropdownDirection = "down",
 }: CurrencySelectorProps = {}) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<CurrencyOption>(CURRENCIES[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { currencies, selectedCurrency, setCurrency } = useClientCurrencies();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -48,8 +43,8 @@ export function CurrencySelector({
         aria-expanded={isOpen}
         className="flex items-center gap-1 sm:gap-1.5 xl:gap-2 rounded-full border border-[#08395240] bg-transparent px-2 py-1 sm:px-2.5 sm:py-1.5 xl:px-4 xl:py-2 text-xs xl:text-sm 2xl:text-base font-semibold text-[#083952] transition-all hover:bg-[#FFFFFF33] hover:border-[#08395280] focus:outline-none cursor-pointer whitespace-nowrap"
       >
-        <span className="font-bold text-xs sm:text-sm">{selected.symbol}</span>
-        <span className="text-xs sm:text-sm">{selected.label}</span>
+        <span className="font-bold text-xs sm:text-sm">{selectedCurrency.symbol}</span>
+        <span className="text-xs sm:text-sm">{selectedCurrency.code}</span>
         <svg
           className={`h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#083952] transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
@@ -74,14 +69,14 @@ export function CurrencySelector({
               dropdownDirection === "up" ? "bottom-full mb-2 origin-bottom-right" : "mt-2 origin-top-right"
             }`}
           >
-            {CURRENCIES.map((currency) => {
-              const isCurrent = currency.code === selected.code;
+            {currencies.map((currency) => {
+              const isCurrent = currency.code === selectedCurrency.code;
               return (
                 <button
                   key={currency.code}
                   type="button"
                   onClick={() => {
-                    setSelected(currency);
+                    setCurrency(currency);
                     setIsOpen(false);
                   }}
                   className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 font-poppins-semibold-16 transition-colors ${

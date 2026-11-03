@@ -3,3 +3,4 @@ export * from "./SiteServiceItemPricingStatus";
 export * from "./SiteServiceItemLocalizedFields";
 export * from "./SiteServiceItemOptionsManager";
 export * from "./SiteServiceItemFeaturesManager";
+export * from "./SiteServiceItemColumns";

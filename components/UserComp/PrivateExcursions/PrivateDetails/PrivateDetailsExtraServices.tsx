@@ -6,11 +6,13 @@ import { FiPlusCircle, FiCheck } from "react-icons/fi";
 import { PrivateExtraService } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateDetailsExtraServicesProps {
   services: PrivateExtraService[];
   selectedIds: string[];
   onToggleSelect: (serviceId: string) => void;
+  currency?: string;
   locale?: string;
 }
 
@@ -18,6 +20,7 @@ interface ExtraServiceCardProps {
   service: PrivateExtraService;
   isSelected: boolean;
   onToggle: () => void;
+  currency?: string;
   locale?: string;
 }
 
@@ -25,10 +28,12 @@ function ExtraServiceCard({
   service,
   isSelected,
   onToggle,
+  currency = "$",
   locale = "en",
 }: ExtraServiceCardProps) {
   const dict = getDictionary(locale);
   const t = dict.privateExcursions.details.extraServices;
+  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -181,39 +186,22 @@ function ExtraServiceCard({
           <div className="mt-6 pt-4 border-t border-gray-100">
             {/* Price boxes row */}
             <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
-              <div
-                className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
-                style={{ border: "0.8px solid #BBBBBB" }}
-              >
-                <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  {t.adult || "Adult"}
-                </span>
+              <div className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white border border-[#BBBBBB]">
+                <span className="text-[12px] text-[#083952] font-medium font-poppins">{t.adult || "Adult"}</span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
-                  {service.adultPrice.toFixed(2)}$
+                  {formatPrice(service.adultPrice)}
                 </span>
               </div>
-
-              <div
-                className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
-                style={{ border: "0.8px solid #BBBBBB" }}
-              >
-                <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  {t.child || "Child"}
-                </span>
+              <div className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white border border-[#BBBBBB]">
+                <span className="text-[12px] text-[#083952] font-medium font-poppins">{t.child || "Child"}</span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
-                  {service.childPrice.toFixed(2)}$
+                  {formatPrice(service.childPrice)}
                 </span>
               </div>
-
-              <div
-                className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white"
-                style={{ border: "0.8px solid #BBBBBB" }}
-              >
-                <span className="text-[12px] text-[#083952] font-medium font-poppins">
-                  {t.infant || "Infant"}
-                </span>
+              <div className="flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-white border border-[#BBBBBB]">
+                <span className="text-[12px] text-[#083952] font-medium font-poppins">{t.infant || "Infant"}</span>
                 <span className="text-[15px] sm:text-[16px] font-bold text-[#083952] font-poppins">
-                  {service.infantPrice.toFixed(2)}$
+                  {formatPrice(service.infantPrice)}
                 </span>
               </div>
             </div>
@@ -243,6 +231,7 @@ export function PrivateDetailsExtraServices({
   services,
   selectedIds,
   onToggleSelect,
+  currency = "$",
   locale = "en",
 }: PrivateDetailsExtraServicesProps) {
   const dict = getDictionary(locale);
@@ -270,6 +259,7 @@ export function PrivateDetailsExtraServices({
               service={service}
               isSelected={isSelected}
               onToggle={() => onToggleSelect(service.id)}
+              currency={currency}
               locale={locale}
             />
           );

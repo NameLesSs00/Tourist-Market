@@ -6,6 +6,7 @@ import {
   useClientBlogDetailQuery,
   useClientRelatedBlogsQuery,
 } from "@/features/blogs/useClientBlogs";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   BlogDetailHero,
   BlogDetailShare,
@@ -28,6 +29,9 @@ export function BlogDetailSection({
   );
   const { data: relatedBlogs } = useClientRelatedBlogsQuery(blogId, locale);
 
+  const dict = getDictionary(locale);
+  const t = dict.blogs.detail;
+
   if (isLoading) {
     return (
       <div className="w-full bg-[#FFF4E5] min-h-screen pt-24 sm:pt-28 lg:pt-32 pb-20 sm:pb-24">
@@ -46,16 +50,16 @@ export function BlogDetailSection({
     return (
       <div className="w-full bg-[#FFF4E5] min-h-[70vh] flex flex-col items-center justify-center px-4 sm:px-6 pt-24 sm:pt-28 pb-16 text-center">
         <h2 className="font-['Poppins'] text-xl sm:text-2xl md:text-3xl font-bold text-[#0E4A68]">
-          Article Not Found
+          {t.notFoundTitle}
         </h2>
         <p className="font-['Poppins'] text-xs sm:text-sm md:text-base text-[#0E4A68]/80 mt-2 max-w-md">
-          The travel story you are looking for does not exist or may have been moved.
+          {t.notFoundText}
         </p>
         <Link
           href={`/${locale}/Blogs`}
           className="mt-6 inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-[#0E4A68] text-white font-['Poppins'] text-xs sm:text-sm font-medium hover:bg-[#083952] transition-colors shadow-sm active:scale-95"
         >
-          Back to Blogs
+          {t.backToBlogs}
         </Link>
       </div>
     );
@@ -67,11 +71,11 @@ export function BlogDetailSection({
     <article className="relative w-full bg-[#FFF4E5] min-h-screen pt-24 sm:pt-28 lg:pt-32 pb-16 sm:pb-24 lg:pb-28">
       <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
         {/* 1. Hero Cover Banner & Tagline */}
-        <BlogDetailHero imageUrl={blog.imageUrl} title={blog.title} />
+        <BlogDetailHero imageUrl={blog.imageUrl} title={blog.title} locale={locale} />
 
         {/* 2. Share Bar */}
         <div className="mt-3 sm:mt-5">
-          <BlogDetailShare title={blog.title} />
+          <BlogDetailShare title={blog.title} locale={locale} />
         </div>
 
         {/* 3. Main Article Header (Title & Subtitle Lead) */}

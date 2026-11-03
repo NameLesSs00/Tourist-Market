@@ -1,13 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { matchVehicleTransferPrivate } from "@/clientApi/vehicleTransferPrivateApi";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import type { VehicleTransferPrivateItem } from "@/models/vehicleTransferPrivate";
 
 export function useVehicleTransferPrivateMatch(
   privateExcursionId: string | undefined,
   passengerCount: number,
   lang: string = "en",
-  currency: string = "USD"
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery<VehicleTransferPrivateItem | null>({
     queryKey: [
       "vehicle-transfer-private-match",

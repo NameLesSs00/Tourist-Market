@@ -8,7 +8,6 @@ interface PrivateExcursionSpecsProps {
   categoryId: string;
   slug?: string;
   stars: string;
-  maxAttractions: number;
   durationHours: number;
   videoUrl?: string;
   isFeatured: boolean;
@@ -17,7 +16,6 @@ interface PrivateExcursionSpecsProps {
   onCategoryIdChange: (val: string) => void;
   onSlugChange?: (val: string) => void;
   onStarsChange: (val: string) => void;
-  onMaxAttractionsChange: (val: number) => void;
   onDurationHoursChange: (val: number) => void;
   onVideoUrlChange?: (val: string) => void;
   onIsFeaturedChange: (val: boolean) => void;
@@ -28,14 +26,12 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
   const {
     categoryId,
     stars,
-    maxAttractions,
     durationHours,
     isFeatured,
     isActive,
     errors,
     onCategoryIdChange,
     onStarsChange,
-    onMaxAttractionsChange,
     onDurationHoursChange,
     onIsFeaturedChange,
     onIsActiveChange,
@@ -76,7 +72,7 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
       </div>
 
       {/* Specifications */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-1">
           <label className="flex items-center gap-1 text-xs font-medium text-[#334155]">
             <FiClock className="h-3 w-3 text-[#0E4A68]" /> Duration (Hours)
@@ -102,16 +98,6 @@ export function PrivateExcursionSpecs(props: PrivateExcursionSpecsProps) {
             value={stars}
             onChange={(e) => onStarsChange(e.target.value)}
             placeholder="e.g. 5 or 4.8"
-            className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-sm text-[#0F172A] outline-none focus:border-[#0E4A68]"
-          />
-        </div>
-        <div className="space-y-1">
-          <label className="text-xs font-medium text-[#334155]">Max Attractions</label>
-          <input
-            type="number"
-            min={0}
-            value={maxAttractions}
-            onChange={(e) => onMaxAttractionsChange(Math.max(0, Number(e.target.value)))}
             className="w-full rounded-xl border border-[#E2E8F0] bg-[#FFFFFF] px-3 py-2 text-sm text-[#0F172A] outline-none focus:border-[#0E4A68]"
           />
         </div>

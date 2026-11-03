@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getPrivateExcursionFullDetails } from "@/clientApi/privateExcursionDetailsApi";
 import { getClientPrivateExcursions } from "@/clientApi/privateExcursionApi";
 import { mapBackendPrivateExcursionToCard } from "@/components/UserComp/PrivateExcursions/utils/privateExcursionAdapter";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import type { PrivateExcursion } from "@/components/UserComp/PrivateExcursions/types";
 
 export const PRIVATE_EXCURSION_DETAILS_KEY = ["client", "private-excursion-details"] as const;
@@ -13,8 +14,11 @@ export const PRIVATE_EXCURSION_DETAILS_KEY = ["client", "private-excursion-detai
 export function usePrivateExcursionDetailsQuery(
   idOrSlug: string,
   locale: string = "en",
-  currency: string = "USD"
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery({
     queryKey: [...PRIVATE_EXCURSION_DETAILS_KEY, idOrSlug, locale, currency],
     queryFn: () => getPrivateExcursionFullDetails(idOrSlug, locale, currency),
@@ -30,8 +34,11 @@ export function usePrivateExcursionDetailsQuery(
 export function useRelatedPrivateExcursionsQuery(
   currentId: string,
   locale: string = "en",
-  currency: string = "USD"
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery<PrivateExcursion[]>({
     queryKey: [...PRIVATE_EXCURSION_DETAILS_KEY, "related", currentId, locale, currency],
     queryFn: async () => {
@@ -44,7 +51,7 @@ export function useRelatedPrivateExcursionsQuery(
       return (response?.items || [])
         .filter((item) => item.id !== currentId && item.slug !== currentId)
         .slice(0, 3)
-        .map(mapBackendPrivateExcursionToCard);
+        .map((item) => mapBackendPrivateExcursionToCard(item, undefined, undefined, locale));
     },
     enabled: Boolean(currentId),
     staleTime: 60 * 1000,

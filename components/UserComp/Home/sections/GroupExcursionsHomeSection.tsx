@@ -54,7 +54,7 @@ export function GroupExcursionsHomeSection({
 
   // Map real backend items only
   const excursions = useMemo(
-    () => data?.items?.map(mapBackendGroupExcursionToCard) ?? [],
+    () => data?.items?.map((item) => mapBackendGroupExcursionToCard(item)) ?? [],
     [data]
   );
 

@@ -3,11 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface PrivateDetailsHeroProps {
   title?: string;
   subtitle?: string;
+  badge?: string;
   duration?: string;
   pickup?: string;
   locale?: string;
@@ -17,15 +20,14 @@ interface PrivateDetailsHeroProps {
 export function PrivateDetailsHero({
   title = "PRIVATE HURGHADA CITY TOUR",
   subtitle = "Discover the timeless wonders of Cairo — stand before the Great Pyramids, explore the Sphinx, and dive into the treasures of the Egyptian Museum.",
+  badge,
   duration = "20 hours",
   pickup = "From Your Hotel",
   locale = "en",
   heroImage = "/PrivateExcursions/Privatedetails/Hero-pic.png",
 }: PrivateDetailsHeroProps) {
-  // Format title if it contains TOUR or break for desktop
-  const formattedTitle = title.includes("TOUR")
-    ? title.replace("TOUR", "\nTOUR")
-    : title;
+  const dict = getDictionary(locale);
+  const t = dict.privateExcursions.details;
 
   const targetImage = heroImage || "/PrivateExcursions/Privatedetails/Hero-pic.png";
 
@@ -39,8 +41,8 @@ export function PrivateDetailsHero({
     imgSrc === PRIVATE_EXCURSION_FALLBACK_IMAGE;
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#FFF8ED] pt-24 pb-12 sm:pt-28 sm:pb-16 lg:pt-24 lg:pb-16 min-h-[520px] lg:min-h-[580px] flex items-center">
-      {/* Background Hero Image with Group Excursion Gradient Overlays */}
+    <section className="relative w-full overflow-hidden bg-[#FFF8ED]">
+      {/* Background Hero Image with Gradient Overlays */}
       <div className="absolute inset-0 z-0">
         <Image
           src={imgSrc}
@@ -59,7 +61,6 @@ export function PrivateDetailsHero({
               : "object-cover"
           }`}
         />
-        {/* Gradient overlay matching group excursions */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -67,88 +68,93 @@ export function PrivateDetailsHero({
               "linear-gradient(270deg, rgba(255, 255, 255, 0) 18.27%, #FFEACD 54.33%)",
           }}
         />
-        {/* Soft gradient overlay on left for readable text */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#FFF8ED] via-[#FFF8ED]/95 sm:via-[#FFF8ED]/80 to-transparent lg:w-[65%]" />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 sm:px-10 lg:px-14 xl:px-16">
+      <div className="relative z-10 w-full px-3.5 sm:px-6 lg:px-10 xl:px-16 pt-20 sm:pt-28 lg:pt-36 pb-8 sm:pb-12 lg:pb-16">
         {/* Back Link */}
-        <div className="mb-6">
-          <Link
-            href={`/${locale}/private-excursions`}
-            className="inline-flex items-center gap-2 text-[15px] sm:text-[16px] font-medium text-[#0E4A68] hover:text-[#DE7423] transition-colors"
-          >
-            <span className="text-lg">←</span>
-            <span>back to Excursions</span>
-          </Link>
+        <div className="mb-4 sm:mb-6">
+          <motion.div whileHover={{ x: -4 }} className="inline-block">
+            <Link
+              href={`/${locale}/private-excursions`}
+              className="inline-flex items-center gap-2 text-sm sm:text-base font-medium text-[#0E4A68] hover:text-[#DE7423] transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>{t.backToExcursions || "back to Excursions"}</span>
+            </Link>
+          </motion.div>
         </div>
 
         {/* Main Content Block */}
-        <div className="max-w-[560px]">
-          {/* Main Title: #DE7423, bold, 58px on desktop */}
-          <h1 className="text-[34px] sm:text-[46px] lg:text-[56px] xl:text-[58px] font-bold leading-[1.08] tracking-tight text-[#DE7423] uppercase whitespace-pre-line font-poppins">
-            {formattedTitle}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, ease: "easeOut" }}
+        >
+          {badge && (
+            <div
+              className="inline-flex mb-3 sm:mb-4 text-[#0E4A68] font-poppins text-xs sm:text-sm font-semibold px-3.5 sm:px-4 py-1 sm:py-1.5 rounded-[30px]"
+              style={{ background: "#FFFFFFE5", boxShadow: "0px 2px 10px 3px #FFFFFF40" }}
+            >
+              {badge}
+            </div>
+          )}
+
+          <h1 className="max-w-[900px] font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-bold text-[#DE7423] leading-[1.18] tracking-tight break-words uppercase">
+            {title}
           </h1>
 
-          {/* Subtitle: #0E4A68 */}
-          <p className="mt-5 text-[15px] sm:text-[16px] lg:text-[17px] font-normal leading-[1.65] text-[#0E4A68] font-poppins">
+          <p className="mt-3 sm:mt-4 max-w-[680px] font-poppins text-sm sm:text-base md:text-[17px] text-[#0E4A68] leading-relaxed break-words">
             {subtitle}
           </p>
+        </motion.div>
 
-          {/* Stats Bar */}
-          <div className="mt-8 flex flex-wrap items-center gap-6 sm:gap-8 pt-2">
-            {/* Stat 1: Duration */}
-            <div className="flex items-center gap-3.5">
-              <div className="relative w-11 h-11 shrink-0">
-                <Image
-                  src="/PrivateExcursions/Privatedetails/Frame 487.svg"
-                  alt="Duration icon"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[13px] font-normal text-[#666666] font-poppins">
-                  Duration
-                </span>
-                <span className="text-[17px] sm:text-[19px] font-bold text-[#DE7423] font-poppins">
-                  {duration}
-                </span>
-              </div>
+        {/* Stats Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.15, ease: "easeOut" }}
+          className="mt-6 sm:mt-8 lg:mt-10 grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-4 sm:gap-6 lg:gap-8"
+        >
+          {/* Stat 1: Duration */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="text-[#DE7423] shrink-0">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="9" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
             </div>
-
-            {/* Vertical Divider */}
-            <div className="hidden sm:block w-[1px] h-10 bg-[#BBBBBB]" />
-
-            {/* Stat 2: Pickup */}
-            <div className="flex items-center gap-3.5">
-              <div className="w-11 h-11 rounded-full flex items-center justify-center shrink-0">
-                <svg
-                  width="36"
-                  height="36"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="text-[#DE7423]"
-                >
-                  <path
-                    d="M12 2C8.13401 2 5 5.13401 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13401 15.866 2 12 2ZM12 11.5C10.6193 11.5 9.5 10.3807 9.5 9C9.5 7.61929 10.6193 6.5 12 6.5C13.3807 6.5 14.5 7.61929 14.5 9C14.5 10.3807 13.3807 11.5 12 11.5Z"
-                    fill="#DE7423"
-                  />
-                </svg>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[13px] font-normal text-[#666666] font-poppins">
-                  Pickup
-                </span>
-                <span className="text-[17px] sm:text-[19px] font-bold text-[#DE7423] font-poppins">
-                  {pickup}
-                </span>
+            <div className="min-w-0">
+              <div className="font-poppins text-[11px] sm:text-xs text-[#646464]">{t.durationLabel || "Duration"}</div>
+              <div className="font-poppins text-xs sm:text-sm lg:text-base font-bold text-[#DE7423] truncate">
+                {duration}
               </div>
             </div>
           </div>
-        </div>
+
+          <div className="hidden sm:block h-8 lg:h-10 w-[1px] bg-[#888888]/60 shrink-0" />
+
+          {/* Stat 2: Pickup */}
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="text-[#DE7423] shrink-0">
+              <svg className="w-7 h-7 sm:w-8 sm:h-8" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <div className="font-poppins text-[11px] sm:text-xs text-[#646464]">{t.pickupLabel || "Pickup"}</div>
+              <div className="font-poppins text-xs sm:text-sm lg:text-base font-bold text-[#DE7423] truncate">
+                {pickup}
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
+
+export default PrivateDetailsHero;

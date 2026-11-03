@@ -2,8 +2,17 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
-export function ContactForm() {
+interface ContactFormProps {
+  locale?: string;
+}
+
+export function ContactForm({ locale = "en" }: ContactFormProps) {
+  const dict = getDictionary(locale);
+  const t = dict.contact.form;
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,17 +38,16 @@ export function ContactForm() {
     setStatusMessage(null);
 
     try {
-      // Simulate form submission or handle via API if provided
       await new Promise((resolve) => setTimeout(resolve, 800));
       setStatusMessage({
         type: "success",
-        text: "Thank you! Your message has been sent successfully.",
+        text: t.successMessage,
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch {
       setStatusMessage({
         type: "error",
-        text: "Failed to send message. Please try again later.",
+        text: t.errorMessage,
       });
     } finally {
       setIsSubmitting(false);
@@ -48,7 +56,7 @@ export function ContactForm() {
 
   return (
     <div
-      className="w-full rounded-[20px] p-6 sm:p-8 lg:p-10 transition-shadow"
+      className="w-full rounded-[20px] p-6 sm:p-8 lg:p-10 transition-shadow duration-300 hover:shadow-[0_8px_30px_rgba(14,74,104,0.12)]"
       style={{
         backgroundColor: "#FFFEF5",
         border: "0.5px solid #888888",
@@ -57,7 +65,11 @@ export function ContactForm() {
     >
       {/* Header with Envelope Icon */}
       <div className="flex items-start gap-4">
-        <div className="shrink-0 mt-1">
+        <motion.div
+          whileHover={{ scale: 1.1, rotate: [-2, 2, 0] }}
+          transition={{ duration: 0.3 }}
+          className="shrink-0 mt-1 cursor-pointer"
+        >
           <Image
             src="/contact/Vector.svg"
             alt="Message Icon"
@@ -65,13 +77,13 @@ export function ContactForm() {
             height={26}
             className="w-8 sm:w-9 h-auto object-contain"
           />
-        </div>
+        </motion.div>
         <div>
           <h2 className="font-['Poppins'] text-2xl sm:text-[28px] font-bold text-[#0E4A68] leading-tight">
-            Send Us A Message
+            {t.title}
           </h2>
           <p className="mt-1 font-['Poppins'] text-xs sm:text-sm text-[#0E4A68]/80 font-normal">
-            Fill out the form below and we will get back to you as soon as possible
+            {t.subtitle}
           </p>
         </div>
       </div>
@@ -80,13 +92,12 @@ export function ContactForm() {
       <form onSubmit={handleSubmit} className="mt-6 sm:mt-8 space-y-4 sm:space-y-5">
         {/* Row: Name and Email */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-          {/* Name Field */}
           <div>
             <label
               htmlFor="contact-name"
               className="block font-['Poppins'] text-sm font-medium text-[#0E4A68] mb-1.5"
             >
-              Name
+              {t.nameLabel}
             </label>
             <input
               id="contact-name"
@@ -95,18 +106,17 @@ export function ContactForm() {
               required
               value={formData.name}
               onChange={handleChange}
-              placeholder="Your Full Name"
-              className="w-full rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-colors"
+              placeholder={t.namePlaceholder}
+              className="w-full rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-all"
             />
           </div>
 
-          {/* Email Field */}
           <div>
             <label
               htmlFor="contact-email"
               className="block font-['Poppins'] text-sm font-medium text-[#0E4A68] mb-1.5"
             >
-              Email
+              {t.emailLabel}
             </label>
             <input
               id="contact-email"
@@ -115,19 +125,19 @@ export function ContactForm() {
               required
               value={formData.email}
               onChange={handleChange}
-              placeholder="you@example.com"
-              className="w-full rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-colors"
+              placeholder={t.emailPlaceholder}
+              className="w-full rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-all"
             />
           </div>
         </div>
 
-        {/* Subject Field: Regular input per prompt rules (not dropdown) */}
+        {/* Subject Field */}
         <div>
           <label
             htmlFor="contact-subject"
             className="block font-['Poppins'] text-sm font-medium text-[#0E4A68] mb-1.5"
           >
-            Subject
+            {t.subjectLabel}
           </label>
           <input
             id="contact-subject"
@@ -136,8 +146,8 @@ export function ContactForm() {
             required
             value={formData.subject}
             onChange={handleChange}
-            placeholder="Select a subject"
-            className="w-full rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-colors"
+            placeholder={t.subjectPlaceholder}
+            className="w-full rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-all"
           />
         </div>
 
@@ -147,7 +157,7 @@ export function ContactForm() {
             htmlFor="contact-message"
             className="block font-['Poppins'] text-sm font-medium text-[#0E4A68] mb-1.5"
           >
-            Message
+            {t.messageLabel}
           </label>
           <textarea
             id="contact-message"
@@ -156,39 +166,53 @@ export function ContactForm() {
             rows={5}
             value={formData.message}
             onChange={handleChange}
-            placeholder="Tell us what are you looking for , or ask any question...."
-            className="w-full resize-y rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-colors"
+            placeholder={t.messagePlaceholder}
+            className="w-full resize-y rounded-[10px] border border-[#CCCCCC] bg-[#FFFEF5] px-4 py-3 font-['Poppins'] text-sm text-[#0E4A68] placeholder:text-[#999999] focus:border-[#0E4A68] focus:outline-none focus:ring-1 focus:ring-[#0E4A68] transition-all"
           />
         </div>
 
-        {/* Status Message */}
-        {statusMessage && (
-          <div
-            className={`rounded-lg p-3 text-sm font-['Poppins'] ${
-              statusMessage.type === "success"
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
-          >
-            {statusMessage.text}
-          </div>
-        )}
+        {/* Animated Status Message */}
+        <AnimatePresence>
+          {statusMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -8, height: 0 }}
+              animate={{ opacity: 1, y: 0, height: "auto" }}
+              exit={{ opacity: 0, y: -8, height: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className={`rounded-lg p-3 text-sm font-['Poppins'] overflow-hidden ${
+                statusMessage.type === "success"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              {statusMessage.text}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Submit Button */}
-        <button
+        <motion.button
           type="submit"
           disabled={isSubmitting}
-          className="w-full flex items-center justify-center gap-2.5 rounded-[10px] bg-[#0E4A68] hover:bg-[#09354b] active:scale-[0.99] py-3.5 px-6 font-['Poppins'] text-base font-medium text-white shadow-md transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="w-full flex items-center justify-center gap-2.5 rounded-[10px] bg-[#0E4A68] hover:bg-[#09354b] py-3.5 px-6 font-['Poppins'] text-base font-medium text-white shadow-md transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed group"
         >
-          <Image
-            src="/contact/cil_send.svg"
-            alt="Send"
-            width={16}
-            height={16}
-            className="h-4 w-4 object-contain brightness-0 invert"
-          />
-          <span>{isSubmitting ? "Sending..." : "Send Message"}</span>
-        </button>
+          <motion.div
+            className="inline-block"
+            whileHover={{ x: 3 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Image
+              src="/contact/cil_send.svg"
+              alt="Send"
+              width={16}
+              height={16}
+              className="h-4 w-4 object-contain brightness-0 invert group-hover:translate-x-0.5 transition-transform"
+            />
+          </motion.div>
+          <span>{isSubmitting ? t.submittingButton : t.submitButton}</span>
+        </motion.button>
       </form>
     </div>
   );

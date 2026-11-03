@@ -2,17 +2,22 @@
 
 import React from "react";
 import { FiDollarSign, FiLayers } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import { ServiceOptionGroup } from "../../types";
 
 interface ServicePricingTiersProps {
   optionsTiers?: ServiceOptionGroup[];
   costServices?: string[];
+  locale?: string;
 }
 
 export function ServicePricingTiers({
   optionsTiers,
   costServices,
+  locale = "en",
 }: ServicePricingTiersProps) {
+  const dict = getDictionary(locale);
+  const t = dict.serviceDetail;
   const hasStructuredTiers = optionsTiers && optionsTiers.length > 0;
   const hasLegacyCost = costServices && costServices.length > 0;
 
@@ -24,7 +29,7 @@ export function ServicePricingTiers({
     <div className="flex flex-col gap-4 pt-2 w-full min-w-0">
       <h3 className="text-sm sm:text-base font-bold text-[#0E4A68] flex items-center gap-2">
         <FiLayers className="text-[#DE7423] shrink-0" />
-        <span>Pricing Packages & Options</span>
+        <span>{t.pricingTitle}</span>
       </h3>
 
       {/* Structured Option Groups */}

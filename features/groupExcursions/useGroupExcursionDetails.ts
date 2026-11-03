@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getGroupExcursionFullDetails } from "@/clientApi/groupExcursionDetailsApi";
 import { getGroupExcursions } from "@/clientApi/groupExcursionApi";
 import { mapBackendGroupExcursionToCard } from "@/components/UserComp/GroupExcursions/utils/groupExcursionAdapter";
+import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import type { GroupExcursion } from "@/components/UserComp/GroupExcursions/types";
 
 export const GROUP_EXCURSION_DETAILS_KEY = ["client", "group-excursion-details"] as const;
@@ -13,8 +14,11 @@ export const GROUP_EXCURSION_DETAILS_KEY = ["client", "group-excursion-details"]
 export function useGroupExcursionDetailsQuery(
   id: string,
   locale: string = "en",
-  currency: string = "USD"
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery({
     queryKey: [...GROUP_EXCURSION_DETAILS_KEY, id, locale, currency],
     queryFn: () => getGroupExcursionFullDetails(id, locale, currency),
@@ -30,8 +34,11 @@ export function useGroupExcursionDetailsQuery(
 export function useRelatedGroupExcursionsQuery(
   currentId: string,
   locale: string = "en",
-  currency: string = "USD"
+  currencyParam?: string
 ) {
+  const storeCurrency = useCurrencyStore((state) => state.selectedCurrency.code);
+  const currency = currencyParam || storeCurrency || "USD";
+
   return useQuery<GroupExcursion[]>({
     queryKey: [...GROUP_EXCURSION_DETAILS_KEY, "related", currentId, locale, currency],
     queryFn: async () => {
@@ -44,7 +51,7 @@ export function useRelatedGroupExcursionsQuery(
       return (response?.items || [])
         .filter((item) => item.id !== currentId && item.slug !== currentId)
         .slice(0, 6)
-        .map(mapBackendGroupExcursionToCard);
+        .map((item) => mapBackendGroupExcursionToCard(item));
     },
     enabled: Boolean(currentId),
     staleTime: 60 * 1000,

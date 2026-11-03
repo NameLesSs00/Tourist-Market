@@ -7,16 +7,22 @@ import type {
   TransferReviewItem,
   TransferReviewRatingDistributionItem,
 } from "@/models/transferReview";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface TransferReviewsRatingOverviewProps {
   items: TransferReviewItem[];
   totalCount: number;
+  locale?: string;
 }
 
 export function TransferReviewsRatingOverview({
   items,
   totalCount,
+  locale = "en",
 }: TransferReviewsRatingOverviewProps) {
+  const dict = getDictionary(locale);
+  const t = dict.transfer.reviews;
+
   const averageRating = useMemo(() => {
     if (items.length === 0) return 0;
     const sum = items.reduce((acc, r) => acc + (r.rate || 5), 0);
@@ -57,7 +63,7 @@ export function TransferReviewsRatingOverview({
           className="object-contain"
         />
         <h3 className="text-[20px] font-bold text-[#0E4A68]">
-          Reviews —
+          {t.title}
         </h3>
       </div>
 
@@ -78,7 +84,7 @@ export function TransferReviewsRatingOverview({
             />
           </div>
           <span className="text-[14px] font-semibold text-[#083952] mt-2">
-            {totalCount} {totalCount === 1 ? "review" : "reviews"}
+            {totalCount} {totalCount === 1 ? t.reviewSingle : t.reviewPlural}
           </span>
         </div>
 
