@@ -1,6 +1,7 @@
 import type { GroupExcursionListItem } from "@/models/groupExcursion";
 import type { GroupExcursion } from "../types";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { isRibbonLabel, trimDanglingTail } from "@/shared/utils/excursionText";
 
 /** Local placeholder used when the backend provides no usable image. */
 export const GROUP_EXCURSION_FALLBACK_IMAGE = "/GroupExcursions/HeroLogo.webp";
@@ -42,7 +43,7 @@ export function mapBackendGroupExcursionToCard(
 
   const badge =
     matchedCategoryName ||
-    localizedExcursionType ||
+    (isRibbonLabel(localizedExcursionType) ? localizedExcursionType : "") ||
     rawCategoryTitle ||
     fallbackBadge;
 
@@ -64,7 +65,7 @@ export function mapBackendGroupExcursionToCard(
     id: item.id,
     slug: item.slug || item.id,
     title: item.title,
-    description: item.shortDescription || item.subtitle || "",
+    description: trimDanglingTail(item.shortDescription || item.subtitle || ""),
     badge,
     category: matchedCategoryName || rawCategoryTitle || badge,
     duration: `${durationHours} hours`,

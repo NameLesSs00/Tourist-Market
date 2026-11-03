@@ -9,6 +9,7 @@ import type {
   VehicleOption,
 } from "@/components/UserComp/PrivateExcursions/types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "@/components/UserComp/PrivateExcursions/utils/privateExcursionAdapter";
+import { isRibbonLabel, stripDuplicatePrefix, trimDanglingTail } from "@/shared/utils/excursionText";
 import {
   formatPrivateDuration,
   formatPrivateAvailability,
@@ -167,8 +168,10 @@ export function mapPrivateExcursionFullDetail(
     sanitizeText(excursion.categoryTitle);
 
   const defaultBadge = tDetails?.defaultBadge || "Private Tour";
+  // Ribbons need short category labels; seeded records occasionally store full
+  // marketing sentences in excursionType, so fall back to the category title.
   const badge =
-    localizedExcursionType ||
+    (isRibbonLabel(localizedExcursionType) ? localizedExcursionType : "") ||
     rawCategoryTitle ||
     defaultBadge;
 
@@ -184,10 +187,15 @@ export function mapPrivateExcursionFullDetail(
       ? sanitizedShortDesc
       : sanitizeText(excursion.title);
 
-  const cleanShortDesc =
+  const usableShortDesc =
     sanitizedShortDesc && sanitizedShortDesc.toLowerCase() !== "desc"
       ? sanitizedShortDesc
-      : cleanSubtitle;
+      : "";
+  // Drop the duplicated hero-subtitle prefix and any mid-word 200-char tail
+  // so the Description tab never repeats the subtitle verbatim.
+  const cleanShortDesc = trimDanglingTail(
+    stripDuplicatePrefix(cleanSubtitle, usableShortDesc)
+  );
 
   const parsedParagraphs = fullProgramToParagraphs(excursion.fullProgram);
   const aboutParagraphs =

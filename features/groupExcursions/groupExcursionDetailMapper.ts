@@ -10,6 +10,7 @@ import type {
   ItineraryItem,
   TourInfoItem,
 } from "@/components/UserComp/GroupExcursions/types";
+import { isRibbonLabel, stripDuplicatePrefix, trimDanglingTail } from "@/shared/utils/excursionText";
 
 /** Fixed locale formatting avoids SSR/client hydration mismatches on dates. */
 const REVIEW_DATE_FORMAT = new Intl.DateTimeFormat("en-US", {
@@ -120,16 +121,32 @@ export function mapGroupExcursionFullDetail(
       ? `${durationHours} hour${durationHours === 1 ? "" : "s"}`
       : findLiteralValue(details?.literally, "duration") || "Full Day";
 
+  // Some seeded records put the same marketing sentence into excursionType,
+  // subtitle, and shortDescription (the latter truncated at 200 chars).
+  // Keep the ribbon short, hide the duplicated paragraph, and trim dangling
+  // words so the hero never renders the same copy two or three times.
+  const cleanSubtitle = sanitizeText(excursion.subtitle);
+  const rawShortDesc = sanitizeText(excursion.shortDescription);
+  const uniqueShortDesc = trimDanglingTail(
+    stripDuplicatePrefix(cleanSubtitle, rawShortDesc)
+  );
+  const rawExcursionType = sanitizeText(excursion.excursionType);
+  const rawCategoryTitle =
+    excursion.category?.categoryTitle || excursion.categoryTitle || "";
+  const badge = isRibbonLabel(rawExcursionType)
+    ? rawExcursionType
+    : sanitizeText(rawCategoryTitle);
+
   return {
     // Basic Info
     id: excursion.id,
     slug: excursion.slug,
     title: sanitizeText(excursion.title),
-    subtitle: sanitizeText(excursion.subtitle),
-    shortDescription: sanitizeText(excursion.shortDescription),
-    description: sanitizeText(excursion.shortDescription),
-    badge: sanitizeText(excursion.excursionType),
-    category: excursion.category?.categoryTitle || excursion.categoryTitle || "General",
+    subtitle: cleanSubtitle,
+    shortDescription: uniqueShortDesc,
+    description: trimDanglingTail(rawShortDesc),
+    badge,
+    category: rawCategoryTitle || "General",
 
     // Duration & Pricing
     duration: durationLabel,

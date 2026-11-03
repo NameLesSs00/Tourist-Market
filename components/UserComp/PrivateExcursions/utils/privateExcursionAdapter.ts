@@ -1,6 +1,7 @@
 import type { PrivateExcursionListItem } from "@/models/privateExcursion";
 import type { PrivateExcursion } from "../types";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { isRibbonLabel, trimDanglingTail } from "@/shared/utils/excursionText";
 import { formatPrivateDuration } from "./privateDetailLocalization";
 
 /** Local placeholder used when the backend provides no usable image. */
@@ -47,7 +48,7 @@ export function mapBackendPrivateExcursionToCard(
 
   const badge =
     matchedCategoryName ||
-    localizedExcursionType ||
+    (isRibbonLabel(localizedExcursionType) ? localizedExcursionType : "") ||
     rawCategoryTitle ||
     resolvedFallbackBadge;
 
@@ -83,7 +84,7 @@ export function mapBackendPrivateExcursionToCard(
     slug: item.slug || item.id,
     title: item.title,
     subtitle: item.subtitle || "",
-    shortDescription: item.shortDescription || item.subtitle || "",
+    shortDescription: trimDanglingTail(item.shortDescription || item.subtitle || ""),
     excursionType: localizedExcursionType || badge,
     duration: localizedDuration,
     durationHours,
