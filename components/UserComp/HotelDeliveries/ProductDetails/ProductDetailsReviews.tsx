@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import {
   FiStar,
   FiMessageSquare,
@@ -21,6 +22,7 @@ import {
   markProductReviewSubmitted,
 } from "@/shared/utils/helpfulReviews";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import type { ProductReviewItem } from "@/models/productReview";
 
 export interface RatingDistributionItem {
@@ -47,7 +49,9 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ProductDetailsReviews({
   productId,
+  locale = "en",
 }: ProductDetailsReviewsProps) {
+  const t = getDictionary(locale).hotelDeliveriesPage.reviews;
   const numericId = useMemo(() => {
     if (!productId) return undefined;
     const direct = Number(productId);
@@ -88,8 +92,8 @@ export function ProductDetailsReviews({
         const baseLikes = item.helpfulCount || 0;
         return {
           id: idStr,
-          author: item.name || "Customer",
-          date: "Verified Customer",
+          author: item.name || t.defaultAuthor,
+          date: t.verifiedCustomer,
           rating: item.rate || 5,
           likes:
             likeOverrides[idStr] !== undefined
@@ -98,18 +102,13 @@ export function ProductDetailsReviews({
           content: item.comment,
         };
       });
-  }, [rawReviews, likeOverrides]);
+  }, [rawReviews, likeOverrides, t.defaultAuthor, t.verifiedCustomer]);
 
   useEffect(() => {
     if (isError && queryError) {
-      toast.error(
-        extractErrorMessage(
-          queryError,
-          "Unable to load reviews for this product."
-        )
-      );
+      toast.error(extractErrorMessage(queryError, t.loadError));
     }
-  }, [isError, queryError]);
+  }, [isError, queryError, t.loadError]);
 
   // Restore helpful likes and submission state from cookies (persists across reloads)
   useEffect(() => {
@@ -171,9 +170,7 @@ export function ProductDetailsReviews({
       onError: (err: unknown) => {
         setLikedMap((prev) => ({ ...prev, [id]: false }));
         setLikeOverrides((prev) => ({ ...prev, [id]: currentLikes }));
-        toast.error(
-          extractErrorMessage(err, "Unable to register helpful vote.")
-        );
+        toast.error(extractErrorMessage(err, t.voteError));
       },
     });
   };
@@ -183,19 +180,19 @@ export function ProductDetailsReviews({
     if (!numericId || alreadySubmitted) return;
 
     if (!userRating || userRating < 1) {
-      toast.error("Please select a star rating.");
+      toast.error(t.validationRating);
       return;
     }
     if (!userName.trim()) {
-      toast.error("Please enter your name.");
+      toast.error(t.validationName);
       return;
     }
     if (!userEmail.trim() || !EMAIL_PATTERN.test(userEmail.trim())) {
-      toast.error("Please enter a valid email address.");
+      toast.error(t.validationEmail);
       return;
     }
     if (!userReview.trim()) {
-      toast.error("Please write your review before submitting.");
+      toast.error(t.validationComment);
       return;
     }
 
@@ -217,24 +214,23 @@ export function ProductDetailsReviews({
           setUserEmail("");
           setUserPhone("");
           setUserReview("");
-          toast.success(
-            "Thank you! Your review has been submitted for approval and will appear once reviewed."
-          );
+          toast.success(t.thanksSubmitted);
         },
         onError: (err: unknown) => {
-          toast.error(
-            extractErrorMessage(
-              err,
-              "We could not submit your review. Please try again."
-            )
-          );
+          toast.error(extractErrorMessage(err, t.submitError));
         },
       }
     );
   };
 
   return (
-    <section className="w-full font-poppins">
+    <motion.section
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.1 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+      className="w-full font-poppins"
+    >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
         {/* --- LEFT COLUMN: Rating Breakdown Card + Share Opinion Card --- */}
         <div className="lg:col-span-5 flex flex-col gap-6 lg:h-[774px] justify-between">
@@ -250,7 +246,7 @@ export function ProductDetailsReviews({
             <div className="flex items-center gap-2 pb-4 border-b border-[#E5E5E5]">
               <FiStar className="text-[#0E4A68] fill-[#0E4A68]" size={20} />
               <h3 className="text-[20px] font-bold text-[#0E4A68]">
-                Reviews -
+                {t.reviewsTitle}
               </h3>
             </div>
 
@@ -273,8 +269,11 @@ export function ProductDetailsReviews({
                 </div>
                 <span className="text-[14px] font-semibold text-[#083952] mt-2">
                   {totalReviewsVal > 0
-                    ? `${totalReviewsVal} review${totalReviewsVal > 1 ? "s" : ""}`
-                    : "No reviews yet"}
+                    ? (totalReviewsVal === 1
+                        ? t.reviewCountOne
+                        : t.reviewCount
+                      ).replace("{count}", String(totalReviewsVal))
+                    : t.noReviews}
                 </span>
               </div>
 
@@ -315,14 +314,14 @@ export function ProductDetailsReviews({
           >
             <div>
               <h3 className="text-[20px] font-bold text-[#083952] pb-4 border-b border-[#E5E5E5]">
-                Share your opinion
+                {t.shareOpinion}
               </h3>
 
               <form onSubmit={handleSubmitReview} className="mt-4 space-y-3">
                 {/* Your Rating */}
                 <div>
                   <label className="block text-[13px] font-semibold text-[#083952] mb-1">
-                    Your Rating *
+                    {t.yourRating}
                   </label>
                   <div className="flex items-center gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -332,7 +331,7 @@ export function ProductDetailsReviews({
                         disabled={alreadySubmitted || isSubmitting}
                         onClick={() => setUserRating(star)}
                         className="transition-transform enabled:hover:scale-110 enabled:cursor-pointer disabled:cursor-not-allowed"
-                        aria-label={`Rate ${star} star`}
+                        aria-label={t.ariaRateStar.replace("{star}", String(star))}
                       >
                         <FiStar
                           size={22}
@@ -351,26 +350,26 @@ export function ProductDetailsReviews({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div>
                     <label className="block text-[12px] font-semibold text-[#083952] mb-1">
-                      Full Name *
+                      {t.fullName}
                     </label>
                     <input
                       type="text"
                       value={userName}
                       onChange={(e) => setUserName(e.target.value)}
-                      placeholder="Your Name"
+                      placeholder={t.namePlaceholder}
                       disabled={alreadySubmitted || isSubmitting}
                       className="w-full px-3 py-1.5 rounded-lg border border-[#BBBBBB] text-[13px] text-[#083952] focus:outline-none focus:border-[#0E4A68] disabled:opacity-60 disabled:cursor-not-allowed"
                     />
                   </div>
                   <div>
                     <label className="block text-[12px] font-semibold text-[#083952] mb-1">
-                      Email Address *
+                      {t.email}
                     </label>
                     <input
                       type="email"
                       value={userEmail}
                       onChange={(e) => setUserEmail(e.target.value)}
-                      placeholder="your.email@example.com"
+                      placeholder={t.emailPlaceholder}
                       disabled={alreadySubmitted || isSubmitting}
                       className="w-full px-3 py-1.5 rounded-lg border border-[#BBBBBB] text-[13px] text-[#083952] focus:outline-none focus:border-[#0E4A68] disabled:opacity-60 disabled:cursor-not-allowed"
                     />
@@ -380,13 +379,13 @@ export function ProductDetailsReviews({
                 {/* Phone (Optional) */}
                 <div>
                   <label className="block text-[12px] font-semibold text-[#083952] mb-1">
-                    Phone / WhatsApp (optional)
+                    {t.phoneOptional}
                   </label>
                   <input
                     type="tel"
                     value={userPhone}
                     onChange={(e) => setUserPhone(e.target.value)}
-                    placeholder="+20 123 456 789"
+                    placeholder={t.phonePlaceholder}
                     disabled={alreadySubmitted || isSubmitting}
                     className="w-full px-3 py-1.5 rounded-lg border border-[#BBBBBB] text-[13px] text-[#083952] focus:outline-none focus:border-[#0E4A68] disabled:opacity-60 disabled:cursor-not-allowed"
                   />
@@ -395,13 +394,13 @@ export function ProductDetailsReviews({
                 {/* Review text */}
                 <div>
                   <label className="block text-[12px] font-semibold text-[#083952] mb-1">
-                    Your Review *
+                    {t.yourReview}
                   </label>
                   <textarea
                     rows={2}
                     value={userReview}
                     onChange={(e) => setUserReview(e.target.value)}
-                    placeholder="Write your review..."
+                    placeholder={t.reviewPlaceholder}
                     disabled={alreadySubmitted || isSubmitting}
                     className="w-full px-3 py-1.5 rounded-lg border border-[#BBBBBB] text-[13px] text-[#083952] focus:outline-none focus:border-[#0E4A68] resize-none disabled:opacity-60 disabled:cursor-not-allowed"
                   />
@@ -410,8 +409,7 @@ export function ProductDetailsReviews({
                 {/* Submit button or confirmation banner */}
                 {alreadySubmitted ? (
                   <p className="text-[13px] font-semibold text-[#0E4A68] bg-[#FFF1E0] border border-[#DE7423]/30 rounded-lg px-4 py-3">
-                    You&apos;ve already shared a review for this product. Thank
-                    you!
+                    {t.alreadySubmitted}
                   </p>
                 ) : (
                   <button
@@ -422,10 +420,10 @@ export function ProductDetailsReviews({
                     {isSubmitting ? (
                       <>
                         <FiLoader className="animate-spin" size={15} />
-                        <span>Submitting...</span>
+                        <span>{t.submitting}</span>
                       </>
                     ) : (
-                      <span>Submit Review</span>
+                      <span>{t.submit}</span>
                     )}
                   </button>
                 )}
@@ -446,7 +444,7 @@ export function ProductDetailsReviews({
           <div className="flex items-center gap-2.5 pb-4 border-b border-[#E5E5E5] shrink-0">
             <FiMessageSquare className="text-[#083952]" size={22} />
             <h3 className="text-[20px] font-bold text-[#083952]">
-              Reviews & comments
+              {t.commentsTitle}
             </h3>
           </div>
 
@@ -454,7 +452,7 @@ export function ProductDetailsReviews({
           {isLoading && (
             <div className="flex-1 flex flex-col items-center justify-center py-12 text-gray-400">
               <FiLoader className="animate-spin mb-2" size={24} />
-              <p className="text-sm">Loading reviews...</p>
+              <p className="text-sm">{t.loadingReviews}</p>
             </div>
           )}
 
@@ -465,10 +463,10 @@ export function ProductDetailsReviews({
                 <FiMessageSquare size={28} />
               </div>
               <p className="text-base font-semibold text-[#083952]">
-                No reviews yet
+                {t.noReviews}
               </p>
               <p className="text-xs text-gray-400 mt-1 max-w-xs">
-                Be the first to share your experience with this product.
+                {t.emptyHint}
               </p>
             </div>
           )}
@@ -564,16 +562,17 @@ export function ProductDetailsReviews({
                 className="text-[#0E4A68] font-bold text-[14px] hover:underline cursor-pointer"
               >
                 {visibleCountMobile >= commentsList.length
-                  ? "Show Less"
-                  : `View More Comments (${
-                      commentsList.length - visibleCountMobile
-                    } more)`}
+                  ? t.showLess
+                  : t.viewMore.replace(
+                      "{count}",
+                      String(commentsList.length - visibleCountMobile)
+                    )}
               </button>
             </div>
           )}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

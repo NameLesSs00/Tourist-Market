@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductDetailsSection } from "@/components/UserComp/HotelDeliveries";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export const instant = false;
 
@@ -12,10 +13,11 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, local } = await params;
+  const meta = getDictionary(local).hotelDeliveriesPage.meta;
   return {
-    title: "Hotel Delivery Product | Egypt Tourist Market",
-    description: `Order delivery straight to your hotel room with Egypt Tourist Market. Product: ${slug}`,
+    title: meta.detailsTitle,
+    description: meta.detailsDescription.replace("{product}", slug),
   };
 }
 

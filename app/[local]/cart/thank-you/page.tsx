@@ -1,7 +1,23 @@
 import { Suspense } from "react";
+import type { Metadata } from "next";
 import { CartThankYouSection } from "@/components/UserComp/Cart/components";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export const instant = false;
+
+export function generateMetadata({
+  params,
+}: {
+  params: Promise<{ local: string }>;
+}): Promise<Metadata> {
+  return params.then(({ local }) => {
+    const meta = getDictionary(local).cartPage.meta;
+    return {
+      title: meta.thankYouTitle,
+      description: meta.thankYouDescription,
+    };
+  });
+}
 
 export function generateStaticParams() {
   return [

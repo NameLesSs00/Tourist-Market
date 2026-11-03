@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import type { ProductListItem } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
+import { useFormattedPrice } from "@/features/currencies/useFormattedPrice";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export interface HotelProduct {
   id: string | number;
@@ -28,22 +30,22 @@ export function HotelDeliveriesCard({
   locale = "en",
   onAddToCart,
 }: HotelDeliveriesCardProps) {
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
+  const t = getDictionary(locale).hotelDeliveriesPage.products;
   // Determine if product is ProductListItem or legacy HotelProduct
   const isListItem = "subCategoryId" in product;
 
   const id = product.id;
-  const title = product.title || "Untitled Product";
+  const title = product.title || t.untitledProduct;
 
-  let priceFormatted: string;
-  if (isListItem) {
-    const p = product as ProductListItem;
-    const unit = p.priceFor?.trim() ? ` / ${p.priceFor.trim()}` : "";
-    priceFormatted = `${formatPrice(Number(p.price || 0))}${unit}`;
-  } else {
-    const legacyNum = parseFloat(String((product as HotelProduct).price || "0").replace(/[^0-9.]/g, "")) || 0;
-    priceFormatted = formatPrice(legacyNum);
-  }
+  // Base USD price for both list items and legacy products
+  const priceValue = isListItem
+    ? Number((product as ProductListItem).price || 0)
+    : parseFloat(String((product as HotelProduct).price || "0").replace(/[^0-9.]/g, "")) || 0;
+  const unit =
+    isListItem && (product as ProductListItem).priceFor?.trim()
+      ? ` / ${(product as ProductListItem).priceFor.trim()}`
+      : "";
+  const priceFormatted = `${useFormattedPrice(priceValue)}${unit}`;
 
   // Determine initial image url with default fallback
   let initialImageUrl: string = DEFAULT_PRODUCT_IMAGE;
@@ -79,7 +81,11 @@ export function HotelDeliveriesCard({
   const isFallback = !imgSrc || imgSrc === DEFAULT_PRODUCT_IMAGE;
 
   return (
-    <div className="flex flex-col font-poppins select-none group">
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="flex flex-col font-poppins select-none group"
+    >
       {/* ─── Image Box ─── */}
       <div
         className="relative w-full aspect-square rounded-[5px] flex items-center justify-center p-4 overflow-hidden transition-shadow duration-200 group-hover:shadow-md"
@@ -124,12 +130,12 @@ export function HotelDeliveriesCard({
           </h3>
           <Link
             href={`/${locale}/hotel-deliveries/${id}`}
-            aria-label={`View ${title}`}
+            aria-label={t.ariaViewProduct.replace("{title}", title)}
             className="p-0.5 sm:p-1 text-[#0E4A68] hover:opacity-80 transition-opacity cursor-pointer shrink-0"
           >
             <Image
               src="/Hoteldeliveries/Group.svg"
-              alt="View"
+              alt={t.viewAlt}
               width={18}
               height={13}
               className="object-contain w-4 h-3 sm:w-5 sm:h-3.5"
@@ -145,12 +151,12 @@ export function HotelDeliveriesCard({
           <button
             type="button"
             onClick={() => onAddToCart?.(product)}
-            aria-label={`Add ${title} to cart`}
+            aria-label={t.ariaAddToCart.replace("{title}", title)}
             className="p-0.5 sm:p-1 text-[#0E4A68] hover:opacity-80 transition-opacity cursor-pointer shrink-0 active:scale-95"
           >
             <Image
               src="/Hoteldeliveries/Vector.svg"
-              alt="Add to cart"
+              alt={t.addToCartAlt}
               width={16}
               height={16}
               className="object-contain w-3.5 h-3.5 sm:w-4 sm:h-4"
@@ -158,7 +164,7 @@ export function HotelDeliveriesCard({
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

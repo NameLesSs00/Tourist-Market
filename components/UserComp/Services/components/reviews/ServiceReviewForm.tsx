@@ -93,7 +93,7 @@ export function ServiceReviewForm({
                   whileHover={{ scale: 1.15 }}
                   whileTap={{ scale: 0.95 }}
                   className="p-1 -m-1 text-[#F5A623] cursor-pointer"
-                  aria-label={`Rate ${star} star`}
+                  aria-label={t.rateStarAria.replace("{n}", String(star))}
                 >
                   <FiStar
                     size={24}

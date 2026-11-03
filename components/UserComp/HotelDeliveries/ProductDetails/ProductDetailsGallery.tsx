@@ -3,9 +3,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiCamera } from "react-icons/fi";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ProductDetailsGalleryProps {
   images?: string[];
+  locale?: string;
 }
 
 const DEFAULT_IMAGES = [
@@ -14,7 +16,9 @@ const DEFAULT_IMAGES = [
 
 export function ProductDetailsGallery({
   images = DEFAULT_IMAGES,
+  locale = "en",
 }: ProductDetailsGalleryProps) {
+  const t = getDictionary(locale).hotelDeliveriesPage.gallery;
   const displayImages =
     images && images.length > 0 ? images : DEFAULT_IMAGES;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -52,7 +56,7 @@ export function ProductDetailsGallery({
         <button
           type="button"
           onClick={handlePrev}
-          aria-label="Previous image"
+          aria-label={t.ariaPrev}
           className="absolute left-4 z-20 w-8 h-8 flex items-center justify-center text-[#0E4A68] hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-sm"
           style={{
             background: "#F3F3F3E5",
@@ -67,7 +71,7 @@ export function ProductDetailsGallery({
         <div className="relative w-[78%] h-[78%] transition-transform duration-300">
           <Image
             src={currentImage}
-            alt="Product view"
+            alt={t.imageAlt}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 550px"
@@ -83,7 +87,7 @@ export function ProductDetailsGallery({
         <button
           type="button"
           onClick={handleNext}
-          aria-label="Next image"
+          aria-label={t.ariaNext}
           className="absolute right-4 z-20 w-8 h-8 flex items-center justify-center text-[#0E4A68] hover:opacity-90 active:scale-95 transition-all cursor-pointer shadow-sm"
           style={{
             background: "#F3F3F3E5",
@@ -134,7 +138,7 @@ export function ProductDetailsGallery({
               <div className="relative w-[75%] h-[75%]">
                 <Image
                   src={thumbSrc}
-                  alt={`Thumbnail ${idx + 1}`}
+                  alt={t.thumbnailAlt.replace("{index}", String(idx + 1))}
                   fill
                   sizes="135px"
                   className="object-contain"

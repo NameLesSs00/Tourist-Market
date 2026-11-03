@@ -2,18 +2,23 @@
 
 import React from "react";
 import type { ProductKeyItem } from "@/models/product";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ProductDetailsDescriptionProps {
   title?: string;
   subtitle?: string;
   keys?: ProductKeyItem[];
+  locale?: string;
 }
 
 export function ProductDetailsDescription({
-  title = "Product Overview",
+  title,
   subtitle,
   keys = [],
+  locale = "en",
 }: ProductDetailsDescriptionProps) {
+  const t = getDictionary(locale).hotelDeliveriesPage.details;
+  const displayTitle = title || t.productFallback;
   const hasKeys = Array.isArray(keys) && keys.length > 0;
 
   return (
@@ -28,7 +33,7 @@ export function ProductDetailsDescription({
       {/* ─── Main Title & Subtitle ─── */}
       <div className="mb-6 sm:mb-8 space-y-2.5">
         <h3 className="text-[26px] sm:text-[30px] md:text-[34px] font-bold text-[#0E4A68] tracking-tight">
-          {title}
+          {displayTitle}
         </h3>
 
         {subtitle && subtitle !== title && (
@@ -65,7 +70,7 @@ export function ProductDetailsDescription({
                       </p>
                     ))
                   ) : (
-                    <p className="text-[#94A3B8] italic">No description provided.</p>
+                    <p className="text-[#94A3B8] italic">{t.noDescription}</p>
                   )}
                 </div>
               </div>
@@ -75,10 +80,7 @@ export function ProductDetailsDescription({
       ) : (
         /* Fallback when no dynamic keys exist yet */
         <div className="text-[16px] sm:text-[17px] leading-relaxed text-[#475569]">
-          <p>
-            {subtitle ||
-              "Authentic premium product delivered straight to your hotel room with Egypt Tourist Market."}
-          </p>
+          <p>{subtitle || t.fallbackDescription}</p>
         </div>
       )}
     </div>

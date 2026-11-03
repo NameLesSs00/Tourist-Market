@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface HotelDeliveriesHeroProps {
   locale?: string;
@@ -11,6 +12,8 @@ interface HotelDeliveriesHeroProps {
 export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps) {
   const isRTL = locale === "ar";
   const shouldReduceMotion = useReducedMotion();
+  const dict = getDictionary(locale);
+  const t = dict.hotelDeliveriesPage.hero;
 
   // Desktop linear transition: 10s duration, seamless infinite loop
   const desktopTransition = {
@@ -42,7 +45,7 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-[38px] sm:text-[46px] md:text-[52px] lg:text-[54px] xl:text-[62px] font-bold leading-[1.08] tracking-tight text-white"
           >
-            Your Stay, Elevated.
+            {t.title}
           </motion.h1>
 
           <motion.p
@@ -51,7 +54,7 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
             className="mt-3 sm:mt-4 text-[18px] sm:text-[20px] lg:text-[22px] font-normal text-white"
           >
-            Everything You Need, Delivered.
+            {t.tagline}
           </motion.p>
 
           <motion.p
@@ -60,10 +63,7 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
             className="mt-5 sm:mt-6 text-[14px] sm:text-[15px] lg:text-[16px] leading-[1.65] text-white/90 max-w-[490px] mx-auto lg:mx-0 font-normal"
           >
-            Enjoy a seamless stay with essential services delivered right to your
-            hotel. From everyday conveniences to thoughtful extras, we take care of
-            the details so you can focus on enjoying every moment of your
-            vacation.
+            {t.description}
           </motion.p>
         </div>
 
@@ -92,7 +92,7 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
                   <div key={idx} className="relative w-full aspect-[666/3345] shrink-0">
                     <Image
                       src="/Hoteldeliveries/heroimg.png"
-                      alt="Hotel deliveries preview"
+                      alt={t.imageAlt}
                       fill
                       sizes="(max-width: 1440px) 215px, 235px"
                       priority={idx === 0}
@@ -118,7 +118,7 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
                   <div key={idx} className="relative w-full aspect-[666/3345] shrink-0">
                     <Image
                       src="/Hoteldeliveries/heroimg.png"
-                      alt="Hotel deliveries preview"
+                      alt={t.imageAlt}
                       fill
                       sizes="(max-width: 1440px) 215px, 235px"
                       priority={idx === 0}
@@ -144,7 +144,7 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
                   <div key={idx} className="relative w-full aspect-[666/3345] shrink-0">
                     <Image
                       src="/Hoteldeliveries/heroimg.png"
-                      alt="Hotel deliveries preview"
+                      alt={t.imageAlt}
                       fill
                       sizes="(max-width: 1440px) 215px, 235px"
                       priority={idx === 0}
@@ -176,8 +176,8 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
             >
               <div className="relative w-full aspect-[1080/130]">
                 <Image
-                  src="/Hoteldeliveries/responsive/Component 14.png"
-                  alt="Hotel deliveries preview"
+                  src="/Hoteldeliveries/responsive/hotel-deliveries-strip.png"
+                  alt={t.imageAlt}
                   fill
                   sizes="(max-width: 640px) 500px, 680px"
                   priority={idx === 0}

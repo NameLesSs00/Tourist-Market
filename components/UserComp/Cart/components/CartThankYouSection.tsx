@@ -9,14 +9,16 @@ import {
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import type { ProductBookingItem } from "@/models/productBooking";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
+import { useCurrencyFormat } from "@/features/currencies/useFormattedPrice";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface CartThankYouSectionProps {
   locale?: string;
 }
 
 export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps) {
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
+  const formatPrice = useCurrencyFormat();
+  const t = getDictionary(locale).cartPage.thankYou;
   const searchParams = useSearchParams();
   const queryRef = searchParams.get("ref") || "";
   const queryFee = searchParams.get("fee");
@@ -41,7 +43,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
   const bookingReference = booking?.bookingReference || queryRef || "PENDING";
   const customerName = booking?.customerName || "";
   const hotelDisplay = booking?.hotelName
-    ? `${booking.hotelName}${booking.roomNo ? ` (Room ${booking.roomNo})` : ""}`
+    ? `${booking.hotelName}${booking.roomNo ? ` ${t.room.replace("{room}", booking.roomNo)}` : ""}`
     : "";
   const areaDisplay = booking?.deliveryArea || queryArea || "";
   const dateDisplay = booking?.deliveryDate
@@ -79,10 +81,10 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
             </div>
 
             <h1 className="text-[26px] sm:text-[34px] font-bold text-[#083952] tracking-tight leading-tight">
-              Thank You for Your Booking!
+              {t.heading}
             </h1>
             <p className="text-[14px] sm:text-[16px] text-[#64748B] mt-2 max-w-xl mx-auto">
-              We have received your order and our team is preparing it for delivery to your hotel.
+              {t.subtext}
             </p>
           </div>
 
@@ -91,7 +93,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#DE7423]/20 pb-4">
               <div>
                 <span className="text-xs text-[#646464] font-medium uppercase tracking-wider block">
-                  Booking Reference
+                  {t.reference}
                 </span>
                 <span className="text-lg sm:text-2xl font-bold text-[#0E4A68] tracking-wide">
                   {bookingReference}
@@ -101,7 +103,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               <div className="flex flex-col items-start sm:items-end">
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#16A34A]/15 text-[#16A34A]">
-                    Confirmed
+                    {t.confirmed}
                   </span>
                   {finalPrice !== null && (
                     <span className="text-lg sm:text-2xl font-bold text-[#0E4A68]">
@@ -111,7 +113,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 </div>
                 {deliveryFee !== null && (
                   <span className="text-xs text-[#64748B] mt-0.5">
-                    Includes {formatPrice(Number(deliveryFee))} delivery
+                    {t.includesDelivery.replace("{price}", formatPrice(Number(deliveryFee)))}
                   </span>
                 )}
               </div>
@@ -123,7 +125,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 <div className="flex items-center gap-2.5">
                   <FiUser className="text-[#DE7423] shrink-0" size={16} />
                   <span>
-                    <strong className="font-semibold">Guest:</strong> {customerName}
+                    <strong className="font-semibold">{t.guest}</strong> {customerName}
                   </span>
                 </div>
               )}
@@ -132,7 +134,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 <div className="flex items-center gap-2.5">
                   <FiMapPin className="text-[#DE7423] shrink-0" size={16} />
                   <span>
-                    <strong className="font-semibold">Hotel:</strong> {hotelDisplay}
+                    <strong className="font-semibold">{t.hotel}</strong> {hotelDisplay}
                   </span>
                 </div>
               )}
@@ -141,7 +143,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 <div className="flex items-center gap-2.5">
                   <FiMapPin className="text-[#DE7423] shrink-0" size={16} />
                   <span>
-                    <strong className="font-semibold">Area:</strong> {areaDisplay}
+                    <strong className="font-semibold">{t.area}</strong> {areaDisplay}
                   </span>
                 </div>
               )}
@@ -150,7 +152,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 <div className="flex items-center gap-2.5">
                   <FiTruck className="text-[#DE7423] shrink-0" size={16} />
                   <span>
-                    <strong className="font-semibold">Delivery Price:</strong>{" "}
+                    <strong className="font-semibold">{t.deliveryPrice}</strong>{" "}
                     <span className="font-bold text-[#0E4A68]">
                       {formatPrice(Number(deliveryFee))}
                     </span>
@@ -162,8 +164,8 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 <div className="flex items-center gap-2.5">
                   <FiCalendar className="text-[#DE7423] shrink-0" size={16} />
                   <span>
-                    <strong className="font-semibold">Delivery Time:</strong>{" "}
-                    {dateDisplay} {timeDisplay ? `at ${timeDisplay}` : ""}
+                    <strong className="font-semibold">{t.deliveryTime}</strong>{" "}
+                    {dateDisplay} {timeDisplay ? ` ${t.at.replace("{time}", timeDisplay)}` : ""}
                   </span>
                 </div>
               )}
@@ -171,7 +173,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               <div className="flex items-center gap-2.5">
                 <FiPackage className="text-[#DE7423] shrink-0" size={16} />
                 <span>
-                  <strong className="font-semibold">Payment:</strong> Cash on Delivery
+                  <strong className="font-semibold">{t.payment}</strong> {t.cashOnDelivery}
                 </span>
               </div>
             </div>
@@ -181,7 +183,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
           {items.length > 0 && (
             <div className="mb-6">
               <h3 className="text-[16px] font-semibold text-[#0E4A68] mb-3">
-                Ordered Products
+                {t.orderedProducts}
               </h3>
               <div className="rounded-[8px] border border-[#CBD5E1] divide-y divide-[#CBD5E1] overflow-hidden">
                 {items.map((line, idx) => (
@@ -191,10 +193,10 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                   >
                     <div>
                       <div className="font-semibold text-[#083952]">
-                        {line.productTitle || line.productName || `Product #${line.productId}`}
+                        {line.productTitle || line.productName || t.productFallback.replace("{id}", String(line.productId))}
                       </div>
                       <div className="text-[#64748B] text-xs mt-0.5">
-                        Qty: {line.quantity} × {formatPrice(Number(line.unitPriceUsd || 0))}
+                        {t.qty} {line.quantity} × {formatPrice(Number(line.unitPriceUsd || 0))}
                       </div>
                     </div>
                     <div className="font-bold text-[#0E4A68]">
@@ -209,12 +211,12 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
           {/* Pricing Breakdown Summary Box */}
           <div className="mb-6 p-4 sm:p-5 rounded-[10px] bg-[#F8FAFC] border border-[#CBD5E1] space-y-2.5">
             <h4 className="text-[14px] font-bold text-[#083952] mb-1">
-              Order Pricing Summary
+              {t.pricingSummary}
             </h4>
 
             {subtotal !== null && (
               <div className="flex items-center justify-between text-xs sm:text-sm text-[#475569]">
-                <span>Products Subtotal</span>
+                <span>{t.productsSubtotal}</span>
                 <span className="font-medium text-[#083952]">
                   {formatPrice(Number(subtotal))}
                 </span>
@@ -226,7 +228,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
                 <span className="flex items-center gap-1.5">
                   <FiTruck size={15} className="text-[#DE7423]" />
                   <span>
-                    Delivery Shipping {areaDisplay ? `(${areaDisplay})` : ""}
+                    {t.deliveryShipping} {areaDisplay ? `(${areaDisplay})` : ""}
                   </span>
                 </span>
                 <span className="font-medium text-[#0E4A68]">
@@ -237,7 +239,7 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
 
             {finalPrice !== null && (
               <div className="border-t border-[#CBD5E1] pt-2.5 flex items-center justify-between text-sm sm:text-base font-bold text-[#0E4A68]">
-                <span>Total Due on Delivery</span>
+                <span>{t.totalDue}</span>
                 <span className="text-lg text-[#16A34A]">
                   {formatPrice(Number(finalPrice))}
                 </span>
@@ -253,22 +255,22 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               </div>
               <div>
                 <h4 className="font-bold text-[15px] text-[#083952]">
-                  Need Assistance or Delivery Updates?
+                  {t.assistanceTitle}
                 </h4>
                 <p className="text-xs sm:text-sm text-[#475569] mt-0.5">
-                  Our customer service team is available 24/7 on WhatsApp to assist with your order.
+                  {t.assistanceText}
                 </p>
               </div>
             </div>
 
             <a
-              href={`https://wa.me/201036234030?text=${encodeURIComponent(`Hello, I would like to inquire about my booking reference ${bookingReference}`)}`}
+              href={`https://wa.me/201036234030?text=${encodeURIComponent(t.whatsappMessage.replace("{ref}", bookingReference))}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[6px] bg-[#25D366] hover:bg-[#20bd5a] text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer shrink-0"
             >
               <FaWhatsapp size={16} />
-              <span>Contact on WhatsApp</span>
+              <span>{t.contactWhatsapp}</span>
             </a>
           </div>
 
@@ -279,13 +281,13 @@ export function CartThankYouSection({ locale = "en" }: CartThankYouSectionProps)
               style={{ backgroundColor: "#0E4A68" }}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[6px] text-white text-sm font-semibold shadow-sm hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer text-center"
             >
-              <FiShoppingBag size={16} /> <span>Continue Shopping</span>
+              <FiShoppingBag size={16} /> <span>{t.continueShopping}</span>
             </Link>
             <Link
               href={`/${locale}`}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[6px] border border-[#0E4A68] text-[#0E4A68] hover:bg-[#0E4A68]/5 text-sm font-semibold transition-colors cursor-pointer text-center"
             >
-              <FiHome size={16} /> <span>Back to Home</span>
+              <FiHome size={16} /> <span>{t.backToHome}</span>
             </Link>
           </div>
         </div>

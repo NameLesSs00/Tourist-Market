@@ -1,5 +1,8 @@
 import type { CurrencyItem } from "@/models/currency";
 
+// Fallback rates follow the backend convention: exchangeRate = USD value of 1 unit
+// of the currency (e.g. EUR 1.12 means 1 EUR = 1.12 USD). Mirrors the active
+// currencies returned by GET /api/currency in the sandbox backend.
 export const DEFAULT_CURRENCIES: CurrencyItem[] = [
   {
     id: 1,
@@ -14,7 +17,7 @@ export const DEFAULT_CURRENCIES: CurrencyItem[] = [
     code: "EUR",
     name: "Euro",
     symbol: "€",
-    exchangeRate: 0.92,
+    exchangeRate: 1.12,
     isActive: true,
   },
   {
@@ -22,7 +25,7 @@ export const DEFAULT_CURRENCIES: CurrencyItem[] = [
     code: "GBP",
     name: "British Pound",
     symbol: "£",
-    exchangeRate: 0.79,
+    exchangeRate: 1.34,
     isActive: true,
   },
   {
@@ -38,7 +41,7 @@ export const DEFAULT_CURRENCIES: CurrencyItem[] = [
     code: "CAD",
     name: "Canadian Dollar",
     symbol: "CA$",
-    exchangeRate: 0.73,
+    exchangeRate: 0.71,
     isActive: true,
   },
 ];
@@ -47,6 +50,8 @@ export const DEFAULT_CURRENCY: CurrencyItem = DEFAULT_CURRENCIES[0];
 
 /**
  * Converts a base USD amount into the target currency using exchangeRate.
+ * exchangeRate is the USD value of 1 unit of the target currency
+ * (e.g. EUR 1.12 -> 100 USD = 100 / 1.12 = 89.29 EUR).
  * Note: If exchangeRate is 0 or invalid, returns the base amount.
  */
 export function convertBaseUsdToCurrency(
@@ -55,8 +60,8 @@ export function convertBaseUsdToCurrency(
 ): number {
   if (!amountInUsd || isNaN(amountInUsd)) return 0;
   if (!exchangeRate || exchangeRate <= 0) return amountInUsd;
-  // If base is USD, conversion factor applies
-  return Math.round(amountInUsd * exchangeRate * 100) / 100;
+  // Divide because the rate expresses how many USD one unit of the currency is worth
+  return Math.round((amountInUsd / exchangeRate) * 100) / 100;
 }
 
 /**

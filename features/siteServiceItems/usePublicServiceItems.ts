@@ -23,7 +23,8 @@ export const SERVICE_FALLBACK_IMAGE = "/GroupExcursions/HeroLogo.webp";
 // ─── Card mapper ──────────────────────────────────────────────────────────────
 export function mapSubItemToCard(
   item: SiteServiceSubItem,
-  serviceType: ServiceCardItem["serviceType"]
+  serviceType: ServiceCardItem["serviceType"],
+  billingLabels: { perHour: string; perDay: string }
 ): ServiceCardItem {
   const sortedImages = item.images && item.images.length > 0
     ? [...item.images].sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0))
@@ -44,7 +45,8 @@ export function mapSubItemToCard(
     imageUrl: firstImage,
     badge: undefined,
     price,
-    pricePeriod: serviceType === "tourist" ? "Per Hour" : "Per Day",
+    pricePeriod:
+      serviceType === "tourist" ? billingLabels.perHour : billingLabels.perDay,
     priceFormatted: price > 0 ? `$${price}` : undefined,
     keyFeatures: keyFeatures.length > 0 ? keyFeatures : undefined,
     serviceType,

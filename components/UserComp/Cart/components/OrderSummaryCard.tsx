@@ -5,7 +5,8 @@ import Image from "next/image";
 import { FiX } from "react-icons/fi";
 import type { CartItem } from "@/models/cart";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
+import { useCurrencyFormat } from "@/features/currencies/useFormattedPrice";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 const DEFAULT_PRODUCT_IMAGE = "/GroupExcursions/HeroLogo.webp";
 
@@ -47,6 +48,7 @@ interface OrderSummaryCardProps {
   currentStep?: "cart" | "checkout";
   onProceedToCheckout?: () => void;
   isSubmitting?: boolean;
+  locale?: string;
 }
 
 export function OrderSummaryCard({
@@ -58,8 +60,10 @@ export function OrderSummaryCard({
   currentStep = "cart",
   onProceedToCheckout,
   isSubmitting = false,
+  locale = "en",
 }: OrderSummaryCardProps) {
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
+  const formatPrice = useCurrencyFormat();
+  const t = getDictionary(locale).cartPage.summary;
   const isEmpty = items.length === 0;
   const hasShipping = Boolean(selectedAreaName && typeof shipping === "number");
   const shippingAmount = hasShipping ? (shipping as number) : 0;
@@ -81,14 +85,14 @@ export function OrderSummaryCard({
         }}
         className="py-3 px-4 sm:px-5 text-white text-[16px] sm:text-[17px] font-bold tracking-wide select-none"
       >
-        Order Summary
+        {t.header}
       </div>
 
       {/* ─── Body ─── */}
       {isEmpty ? (
         <div className="py-12 sm:py-14 text-center">
           <p className="text-[15px] sm:text-[16px] font-medium text-[#083952]">
-            No Items Here
+            {t.noItems}
           </p>
         </div>
       ) : (
@@ -141,7 +145,7 @@ export function OrderSummaryCard({
                   <button
                     type="button"
                     onClick={() => onRemoveItem(item.productId)}
-                    aria-label={`Remove ${item.title}`}
+                    aria-label={t.ariaRemoveItem.replace("{title}", item.title)}
                     className="text-gray-400 hover:text-red-500 text-xs transition-colors cursor-pointer leading-none p-0.5"
                   >
                     <FiX size={13} />
@@ -160,7 +164,7 @@ export function OrderSummaryCard({
       <div className="p-3.5 sm:p-5 flex flex-col gap-3 bg-white">
         {/* Subtotal */}
         <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[14.5px] sm:text-[15px]">
-          <span className="font-medium text-[#0E4A68]">Subtotal :</span>
+          <span className="font-medium text-[#0E4A68]">{t.subtotal}</span>
           <span className="font-medium text-[#0E4A68]">
             {formatPrice(subtotal)}
           </span>
@@ -168,21 +172,21 @@ export function OrderSummaryCard({
 
         {/* Shipping */}
         <div className="flex items-center justify-between text-[14.5px] sm:text-[15px]">
-          <span className="font-medium text-[#0E4A68]">Shipping :</span>
+          <span className="font-medium text-[#0E4A68]">{t.shipping}</span>
           {hasShipping ? (
             <span className="font-medium text-[#0E4A68]">
               {formatPrice(shippingAmount)}
             </span>
           ) : (
             <span className="font-normal text-[#64748B] text-xs sm:text-[13px]">
-              Select area to calculate
+              {t.shippingHint}
             </span>
           )}
         </div>
 
         {/* Total */}
         <div className="border-t border-[#888888]/30 pt-3 flex items-center justify-between text-[15.5px] sm:text-[16px]">
-          <span className="font-bold text-[#0E4A68]">Total :</span>
+          <span className="font-bold text-[#0E4A68]">{t.total}</span>
           <span className="font-bold text-[#0E4A68]">
             {formatPrice(total)}
           </span>
@@ -199,7 +203,7 @@ export function OrderSummaryCard({
             }}
             className="w-full mt-2 py-3 text-white font-poppins text-[14.5px] sm:text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer"
           >
-            Proceed to Checkout
+            {t.proceed}
           </button>
         )}
 
@@ -215,7 +219,7 @@ export function OrderSummaryCard({
             }}
             className="w-full mt-2 py-3 text-white font-poppins text-[14.5px] sm:text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Placing Order..." : "Place Order"}
+            {isSubmitting ? t.placingOrder : t.placeOrder}
           </button>
         )}
       </div>

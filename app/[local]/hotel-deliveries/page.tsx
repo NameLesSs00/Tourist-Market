@@ -1,14 +1,23 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { HotelDeliveriesSection } from "@/components/UserComp/HotelDeliveries";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 export const instant = false;
 
-export const metadata: Metadata = {
-  title: "Hotel Deliveries | Egypt Tourist Market",
-  description:
-    "Enjoy a seamless stay with essential services delivered right to your hotel. From everyday conveniences to thoughtful extras.",
-};
+export function generateMetadata({
+  params,
+}: {
+  params: Promise<{ local: string }>;
+}): Promise<Metadata> {
+  return params.then(({ local }) => {
+    const meta = getDictionary(local).hotelDeliveriesPage.meta;
+    return {
+      title: meta.listTitle,
+      description: meta.listDescription,
+    };
+  });
+}
 
 export function generateStaticParams() {
   return [

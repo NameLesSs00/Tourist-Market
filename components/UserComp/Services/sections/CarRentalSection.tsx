@@ -18,6 +18,10 @@ export function CarRentalSection({ locale = "en" }: CarRentalSectionProps) {
   const serviceId = SITE_SERVICES_CONFIG.carRental.id;
   const dict = getDictionary(locale);
   const t = dict.carRental;
+  const billingLabels = {
+    perHour: dict.serviceDetail.billingPerHour,
+    perDay: dict.serviceDetail.billingPerDay,
+  };
 
   const { data: subItems, isLoading, isError } = usePublicServiceSubItems(
     serviceId,
@@ -25,13 +29,13 @@ export function CarRentalSection({ locale = "en" }: CarRentalSectionProps) {
   );
 
   const cards = subItems
-    ? subItems.map((item) => mapSubItemToCard(item, "car-rental"))
+    ? subItems.map((item) => mapSubItemToCard(item, "car-rental", billingLabels))
     : [];
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
       className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8"
     >

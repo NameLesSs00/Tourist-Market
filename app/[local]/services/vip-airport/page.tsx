@@ -1,12 +1,14 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { VipAirportSection } from "@/components/UserComp/Services";
+import { localizedMetadata } from "@/shared/utils/localizedMetadata";
 
-export const metadata: Metadata = {
-  title: "VIP Hurghada Airport Services | Egypt Tourist Market",
-  description:
-    "Elevate your Hurghada departure with our seamless, exclusive VIP airport services.",
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { local } = await params;
+  return localizedMetadata(local, "vipAirport");
+}
 
 export function generateStaticParams() {
   return [

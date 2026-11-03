@@ -575,7 +575,9 @@
     "whatsappGreeting": "Hallo, ich interessiere mich für",
     "ariaViewDetails": "Details ansehen für",
     "errorLoading": "Dienste konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
-    "emptyState": "Zurzeit sind keine Dienste verfügbar. Bitte schauen Sie später wieder vorbei."
+    "emptyState": "Zurzeit sind keine Dienste verfügbar. Bitte schauen Sie später wieder vorbei.",
+    "metadataTitle": "Touristenservices",
+    "metadataDescription": "Innovative Dienstleistungen und Lösungen, die Ihren Ägypten-Urlaub bequem und frei von jeglichen Sorgen und Stress machen."
   },
   "realEstate": {
     "heroAlt": "Rotes Meer Immobilien",
@@ -586,7 +588,9 @@
     "whatsappGreeting": "Hallo, ich interessiere mich für die Immobilie:",
     "ariaViewDetails": "Details ansehen für",
     "errorLoading": "Immobilienangebote konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
-    "emptyState": "Zurzeit sind keine Immobilien verfügbar. Bitte schauen Sie später wieder vorbei."
+    "emptyState": "Zurzeit sind keine Immobilien verfügbar. Bitte schauen Sie später wieder vorbei.",
+    "metadataTitle": "Immobilien am Roten Meer",
+    "metadataDescription": "Träumen Sie davon, ein Stück Paradies am Roten Meer zu besitzen? Wir begleiten Sie bei jedem Schritt."
   },
   "serviceDetail": {
     "back": "Zurück",
@@ -716,7 +720,8 @@
     "toastReviewSuccess": "Vielen Dank! Ihre Bewertung wurde zur Prüfung eingereicht und erscheint nach Freigabe.",
     "toastReviewError": "Ihre Bewertung konnte nicht übermittelt werden. Bitte versuchen Sie es erneut.",
     "toastLoadError": "Bewertungen für diesen Service konnten nicht geladen werden.",
-    "toastHelpfulError": "Hilfreich-Stimme konnte nicht registriert werden."
+    "toastHelpfulError": "Hilfreich-Stimme konnte nicht registriert werden.",
+    "rateStarAria": "Mit {n} Sternen bewerten"
   },
   "blogs": {
     "titleFrom": "Von",
@@ -843,6 +848,249 @@
       "openMapAria": "Tourist Market Standort auf Google Maps öffnen"
     }
   },
+  "hotelDeliveriesPage": {
+    "hero": {
+      "title": "Ihr Aufenthalt, aufgewertet.",
+      "tagline": "Alles, was Sie brauchen, geliefert.",
+      "description": "Genießen Sie einen unkomplizierten Aufenthalt mit essenziellen Services, die direkt in Ihr Hotel geliefert werden. Von alltäglichem Komfort bis zu aufmerksamen Extras – wir kümmern uns um die Details, damit Sie jeden Moment Ihres Urlaubs genießen können.",
+      "imageAlt": "Vorschau der Hotel-Lieferungen"
+    },
+    "categories": {
+      "title": "Kategorien",
+      "allProducts": "Alle Produkte",
+      "closeFilters": "Filter schließen",
+      "applyFilter": "Filter anwenden"
+    },
+    "products": {
+      "searchPlaceholder": "SUCHE",
+      "filter": "Filter",
+      "ariaFilter": "Produkte filtern",
+      "sortBy": "Sortieren nach :",
+      "sortOptions": {
+        "popular": "Beliebt",
+        "priceAsc": "Preis: aufsteigend",
+        "priceDesc": "Preis: absteigend",
+        "newest": "Neueste"
+      },
+      "emptyTitle": "Keine Produkte gefunden",
+      "emptySearch": "Keine Produkte passend zu »{term}«. Versuchen Sie ein anderes Stichwort.",
+      "emptyCategory": "In dieser Kategorie sind derzeit keine Produkte gelistet.",
+      "ariaPreviousPage": "Vorherige Seite",
+      "ariaNextPage": "Nächste Seite",
+      "ariaViewProduct": "{title} ansehen",
+      "ariaAddToCart": "{title} in den Warenkorb legen",
+      "untitledProduct": "Produkt ohne Titel",
+      "viewAlt": "Ansehen",
+      "addToCartAlt": "In den Warenkorb"
+    },
+    "cart": {
+      "ariaCartCount": "Warenkorb mit {count} Artikeln"
+    },
+    "details": {
+      "notFoundTitle": "Produkt nicht gefunden",
+      "notFoundText": "Das gesuchte Produkt existiert nicht oder wurde möglicherweise entfernt.",
+      "backToList": "Zurück zu den Hotel-Lieferungen",
+      "fallbackCategory": "Hotel-Lieferung",
+      "fallbackDescription": "Ein authentisches Premium-Produkt, das mit Egypt Tourist Market direkt in Ihr Hotelzimmer geliefert wird.",
+      "noDescription": "Keine Beschreibung vorhanden.",
+      "productFallback": "Produkt"
+    },
+    "bookingCard": {
+      "header": "Für Lieferung bestellen",
+      "item": "ARTIKEL",
+      "category": "Kategorie :",
+      "price": "Preis :",
+      "qualityLabel": "Qualität",
+      "qualityValue": "Frisch",
+      "qualityAlt": "Qualität garantiert",
+      "deliveryLabel": "Lieferung",
+      "deliveryValue": "Schnelle Lieferung",
+      "deliveryAlt": "Schnelle Lieferung",
+      "quantity": "Menge",
+      "unitDefault": "Stück",
+      "total": "Gesamt :",
+      "orderNow": "Jetzt bestellen",
+      "bookDelivery": "Lieferung buchen",
+      "ariaDecrease": "Menge verringern",
+      "ariaIncrease": "Menge erhöhen"
+    },
+    "gallery": {
+      "ariaPrev": "Vorheriges Bild",
+      "ariaNext": "Nächstes Bild",
+      "imageAlt": "Produktansicht",
+      "thumbnailAlt": "Vorschau {index}"
+    },
+    "reviews": {
+      "reviewsTitle": "Bewertungen -",
+      "commentsTitle": "Bewertungen und Kommentare",
+      "reviewCount": "{count} Bewertungen",
+      "reviewCountOne": "{count} Bewertung",
+      "noReviews": "Noch keine Bewertungen",
+      "shareOpinion": "Teilen Sie Ihre Meinung",
+      "yourRating": "Ihre Bewertung *",
+      "fullName": "Vollständiger Name *",
+      "namePlaceholder": "Ihr Name",
+      "email": "E-Mail-Adresse *",
+      "emailPlaceholder": "ihre.email@beispiel.com",
+      "phoneOptional": "Telefon / WhatsApp (optional)",
+      "phonePlaceholder": "+20 123 456 789",
+      "yourReview": "Ihre Bewertung *",
+      "reviewPlaceholder": "Verfassen Sie Ihre Bewertung...",
+      "submit": "Bewertung absenden",
+      "submitting": "Wird gesendet...",
+      "alreadySubmitted": "Sie haben bereits eine Bewertung für dieses Produkt geteilt. Vielen Dank!",
+      "thanksSubmitted": "Vielen Dank! Ihre Bewertung wurde zur Freigabe eingereicht und erscheint nach Prüfung.",
+      "validationRating": "Bitte wählen Sie eine Sternebewertung.",
+      "validationName": "Bitte geben Sie Ihren Namen ein.",
+      "validationEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "validationComment": "Bitte schreiben Sie Ihre Bewertung vor dem Absenden.",
+      "loadError": "Die Bewertungen für dieses Produkt konnten nicht geladen werden.",
+      "voteError": "Ihre Hilfreich-Bewertung konnte nicht erfasst werden.",
+      "submitError": "Ihre Bewertung konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+      "loadingReviews": "Bewertungen werden geladen...",
+      "emptyHint": "Seien Sie der Erste, der seine Erfahrung mit diesem Produkt teilt.",
+      "viewMore": "Weitere Kommentare ({count} mehr)",
+      "showLess": "Weniger anzeigen",
+      "verifiedCustomer": "Verifizierter Kunde",
+      "defaultAuthor": "Kunde",
+      "ariaRateStar": "Mit {star} Sternen bewerten"
+    },
+    "related": {
+      "title": "Ähnliche Produkte"
+    },
+    "meta": {
+      "listTitle": "Hotel-Lieferungen | Egypt Tourist Market",
+      "listDescription": "Genießen Sie einen unkomplizierten Aufenthalt mit essenziellen Services, die direkt in Ihr Hotel geliefert werden. Von alltäglichem Komfort bis zu aufmerksamen Extras.",
+      "detailsTitle": "Hotel-Lieferung Produkt | Egypt Tourist Market",
+      "detailsDescription": "Bestellen Sie die Lieferung direkt in Ihr Hotelzimmer mit Egypt Tourist Market. Produkt: {product}"
+    }
+  },
+  "cartPage": {
+    "meta": {
+      "title": "Warenkorb | Egypt Tourist Market",
+      "description": "Übersicht und Verwaltung der Artikel in Ihrem Warenkorb.",
+      "thankYouTitle": "Buchung bestätigt | Egypt Tourist Market",
+      "thankYouDescription": "Ihre Bestellung zur Hotelbelieferung ist eingegangen und wird vorbereitet."
+    },
+    "page": {
+      "title": "Warenkorb",
+      "subtitleCart": "Prüfen Sie die Artikel in Ihrem Warenkorb und fahren Sie zur Kasse.",
+      "subtitleCheckout": "Geben Sie die Gästedaten und den Lieferplan ein, um Ihre Buchung abzuschließen.",
+      "stepCart": "1. Artikel",
+      "stepDelivery": "2. Lieferdetails",
+      "clearEntireCart": "Warenkorb leeren",
+      "proceedToCheckout": "Zur Kasse",
+      "backToCart": "Zurück zum Warenkorb",
+      "stepOf": "Schritt 2 von 2: Gästedaten & Lieferung",
+      "headers": {
+        "product": "PRODUKT",
+        "price": "PREIS",
+        "quantity": "MENGE",
+        "total": "GESAMT",
+        "action": "AKTION"
+      }
+    },
+    "toasts": {
+      "emptyCartProceed": "Ihr Warenkorb ist leer. Bitte fügen Sie Artikel hinzu, bevor Sie fortfahren.",
+      "emptyCart": "Ihr Warenkorb ist leer.",
+      "agreeTerms": "Bitte stimmen Sie den Nutzungsbedingungen und der Datenschutzerklärung zu.",
+      "nameRequired": "Bitte geben Sie Ihren Namen ein (mindestens 2 Zeichen).",
+      "phoneRequired": "Bitte geben Sie Ihre Telefonnummer ein.",
+      "phoneInvalid": "Bitte geben Sie eine gültige Telefonnummer ein (7 bis 15 Ziffern).",
+      "emailInvalid": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "hotelRoomRequired": "Bitte geben Sie Ihren Hotelnamen und Ihre Zimmernummer an.",
+      "areaRequired": "Bitte wählen Sie ein Liefergebiet.",
+      "dateRequired": "Bitte wählen Sie ein Lieferdatum.",
+      "timeRequired": "Bitte wählen Sie eine Lieferzeit.",
+      "orderSuccess": "Vielen Dank! Ihre Bestellung wurde erfolgreich aufgegeben. Wir kontaktieren Sie in Kürze.",
+      "orderError": "Beim Absenden Ihrer Bestellung ist ein Problem aufgetreten. Bitte überprüfen Sie Ihre Angaben und versuchen Sie es erneut."
+    },
+    "empty": {
+      "title": "Ihr Warenkorb ist leer",
+      "cta": "Hotelbelieferungen"
+    },
+    "table": {
+      "ariaDecrease": "Menge verringern",
+      "ariaIncrease": "Menge erhöhen",
+      "ariaRemove": "{title} aus dem Warenkorb entfernen",
+      "removeAlt": "Entfernen",
+      "priceLabel": "Preis:",
+      "totalLabel": "Gesamt"
+    },
+    "summary": {
+      "header": "Bestellübersicht",
+      "noItems": "Keine Artikel vorhanden",
+      "subtotal": "Zwischensumme :",
+      "shipping": "Versand :",
+      "shippingHint": "Gebiet zur Berechnung auswählen",
+      "total": "Gesamt :",
+      "proceed": "Zur Kasse",
+      "placeOrder": "Bestellung aufgeben",
+      "placingOrder": "Bestellung wird aufgegeben...",
+      "ariaRemoveItem": "{title} entfernen"
+    },
+    "contact": {
+      "title": "Kontaktdaten",
+      "name": "Name",
+      "namePlaceholder": "Ihr vollständiger Name",
+      "email": "E-Mail",
+      "country": "Land",
+      "selectCountry": "Land auswählen",
+      "loadingCountries": "Länder werden geladen...",
+      "phone": "Telefonnummer (bevorzugte WhatsApp-Nummer)",
+      "commMethod": "Bevorzugte Kontaktmethode",
+      "phoneCall": "Telefonanruf",
+      "emailMethod": "E-Mail"
+    },
+    "delivery": {
+      "title": "Lieferinformationen",
+      "hotelName": "Hotelname",
+      "hotelNamePlaceholder": "Hotelnamen eingeben",
+      "roomNumber": "Zimmernummer",
+      "roomNumberPlaceholder": "Zimmernummer eingeben",
+      "hotelArea": "Hotelgebiet",
+      "loadingAreas": "Liefergebiete werden geladen...",
+      "noAreas": "Keine Liefergebiete verfügbar",
+      "selectArea": "Hotelgebiet auswählen",
+      "deliveryDate": "Lieferdatum",
+      "deliveryTime": "Lieferzeit",
+      "timeHint": "Wählen Sie eine passende Lieferzeit (z. B. 14:30)",
+      "notes": "Anmerkungen",
+      "iAgree": "Ich akzeptiere die",
+      "privacyPolicy": "Datenschutzerklärung",
+      "placeOrder": "Bestellung aufgeben",
+      "placingOrder": "Bestellung wird aufgegeben..."
+    },
+    "thankYou": {
+      "heading": "Vielen Dank für Ihre Buchung!",
+      "subtext": "Wir haben Ihre Bestellung erhalten; unser Team bereitet sie zur Lieferung in Ihr Hotel vor.",
+      "reference": "Buchungsreferenz",
+      "confirmed": "Bestätigt",
+      "includesDelivery": "Inkl. {price} Lieferung",
+      "guest": "Gast:",
+      "hotel": "Hotel:",
+      "room": "(Zimmer {room})",
+      "area": "Gebiet:",
+      "deliveryPrice": "Lieferpreis:",
+      "deliveryTime": "Lieferzeit:",
+      "at": "um {time}",
+      "payment": "Zahlung:",
+      "cashOnDelivery": "Zahlung bei Lieferung",
+      "orderedProducts": "Bestellte Produkte",
+      "productFallback": "Produkt #{id}",
+      "qty": "Menge:",
+      "pricingSummary": "Preisübersicht der Bestellung",
+      "productsSubtotal": "Zwischensumme Produkte",
+      "deliveryShipping": "Lieferkosten",
+      "totalDue": "Gesamtbetrag bei Lieferung",
+      "assistanceTitle": "Brauchen Sie Hilfe oder Infos zum Lieferstatus?",
+      "assistanceText": "Unser Kundendienst ist rund um die Uhr auf WhatsApp für Sie erreichbar.",
+      "whatsappMessage": "Hallo, ich möchte mich zu meiner Buchungsreferenz {ref} erkundigen",
+      "contactWhatsapp": "Über WhatsApp kontaktieren",
+      "continueShopping": "Weiter einkaufen",
+      "backToHome": "Zurück zur Startseite"
+    }
+  },
   "contact": {
     "hero": {
       "headingLine1": "Lassen Sie uns Ihre",
@@ -936,6 +1184,8 @@
     "poweredBy": "Bereitgestellt von"
   },
   "transfer": {
+    "metadataTitle": "Transferservices",
+    "metadataDescription": "Komfortable und zuverlässige Flughafen-Transfers in Hurghada. Buchen Sie Ihre Fahrt im Voraus und reisen Sie entspannt.",
     "hero": {
       "title": "Transfer-Services",
       "subtitle": "Komfortable & zuverlässige Flughafentransfers in Hurghada",
@@ -1122,7 +1372,9 @@
     "viewDetails": "Details ansehen",
     "whatsapp": "WhatsApp",
     "errorLoading": "Mietwagenoptionen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
-    "emptyState": "Derzeit sind keine Mietwagenoptionen verfügbar. Schauen Sie bald wieder vorbei."
+    "emptyState": "Derzeit sind keine Mietwagenoptionen verfügbar. Schauen Sie bald wieder vorbei.",
+    "metadataTitle": "Mietwagen",
+    "metadataDescription": "Erleben Sie Ägypten in Ihrem eigenen Tempo mit unserem Mietwagen-Service!"
   },
   "vipAirport": {
     "heroAlt": "VIP-Dienste Flughafen Hurghada",
@@ -1131,6 +1383,37 @@
     "viewDetails": "Details ansehen",
     "whatsapp": "WhatsApp",
     "errorLoading": "VIP-Flughafendienste konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
-    "emptyState": "Derzeit sind keine VIP-Flughafendienste verfügbar. Schauen Sie bald wieder vorbei."
+    "emptyState": "Derzeit sind keine VIP-Flughafendienste verfügbar. Schauen Sie bald wieder vorbei.",
+    "metadataTitle": "VIP-Services Flughafen Hurghada",
+    "metadataDescription": "Erleben Sie Ihren Abflug aus Hurghada mit unseren nahtlosen, exklusiven VIP-Flughafendiensten."
+  },
+  "serviceThankYou": {
+    "title": "Vielen Dank für Ihre Buchung!",
+    "subtitle": "Wir haben Ihre Reservierungsanfrage erhalten. Unser Team kontaktiert Sie in Kürze, um alle Details zu bestätigen.",
+    "reservationStatus": "Reservierungsstatus",
+    "requestConfirmed": "Anfrage bestätigt",
+    "received": "Erhalten",
+    "serviceLabel": "Service:",
+    "guestLabel": "Gast:",
+    "locationLabel": "Unterkunft:",
+    "contactLabel": "Kontakt:",
+    "viaContact": "(über {method})",
+    "roomSuffix": "(Zimmer {room})",
+    "dateLabel": "Datum:",
+    "daysSuffix": "({count} Tage)",
+    "flightLabel": "Flug:",
+    "personsSuffix": "({count} Personen)",
+    "destinationLabel": "Ziel:",
+    "guideLanguageLabel": "Sprache des Reiseführers:",
+    "noteLabel": "Hinweis:",
+    "defaultServiceName": "Ausgewählter Service",
+    "assistanceTitle": "Sofortige Hilfe erforderlich?",
+    "assistanceText": "Unser Kundenservice-Team ist auf WhatsApp für Sie da und hilft Ihnen bei Ihrer Reservierung weiter.",
+    "contactWhatsapp": "Über WhatsApp kontaktieren",
+    "whatsappMessage": "Hallo, ich möchte meine Reservierung für {service} anfragen",
+    "whatsappMessageWithName": "Hallo, ich möchte meine Reservierung für {service} ({name}) anfragen",
+    "backToHome": "Zurück zur Startseite",
+    "metadataTitle": "Vielen Dank für Ihre Service-Buchung",
+    "metadataDescription": "Ihre Reservierungsanfrage wurde erhalten."
   }
 }

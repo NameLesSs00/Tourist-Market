@@ -1,15 +1,20 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
+import { motion } from "framer-motion";
 import { HotelDeliveriesCard, type HotelProduct } from "./HotelDeliveriesCard";
 import { useClientProductsQuery } from "@/features/products/useClientProducts";
 import { useCart } from "@/features/cart/useCart";
 import type { ProductListItem } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 const PAGE_SIZE = 12;
+
+type SortKey = "popular" | "priceAsc" | "priceDesc" | "newest";
+
+const SORT_KEYS: SortKey[] = ["popular", "priceAsc", "priceDesc", "newest"];
 
 interface HotelDeliveriesProductsProps {
   locale?: string;
@@ -17,22 +22,17 @@ interface HotelDeliveriesProductsProps {
   onToggleFilter?: () => void;
 }
 
-const SORT_OPTIONS: { label: string; value?: string }[] = [
-  { label: "Popular", value: undefined },
-  { label: "Price: Low to High", value: "priceAsc" },
-  { label: "Price: High to Low", value: "priceDesc" },
-  { label: "Newest", value: "newest" },
-];
-
 export function HotelDeliveriesProducts({
   locale = "en",
   activeSubcategoryId = null,
   onToggleFilter,
 }: HotelDeliveriesProductsProps) {
+  const dict = getDictionary(locale);
+  const t = dict.hotelDeliveriesPage.products;
   const { addItem } = useCart();
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [selectedSort, setSelectedSort] = useState(SORT_OPTIONS[0]);
+  const [sortKey, setSortKey] = useState<SortKey>("popular");
   const [currentPage, setCurrentPage] = useState(1);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const sortRef = useRef<HTMLDivElement>(null);
@@ -60,7 +60,7 @@ export function HotelDeliveriesProducts({
   // Reset page when subcategory or sort changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeSubcategoryId, selectedSort]);
+  }, [activeSubcategoryId, sortKey]);
 
   // Query real products from backend API
   const { data, isLoading } = useClientProductsQuery({
@@ -69,7 +69,7 @@ export function HotelDeliveriesProducts({
       activeSubcategoryId && activeSubcategoryId > 0
         ? activeSubcategoryId
         : undefined,
-    sortBy: selectedSort.value,
+    sortBy: sortKey === "popular" ? undefined : sortKey,
     language: locale,
     pageNumber: currentPage,
     pageSize: PAGE_SIZE,
@@ -82,17 +82,17 @@ export function HotelDeliveriesProducts({
   // Apply sorting client-side as well to guarantee immediate & consistent ordering
   const sortedProducts = useMemo(() => {
     const list = [...products];
-    if (selectedSort.value === "priceAsc") {
+    if (sortKey === "priceAsc") {
       return list.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
     }
-    if (selectedSort.value === "priceDesc") {
+    if (sortKey === "priceDesc") {
       return list.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
     }
-    if (selectedSort.value === "newest") {
+    if (sortKey === "newest") {
       return list.sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
     }
     return list;
-  }, [products, selectedSort.value]);
+  }, [products, sortKey]);
 
   // Generate pagination buttons
   const paginationRange = useMemo(() => {
@@ -130,7 +130,7 @@ export function HotelDeliveriesProducts({
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="SEARCH"
+              placeholder={t.searchPlaceholder}
               className="w-[110px] xs:w-[130px] sm:w-[220px] md:w-[260px] pl-1 sm:pl-3.5 pr-6 sm:pr-9 py-1 sm:py-1.5 text-[11px] sm:text-[13px] tracking-wide placeholder:text-[#888888] placeholder:tracking-wider outline-none text-[#555555] bg-transparent border-b border-[#CCCCCC] sm:border sm:border-[rgba(0,0,0,0.3)] rounded-none sm:rounded-[5px] focus:border-[#0E4A68]"
             />
             <span className="absolute right-1 sm:right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[#888888]">
@@ -155,7 +155,7 @@ export function HotelDeliveriesProducts({
           <button
             type="button"
             onClick={onToggleFilter}
-            aria-label="Filter products"
+            aria-label={t.ariaFilter}
             className="flex lg:hidden items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 bg-[#0E4A68] text-white text-[11px] sm:text-[12px] font-semibold rounded-[4px] sm:rounded-[5px] hover:bg-[#0A3850] active:scale-95 transition-all cursor-pointer shadow-sm shrink-0"
           >
             <svg
@@ -167,14 +167,14 @@ export function HotelDeliveriesProducts({
             >
               <path d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V20a1 1 0 01-1.447.894l-4-2A1 1 0 018 18v-4.586a1 1 0 00-.293-.707L1.293 6.293A1 1 0 011 5.586V4z" />
             </svg>
-            <span>Filter</span>
+            <span>{t.filter}</span>
           </button>
         </div>
 
         {/* Right on mobile: Sort by | Left on desktop: Sort by */}
         <div className="flex items-center gap-1.5 sm:gap-2 relative order-2 lg:order-1 shrink-0">
           <span className="text-[12px] sm:text-[14px] text-[#555555] font-normal shrink-0">
-            Sort by :
+            {t.sortBy}
           </span>
 
           <div ref={sortRef} className="relative">
@@ -183,7 +183,7 @@ export function HotelDeliveriesProducts({
               onClick={() => setIsSortOpen((prev) => !prev)}
               className="flex items-center justify-center sm:justify-between gap-1.5 sm:gap-3 px-2 sm:px-4 py-1 sm:py-1.5 text-[11px] sm:text-[14px] text-[#555555] cursor-pointer min-w-[70px] sm:min-w-[140px] bg-white border border-[#888888] sm:border-[0.5px] rounded-[4px] sm:rounded-[5px] hover:border-[#0E4A68] transition-colors"
             >
-              <span>{selectedSort.label}</span>
+              <span>{t.sortOptions[sortKey]}</span>
               <FiChevronDown
                 size={14}
                 className={`text-[#888888] transition-transform duration-200 ${
@@ -194,21 +194,21 @@ export function HotelDeliveriesProducts({
 
             {isSortOpen && (
               <div className="absolute right-0 sm:left-0 top-full mt-1 w-36 sm:w-44 bg-white border border-[#888888]/40 rounded-[5px] shadow-lg z-30 py-1">
-                {SORT_OPTIONS.map((opt) => (
+                {SORT_KEYS.map((key) => (
                   <button
-                    key={opt.label}
+                    key={key}
                     type="button"
                     onClick={() => {
-                      setSelectedSort(opt);
+                      setSortKey(key);
                       setIsSortOpen(false);
                     }}
                     className={`w-full text-left px-3 py-1.5 text-[12px] sm:text-[13px] transition-colors cursor-pointer ${
-                      selectedSort.label === opt.label
+                      sortKey === key
                         ? "bg-[#FFF9F0] text-[#0E4A68] font-semibold"
                         : "text-[#555555] hover:bg-[#FFF9F0] hover:text-[#0E4A68]"
                     }`}
                   >
-                    {opt.label}
+                    {t.sortOptions[key]}
                   </button>
                 ))}
               </div>
@@ -234,25 +234,40 @@ export function HotelDeliveriesProducts({
       {!isLoading && products.length === 0 && (
         <div className="rounded-xl border border-dashed border-[#CBD5E1] p-12 text-center my-8 bg-white/50">
           <p className="text-sm font-semibold text-[#0E4A68] mb-1">
-            No products found
+            {t.emptyTitle}
           </p>
           <p className="text-xs text-[#64748B]">
             {debouncedSearch
-              ? `No products matching "${debouncedSearch}". Try a different keyword.`
-              : "There are no products listed in this category at the moment."}
+              ? t.emptySearch.replace("{term}", debouncedSearch)
+              : t.emptyCategory}
           </p>
         </div>
       )}
 
       {/* ─── Product Grid: 2 columns on mobile/tablet, 3 columns on desktop ─── */}
       {!isLoading && sortedProducts.length > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6 lg:gap-7 xl:gap-8">
-          {sortedProducts.map((prod) => (
-            <HotelDeliveriesCard
-              key={prod.id}
-              product={prod}
-              locale={locale}
-              onAddToCart={(item) => {
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5 md:gap-6 lg:gap-7 xl:gap-8"
+        >
+          {sortedProducts.map((prod, idx) => (
+            <motion.div
+              key={`prod-${currentPage}-${prod.id}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.45,
+                delay: Math.min(idx * 0.05, 0.3),
+                ease: "easeOut",
+              }}
+            >
+              <HotelDeliveriesCard
+                product={prod}
+                locale={locale}
+                onAddToCart={(item) => {
                 const isListItem = "subCategoryId" in item;
                 const p = item as ProductListItem;
                 let price = 0;
@@ -277,7 +292,7 @@ export function HotelDeliveriesProducts({
                 addItem(
                   {
                     productId: Number(item.id),
-                    title: item.title || "Product",
+                    title: item.title || dict.hotelDeliveriesPage.details.productFallback,
                     price,
                     unitName,
                     image,
@@ -287,8 +302,9 @@ export function HotelDeliveriesProducts({
                 );
               }}
             />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
 
       {/* ─── Dynamic Pagination ─── */}
@@ -299,7 +315,7 @@ export function HotelDeliveriesProducts({
             type="button"
             disabled={currentPage <= 1}
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            aria-label="Previous page"
+            aria-label={t.ariaPreviousPage}
             className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#888888] flex items-center justify-center text-[#555555] hover:border-[#0E4A68] hover:text-[#0E4A68] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
           >
             ‹
@@ -339,7 +355,7 @@ export function HotelDeliveriesProducts({
             type="button"
             disabled={currentPage >= totalPages}
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-            aria-label="Next page"
+            aria-label={t.ariaNextPage}
             className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#888888] flex items-center justify-center text-[#555555] hover:border-[#0E4A68] hover:text-[#0E4A68] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
           >
             ›

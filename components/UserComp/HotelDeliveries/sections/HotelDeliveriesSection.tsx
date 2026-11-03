@@ -2,16 +2,20 @@
 
 import React, { useState } from "react";
 import { FiX } from "react-icons/fi";
+import { motion } from "framer-motion";
 import { HotelDeliveriesHero } from "../components/HotelDeliveriesHero";
 import { HotelDeliveriesCategories } from "../components/HotelDeliveriesCategories";
 import { HotelDeliveriesProducts } from "../components/HotelDeliveriesProducts";
 import { FloatingCartButton } from "../components/FloatingCartButton";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface HotelDeliveriesSectionProps {
   locale?: string;
 }
 
 export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSectionProps) {
+  const dict = getDictionary(locale);
+  const t = dict.hotelDeliveriesPage.categories;
   const [activeSubcategoryId, setActiveSubcategoryId] = useState<number | null>(null);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
@@ -47,23 +51,31 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
       {isMobileFilterOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">
           {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs"
             onClick={() => setIsMobileFilterOpen(false)}
           />
 
           {/* Drawer Content */}
-          <div className="relative w-[300px] max-w-[85vw] bg-[#FFF9F0] h-full shadow-2xl z-10 p-5 sm:p-6 overflow-y-auto flex flex-col justify-between font-poppins">
+          <motion.div
+            initial={{ x: -32, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="relative w-[300px] max-w-[85vw] bg-[#FFF9F0] h-full shadow-2xl z-10 p-5 sm:p-6 overflow-y-auto flex flex-col justify-between font-poppins"
+          >
             <div>
               <div className="flex items-center justify-between pb-3.5 border-b border-[#0E4A68]/15 mb-4">
                 <h3 className="text-[18px] sm:text-[20px] font-bold text-[#0E4A68]">
-                  Categories
+                  {t.title}
                 </h3>
                 <button
                   type="button"
                   onClick={() => setIsMobileFilterOpen(false)}
                   className="w-8 h-8 rounded-full flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 transition-colors"
-                  aria-label="Close filters"
+                  aria-label={t.closeFilters}
                 >
                   <FiX size={18} />
                 </button>
@@ -85,9 +97,9 @@ export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSection
               onClick={() => setIsMobileFilterOpen(false)}
               className="w-full mt-6 py-2.5 bg-[#0E4A68] text-white rounded-[5px] text-[13px] sm:text-[14px] font-semibold text-center hover:bg-[#0A3850] active:scale-98 transition-all cursor-pointer"
             >
-              Apply Filter
+              {t.applyFilter}
             </button>
-          </div>
+          </motion.div>
         </div>
       )}
 

@@ -1,12 +1,14 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { TransferSection } from "@/components/UserComp/Transfer";
+import { localizedMetadata } from "@/shared/utils/localizedMetadata";
 
-export const metadata: Metadata = {
-  title: "Transfer Services | Egypt Tourist Market",
-  description:
-    "Comfortable & Reliable Airport Transfers in Hurghada. Book door-to-door transfer service between Hurghada Airport and hotels across the Red Sea Riviera.",
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { local } = await params;
+  return localizedMetadata(local, "transfer");
+}
 
 export function generateStaticParams() {
   return [

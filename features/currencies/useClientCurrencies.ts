@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getActiveCurrencies } from "@/clientApi/currencyApi";
-import { useCurrencyStore } from "./currencyStore";
+import { hydrateCurrencyStore, useCurrencyStore } from "./currencyStore";
 import { DEFAULT_CURRENCIES } from "@/shared/utils/currencyUtils";
 import type { CurrencyItem } from "@/models/currency";
 
@@ -45,6 +45,11 @@ export function useClientCurrencies() {
     staleTime: 10 * 60 * 1000,
     retry: 1,
   });
+
+  // Persist runs with skipHydration, so load the stored selection on mount
+  useEffect(() => {
+    hydrateCurrencyStore();
+  }, []);
 
   useEffect(() => {
     setIsLoading(query.isLoading);

@@ -5,7 +5,8 @@ import Image from "next/image";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import type { CartItem } from "@/models/cart";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
+import { useCurrencyFormat } from "@/features/currencies/useFormattedPrice";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 const DEFAULT_PRODUCT_IMAGE = "/GroupExcursions/HeroLogo.webp";
 
@@ -43,25 +44,30 @@ interface ProductsCartTableProps {
   onUpdateQuantity: (productId: number, quantity: number) => void;
   onRemoveItem: (productId: number) => void;
   onClearCart?: () => void;
+  locale?: string;
 }
 
 export function ProductsCartTable({
   items,
   onUpdateQuantity,
   onRemoveItem,
+  locale = "en",
 }: ProductsCartTableProps) {
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
+  const formatPrice = useCurrencyFormat();
+  const dict = getDictionary(locale);
+  const t = dict.cartPage.table;
+  const tHeaders = dict.cartPage.page.headers;
 
   return (
     <div className="w-full font-poppins flex flex-col gap-4">
       {/* Desktop & Tablet View (md and up) */}
       <div className="hidden md:block w-full rounded-lg border border-[#888888] bg-white overflow-hidden shadow-2xs">
         <div className="grid grid-cols-12 py-3 px-6 bg-[#0E4A68] text-white font-poppins text-xs font-bold tracking-wider">
-          <div className="col-span-5 text-left">PRODUCT</div>
-          <div className="col-span-2 text-center">PRICE</div>
-          <div className="col-span-2 text-center">QUANTITY</div>
-          <div className="col-span-2 text-center">TOTAL</div>
-          <div className="col-span-1 text-center">ACTION</div>
+          <div className="col-span-5 text-left">{tHeaders.product}</div>
+          <div className="col-span-2 text-center">{tHeaders.price}</div>
+          <div className="col-span-2 text-center">{tHeaders.quantity}</div>
+          <div className="col-span-2 text-center">{tHeaders.total}</div>
+          <div className="col-span-1 text-center">{tHeaders.action}</div>
         </div>
 
         <div className="divide-y divide-[#888888]/40">
@@ -95,7 +101,7 @@ export function ProductsCartTable({
                       type="button"
                       onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
                       style={{ border: "1.6px solid #0E4A68", borderRadius: "50%" }}
-                      aria-label="Decrease quantity"
+                      aria-label={t.ariaDecrease}
                       className="w-6 h-6 flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 active:scale-95 transition-all cursor-pointer bg-white"
                     >
                       <FiMinus size={11} className="stroke-[3]" />
@@ -107,7 +113,7 @@ export function ProductsCartTable({
                       type="button"
                       onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
                       style={{ border: "1.6px solid #0E4A68", borderRadius: "50%" }}
-                      aria-label="Increase quantity"
+                      aria-label={t.ariaIncrease}
                       className="w-6 h-6 flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 active:scale-95 transition-all cursor-pointer bg-white"
                     >
                       <FiPlus size={11} className="stroke-[3]" />
@@ -125,10 +131,10 @@ export function ProductsCartTable({
                   <button
                     type="button"
                     onClick={() => onRemoveItem(item.productId)}
-                    aria-label={`Remove ${item.title} from cart`}
+                    aria-label={t.ariaRemove.replace("{title}", item.title)}
                     className="transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer"
                   >
-                    <Image src="/remove.svg" alt="Remove" width={30} height={30} className="w-[30px] h-[30px]" />
+                    <Image src="/remove.svg" alt={t.removeAlt} width={30} height={30} className="w-[30px] h-[30px]" />
                   </button>
                 </div>
               </div>
@@ -157,17 +163,17 @@ export function ProductsCartTable({
                     {item.title}
                   </h4>
                   <div className="mt-1 text-xs text-[#64748B] font-medium">
-                    Price: <span className="font-semibold text-[#0E4A68]">{formatPrice(item.price || 0)}</span>
+                    {t.priceLabel} <span className="font-semibold text-[#0E4A68]">{formatPrice(item.price || 0)}</span>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => onRemoveItem(item.productId)}
-                  aria-label={`Remove ${item.title} from cart`}
+                  aria-label={t.ariaRemove.replace("{title}", item.title)}
                   className="shrink-0 p-1 transition-transform duration-200 hover:scale-110 active:scale-95 cursor-pointer"
                 >
-                  <Image src="/remove.svg" alt="Remove" width={26} height={26} className="w-[26px] h-[26px]" />
+                  <Image src="/remove.svg" alt={t.removeAlt} width={26} height={26} className="w-[26px] h-[26px]" />
                 </button>
               </div>
 
@@ -177,7 +183,7 @@ export function ProductsCartTable({
                     type="button"
                     onClick={() => onUpdateQuantity(item.productId, item.quantity - 1)}
                     style={{ border: "1.6px solid #0E4A68", borderRadius: "50%" }}
-                    aria-label="Decrease quantity"
+                    aria-label={t.ariaDecrease}
                     className="w-6 h-6 flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 active:scale-95 transition-all cursor-pointer bg-white"
                   >
                     <FiMinus size={11} className="stroke-[3]" />
@@ -189,7 +195,7 @@ export function ProductsCartTable({
                     type="button"
                     onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
                     style={{ border: "1.6px solid #0E4A68", borderRadius: "50%" }}
-                    aria-label="Increase quantity"
+                    aria-label={t.ariaIncrease}
                     className="w-6 h-6 flex items-center justify-center text-[#0E4A68] hover:bg-[#0E4A68]/10 active:scale-95 transition-all cursor-pointer bg-white"
                   >
                     <FiPlus size={11} className="stroke-[3]" />
@@ -197,7 +203,7 @@ export function ProductsCartTable({
                 </div>
 
                 <div className="text-right">
-                  <span className="text-[11px] text-[#64748B] block font-medium">Total</span>
+                  <span className="text-[11px] text-[#64748B] block font-medium">{t.totalLabel}</span>
                   <span className="font-poppins text-[15.5px] font-bold text-[#0E4A68]">
                     {formatPrice(lineTotal)}
                   </span>

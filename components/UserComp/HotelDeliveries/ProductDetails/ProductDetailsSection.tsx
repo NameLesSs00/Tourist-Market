@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ProductDetailsGallery } from "./ProductDetailsGallery";
 import { ProductDetailsBookingCard } from "./ProductDetailsBookingCard";
 import { ProductDetailsNeedHelp } from "./ProductDetailsNeedHelp";
@@ -14,6 +15,7 @@ import {
   useClientProductSubcategoryQuery,
 } from "@/features/products/useClientProducts";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ProductDetailsSectionProps {
   slug?: string;
@@ -25,6 +27,8 @@ export function ProductDetailsSection({
   locale = "en",
 }: ProductDetailsSectionProps) {
   const isRTL = locale === "ar";
+  const dict = getDictionary(locale);
+  const t = dict.hotelDeliveriesPage.details;
 
   // Parse numeric product ID from slug parameter (e.g. "3" or "ananas-1")
   const numericId = useMemo(() => {
@@ -67,16 +71,16 @@ export function ProductDetailsSection({
       >
         <div className="max-w-md w-full bg-white rounded-2xl border border-[#888888]/30 p-8 shadow-sm space-y-4">
           <h2 className="text-2xl font-bold text-[#0E4A68]">
-            Product Not Found
+            {t.notFoundTitle}
           </h2>
           <p className="text-sm text-[#64748B]">
-            The product you are looking for does not exist or may have been removed.
+            {t.notFoundText}
           </p>
           <Link
             href={`/${locale}/hotel-deliveries`}
             className="inline-block mt-4 px-6 py-2.5 bg-[#0E4A68] text-white rounded-lg font-semibold hover:bg-[#0A3850] transition-colors"
           >
-            Back to Hotel Deliveries
+            {t.backToList}
           </Link>
         </div>
       </div>
@@ -93,25 +97,38 @@ export function ProductDetailsSection({
         {/* ─── Top Section: Gallery & Description (Left) + Booking & Need Help (Right) ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Left Column (lg: 8 cols) */}
-          <div className="lg:col-span-8 flex flex-col gap-8">
+          <motion.div
+            initial={{ opacity: 0, x: isRTL ? 24 : -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+            className="lg:col-span-8 flex flex-col gap-8"
+          >
             {/* Gallery */}
-            <ProductDetailsGallery images={galleryImages} />
+            <ProductDetailsGallery images={galleryImages} locale={locale} />
 
             {/* Product Description & Dynamic Specifications */}
             <ProductDetailsDescription
               title={product?.title}
               subtitle={product?.subTitle}
               keys={product?.keys}
+              locale={locale}
             />
-          </div>
+          </motion.div>
 
           {/* Right Column (lg: 4 cols): Sticky Sidebar */}
-          <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28">
+          <motion.div
+            initial={{ opacity: 0, x: isRTL ? -24 : 24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.1, 0.25, 1] }}
+            className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-28"
+          >
             {/* Booking Card */}
             <ProductDetailsBookingCard
               productId={numericId}
               itemTitle={product?.title}
-              category={subcategory?.name || "Hotel Delivery"}
+              category={subcategory?.name || t.fallbackCategory}
               unitPrice={product?.price}
               unitName={product?.priceFor}
               imageUrl={galleryImages?.[0]}
@@ -119,8 +136,8 @@ export function ProductDetailsSection({
             />
 
             {/* Need Help Card */}
-            <ProductDetailsNeedHelp />
-          </div>
+            <ProductDetailsNeedHelp locale={locale} />
+          </motion.div>
         </div>
 
         {/* ─── Middle Section: Reviews & Comments ─── */}

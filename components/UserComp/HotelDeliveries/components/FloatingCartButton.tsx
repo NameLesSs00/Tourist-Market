@@ -4,7 +4,9 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiShoppingCart } from "react-icons/fi";
+import { motion } from "framer-motion";
 import { useCart } from "@/features/cart/useCart";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface FloatingCartButtonProps {
   className?: string;
@@ -36,15 +38,23 @@ export function FloatingCartButton({
     (pathname ? pathname.split("/").filter(Boolean)[0] : "en") ||
     "en";
   const cartHref = `/${resolvedLocale}/cart`;
+  const dict = getDictionary(resolvedLocale);
+  const ariaLabel = dict.hotelDeliveriesPage.cart.ariaCartCount.replace(
+    "{count}",
+    String(totalCount)
+  );
 
   return (
-    <div
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
       className={`fixed bottom-6 left-6 z-40 select-none ${className}`}
       dir="ltr"
     >
       <Link
         href={cartHref}
-        aria-label={`Shopping cart with ${totalCount} items`}
+        aria-label={ariaLabel}
         className={`group relative flex h-14 w-14 items-center justify-center rounded-full bg-[#D48C28] text-white shadow-xl transition-all duration-300 hover:scale-105 hover:bg-[#B8741D] hover:shadow-2xl active:scale-95 cursor-pointer ring-2 ring-white/90 ${
           bounced ? "scale-110" : "scale-100"
         }`}
@@ -59,7 +69,7 @@ export function FloatingCartButton({
           </span>
         )}
       </Link>
-    </div>
+    </motion.div>
   );
 }
 

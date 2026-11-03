@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ServiceThankYouSection } from "@/components/UserComp/Services/components/ServiceThankYouSection";
+import { localizedMetadata } from "@/shared/utils/localizedMetadata";
 
 export const instant = false;
 
@@ -19,10 +20,12 @@ interface PageProps {
   }>;
 }
 
-export const metadata: Metadata = {
-  title: "Thank You for Your Service Booking | Egypt Tourist Market",
-  description: "Your reservation request has been received.",
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { local } = await params;
+  return localizedMetadata(local, "serviceThankYou");
+}
 
 async function ServiceThankYouResolved({ params }: PageProps) {
   const { local } = await params;

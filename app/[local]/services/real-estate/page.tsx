@@ -1,12 +1,14 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { RealEstateSection } from "@/components/UserComp/Services";
+import { localizedMetadata } from "@/shared/utils/localizedMetadata";
 
-export const metadata: Metadata = {
-  title: "Red Sea Real Estate | Egypt Tourist Market",
-  description:
-    "Do you dream of owning a piece of Red Sea paradise? We are here to guide you every step of the way.",
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { local } = await params;
+  return localizedMetadata(local, "realEstate");
+}
 
 export function generateStaticParams() {
   return [

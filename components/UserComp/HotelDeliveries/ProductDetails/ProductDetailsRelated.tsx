@@ -1,8 +1,10 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { HotelDeliveriesCard } from "../components/HotelDeliveriesCard";
 import { useClientRelatedProductsQuery } from "@/features/products/useClientProducts";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ProductDetailsRelatedProps {
   currentProductId?: number;
@@ -15,6 +17,7 @@ export function ProductDetailsRelated({
   subCategoryId,
   locale = "en",
 }: ProductDetailsRelatedProps) {
+  const t = getDictionary(locale).hotelDeliveriesPage.related;
   const { data: relatedProducts, isLoading } = useClientRelatedProductsQuery(
     currentProductId,
     subCategoryId,
@@ -28,10 +31,16 @@ export function ProductDetailsRelated({
   }
 
   return (
-    <section className="w-full font-poppins select-none mt-12 sm:mt-16">
+    <motion.section
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: 0.55, ease: "easeOut" }}
+      className="w-full font-poppins select-none mt-12 sm:mt-16"
+    >
       {/* ─── Section Title ─── */}
       <h3 className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#0E4A68] tracking-tight mb-6 sm:mb-8">
-        Related Products
+        {t.title}
       </h3>
 
       {/* ─── Skeleton Loading State ─── */}
@@ -59,7 +68,7 @@ export function ProductDetailsRelated({
           ))}
         </div>
       )}
-    </section>
+    </motion.section>
   );
 }
 

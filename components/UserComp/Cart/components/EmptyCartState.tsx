@@ -2,12 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface EmptyCartStateProps {
   locale?: string;
 }
 
 export function EmptyCartState({ locale = "en" }: EmptyCartStateProps) {
+  const t = getDictionary(locale).cartPage.empty;
   return (
     <div
       style={{
@@ -17,7 +19,7 @@ export function EmptyCartState({ locale = "en" }: EmptyCartStateProps) {
       className="w-full min-h-[340px] sm:min-h-[380px] flex flex-col items-center justify-center p-6 sm:p-12 text-center border md:border-t-0 rounded-[8px] md:rounded-t-none"
     >
       <h3 className="font-poppins text-[20px] sm:text-[24px] font-semibold text-[#0E4A68] mb-6">
-        Cart Is Empty
+        {t.title}
       </h3>
 
       <Link
@@ -29,7 +31,7 @@ export function EmptyCartState({ locale = "en" }: EmptyCartStateProps) {
         }}
         className="px-8 py-3 text-white font-poppins text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.98] inline-block"
       >
-        Hotel Deliveries
+        {t.cta}
       </Link>
     </div>
   );

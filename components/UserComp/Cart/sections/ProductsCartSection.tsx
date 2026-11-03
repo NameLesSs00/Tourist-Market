@@ -12,6 +12,7 @@ import { createProductBooking } from "@/clientApi/productBookingApi";
 import type { CreateProductBookingRequest } from "@/models/productBooking";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { isValidEmail, isValidPhoneNumber } from "@/shared/utils/phoneUtils";
+import { getDictionary } from "@/shared/utils/getDictionary";
 import {
   ProductsCartTable,
   OrderSummaryCard,
@@ -28,6 +29,9 @@ interface ProductsCartSectionProps {
 export function ProductsCartSection({
   locale = "en",
 }: ProductsCartSectionProps) {
+  const dict = getDictionary(locale);
+  const tPage = dict.cartPage.page;
+  const tToasts = dict.cartPage.toasts;
   const router = useRouter();
   const {
     isHydrated,
@@ -98,7 +102,7 @@ export function ProductsCartSection({
 
   const handleProceedToCheckout = () => {
     if (items.length === 0) {
-      toast.error("Your cart is empty. Please add items before proceeding.");
+      toast.error(tToasts.emptyCartProceed);
       return;
     }
     setCurrentStep("checkout");
@@ -111,54 +115,52 @@ export function ProductsCartSection({
     e.preventDefault();
 
     if (items.length === 0) {
-      toast.error("Your cart is empty.");
+      toast.error(tToasts.emptyCart);
       return;
     }
 
     if (!deliveryData.agreedToTerms) {
-      toast.error("Please agree to the Terms of Service and Privacy Policy.");
+      toast.error(tToasts.agreeTerms);
       return;
     }
 
     if (!contactData.name.trim() || contactData.name.trim().length < 2) {
-      toast.error("Please enter your name (at least 2 characters).");
+      toast.error(tToasts.nameRequired);
       return;
     }
 
     if (!contactData.phoneNumber.trim()) {
-      toast.error("Please fill in your phone number.");
+      toast.error(tToasts.phoneRequired);
       return;
     }
 
     if (!isValidPhoneNumber(contactData.phoneNumber)) {
-      toast.error(
-        "Please enter a valid phone number (7 to 15 digits)."
-      );
+      toast.error(tToasts.phoneInvalid);
       return;
     }
 
     if (contactData.email && !isValidEmail(contactData.email)) {
-      toast.error("Please enter a valid email address.");
+      toast.error(tToasts.emailInvalid);
       return;
     }
 
     if (!deliveryData.hotelName.trim() || !deliveryData.roomNumber.trim()) {
-      toast.error("Please fill in your hotel name and room number.");
+      toast.error(tToasts.hotelRoomRequired);
       return;
     }
 
     if (!deliveryData.hotelArea && !deliveryData.deliveryProductId) {
-      toast.error("Please select a delivery area.");
+      toast.error(tToasts.areaRequired);
       return;
     }
 
     if (!deliveryData.deliveryDate) {
-      toast.error("Please pick a delivery date.");
+      toast.error(tToasts.dateRequired);
       return;
     }
 
     if (!deliveryData.deliveryTime) {
-      toast.error("Please pick a delivery time.");
+      toast.error(tToasts.timeRequired);
       return;
     }
 
@@ -219,9 +221,7 @@ export function ProductsCartSection({
 
       const result = await createProductBooking(payload);
 
-      toast.success(
-        "Thank you! Your order has been placed successfully. We will contact you shortly."
-      );
+      toast.success(tToasts.orderSuccess);
 
       const confirmedData = {
         ...result,
@@ -282,10 +282,7 @@ export function ProductsCartSection({
       router.push(`/${locale}/cart/thank-you${queryString}`);
     } catch (err) {
       toast.error(
-        extractErrorMessage(
-          err,
-          "There was an issue submitting your order. Please check your details and try again."
-        )
+        extractErrorMessage(err, tToasts.orderError)
       );
     } finally {
       setIsSubmitting(false);
@@ -301,12 +298,12 @@ export function ProductsCartSection({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5 mb-6 sm:mb-8">
           <div>
             <h1 className="text-[26px] sm:text-[32px] md:text-[36px] font-semibold text-[#083952] tracking-tight">
-              Products Cart
+              {tPage.title}
             </h1>
             <p className="text-xs sm:text-sm text-[#64748B] mt-0.5">
               {currentStep === "cart"
-                ? "Review items in your cart and proceed to checkout."
-                : "Fill in guest details and delivery schedule to complete your booking."}
+                ? tPage.subtitleCart
+                : tPage.subtitleCheckout}
             </p>
           </div>
 
@@ -322,7 +319,7 @@ export function ProductsCartSection({
                 }`}
               >
                 <FiShoppingBag size={13} />
-                <span>1. Cart Items</span>
+                <span>{tPage.stepCart}</span>
               </button>
               <span className="text-[#888888] text-xs">/</span>
               <button
@@ -335,7 +332,7 @@ export function ProductsCartSection({
                 }`}
               >
                 <FiTruck size={13} />
-                <span>2. Delivery Details</span>
+                <span>{tPage.stepDelivery}</span>
               </button>
             </div>
           )}
@@ -364,11 +361,11 @@ export function ProductsCartSection({
                   }}
                   className="hidden md:grid grid-cols-12 py-3.5 px-6 text-white text-[14px] font-semibold tracking-wider uppercase select-none items-center"
                 >
-                  <div className="col-span-5 text-left">PRODUCT</div>
-                  <div className="col-span-2 text-center">PRICE</div>
-                  <div className="col-span-2 text-center">QUANTITY</div>
-                  <div className="col-span-2 text-center">TOTAL</div>
-                  <div className="col-span-1 text-center">ACTION</div>
+                  <div className="col-span-5 text-left">{tPage.headers.product}</div>
+                  <div className="col-span-2 text-center">{tPage.headers.price}</div>
+                  <div className="col-span-2 text-center">{tPage.headers.quantity}</div>
+                  <div className="col-span-2 text-center">{tPage.headers.total}</div>
+                  <div className="col-span-1 text-center">{tPage.headers.action}</div>
                 </div>
 
                 {/* Empty State Box */}
@@ -382,6 +379,7 @@ export function ProductsCartSection({
                   onUpdateQuantity={updateQuantity}
                   onRemoveItem={removeItem}
                   onClearCart={handleClearCart}
+                  locale={locale}
                 />
 
                 {/* Unified Cart Action Bar */}
@@ -391,7 +389,7 @@ export function ProductsCartSection({
                     onClick={handleClearCart}
                     className="w-full sm:w-auto text-center py-2 text-xs sm:text-[13px] text-gray-500 hover:text-red-600 transition-colors cursor-pointer font-medium"
                   >
-                    Clear Entire Cart
+                    {tPage.clearEntireCart}
                   </button>
                   <button
                     type="button"
@@ -399,7 +397,7 @@ export function ProductsCartSection({
                     style={{ backgroundColor: "#0E4A68" }}
                     className="w-full sm:w-auto px-7 py-3 text-white text-sm font-semibold rounded-[5px] shadow-sm hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer text-center"
                   >
-                    Proceed to Checkout
+                    {tPage.proceedToCheckout}
                   </button>
                 </div>
               </>
@@ -414,10 +412,10 @@ export function ProductsCartSection({
                     className="inline-flex items-center gap-2 text-[#0E4A68] hover:text-[#146188] font-medium text-sm transition-colors cursor-pointer"
                   >
                     <FiArrowLeft size={16} />
-                    <span>Back to Cart</span>
+                    <span>{tPage.backToCart}</span>
                   </button>
                   <span className="text-xs text-[#64748B] font-medium">
-                    Step 2 of 2: Guest Details & Delivery
+                    {tPage.stepOf}
                   </span>
                 </div>
 
@@ -427,6 +425,7 @@ export function ProductsCartSection({
                   onChange={handleContactChange}
                   countries={countriesData}
                   isCountriesLoading={isCountriesLoading}
+                  locale={locale}
                 />
 
                 {/* 2. Delivery Information Card */}
@@ -454,6 +453,7 @@ export function ProductsCartSection({
               onProceedToCheckout={handleProceedToCheckout}
               isSubmitting={isSubmitting}
               onRemoveItem={removeItem}
+              locale={locale}
             />
           </div>
         </div>

@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "@/features/cart/useCart";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
+import { useFormattedPrice } from "@/features/currencies/useFormattedPrice";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface ProductDetailsBookingCardProps {
   productId?: number;
@@ -21,17 +22,20 @@ interface ProductDetailsBookingCardProps {
 
 export function ProductDetailsBookingCard({
   productId = 1,
-  itemTitle = "Product",
-  category = "Hotel Delivery",
+  itemTitle: itemTitleIn,
+  category: categoryIn,
   available = 99,
   unitPrice = 0,
-  unitName = "Piece",
+  unitName,
   imageUrl,
   locale = "en",
 }: ProductDetailsBookingCardProps) {
   const router = useRouter();
   const { addItem } = useCart();
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
+  const dict = getDictionary(locale);
+  const t = dict.hotelDeliveriesPage.bookingCard;
+  const itemTitle = itemTitleIn || dict.hotelDeliveriesPage.details.productFallback;
+  const category = categoryIn || dict.hotelDeliveriesPage.details.fallbackCategory;
   const [quantity, setQuantity] = useState(1);
 
   const handleDecrease = () => {
@@ -42,8 +46,9 @@ export function ProductDetailsBookingCard({
     setQuantity((prev) => (prev < available ? prev + 1 : prev));
   };
 
-  const displayUnit = unitName?.trim() || "Piece";
-  const total = (quantity * unitPrice).toFixed(2);
+  const displayUnit = unitName?.trim() || t.unitDefault;
+  const unitPriceFormatted = useFormattedPrice(Number(unitPrice || 0));
+  const totalFormatted = useFormattedPrice(quantity * Number(unitPrice || 0));
 
   const handleAddToCart = () => {
     const resolvedImage = imageUrl ? getBackendImageUrl(imageUrl) || imageUrl : undefined;
@@ -78,7 +83,7 @@ export function ProductDetailsBookingCard({
         <div className="bg-[#0E4A68] text-white px-5 py-3 flex items-center gap-2.5">
           <FiShoppingCart size={18} className="text-white" />
           <span className="font-semibold text-[15px] tracking-wide">
-            Order for Delivery
+            {t.header}
           </span>
         </div>
 
@@ -88,7 +93,7 @@ export function ProductDetailsBookingCard({
           <div className="flex flex-col gap-3 text-[14px] sm:text-[15px]">
             {/* ITEM */}
             <div className="flex items-center justify-between">
-              <span className="font-bold tracking-wider">ITEM</span>
+              <span className="font-bold tracking-wider">{t.item}</span>
               <span className="font-bold truncate max-w-[200px]" title={itemTitle}>
                 {itemTitle}
               </span>
@@ -96,15 +101,15 @@ export function ProductDetailsBookingCard({
 
             {/* Category */}
             <div className="flex items-center justify-between">
-              <span className="font-bold">Category :</span>
+              <span className="font-bold">{t.category}</span>
               <span className="font-bold truncate max-w-[200px]">{category}</span>
             </div>
 
             {/* Price */}
             <div className="flex items-center justify-between">
-              <span className="font-bold">Price :</span>
+              <span className="font-bold">{t.price}</span>
               <span className="font-bold">
-                {formatPrice(Number(unitPrice || 0))} / {displayUnit}
+                {unitPriceFormatted} / {displayUnit}
               </span>
             </div>
           </div>
@@ -114,41 +119,41 @@ export function ProductDetailsBookingCard({
             {/* Quality */}
             <div className="flex flex-col items-center justify-center text-center">
               <span className="text-[12px] text-[#646464] mb-1.5 font-medium">
-                Quality
+                {t.qualityLabel}
               </span>
               <div className="relative w-10 h-10 mb-1">
                 <Image
-                  src="/Hoteldeliveries/product-details/Frame 585.svg"
-                  alt="Quality guaranteed"
+                  src="/Hoteldeliveries/product-details/quality-badge.svg"
+                  alt={t.qualityAlt}
                   fill
                   className="object-contain"
                 />
               </div>
-              <span className="text-[12px] font-semibold text-[#0E4A68]">Fresh</span>
+              <span className="text-[12px] font-semibold text-[#0E4A68]">{t.qualityValue}</span>
             </div>
 
             {/* Delivery */}
             <div className="flex flex-col items-center justify-center text-center">
               <span className="text-[12px] text-[#646464] mb-1.5 font-medium">
-                Delivery
+                {t.deliveryLabel}
               </span>
               <div className="relative w-10 h-10 mb-1">
                 <Image
-                  src="/Hoteldeliveries/product-details/Frame 585 (1).svg"
-                  alt="Fast delivery"
+                  src="/Hoteldeliveries/product-details/delivery-badge.svg"
+                  alt={t.deliveryAlt}
                   fill
                   className="object-contain"
                 />
               </div>
               <span className="text-[12px] font-semibold text-[#0E4A68]">
-                Fast Delivery
+                {t.deliveryValue}
               </span>
             </div>
           </div>
 
           {/* ─── Quantity Selector & Total ─── */}
           <div className="flex flex-col gap-2 pt-2 border-t border-[#BBBBBB]/30">
-            <span className="text-[14px] font-bold text-[#0E4A68]">Quantity</span>
+            <span className="text-[14px] font-bold text-[#0E4A68]">{t.quantity}</span>
 
             <div className="flex items-center justify-between mt-1">
               {/* Stepper */}
@@ -156,7 +161,7 @@ export function ProductDetailsBookingCard({
                 <button
                   type="button"
                   onClick={handleDecrease}
-                  aria-label="Decrease quantity"
+                  aria-label={t.ariaDecrease}
                   className="w-7 h-7 rounded-full bg-[#0E4A68] text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all cursor-pointer"
                 >
                   <FiMinus size={13} />
@@ -167,7 +172,7 @@ export function ProductDetailsBookingCard({
                 <button
                   type="button"
                   onClick={handleIncrease}
-                  aria-label="Increase quantity"
+                  aria-label={t.ariaIncrease}
                   className="w-7 h-7 rounded-full bg-[#0E4A68] text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all cursor-pointer"
                 >
                   <FiPlus size={13} />
@@ -179,9 +184,9 @@ export function ProductDetailsBookingCard({
 
               {/* Total */}
               <div className="flex items-center gap-2">
-                <span className="text-[13px] text-[#646464]">Total :</span>
+                <span className="text-[13px] text-[#646464]">{t.total}</span>
                 <span className="text-[18px] font-extrabold text-[#0E4A68]">
-                  {formatPrice(quantity * Number(unitPrice || 0))}
+                  {totalFormatted}
                 </span>
               </div>
             </div>
@@ -201,7 +206,7 @@ export function ProductDetailsBookingCard({
                 borderRadius: "10px",
               }}
             >
-              Order Now
+              {t.orderNow}
             </button>
 
             {/* Add to Cart / Delivery Button */}
@@ -217,7 +222,7 @@ export function ProductDetailsBookingCard({
               }}
             >
               <FiShoppingCart size={17} />
-              <span>Book Delivery</span>
+              <span>{t.bookDelivery}</span>
             </button>
           </div>
         </div>

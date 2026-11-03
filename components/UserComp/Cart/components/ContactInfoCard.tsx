@@ -4,6 +4,7 @@ import React from "react";
 import { FiChevronDown } from "react-icons/fi";
 import type { CartContactFormData } from "../types";
 import type { CountryItem } from "@/models/country";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 const FALLBACK_COUNTRIES: { id: string; name: string; phoneCode: string }[] = [
   { id: "142b2b3b-2235-4001-9376-f059c3f8290f", name: "Egypt", phoneCode: "+20" },
@@ -28,6 +29,7 @@ interface ContactInfoCardProps {
   onChange: (field: keyof CartContactFormData, value: string) => void;
   countries?: CountryItem[];
   isCountriesLoading?: boolean;
+  locale?: string;
 }
 
 export function ContactInfoCard({
@@ -35,7 +37,9 @@ export function ContactInfoCard({
   onChange,
   countries,
   isCountriesLoading = false,
+  locale = "en",
 }: ContactInfoCardProps) {
+  const t = getDictionary(locale).cartPage.contact;
   const activeCountries =
     countries && countries.length > 0 ? countries : FALLBACK_COUNTRIES;
 
@@ -82,7 +86,7 @@ export function ContactInfoCard({
     >
       {/* Title */}
       <h3 className="text-[22px] font-semibold text-[#0E4A68] mb-6">
-        Contact Information
+        {t.title}
       </h3>
 
       {/* Form Fields Grid */}
@@ -92,14 +96,14 @@ export function ContactInfoCard({
           {/* Name */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Name <span className="text-red-500">*</span>
+              {t.name} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
               value={formData.name}
               onChange={(e) => onChange("name", e.target.value)}
-              placeholder="Your Full Name"
+              placeholder={t.namePlaceholder}
               className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white placeholder:text-[#00000066] focus:outline-none focus:border-[#0E4A68] transition-colors"
             />
           </div>
@@ -107,7 +111,7 @@ export function ContactInfoCard({
           {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Email <span className="text-red-500">*</span>
+              {t.email} <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -125,7 +129,7 @@ export function ContactInfoCard({
           {/* Country */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Country <span className="text-red-500">*</span>
+              {t.country} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <select
@@ -135,7 +139,7 @@ export function ContactInfoCard({
                 className="w-full px-4 py-2.5 appearance-none rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer"
               >
                 <option value="">
-                  {isCountriesLoading ? "Loading countries..." : "Select Country"}
+                  {isCountriesLoading ? t.loadingCountries : t.selectCountry}
                 </option>
                 {activeCountries.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -150,8 +154,7 @@ export function ContactInfoCard({
           {/* Phone */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Phone number (preferred WhatsApp number){" "}
-              <span className="text-red-500">*</span>
+              {t.phone} <span className="text-red-500">*</span>
             </label>
             <input
               type="tel"
@@ -169,8 +172,7 @@ export function ContactInfoCard({
         {/* Row 3: Preferred Communication Method */}
         <div className="flex flex-col gap-1.5">
           <label className="text-[14px] font-medium text-[#0E4A68]">
-            Preferred Communication Method{" "}
-            <span className="text-red-500">*</span>
+            {t.commMethod} <span className="text-red-500">*</span>
           </label>
           <div className="relative">
             <select
@@ -180,8 +182,8 @@ export function ContactInfoCard({
               className="w-full px-4 py-2.5 appearance-none rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer"
             >
               <option value="WhatsApp">WhatsApp</option>
-              <option value="Phone">Phone Call</option>
-              <option value="Email">Email</option>
+              <option value="Phone">{t.phoneCall}</option>
+              <option value="Email">{t.emailMethod}</option>
               <option value="Viber">Viber</option>
             </select>
             <FiChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />

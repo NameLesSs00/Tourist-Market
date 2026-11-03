@@ -1,11 +1,21 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductsCartSection } from "@/components/UserComp/Cart";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
-export const metadata: Metadata = {
-  title: "Products Cart | Egypt Tourist Market",
-  description: "View and manage items in your shopping cart.",
-};
+export function generateMetadata({
+  params,
+}: {
+  params: Promise<{ local: string }>;
+}): Promise<Metadata> {
+  return params.then(({ local }) => {
+    const meta = getDictionary(local).cartPage.meta;
+    return {
+      title: meta.title,
+      description: meta.description,
+    };
+  });
+}
 
 export function generateStaticParams() {
   return [

@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import Image from "next/image";
 import { FiChevronDown } from "react-icons/fi";
+import { motion } from "framer-motion";
 import {
   useClientProductCategoriesQuery,
   useClientProductSubcategoriesQuery,
 } from "@/features/productCategories/useClientProductCategories";
 import type { ProductSubcategoryItem } from "@/models/productSubcategory";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface HotelDeliveriesCategoriesProps {
   activeSubcategoryId: number | null;
@@ -24,6 +25,9 @@ export function HotelDeliveriesCategories({
 }: HotelDeliveriesCategoriesProps) {
   const categoriesQuery = useClientProductCategoriesQuery(locale);
   const subcategoriesQuery = useClientProductSubcategoriesQuery(undefined, locale);
+
+  const dict = getDictionary(locale);
+  const t = dict.hotelDeliveriesPage.categories;
 
   const categories = categoriesQuery.data || [];
   const subcategories = subcategoriesQuery.data || [];
@@ -51,11 +55,16 @@ export function HotelDeliveriesCategories({
   const isLoading = categoriesQuery.isLoading || subcategoriesQuery.isLoading;
 
   return (
-    <aside className="w-full lg:w-[260px] xl:w-[280px] shrink-0 font-poppins select-none">
+    <motion.aside
+      initial={{ opacity: 0, x: -16 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="w-full lg:w-[260px] xl:w-[280px] shrink-0 font-poppins select-none"
+    >
       {/* Title */}
       {!hideTitle && (
         <h2 className="text-[26px] font-bold text-[#0E4A68] tracking-tight mb-5">
-          Categories
+          {t.title}
         </h2>
       )}
 
@@ -75,7 +84,7 @@ export function HotelDeliveriesCategories({
               activeSubcategoryId === null ? "bg-[#0E4A68]" : "bg-transparent border border-[#555555]"
             }`}
           />
-          <span>All Products</span>
+          <span>{t.allProducts}</span>
         </button>
       </div>
 
@@ -93,7 +102,12 @@ export function HotelDeliveriesCategories({
 
       {/* Real Categories Accordion */}
       {!isLoading && (
-        <div className="flex flex-col">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.15, ease: "easeOut" }}
+          className="flex flex-col"
+        >
           {categories.map((cat) => {
             const subs = subcategoriesByCategory.get(cat.id) || [];
             const hasSubs = subs.length > 0;
@@ -157,9 +171,9 @@ export function HotelDeliveriesCategories({
               </div>
             );
           })}
-        </div>
+        </motion.div>
       )}
-    </aside>
+    </motion.aside>
   );
 }
 

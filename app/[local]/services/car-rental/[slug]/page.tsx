@@ -1,12 +1,14 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ServiceDetailSection } from "@/components/UserComp/Services";
+import { localizedMetadata } from "@/shared/utils/localizedMetadata";
 
-export const metadata: Metadata = {
-  title: "Mercedes Benz | Car Rental",
-  description:
-    "Premium Mercedes Benz car rental with full air conditioning, automatic transmission, and 24/7 support.",
-};
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { local } = await params;
+  return localizedMetadata(local, "carRental");
+}
 
 export function generateStaticParams() {
   const locales = ["en", "fr", "de", "ru"];

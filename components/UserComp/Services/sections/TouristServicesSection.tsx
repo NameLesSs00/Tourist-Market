@@ -18,6 +18,10 @@ export function TouristServicesSection({ locale = "en" }: TouristServicesSection
   const serviceId = SITE_SERVICES_CONFIG.touristServices.id;
   const dict = getDictionary(locale);
   const t = dict.touristServices;
+  const billingLabels = {
+    perHour: dict.serviceDetail.billingPerHour,
+    perDay: dict.serviceDetail.billingPerDay,
+  };
 
   const { data: subItems, isLoading, isError } = usePublicServiceSubItems(
     serviceId,
@@ -26,13 +30,13 @@ export function TouristServicesSection({ locale = "en" }: TouristServicesSection
 
   // Derive cards directly from API data
   const cards = subItems
-    ? subItems.map((item) => mapSubItemToCard(item, "tourist"))
+    ? subItems.map((item) => mapSubItemToCard(item, "tourist", billingLabels))
     : [];
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, ease: "easeOut" }}
       className="w-full min-h-screen bg-[#FFF8ED] py-6 sm:py-8"
     >

@@ -27,6 +27,18 @@ function syncCurrencyCookie(code: string) {
   }
 }
 
+let hasRequestedRehydrate = false;
+
+/**
+ * Reads the persisted currency from localStorage once per client session.
+ * Required because persist runs with skipHydration (SSR/client sync).
+ */
+export function hydrateCurrencyStore() {
+  if (typeof window === "undefined" || hasRequestedRehydrate) return;
+  hasRequestedRehydrate = true;
+  void useCurrencyStore.persist.rehydrate();
+}
+
 export const useCurrencyStore = create<CurrencyStoreState>()(
   persist(
     (set, get) => ({
@@ -104,6 +116,9 @@ export const useCurrencyStore = create<CurrencyStoreState>()(
     }),
     {
       name: "user_currency_store",
+      // Defer localStorage reads to an explicit rehydrate() on client mount so
+      // SSR HTML (USD default) and the first client render stay in sync.
+      skipHydration: true,
       partialize: (state) => ({
         selectedCurrency: state.selectedCurrency,
       }),

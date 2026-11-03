@@ -5,7 +5,8 @@ import Link from "next/link";
 import { FiChevronDown } from "react-icons/fi";
 import type { CartDeliveryFormData } from "../types";
 import type { DeliveryProductItem } from "@/models/deliveryProduct";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
+import { useCurrencyFormat } from "@/features/currencies/useFormattedPrice";
+import { getDictionary } from "@/shared/utils/getDictionary";
 
 interface DeliveryInfoCardProps {
   formData: CartDeliveryFormData;
@@ -26,7 +27,8 @@ export function DeliveryInfoCard({
   areasLoading = false,
   locale = "en",
 }: DeliveryInfoCardProps) {
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
+  const formatPrice = useCurrencyFormat();
+  const t = getDictionary(locale).cartPage.delivery;
   const availableAreas = deliveryAreas || [];
 
   const handleAreaChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,7 +54,7 @@ export function DeliveryInfoCard({
     >
       {/* Title */}
       <h3 className="text-[22px] font-semibold text-[#0E4A68] mb-6">
-        Delivery Information
+        {t.title}
       </h3>
 
       {/* Form Fields Grid */}
@@ -66,14 +68,14 @@ export function DeliveryInfoCard({
           {/* Hotel Name */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Hotel Name <span className="text-red-500">*</span>
+              {t.hotelName} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
               value={formData.hotelName}
               onChange={(e) => onChange("hotelName", e.target.value)}
-              placeholder="Enter Hotel Name"
+              placeholder={t.hotelNamePlaceholder}
               className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white placeholder:text-[#00000066] focus:outline-none focus:border-[#0E4A68] transition-colors"
             />
           </div>
@@ -81,14 +83,14 @@ export function DeliveryInfoCard({
           {/* Room Number */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Room Number <span className="text-red-500">*</span>
+              {t.roomNumber} <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               required
               value={formData.roomNumber}
               onChange={(e) => onChange("roomNumber", e.target.value)}
-              placeholder="Enter Room Number"
+              placeholder={t.roomNumberPlaceholder}
               className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white placeholder:text-[#00000066] focus:outline-none focus:border-[#0E4A68] transition-colors"
             />
           </div>
@@ -99,7 +101,7 @@ export function DeliveryInfoCard({
           {/* Hotel Area */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Hotel Area <span className="text-red-500">*</span>
+              {t.hotelArea} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <select
@@ -110,10 +112,10 @@ export function DeliveryInfoCard({
               >
                 <option value="">
                   {areasLoading
-                    ? "Loading delivery areas..."
+                    ? t.loadingAreas
                     : availableAreas.length === 0
-                    ? "No delivery areas available"
-                    : "Select Hotel Area"}
+                    ? t.noAreas
+                    : t.selectArea}
                 </option>
                 {availableAreas.map((areaItem) => (
                   <option key={areaItem.id} value={areaItem.area}>
@@ -128,7 +130,7 @@ export function DeliveryInfoCard({
           {/* Delivery Date */}
           <div className="flex flex-col gap-1.5">
             <label className="text-[14px] font-medium text-[#0E4A68]">
-              Delivery Date <span className="text-red-500">*</span>
+              {t.deliveryDate} <span className="text-red-500">*</span>
             </label>
             <input
               type="date"
@@ -150,7 +152,7 @@ export function DeliveryInfoCard({
         {/* Row 3: Delivery Time */}
         <div className="flex flex-col gap-1.5">
           <label className="text-[14px] font-medium text-[#0E4A68]">
-            Delivery Time <span className="text-red-500">*</span>
+            {t.deliveryTime} <span className="text-red-500">*</span>
           </label>
           <input
             type="time"
@@ -168,13 +170,13 @@ export function DeliveryInfoCard({
             className="w-full px-4 py-2.5 rounded-[5px] border border-[#888888]/60 text-sm text-[#0E4A68] bg-white focus:outline-none focus:border-[#0E4A68] transition-colors cursor-pointer"
           />
           <p className="text-[12px] text-[#64748B]">
-            Select any delivery time that suits you (e.g. 14:30)
+            {t.timeHint}
           </p>
         </div>
 
         {/* Row 4: Notes */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-[14px] font-medium text-[#0E4A68]">Notes</label>
+          <label className="text-[14px] font-medium text-[#0E4A68]">{t.notes}</label>
           <textarea
             rows={4}
             value={formData.notes}
@@ -198,12 +200,12 @@ export function DeliveryInfoCard({
             htmlFor="terms-checkbox"
             className="text-[13px] sm:text-[14px] text-[#444444] cursor-pointer select-none"
           >
-            I agree to the{" "}
+            {t.iAgree}{" "}
             <Link
               href={`/${locale}/privacy`}
               className="text-[#146188] underline hover:text-[#0E4A68] font-medium"
             >
-              Privacy Policy
+              {t.privacyPolicy}
             </Link>{" "}
             <span className="text-red-500">*</span>
           </label>
@@ -221,7 +223,7 @@ export function DeliveryInfoCard({
             }}
             className="w-full py-3 text-white font-poppins text-[15px] font-semibold shadow-sm transition-all duration-200 hover:brightness-110 active:scale-[0.99] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Placing Order..." : "Place Order"}
+            {isSubmitting ? t.placingOrder : t.placeOrder}
           </button>
         </div>
       </form>
