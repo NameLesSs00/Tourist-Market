@@ -23,6 +23,9 @@
   "nav": {
     "home": "Главная",
     "exploreServices": "Все услуги",
+    "services": "Услуги",
+    "excursions": "Экскурсии",
+    "transfer": "Трансфер",
     "hotelDeliveries": "Доставка в отель",
     "blogs": "Блог",
     "faq": "Частые вопросы",
@@ -881,7 +884,11 @@
       "ariaAddToCart": "Добавить {title} в корзину",
       "untitledProduct": "Товар без названия",
       "viewAlt": "Посмотреть",
-      "addToCartAlt": "Добавить в корзину"
+      "addToCartAlt": "Добавить в корзину",
+      "ariaPagination": "Навигация по страницам",
+      "showingRange": "Показано {from}-{to} из {total} товаров",
+      "pageIndicator": "Страница {current} из {total}",
+      "loadingProducts": "Загрузка товаров"
     },
     "cart": {
       "ariaCartCount": "Корзина: товаров — {count}"

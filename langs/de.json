@@ -23,6 +23,9 @@
   "nav": {
     "home": "Startseite",
     "exploreServices": "Services erkunden",
+    "services": "Services",
+    "excursions": "Ausflüge",
+    "transfer": "Transfer",
     "hotelDeliveries": "Hotellieferungen",
     "blogs": "Blogs",
     "faq": "FAQ",
@@ -881,7 +884,11 @@
       "ariaAddToCart": "{title} in den Warenkorb legen",
       "untitledProduct": "Produkt ohne Titel",
       "viewAlt": "Ansehen",
-      "addToCartAlt": "In den Warenkorb"
+      "addToCartAlt": "In den Warenkorb",
+      "ariaPagination": "Seitennavigation",
+      "showingRange": "{from}-{to} von {total} Produkten",
+      "pageIndicator": "Seite {current} von {total}",
+      "loadingProducts": "Produkte werden geladen"
     },
     "cart": {
       "ariaCartCount": "Warenkorb mit {count} Artikeln"

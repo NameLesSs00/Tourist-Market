@@ -23,6 +23,9 @@
   "nav": {
     "home": "Home",
     "exploreServices": "Explore Services",
+    "services": "Services",
+    "excursions": "Excursions",
+    "transfer": "Transfer",
     "hotelDeliveries": "Hotel Deliveries",
     "blogs": "Blogs",
     "faq": "FAQ",
@@ -881,7 +884,11 @@
       "ariaAddToCart": "Add {title} to cart",
       "untitledProduct": "Untitled Product",
       "viewAlt": "View",
-      "addToCartAlt": "Add to cart"
+      "addToCartAlt": "Add to cart",
+      "ariaPagination": "Pagination",
+      "showingRange": "Showing {from}-{to} of {total} products",
+      "pageIndicator": "Page {current} of {total}",
+      "loadingProducts": "Loading products"
     },
     "cart": {
       "ariaCartCount": "Shopping cart with {count} items"

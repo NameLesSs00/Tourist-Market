@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,13 +16,103 @@ interface MobileMenuProps {
   currentLocale?: string;
 }
 
+// Shared class for the plain top-level rows so they cannot drift apart
+const rowClass =
+  "flex w-full items-center py-4 text-[19px] font-bold leading-none text-[#083952] transition-colors hover:text-[#D9943B]";
+
+interface MenuSectionProps {
+  label: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  links: { title: string; href: string }[];
+  onClose: () => void;
+  panelId: string;
+}
+
+/*
+ * Top-level row that toggles a cream sub-card of links (Services, Excursions).
+ * The card content comes from getHeaderServicesData, so adding a link only touches
+ * headerServicesData.ts and the dictionaries.
+ */
+function MenuSection({
+  label,
+  isOpen,
+  onToggle,
+  links,
+  onClose,
+  panelId,
+}: MenuSectionProps) {
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
+        className="flex w-full items-center justify-between gap-4 py-4 text-left text-[19px] font-bold leading-none text-[#083952] transition-colors hover:text-[#D9943B] cursor-pointer"
+      >
+        <span>{label}</span>
+        {/* No explicit color: the chevron inherits the row text color (#083952, gold on hover) */}
+        <FiChevronDown
+          className={`h-[18px] w-[18px] shrink-0 transition-transform duration-200 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <div
+              id={panelId}
+              className="mb-1 rounded-xl border border-[#08395215] bg-[#FFFEEF] px-6 py-1.5 shadow-sm"
+            >
+              {links.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={onClose}
+                  className="-mx-2 block rounded-lg py-3 text-[15px] font-semibold text-[#083952] transition-colors hover:text-[#D9943B]"
+                >
+                  {item.title}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenuProps) {
   const [mounted, setMounted] = useState(false);
   const [isServicesOpen, setIsServicesOpen] = useState(false);
+  const [isExcursionsOpen, setIsExcursionsOpen] = useState(false);
 
   const dict = getDictionary(currentLocale);
   const nav = dict.nav;
   const categories = getHeaderServicesData(currentLocale);
+
+  // Id lookup keeps the wiring independent of the order of the categories
+  const byId = useMemo(
+    () =>
+      Object.fromEntries(
+        categories.map((category) => [category.id, category] as const)
+      ),
+    [categories]
+  );
+  const serviceLinks = byId["all-services"]?.items ?? [];
+  const excursionLinks = byId["excursions"]?.items ?? [];
+  const transferHref =
+    byId["transportation"]?.items?.[0]?.href ??
+    `/${currentLocale}/services/transfer`;
 
   useEffect(() => {
     setMounted(true);
@@ -38,6 +128,17 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  // Collapse both submenus once the overlay is closed, adjusted during render so the
+  // next open always starts from the flat list shown in the design
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (wasOpen !== isOpen) {
+    setWasOpen(isOpen);
+    if (!isOpen) {
+      setIsServicesOpen(false);
+      setIsExcursionsOpen(false);
+    }
+  }
 
   if (!mounted) return null;
 
@@ -74,87 +175,47 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
           </div>
 
           {/* Middle scrollable navigation links */}
-          <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8">
-            <nav className="flex flex-col space-y-3 text-lg font-semibold">
+          <div className="flex-1 overflow-y-auto">
+            <nav
+              aria-label="Main navigation"
+              className="flex flex-col px-6 py-6 sm:px-8"
+            >
               <Link
                 href={`/${currentLocale}`}
                 onClick={onClose}
-                className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
+                className={rowClass}
               >
                 {nav.home}
               </Link>
 
-              {/* Explore Services Accordion matching Filter.png grouping */}
-              <div>
-                <button
-                  type="button"
-                  onClick={() => setIsServicesOpen((prev) => !prev)}
-                  aria-expanded={isServicesOpen}
-                  className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B] cursor-pointer"
-                >
-                  <span>{nav.exploreServices}</span>
-                  <FiChevronDown
-                    className={`h-5 w-5 text-[#083952] transition-transform duration-200 ${
-                      isServicesOpen ? "rotate-180 text-[#D9943B]" : ""
-                    }`}
-                  />
-                </button>
-                <AnimatePresence>
-                  {isServicesOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.22, ease: "easeOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-2 ml-1 flex flex-col space-y-4 rounded-2xl bg-[#FFFEEF] p-4 border border-[#08395215] shadow-sm">
-                        {categories.map((category) => (
-                          <div key={category.id} className="flex flex-col">
-                            {/* Category Header with Icon and Underline */}
-                            <div className="inline-flex flex-col pb-1">
-                              <div className="flex items-center gap-2">
-                                <div className="w-4 h-4 relative flex-shrink-0 flex items-center justify-center">
-                                  <Image
-                                    src={category.iconSrc}
-                                    alt={category.iconAlt}
-                                    width={16}
-                                    height={16}
-                                    className="w-auto h-auto object-contain max-h-4 max-w-4"
-                                  />
-                                </div>
-                                <h5 className="font-poppins font-bold text-[#0A354A] text-sm tracking-tight">
-                                  {category.title}
-                                </h5>
-                              </div>
-                              <div className="mt-1 h-[1.5px] bg-[#0A354A] w-full rounded-full" />
-                            </div>
+              {/* Services sub-card: the tourist service destinations */}
+              <MenuSection
+                label={nav.services}
+                panelId="mobile-menu-services"
+                isOpen={isServicesOpen}
+                onToggle={() => setIsServicesOpen((prev) => !prev)}
+                links={serviceLinks}
+                onClose={onClose}
+              />
 
-                            {/* Category Links */}
-                            <div className="mt-2 flex flex-col space-y-1 pl-1">
-                              {category.items.map((item) => (
-                                <Link
-                                  key={item.title}
-                                  href={item.href}
-                                  onClick={onClose}
-                                  className="rounded-lg px-2 py-1.5 text-[13.5px] font-semibold text-[#083952CC] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
-                                >
-                                  {item.title}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              {/* Excursions sub-card: group and private excursion pages */}
+              <MenuSection
+                label={nav.excursions}
+                panelId="mobile-menu-excursions"
+                isOpen={isExcursionsOpen}
+                onToggle={() => setIsExcursionsOpen((prev) => !prev)}
+                links={excursionLinks}
+                onClose={onClose}
+              />
+
+              <Link href={transferHref} onClick={onClose} className={rowClass}>
+                {nav.transfer}
+              </Link>
 
               <Link
                 href={`/${currentLocale}/hotel-deliveries`}
                 onClick={onClose}
-                className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
+                className={rowClass}
               >
                 {nav.hotelDeliveries}
               </Link>
@@ -162,7 +223,7 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
               <Link
                 href={`/${currentLocale}/Blogs`}
                 onClick={onClose}
-                className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
+                className={rowClass}
               >
                 {nav.blogs}
               </Link>
@@ -170,7 +231,7 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
               <Link
                 href={`/${currentLocale}/About`}
                 onClick={onClose}
-                className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
+                className={rowClass}
               >
                 {nav.about}
               </Link>
@@ -178,7 +239,7 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
               <Link
                 href={`/${currentLocale}/Contact`}
                 onClick={onClose}
-                className="rounded-xl px-3 py-2.5 text-[#083952] transition hover:bg-[#0839520D] hover:text-[#D9943B]"
+                className={rowClass}
               >
                 {nav.contact}
               </Link>
