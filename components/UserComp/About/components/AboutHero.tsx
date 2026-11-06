@@ -131,12 +131,22 @@ export function AboutHero({ locale = "en" }: AboutHeroProps) {
             transition={{ duration: 0.55, ease: "easeOut" }}
             className="w-full text-center sm:text-left max-w-[560px]"
           >
-            <h1 className="font-['Poppins'] text-[32px] sm:text-[42px] font-bold leading-[1.16] tracking-tight text-[#0E4A68]">
+            {/*
+              Same words as the desktop heading above, for the stacked layout. It is a
+              `div` with the heading role instead of a second `<h1>`: both branches ship
+              in the HTML at once (only one is visible per viewport), and a document may
+              advertise exactly one level-1 heading.
+            */}
+            <div
+              role="heading"
+              aria-level={1}
+              className="font-['Poppins'] text-[32px] sm:text-[42px] font-bold leading-[1.16] tracking-tight text-[#0E4A68]"
+            >
               {t.headingLine1}
               <br />
               {t.headingLine2}
               <span className="text-[#D48C28]">{t.headingAccent}</span>
-            </h1>
+            </div>
 
             <p className="mt-4 font-['Poppins'] text-[15px] sm:text-[16px] leading-[1.65] text-[#0E4A68]">
               {t.subtitle}

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
 import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { ImageLightbox } from "@/components/UserComp/Shared/ImageLightbox";
 
 interface GroupDetailsGalleryProps {
   gallery: string[];
@@ -21,6 +22,7 @@ export function GroupDetailsGallery({
   title,
 }: GroupDetailsGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
   const dict = useClientDictionary();
   const t = dict.groupExcursions.details.gallery;
 
@@ -48,7 +50,9 @@ export function GroupDetailsGallery({
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4">
         {/* Main Featured Image */}
-        <div className="md:col-span-9 lg:col-span-9 relative w-full aspect-[540/380] overflow-hidden rounded-[14px] sm:rounded-[20px] border-[2px] sm:border-[4px] border-[#FFFFFF] shadow-[0px_4px_25px_0px_rgba(0,0,0,0.18)] sm:shadow-[0px_4px_25px_0px_rgba(0,0,0,0.25)] bg-slate-100">
+        <div className="md:col-span-9 lg:col-span-9 relative w-full aspect-[540/380] overflow-hidden rounded-[14px] sm:rounded-[20px] border-[2px] sm:border-[4px] border-[#FFFFFF] shadow-[0px_4px_25px_0px_rgba(0,0,0,0.18)] sm:shadow-[0px_4px_25px_0px_rgba(0,0,0,0.25)] bg-slate-100 cursor-pointer"
+          onClick={() => setLightboxOpen(true)}
+        >
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -148,6 +152,15 @@ export function GroupDetailsGallery({
           })}
         </div>
       </div>
+
+      {lightboxOpen && (
+        <ImageLightbox
+          images={images}
+          startIndex={activeIndex}
+          title={subject}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }

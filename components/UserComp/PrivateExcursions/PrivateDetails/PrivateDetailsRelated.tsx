@@ -8,7 +8,6 @@ import { FiClock, FiStar } from "react-icons/fi";
 import type { PrivateExcursion } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
 import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
-import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateDetailsRelatedProps {
   excursions: PrivateExcursion[];
@@ -21,7 +20,6 @@ export function PrivateDetailsRelated({
 }: PrivateDetailsRelatedProps) {
   const dict = useClientDictionary();
   const t = dict.privateExcursions.details.related;
-  const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
   const displayExcursions = (excursions || []).slice(0, 3);
 
@@ -109,17 +107,8 @@ export function PrivateDetailsRelated({
                   </div>
                 </div>
 
-                {/* Pricing & CTA */}
+                {/* CTA */}
                 <div className="p-5 sm:p-6 pt-2">
-                  {/* Price Breakdown Row */}
-                  <div className="py-3 border-t border-gray-100 flex items-center justify-between text-[12px] sm:text-[13px] text-[#083952] font-semibold">
-                    <span>{t.adult || "Adult"}: {formatPrice(item.adultPrice)}</span>
-                    <span className="text-gray-300">|</span>
-                    <span>{t.child || "Child"}: {formatPrice(item.childPrice)}</span>
-                    <span className="text-gray-300">|</span>
-                    <span>{t.infant || "Infant"}: {formatPrice(item.infantPrice)}</span>
-                  </div>
-
                   {/* View Details Action Button */}
                   <div className="mt-2 w-full py-3 rounded-xl bg-[#DE7423] group-hover:bg-[#C9641B] text-white font-bold text-[15px] flex items-center justify-center transition-colors shadow-sm active:scale-[0.99]">
                     {t.viewDetails || "View Details"}

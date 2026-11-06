@@ -13,7 +13,7 @@ import type { Metadata } from "next";
 import { getProductById } from "@/clientApi/productApi";
 import type { ProductDetail } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { buildMetadata } from "@/shared/utils/localizedMetadata";
+import { buildMetadata, withDestinationTitle } from "@/shared/utils/localizedMetadata";
 import { hotelDeliveryHref, hotelDeliveryIdFromSlug } from "@/shared/utils/contentUrl";
 
 export interface ResolvedProduct {
@@ -92,7 +92,9 @@ export async function productDetailMetadata(
     locale,
     path: `/hotel-deliveries/${resolved.id}`,
     section: "hotelDeliveriesPage.details",
-    title: resolved.product.title || undefined,
+    // a hotel delivery is ordered from a resort town, so the title names the town;
+    // the visible <h1> runs the same pattern
+    title: withDestinationTitle(locale, resolved.product.title) || undefined,
     description: resolved.product.subTitle || undefined,
     ...(firstImage ? { ogImage: firstImage } : {}),
   });

@@ -44,6 +44,7 @@ const columnVariants: Variants = {
 
 export function Footer({ currentLocale = "en" }: FooterProps) {
   const pathname = usePathname();
+  const dict = useClientDictionary();
 
   if (pathname?.startsWith("/admin")) {
     return null;
@@ -56,7 +57,6 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
       ? segments[0]
       : currentLocale;
 
-  const dict = useClientDictionary();
   const t = dict.footer;
 
   const quickLinks = [

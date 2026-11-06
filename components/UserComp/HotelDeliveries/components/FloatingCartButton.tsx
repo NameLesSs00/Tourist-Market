@@ -19,6 +19,7 @@ export function FloatingCartButton({
 }: FloatingCartButtonProps) {
   const pathname = usePathname();
   const { isHydrated, totalCount } = useCart();
+  const dict = useClientDictionary();
   const [bounced, setBounced] = useState(false);
 
   // Trigger brief bounce animation whenever count increments
@@ -38,7 +39,6 @@ export function FloatingCartButton({
     (pathname ? pathname.split("/").filter(Boolean)[0] : "en") ||
     "en";
   const cartHref = `/${resolvedLocale}/cart`;
-  const dict = useClientDictionary();
   const ariaLabel = dict.hotelDeliveriesPage.cart.ariaCartCount.replace(
     "{count}",
     String(totalCount)

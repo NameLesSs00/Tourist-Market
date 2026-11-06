@@ -14,9 +14,10 @@ export function BlogDetailRelated({
   blogs,
   locale = "en",
 }: BlogDetailRelatedProps) {
+  const dict = useClientDictionary();
+
   if (!blogs || blogs.length === 0) return null;
 
-  const dict = useClientDictionary();
   const t = dict.blogs.detail;
 
   return (

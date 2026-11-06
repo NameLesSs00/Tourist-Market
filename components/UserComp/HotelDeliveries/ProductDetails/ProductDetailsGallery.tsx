@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiCamera } from "react-icons/fi";
 import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { ImageLightbox } from "@/components/UserComp/Shared/ImageLightbox";
 
 interface ProductDetailsGalleryProps {
   images?: string[];
@@ -26,6 +27,7 @@ export function ProductDetailsGallery({
     images && images.length > 0 ? images : DEFAULT_IMAGES;
   const [activeIndex, setActiveIndex] = useState(0);
   const [failedImages, setFailedImages] = useState<Record<number, boolean>>({});
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const handlePrev = () => {
     setActiveIndex((prev) =>
@@ -48,12 +50,13 @@ export function ProductDetailsGallery({
     <div className="flex flex-col sm:flex-row gap-4 w-full select-none font-poppins">
       {/* ─── Main Large Image Box ─── */}
       <div
-        className="relative flex-1 aspect-[4/3.5] sm:aspect-square md:aspect-[540/490] flex items-center justify-center p-6 overflow-hidden transition-all"
+        className="relative flex-1 aspect-[4/3.5] sm:aspect-square md:aspect-[540/490] flex items-center justify-center p-6 overflow-hidden transition-all cursor-pointer"
         style={{
           background: "#FFFFF2",
           borderRadius: "9.52px",
           border: "0.95px solid #888888",
         }}
+        onClick={() => setLightboxOpen(true)}
       >
         {/* Left Arrow Button */}
         <button
@@ -155,6 +158,15 @@ export function ProductDetailsGallery({
           );
         })}
       </div>
+
+      {lightboxOpen && (
+        <ImageLightbox
+          images={displayImages}
+          startIndex={activeIndex}
+          title={title}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }

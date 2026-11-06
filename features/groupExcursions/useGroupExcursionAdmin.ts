@@ -17,6 +17,18 @@ import type {
 
 export const GROUP_EXCURSIONS_KEY = ["admin", "group-excursions"] as const;
 
+/**
+ * Master switch for English backfilling on save. When off (the default), a
+ * locale is written exactly as submitted, so a real ru/de/fr translation can
+ * never be silently overwritten with English. Turn it on only for a deliberate
+ * "fill empty locales with English" operation (e.g. seeding a brand-new trip).
+ */
+let allowEnglishFallback = false;
+
+export function setGroupExcursionEnglishFallback(enabled: boolean): void {
+  allowEnglishFallback = enabled;
+}
+
 export function fillMissingGroupExcursionLanguages<
   T extends {
     title: LocalizedText;
@@ -28,6 +40,9 @@ export function fillMissingGroupExcursionLanguages<
 >(body: T): T {
   const fillText = (text: LocalizedText): LocalizedText => {
     const out = { ...text };
+    // Preserve every already-populated locale. Only *empty* locales are ever
+    // touched, and only when the global English-fallback flag is explicitly on.
+    if (!allowEnglishFallback) return out;
     const fallback = text.en?.trim() || "";
     LANGS.forEach((lang) => {
       if (!out[lang]?.trim()) out[lang] = fallback;

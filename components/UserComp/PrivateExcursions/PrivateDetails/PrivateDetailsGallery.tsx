@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronLeft, FiChevronRight, FiCamera } from "react-icons/fi";
 import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { ImageLightbox } from "@/components/UserComp/Shared/ImageLightbox";
 
 interface PrivateDetailsGalleryProps {
   images: string[];
@@ -24,6 +25,7 @@ export function PrivateDetailsGallery({
   const resolvedBadge = badge || t.featured || "Featured";
 
   const [activeIndex, setActiveIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const safeImages = images && images.length > 0 ? images : [
     "/PrivateExcursions/Privatedetails/7b777cbdc9da0fa5b151e67b42e2d3da14ee38aa.png"
@@ -43,12 +45,13 @@ export function PrivateDetailsGallery({
     <div className="w-full flex flex-col md:flex-row gap-4 items-stretch select-none">
       {/* ─── MAIN LARGE PHOTO ─── */}
       <div
-        className="relative flex-1 min-h-[320px] sm:min-h-[420px] lg:min-h-[460px] overflow-hidden bg-white"
+        className="relative flex-1 min-h-[320px] sm:min-h-[420px] lg:min-h-[460px] overflow-hidden bg-white cursor-pointer"
         style={{
           borderRadius: "20px",
           border: "4px solid #FFFFFF",
           boxShadow: "0px 4px 25px 0px rgba(0, 0, 0, 0.25)",
         }}
+        onClick={() => setLightboxOpen(true)}
       >
         <AnimatePresence mode="wait">
           <motion.div
@@ -151,6 +154,15 @@ export function PrivateDetailsGallery({
           </motion.button>
         ))}
       </div>
+
+      {lightboxOpen && (
+        <ImageLightbox
+          images={safeImages}
+          startIndex={activeIndex}
+          title={title}
+          onClose={() => setLightboxOpen(false)}
+        />
+      )}
     </div>
   );
 }

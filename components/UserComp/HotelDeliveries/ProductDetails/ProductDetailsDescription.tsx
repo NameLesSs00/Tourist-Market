@@ -2,7 +2,11 @@
 
 import React from "react";
 import type { ProductKeyItem } from "@/models/product";
-import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import {
+  useClientDictionary,
+  useDestinationTitle,
+} from "@/shared/providers/ClientDictionaryContext";
+import { ContentHeading } from "@/components/UserComp/Shared/ContentHeading";
 
 interface ProductDetailsDescriptionProps {
   title?: string;
@@ -18,6 +22,9 @@ export function ProductDetailsDescription({
   locale = "en",
 }: ProductDetailsDescriptionProps) {
   const t = useClientDictionary().hotelDeliveriesPage.details;
+  // this is the product page's document heading, so it names the place the way the
+  // <title> does ("Fruit Basket in Hurghada") instead of a bare catalogue name
+  const withPlace = useDestinationTitle();
   const displayTitle = title || t.productFallback;
   const hasKeys = Array.isArray(keys) && keys.length > 0;
 
@@ -32,9 +39,12 @@ export function ProductDetailsDescription({
     >
       {/* ─── Main Title & Subtitle ─── */}
       <div className="mb-6 sm:mb-8 space-y-2.5">
-        <h3 className="text-[26px] sm:text-[30px] md:text-[34px] font-bold text-[#0E4A68] tracking-tight">
-          {displayTitle}
-        </h3>
+        <ContentHeading
+          as="h1"
+          className="text-[26px] sm:text-[30px] md:text-[34px] font-bold text-[#0E4A68] tracking-tight"
+        >
+          {withPlace(displayTitle)}
+        </ContentHeading>
 
         {subtitle && subtitle !== title && (
           <p className="text-[16px] sm:text-[17px] text-[#64748B] font-medium leading-relaxed">

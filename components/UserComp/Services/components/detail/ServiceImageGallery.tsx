@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { SERVICE_FALLBACK_IMAGE } from "@/features/siteServiceItems/usePublicServiceItems";
+import { ImageLightbox } from "@/components/UserComp/Shared/ImageLightbox";
 
 interface ServiceImageGalleryProps {
   mainImage: string;
@@ -23,6 +24,7 @@ export function ServiceImageGallery({
   const displayImages = images.length > 0 ? images : [SERVICE_FALLBACK_IMAGE];
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [failedIndices, setFailedIndices] = useState<Record<number, boolean>>({});
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const activeSrc = failedIndices[activeIndex]
     ? SERVICE_FALLBACK_IMAGE
@@ -33,7 +35,10 @@ export function ServiceImageGallery({
   return (
     <div className="flex flex-col gap-3">
       {/* Active Featured Image */}
-      <div className="relative w-full aspect-[16/9] sm:aspect-[960/480] bg-slate-100 overflow-hidden rounded-t-lg flex items-center justify-center">
+      <div
+        className="relative w-full aspect-[16/9] sm:aspect-[960/480] bg-slate-100 overflow-hidden rounded-t-lg flex items-center justify-center cursor-pointer"
+        onClick={() => setLightboxOpen(true)}
+      >
         <Image
           src={activeSrc}
           alt={`${title} - Photo ${activeIndex + 1}`}
@@ -81,6 +86,15 @@ export function ServiceImageGallery({
             );
           })}
         </div>
+      )}
+
+      {lightboxOpen && (
+        <ImageLightbox
+          images={displayImages}
+          startIndex={activeIndex}
+          title={title}
+          onClose={() => setLightboxOpen(false)}
+        />
       )}
     </div>
   );
