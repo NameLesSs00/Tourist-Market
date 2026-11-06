@@ -1,7 +1,12 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PrivateDetailsSection } from "@/components/UserComp/PrivateExcursions";
-import { getPrivateExcursionFullDetails } from "@/clientApi/privateExcursionDetailsApi";
+import { StructuredData } from "@/components/UserComp/Shared/JsonLd";
+import { excursionDetailGraph } from "@/features/seo/structuredData";
+import {
+  excursionDetailMetadata,
+  resolveExcursionDetail,
+} from "@/features/excursions/getExcursionForPath";
 
 export const instant = false;
 
@@ -12,21 +17,9 @@ interface PageProps {
   }>;
 }
 
-const FALLBACK_TITLE = "Private Excursion Details | Egypt Tourist Market";
-const FALLBACK_DESCRIPTION =
-  "Discover the timeless wonders of Egypt with exclusive private excursions tailored for you.";
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug, local } = await params;
-  try {
-    const { excursion } = await getPrivateExcursionFullDetails(slug, local);
-    return {
-      title: excursion.title ? `${excursion.title} | Egypt Tourist Market` : FALLBACK_TITLE,
-      description: excursion.shortDescription || FALLBACK_DESCRIPTION,
-    };
-  } catch {
-    return { title: FALLBACK_TITLE, description: FALLBACK_DESCRIPTION };
-  }
+  return excursionDetailMetadata(local, "private", slug);
 }
 
 function PrivateDetailsLoadingFallback() {
@@ -37,15 +30,24 @@ function PrivateDetailsLoadingFallback() {
   );
 }
 
-async function PrivateDetailsResolved({ params }: PageProps) {
+// The resolution happens outside the Suspense boundary on purpose: inside the hole of
+// a partial-prerendered route nothing can change the response status any more, because
+// the shell is already on the wire - proxy.ts is what turns an unknown detail URL into
+// a real 404. This call is still what renders the right document, for a visitor who
+// arrives through the router rather than a fresh request.
+export default async function LocalPrivateExcursionDetailPage({ params }: PageProps) {
   const { local, slug } = await params;
-  return <PrivateDetailsSection slug={slug} locale={local} />;
-}
-
-export default function LocalPrivateExcursionDetailPage(props: PageProps) {
+  // an unknown excursion answers 404 instead of the client component's "not found"
+  // card with HTTP 200, and a GUID segment redirects onto the stored slug
+  await resolveExcursionDetail(local, "private", slug);
   return (
     <Suspense fallback={<PrivateDetailsLoadingFallback />}>
-      <PrivateDetailsResolved {...props} />
+      <PrivateDetailsSection slug={slug} locale={local} />
+      {/*
+        TouristTrip with the itinerary, price and rating the tabs above show, read
+        from the same cached resolution; a hidden excursion publishes nothing.
+      */}
+      <StructuredData graph={excursionDetailGraph(local, "private", slug)} />
     </Suspense>
   );
 }

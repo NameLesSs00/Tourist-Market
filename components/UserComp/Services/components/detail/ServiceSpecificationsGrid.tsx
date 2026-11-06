@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiCheckCircle, FiInfo } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { ServiceSpecification } from "../../types";
 
 interface ServiceSpecificationsGridProps {
@@ -22,7 +22,7 @@ export function ServiceSpecificationsGrid({
   airConditioning,
   locale = "en",
 }: ServiceSpecificationsGridProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   // Consolidate legacy specs if structured specifications are missing

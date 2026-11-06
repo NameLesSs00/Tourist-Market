@@ -12,7 +12,7 @@ import {
   getTomorrowDateString,
   isBookingDateValid,
 } from "@/shared/utils/dateAvailability";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import { PrivateSidebarDatePassengers } from "./sidebar/PrivateSidebarDatePassengers";
 import { PrivateSidebarPriceBreakdown } from "./sidebar/PrivateSidebarPriceBreakdown";
@@ -60,7 +60,7 @@ export function PrivateDetailsBookingSidebar({
   availabilityDays = [],
   availability,
 }: PrivateDetailsBookingSidebarProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.sidebar;
   const selectedCurrency = useCurrencyStore((s) => s.selectedCurrency);
 

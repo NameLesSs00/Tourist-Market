@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronLeft, FiChevronRight, FiCamera } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateDetailsGalleryProps {
   images: string[];
@@ -19,7 +19,7 @@ export function PrivateDetailsGallery({
   title = "Private Excursion Tour",
   locale = "en",
 }: PrivateDetailsGalleryProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.gallery;
   const resolvedBadge = badge || t.featured || "Featured";
 

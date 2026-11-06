@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { GroupExcursionDetail } from "../types";
 import { NeedHelpCard } from "@/components/UserComp/Shared/NeedHelpCard";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 import {
   formatGroupDuration,
@@ -23,7 +23,7 @@ export function GroupDetailsBookingSidebar({
   onBookNow,
   locale = "en",
 }: GroupDetailsBookingSidebarProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.sidebar;
   const heroT = dict.groupExcursions.details.hero;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);

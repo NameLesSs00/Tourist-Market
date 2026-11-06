@@ -11,7 +11,7 @@ import type { PrivateExcursionFilterValues } from "../components/PrivateExcursio
 import { useClientInfinitePrivateExcursionsQuery } from "@/features/privateExcursions/useClientPrivateExcursions";
 import { useExcursionCategoriesQuery } from "@/features/groupExcursions/useClientGroupExcursions";
 import { mapBackendPrivateExcursionToCard } from "../utils/privateExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateExcursionsSectionProps {
   locale?: string;
@@ -20,7 +20,7 @@ interface PrivateExcursionsSectionProps {
 export function PrivateExcursionsSection({
   locale = "en",
 }: PrivateExcursionsSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.grid;
   const router = useRouter();
   const searchParams = useSearchParams();

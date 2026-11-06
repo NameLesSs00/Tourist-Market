@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiChevronDown, FiX } from "react-icons/fi";
 import { MobileMenuSelectors } from "./MobileMenuSelectors";
 import { getHeaderServicesData } from "./headerServicesData";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -96,7 +96,7 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const [isExcursionsOpen, setIsExcursionsOpen] = useState(false);
 
-  const dict = getDictionary(currentLocale);
+  const dict = useClientDictionary();
   const nav = dict.nav;
   const categories = getHeaderServicesData(currentLocale);
 

@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { HotelDeliveriesCard } from "../components/HotelDeliveriesCard";
 import { useClientRelatedProductsQuery } from "@/features/products/useClientProducts";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ProductDetailsRelatedProps {
   currentProductId?: number;
@@ -17,7 +17,7 @@ export function ProductDetailsRelated({
   subCategoryId,
   locale = "en",
 }: ProductDetailsRelatedProps) {
-  const t = getDictionary(locale).hotelDeliveriesPage.related;
+  const t = useClientDictionary().hotelDeliveriesPage.related;
   const { data: relatedProducts, isLoading } = useClientRelatedProductsQuery(
     currentProductId,
     subCategoryId,

@@ -11,7 +11,7 @@ import {
   FiCheckCircle,
 } from "react-icons/fi";
 import { ItineraryItem } from "../types";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateDetailsTabsProps {
   title?: string;
@@ -34,7 +34,7 @@ export function PrivateDetailsTabs({
   cancellationPolicy,
   locale = "en",
 }: PrivateDetailsTabsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.tabs;
   const tDetails = dict.privateExcursions.details;
 

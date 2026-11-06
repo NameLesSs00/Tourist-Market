@@ -3,7 +3,7 @@
 import React from "react";
 import { PrivateExcursion } from "../types";
 import { PrivateExcursionCard } from "./PrivateExcursionCard";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateExcursionsGridProps {
   excursions: PrivateExcursion[];
@@ -16,7 +16,7 @@ export function PrivateExcursionsGrid({
   isLoading = false,
   locale = "en",
 }: PrivateExcursionsGridProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.grid;
 
   if (isLoading) {

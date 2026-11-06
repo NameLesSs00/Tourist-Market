@@ -4,7 +4,7 @@ import React from "react";
 import { FiDollarSign } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import { GroupPaymentMethod } from "@/models/groupBooking";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BookingPaymentSelectorProps {
   paymentMethod: number;
@@ -17,7 +17,7 @@ export function BookingPaymentSelector({
   onPaymentMethodChange,
   locale = "en",
 }: BookingPaymentSelectorProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.bookingForm;
 
   const options = [

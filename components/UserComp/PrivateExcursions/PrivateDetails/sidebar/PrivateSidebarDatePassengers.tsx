@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateSidebarDatePassengersProps {
   tomorrowStr: string;
@@ -41,7 +41,7 @@ export function PrivateSidebarDatePassengers({
   matchedVehicle,
   locale = "en",
 }: PrivateSidebarDatePassengersProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.sidebar;
 
   return (

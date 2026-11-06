@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import {
+  FiAlertCircle,
   FiCheckCircle,
   FiClock,
   FiDollarSign,
@@ -10,6 +11,7 @@ import {
   FiImage,
   FiLayers,
   FiList,
+  FiRotateCcw,
   FiSliders,
 } from "react-icons/fi";
 import type { DataTableColumn } from "@/components/adminComp/Shared";
@@ -19,10 +21,16 @@ import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 
 interface CreateColumnsOptions {
   serviceMap: Map<string, string>;
+  isDeletedView?: boolean;
+  onRestore?: (item: SiteServiceSubItem) => void;
+  isRestoring?: boolean;
 }
 
 export function createSiteServiceItemColumns({
   serviceMap,
+  isDeletedView = false,
+  onRestore,
+  isRestoring = false,
 }: CreateColumnsOptions): DataTableColumn<SiteServiceSubItem>[] {
   return [
     {
@@ -132,30 +140,74 @@ export function createSiteServiceItemColumns({
         );
       },
     },
-    {
-      key: "isActive",
-      header: "Status",
-      className: "w-28",
-      render: (item) => (
-        <span
-          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
-            item.isActive
-              ? "bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]"
-              : "bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0]"
-          }`}
-        >
-          {item.isActive ? (
-            <>
-              <FiCheckCircle className="h-3 w-3" /> Active
-            </>
-          ) : (
-            <>
-              <FiEyeOff className="h-3 w-3" /> Inactive
-            </>
-          )}
-        </span>
-      ),
-    },
+    ...(isDeletedView
+      ? [
+          {
+            key: "deletedAt",
+            header: "Deleted At",
+            className: "w-36",
+            render: (item: SiteServiceSubItem) => {
+              const dateStr = item.deletedAt
+                ? new Date(item.deletedAt).toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : "Deleted";
+              return (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#FECACA] bg-[#FEF2F2] px-2.5 py-1 text-xs font-semibold text-[#DC2626]">
+                  <FiAlertCircle className="h-3 w-3 shrink-0" />
+                  <span>{dateStr}</span>
+                </span>
+              );
+            },
+          },
+          {
+            key: "restoreAction",
+            header: "Restore",
+            className: "w-28 text-center",
+            render: (item: SiteServiceSubItem) => (
+              <button
+                type="button"
+                onClick={() => onRestore?.(item)}
+                disabled={isRestoring}
+                title="Restore this service item"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#A7F3D0] bg-[#ECFDF5] px-3 py-1.5 text-xs font-semibold text-[#059669] hover:bg-[#D1FAE5] transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs active:scale-95"
+              >
+                <FiRotateCcw className="h-3.5 w-3.5" />
+                <span>Restore</span>
+              </button>
+            ),
+          },
+        ]
+      : [
+          {
+            key: "isActive",
+            header: "Status",
+            className: "w-28",
+            render: (item: SiteServiceSubItem) => (
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                  item.isActive
+                    ? "bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]"
+                    : "bg-[#F1F5F9] text-[#64748B] border border-[#E2E8F0]"
+                }`}
+              >
+                {item.isActive ? (
+                  <>
+                    <FiCheckCircle className="h-3 w-3" /> Active
+                  </>
+                ) : (
+                  <>
+                    <FiEyeOff className="h-3 w-3" /> Inactive
+                  </>
+                )}
+              </span>
+            ),
+          },
+        ]),
     {
       key: "createdAt",
       header: "Created",

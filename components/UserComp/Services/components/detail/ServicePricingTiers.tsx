@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiDollarSign, FiLayers } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { ServiceOptionGroup } from "../../types";
 
 interface ServicePricingTiersProps {
@@ -16,7 +16,7 @@ export function ServicePricingTiers({
   costServices,
   locale = "en",
 }: ServicePricingTiersProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
   const hasStructuredTiers = optionsTiers && optionsTiers.length > 0;
   const hasLegacyCost = costServices && costServices.length > 0;

@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiStar } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateReviewOpinionFormProps {
   userRating: number;
@@ -38,7 +38,7 @@ export function PrivateReviewOpinionForm({
   onSubmit,
   locale = "en",
 }: PrivateReviewOpinionFormProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.reviews;
 
   return (

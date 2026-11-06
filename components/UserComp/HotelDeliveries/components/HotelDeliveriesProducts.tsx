@@ -8,7 +8,7 @@ import { useClientProductsQuery } from "@/features/products/useClientProducts";
 import { useCart } from "@/features/cart/useCart";
 import type { ProductListItem } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 const PAGE_SIZE = 12;
 
@@ -39,7 +39,7 @@ export function HotelDeliveriesProducts({
   activeSubcategoryId = null,
   onToggleFilter,
 }: HotelDeliveriesProductsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.hotelDeliveriesPage.products;
   const { addItem } = useCart();
   const [searchTerm, setSearchTerm] = useState("");

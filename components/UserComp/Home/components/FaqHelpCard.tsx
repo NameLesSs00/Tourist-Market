@@ -32,7 +32,6 @@ export function FaqHelpCard({
                 src="/homepage/Faq/curve.png"
                 alt=""
                 fill
-                priority
                 sizes="(max-width: 640px) 270px, 300px"
                 className="object-contain"
               />
@@ -52,7 +51,7 @@ export function FaqHelpCard({
             transition={{ duration: 0.2 }}
           >
             <Link
-              href={`/${currentLocale}/contact`}
+              href={`/${currentLocale}/Contact`}
               className="inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-7 py-2.5 sm:px-8 sm:py-3 font-poppins text-xs sm:text-sm font-semibold text-white shadow-md transition-colors hover:bg-[#083952] cursor-pointer"
             >
               {faq.helpButton}
@@ -73,7 +72,6 @@ export function FaqHelpCard({
           src="/homepage/Faq/curve.png"
           alt=""
           fill
-          priority
           sizes="(max-width: 1280px) 340px, 380px"
           className="object-contain object-right"
         />
@@ -91,7 +89,7 @@ export function FaqHelpCard({
           transition={{ duration: 0.2 }}
         >
           <Link
-            href={`/${currentLocale}/contact`}
+            href={`/${currentLocale}/Contact`}
             className="inline-flex items-center justify-center rounded-2xl bg-[#0E4A68] px-9 py-3.5 font-poppins text-base font-semibold text-white shadow-md transition-colors hover:bg-[#083952] cursor-pointer"
           >
             {faq.helpButton}

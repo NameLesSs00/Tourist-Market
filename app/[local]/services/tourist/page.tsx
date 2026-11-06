@@ -1,13 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { TouristServicesSection } from "@/components/UserComp/Services";
-import { localizedMetadata } from "@/shared/utils/localizedMetadata";
+import { StructuredData } from "@/components/UserComp/Shared/JsonLd";
+import { FallbackHeadingScope } from "@/components/UserComp/Shared/ContentHeading";
+import { serviceListGraph } from "@/features/seo/structuredData";
+import { buildMetadata } from "@/shared/utils/localizedMetadata";
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { local } = await params;
-  return localizedMetadata(local, "touristServices");
+  return buildMetadata({ locale: local, path: "/services/tourist", section: "touristServices" });
 }
 
 export function generateStaticParams() {
@@ -27,12 +30,25 @@ interface PageProps {
 
 async function TouristServicesResolved({ params }: PageProps) {
   const { local } = await params;
-  return <TouristServicesSection locale={local} />;
+  return (
+    <>
+      <TouristServicesSection locale={local} />
+      {/* CollectionPage + ItemList of exactly the items this section lists */}
+      <StructuredData graph={serviceListGraph(local, "tourist")} />
+    </>
+  );
 }
 
 export default function TouristServicesPage(props: PageProps) {
   return (
-    <Suspense fallback={<TouristServicesSection locale="en" />}>
+    <Suspense
+      fallback={
+        // the fallback repeats the section, so its heading is demoted here
+        <FallbackHeadingScope>
+          <TouristServicesSection locale="en" />
+        </FallbackHeadingScope>
+      }
+    >
       <TouristServicesResolved {...props} />
     </Suspense>
   );

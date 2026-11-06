@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary, useDestinationTitle } from "@/shared/providers/ClientDictionaryContext";
 import { ServiceDetailItem } from "../types";
 import {
   ServiceImageGallery,
@@ -18,8 +18,10 @@ interface ServiceDetailCardProps {
 }
 
 export function ServiceDetailCard({ detail, locale = "en" }: ServiceDetailCardProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
+  // the <title> of this page names the place, so the heading has to name it too
+  const withPlace = useDestinationTitle();
   const {
     title,
     imageUrl,
@@ -73,7 +75,7 @@ export function ServiceDetailCard({ detail, locale = "en" }: ServiceDetailCardPr
         {/* Title with Blue Accent Underline */}
         <div className="flex flex-col items-center text-center">
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold uppercase text-[#0E4A68] tracking-tight">
-            {title}
+            {withPlace(title)}
           </h1>
           <motion.div
             initial={{ scaleX: 0 }}

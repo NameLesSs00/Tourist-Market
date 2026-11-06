@@ -10,3 +10,4 @@ export type {
 } from "./ProductDetailsReviews";
 export { ProductDetailsRelated } from "./ProductDetailsRelated";
 export { ProductDetailsSection } from "./ProductDetailsSection";
+export { ProductDetailsSkeleton } from "./ProductDetailsSkeleton";

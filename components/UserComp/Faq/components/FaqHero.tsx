@@ -12,6 +12,7 @@ interface FaqHeroProps {
 
 export function FaqHero({ locale = "en" }: FaqHeroProps) {
   const dict = getDictionary(locale);
+  const t = dict.faq;
   const isRTL = locale === "ar";
 
   return (
@@ -49,17 +50,16 @@ export function FaqHero({ locale = "en" }: FaqHeroProps) {
               </span>
             </nav>
 
-            {/* Main Heading */}
+            {/* Main Heading: the same two strings the <title> is built from */}
             <h1 className="font-poppins text-[34px] sm:text-[44px] md:text-[50px] lg:text-[54px] font-bold leading-[1.14] tracking-tight text-[#0E4A68]">
-              Find Answers to Your
+              {t.titlePrefix}
               <br />
-              Travel <span className="text-[#D48C28]">Questions</span>
+              {t.titleAccent}
             </h1>
 
             {/* Subtitle */}
             <p className="mt-4 max-w-[620px] font-poppins text-sm sm:text-base lg:text-[17px] leading-relaxed text-[#0E4A68CC]">
-              Everything you need to know about our excursions, hotel deliveries,
-              private VIP experiences, and booking policies in one convenient place.
+              {t.heroSubtitle}
             </p>
           </motion.div>
 

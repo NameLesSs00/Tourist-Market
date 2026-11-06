@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiChevronDown } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -26,7 +26,7 @@ export function TouristServiceFields({
   onChange,
   locale = "en",
 }: TouristServiceFieldsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

@@ -22,7 +22,7 @@ import {
   markProductReviewSubmitted,
 } from "@/shared/utils/helpfulReviews";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import type { ProductReviewItem } from "@/models/productReview";
 
 export interface RatingDistributionItem {
@@ -51,7 +51,7 @@ export function ProductDetailsReviews({
   productId,
   locale = "en",
 }: ProductDetailsReviewsProps) {
-  const t = getDictionary(locale).hotelDeliveriesPage.reviews;
+  const t = useClientDictionary().hotelDeliveriesPage.reviews;
   const numericId = useMemo(() => {
     if (!productId) return undefined;
     const direct = Number(productId);

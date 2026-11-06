@@ -15,6 +15,8 @@ import type {
 import {
   useCreateSiteServiceSubItemMutation,
   useDeleteSiteServiceSubItemMutation,
+  useDeletedSiteServiceSubItemsQuery,
+  useRestoreSiteServiceSubItemMutation,
   useSiteServiceSubItemsQuery,
   useUpdateSiteServiceSubItemMutation,
 } from "@/features/siteServiceItems/useSiteServiceItems";
@@ -33,9 +35,12 @@ export function SiteServiceItemManagerComp() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [serviceFilter, setServiceFilter] = useState<string>("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "active" | "inactive" | "deleted">("all");
   const [formTarget, setFormTarget] = useState<SiteServiceSubItem | null | undefined>(undefined);
   const [deleteTarget, setDeleteTarget] = useState<SiteServiceSubItem | null>(null);
+  const [restoreTarget, setRestoreTarget] = useState<SiteServiceSubItem | null>(null);
+
+  const isDeletedTab = statusFilter === "deleted";
 
   const siteServicesQuery = useSiteServicesQuery({ pageSize: 100 });
   const siteServices: SiteServiceItem[] = siteServicesQuery.data?.items ?? [];
@@ -48,32 +53,53 @@ export function SiteServiceItemManagerComp() {
     return map;
   }, [siteServices]);
 
-  const listQuery = useSiteServiceSubItemsQuery({
-    serviceId: serviceFilter || undefined,
-    search: search.trim() || undefined,
-    isActive:
-      statusFilter === "active"
-        ? true
-        : statusFilter === "inactive"
-        ? false
-        : undefined,
-    lang: "en",
-    pageNumber: page,
-    pageSize: PAGE_SIZE,
-  });
+  const activeQuery = useSiteServiceSubItemsQuery(
+    {
+      serviceId: serviceFilter || undefined,
+      search: search.trim() || undefined,
+      isActive:
+        statusFilter === "active"
+          ? true
+          : statusFilter === "inactive"
+          ? false
+          : undefined,
+      lang: "en",
+      pageNumber: page,
+      pageSize: PAGE_SIZE,
+    },
+    { enabled: !isDeletedTab }
+  );
+
+  const deletedQuery = useDeletedSiteServiceSubItemsQuery(
+    {
+      serviceId: serviceFilter || undefined,
+      search: search.trim() || undefined,
+      pageNumber: page,
+      pageSize: PAGE_SIZE,
+    },
+    { enabled: isDeletedTab }
+  );
 
   const createMutation = useCreateSiteServiceSubItemMutation();
   const updateMutation = useUpdateSiteServiceSubItemMutation();
   const deleteMutation = useDeleteSiteServiceSubItemMutation();
+  const restoreMutation = useRestoreSiteServiceSubItemMutation();
 
-  const pagedData = listQuery.data;
+  const currentQuery = isDeletedTab ? deletedQuery : activeQuery;
+  const pagedData = currentQuery.data;
   const items = pagedData?.items ?? [];
   const totalCount = pagedData?.totalCount ?? items.length;
   const totalPages = Math.max(1, pagedData?.totalPages ?? 1);
 
   const columns = useMemo(
-    () => createSiteServiceItemColumns({ serviceMap }),
-    [serviceMap]
+    () =>
+      createSiteServiceItemColumns({
+        serviceMap,
+        isDeletedView: isDeletedTab,
+        onRestore: (item) => setRestoreTarget(item),
+        isRestoring: restoreMutation.isPending,
+      }),
+    [serviceMap, isDeletedTab, restoreMutation.isPending]
   );
 
   const handleCreateSubmit = (data: {
@@ -103,6 +129,13 @@ export function SiteServiceItemManagerComp() {
     });
   };
 
+  const handleRestoreConfirm = () => {
+    if (!restoreTarget) return;
+    restoreMutation.mutate(restoreTarget.id, {
+      onSuccess: () => setRestoreTarget(null),
+    });
+  };
+
   if (!mounted) return null;
 
   return (
@@ -110,8 +143,8 @@ export function SiteServiceItemManagerComp() {
       <PageHeader
         title="Site Service Items"
         description="Manage service options, vehicles, rentals, packages, perks, and gallery photos."
-        actionLabel="Add Item"
-        onAction={() => setFormTarget(null)}
+        actionLabel={isDeletedTab ? undefined : "Add Item"}
+        onAction={isDeletedTab ? undefined : () => setFormTarget(null)}
       />
 
       {/* Filter and Search Bar */}
@@ -148,7 +181,7 @@ export function SiteServiceItemManagerComp() {
 
           {/* Status Filter Tabs */}
           <div className="inline-flex rounded-xl bg-[#F1F5F9] p-1 text-xs font-semibold text-[#64748B]">
-            {(["all", "active", "inactive"] as const).map((filterKey) => (
+            {(["all", "active", "inactive", "deleted"] as const).map((filterKey) => (
               <button
                 key={filterKey}
                 type="button"
@@ -162,7 +195,13 @@ export function SiteServiceItemManagerComp() {
                     : "hover:text-[#0F172A]"
                 }`}
               >
-                {filterKey === "active" ? "Published" : filterKey === "inactive" ? "Unpublished" : "All"}
+                {filterKey === "active"
+                  ? "Published"
+                  : filterKey === "inactive"
+                  ? "Unpublished"
+                  : filterKey === "deleted"
+                  ? "Deleted"
+                  : "All"}
               </button>
             ))}
           </div>
@@ -177,21 +216,25 @@ export function SiteServiceItemManagerComp() {
         columns={columns}
         rows={items}
         getRowKey={(row) => row.id}
-        isLoading={listQuery.isLoading}
-        isFetching={listQuery.isFetching}
+        isLoading={currentQuery.isLoading}
+        isFetching={currentQuery.isFetching}
         emptyTitle={
-          search.trim() || serviceFilter || statusFilter !== "all"
+          isDeletedTab
+            ? "No deleted items"
+            : search.trim() || serviceFilter || statusFilter !== "all"
             ? "No items match current filters"
             : "No site service items yet"
         }
         emptyDescription={
-          search.trim() || serviceFilter || statusFilter !== "all"
+          isDeletedTab
+            ? "There are no deleted site service items in the trash."
+            : search.trim() || serviceFilter || statusFilter !== "all"
             ? "Try adjusting search or selecting a different status or parent service."
             : "Click Add Item to create your first site service item."
         }
         showRowNumber={true}
-        onEdit={(row) => setFormTarget(row)}
-        onDelete={(row) => setDeleteTarget(row)}
+        onEdit={isDeletedTab ? undefined : (row) => setFormTarget(row)}
+        onDelete={isDeletedTab ? undefined : (row) => setDeleteTarget(row)}
         pagination={{
           pageNumber: page,
           pageSize: PAGE_SIZE,
@@ -223,6 +266,16 @@ export function SiteServiceItemManagerComp() {
         isLoading={deleteMutation.isPending}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteTarget(null)}
+      />
+
+      <ConfirmDialog
+        open={Boolean(restoreTarget)}
+        title="Restore Site Service Item"
+        description={`Restore "${restoreTarget?.title}"? The item will be moved back to inactive (unpublished) and can be re-activated from the main list.`}
+        confirmLabel="Restore Item"
+        isLoading={restoreMutation.isPending}
+        onConfirm={handleRestoreConfirm}
+        onCancel={() => setRestoreTarget(null)}
       />
     </div>
   );

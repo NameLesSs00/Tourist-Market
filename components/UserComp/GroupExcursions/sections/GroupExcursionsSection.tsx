@@ -13,7 +13,7 @@ import {
   useExcursionCategoriesQuery,
 } from "@/features/groupExcursions/useClientGroupExcursions";
 import { mapBackendGroupExcursionToCard } from "../utils/groupExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupExcursionsSectionProps {
   locale?: string;
@@ -22,7 +22,7 @@ interface GroupExcursionsSectionProps {
 export function GroupExcursionsSection({
   locale = "en",
 }: GroupExcursionsSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions;
   const sentinelRef = useRef<HTMLDivElement>(null);
 

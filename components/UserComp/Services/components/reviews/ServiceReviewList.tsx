@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiStar, FiThumbsUp, FiUser } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import type { ServiceReviewItem } from "@/models/serviceReview";
 
 interface ServiceReviewListProps {
@@ -41,7 +41,7 @@ export function ServiceReviewList({
   onLoadMoreMobile,
   locale = "en",
 }: ServiceReviewListProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

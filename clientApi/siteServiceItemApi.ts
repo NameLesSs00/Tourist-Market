@@ -91,13 +91,48 @@ export async function updateSiteServiceSubItem(
 }
 
 /**
- * Permanently deletes a site service sub-item by ID.
+ * Permanently deletes / soft-deletes a site service sub-item by ID.
  */
 export async function deleteSiteServiceSubItem(
   id: string
 ): Promise<ApiResponse<null>> {
   const { data } = await apiClient.delete<ApiResponse<null>>(
-    `/services/subservices/${id}`
+    `/admin/subservices/${id}`
+  );
+  return data;
+}
+
+/**
+ * Fetches paginated soft-deleted site service sub-items.
+ */
+export async function getDeletedSiteServiceSubItems(
+  params: SiteServiceSubItemQueryParams = {}
+): Promise<ApiResponse<PagedSiteServiceSubItemsResult>> {
+  const queryParams: Record<string, string | number> = {};
+
+  if (params.serviceId?.trim()) queryParams.serviceId = params.serviceId.trim();
+  if (params.search?.trim()) queryParams.search = params.search.trim();
+  if (params.currency?.trim()) queryParams.currency = params.currency.trim();
+
+  queryParams.pageNumber = params.pageNumber ?? 1;
+  queryParams.pageSize = params.pageSize ?? 10;
+
+  const { data } = await apiClient.get<ApiResponse<PagedSiteServiceSubItemsResult>>(
+    "/admin/subservices/deleted",
+    { params: queryParams }
+  );
+  return data;
+}
+
+/**
+ * Restores a soft-deleted site service sub-item by ID.
+ */
+export async function restoreSiteServiceSubItem(
+  id: string
+): Promise<ApiResponse<SiteServiceSubItem>> {
+  const { data } = await apiClient.post<ApiResponse<SiteServiceSubItem>>(
+    `/admin/subservices/${id}/restore`,
+    {}
   );
   return data;
 }

@@ -9,7 +9,7 @@ import {
   DEFAULT_BLOG_FALLBACK_IMAGE,
   getBlogImageUrl,
 } from "../utils/blogImage";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BlogCardProps {
   blog: BlogItem;
@@ -18,7 +18,7 @@ interface BlogCardProps {
 
 export function BlogCard({ blog, locale = "en" }: BlogCardProps) {
   const isRTL = locale === "ar";
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs;
 
   const [imgSrc, setImgSrc] = useState(() => getBlogImageUrl(blog.imageUrl));

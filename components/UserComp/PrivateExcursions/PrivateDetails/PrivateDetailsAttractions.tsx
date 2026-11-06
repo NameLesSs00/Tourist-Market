@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { PrivateAttraction } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateDetailsAttractionsProps {
@@ -33,7 +33,7 @@ function AttractionCard({
   currency = "$",
   locale = "en",
 }: AttractionCardProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.attractions;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
@@ -225,7 +225,7 @@ export function PrivateDetailsAttractions({
   currency = "$",
   locale = "en",
 }: PrivateDetailsAttractionsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.attractions;
   const canSelectMore = selectedIds.length < maxAttractions;
 

@@ -4,7 +4,7 @@ import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { GroupExcursion } from "../types";
 import { GroupExcursionCard } from "../components/GroupExcursionCard";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupDetailsRelatedProps {
   relatedTrips: GroupExcursion[];
@@ -38,7 +38,7 @@ export function GroupDetailsRelated({
   currentSlug,
   locale = "en",
 }: GroupDetailsRelatedProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.related;
 
   const displayTrips = (relatedTrips || [])

@@ -4,14 +4,14 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateVipHeroBannerProps {
   locale?: string;
 }
 
 export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const vip = dict.privateExcursions.vipBanner;
 
   const desktopBannerRef = React.useRef<HTMLDivElement>(null);
@@ -41,6 +41,12 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
 
   return (
     <>
+      {/*
+        Nothing in this banner is above the fold: the home hero occupies the whole
+        first viewport, so every image here is declared with `sizes` and left lazy.
+        `priority` used to sit on eight of them, which made the browser preload a
+        below-the-fold collage in front of the hero it was competing with.
+      */}
       {/* 1. MOBILE & TABLET VIEW (< lg) */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -57,7 +63,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             alt={vip.alt.background}
             fill
             sizes="(max-width: 640px) 120px, 170px"
-            priority
             className="object-fill object-right"
           />
         </div>
@@ -76,7 +81,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
               alt={vip.alt.frame}
               fill
               sizes="(max-width: 640px) 145px, 220px"
-              priority
               className="object-contain"
             />
           </div>
@@ -117,7 +121,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             fill
             sizes="(max-width: 640px) 86px, 125px"
             className="object-contain"
-            priority
           />
         </div>
 
@@ -128,7 +131,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             fill
             sizes="(max-width: 640px) 66px, 96px"
             className="object-contain"
-            priority
           />
         </div>
       </motion.div>
@@ -150,7 +152,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             alt={vip.alt.background}
             fill
             sizes="(max-width: 1280px) 430px, (max-width: 1536px) 500px, 600px"
-            priority
             className="object-fill object-left"
           />
         </div>
@@ -182,7 +183,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
               alt={vip.alt.frame}
               fill
               sizes="(max-width: 1280px) 260px, (max-width: 1536px) 325px, 410px"
-              priority
               className="object-contain"
             />
           </div>
@@ -233,7 +233,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             fill
             sizes="(max-width: 1280px) 170px, (max-width: 1536px) 225px, 285px"
             className="object-contain"
-            priority
           />
         </motion.div>
 
@@ -250,7 +249,6 @@ export function PrivateVipHeroBanner({ locale = "en" }: PrivateVipHeroBannerProp
             fill
             sizes="(max-width: 1280px) 135px, (max-width: 1536px) 175px, 225px"
             className="object-contain"
-            priority
           />
         </motion.div>
       </motion.div>

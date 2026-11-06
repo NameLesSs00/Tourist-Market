@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { useIsFallbackHeading } from "@/components/UserComp/Shared/ContentHeading";
 
 interface HotelDeliveriesHeroProps {
   locale?: string;
@@ -12,8 +13,11 @@ interface HotelDeliveriesHeroProps {
 export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps) {
   const isRTL = locale === "ar";
   const shouldReduceMotion = useReducedMotion();
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.hotelDeliveriesPage.hero;
+  // the catalogue page ships this tree twice (shell fallback and resolved content), so
+  // only the copy outside the fallback may own the document heading
+  const Heading = (useIsFallbackHeading() ? motion.div : motion.h1) as typeof motion.h1;
 
   // Desktop linear transition: 10s duration, seamless infinite loop
   const desktopTransition = {
@@ -39,14 +43,14 @@ export function HotelDeliveriesHero({ locale = "en" }: HotelDeliveriesHeroProps)
       <div className="relative mx-auto w-full max-w-[1440px] h-full px-6 sm:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between">
         {/* ─── Hero Left Column: Headings & Description ─── */}
         <div className="w-full lg:w-[46%] xl:w-[44%] z-20 text-center lg:text-left pt-2 pb-6 lg:py-0">
-          <motion.h1
+          <Heading
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="text-[38px] sm:text-[46px] md:text-[52px] lg:text-[54px] xl:text-[62px] font-bold leading-[1.08] tracking-tight text-white"
           >
             {t.title}
-          </motion.h1>
+          </Heading>
 
           <motion.p
             initial={{ opacity: 0, y: 16 }}

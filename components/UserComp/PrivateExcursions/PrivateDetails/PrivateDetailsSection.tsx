@@ -19,7 +19,7 @@ import { PrivateDetailsBookingSidebar } from "./PrivateDetailsBookingSidebar";
 import { PrivateDetailsReviews } from "./PrivateDetailsReviews";
 import { PrivateDetailsRelated } from "./PrivateDetailsRelated";
 import { PrivateBookingForm } from "./PrivateBookingForm";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateDetailsSectionProps {
   excursionId?: string;
@@ -32,7 +32,7 @@ export function PrivateDetailsSection({
   slug,
   locale = "en",
 }: PrivateDetailsSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details;
   const identifier = excursionId || slug || "";
 

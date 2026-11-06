@@ -31,6 +31,16 @@ export interface ProductListItem {
   subCategoryId: number;
   images: ProductImage[];
   keys?: ProductKeyItem[];
+  isDeleted?: boolean;
+  deletedAt?: string | null;
+}
+
+export interface DeletedProductQueryParams {
+  search?: string;
+  subCategoryId?: number;
+  language?: string;
+  pageNumber?: number;
+  pageSize?: number;
 }
 
 export interface ProductDetail extends ProductListItem {}

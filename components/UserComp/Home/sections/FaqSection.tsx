@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useClientFaqsQuery } from "@/features/faq/useClientFaqs";
 import {
   FaqHeader,
@@ -81,7 +81,7 @@ function ViewAllFaqButton({ href, label }: { href: string; label: string }) {
 }
 
 export function FaqSection({ locale = "en" }: FaqSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.faq;
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -93,12 +93,9 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
 
   const displayItems = useMemo(() => items.slice(0, 5), [items]);
 
-  useEffect(() => {
-    if (displayItems.length > 0 && !selectedId) {
-      setSelectedId(displayItems[0].id || displayItems[0].question);
-    }
-  }, [displayItems, selectedId]);
-
+  // The first question is the active one until the visitor picks another, and
+  // `activeItem` below derives that. Keeping it a derivation instead of a state
+  // write from an effect means the list renders once per data change.
   const activeItem = useMemo(() => {
     if (!selectedId) return displayItems[0] ?? null;
     return (
@@ -147,7 +144,7 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
             </p>
             <div className="mt-5 flex justify-center">
               <Link
-                href={`/${locale}/contact`}
+                href={`/${locale}/Contact`}
                 className="inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-6 py-2.5 font-poppins text-sm font-medium text-white shadow-sm transition hover:bg-[#083952] active:scale-95 cursor-pointer"
               >
                 {t.empty.contact}

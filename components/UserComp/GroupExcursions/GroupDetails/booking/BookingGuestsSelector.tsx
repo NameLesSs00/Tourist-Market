@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiCalendar, FiUsers } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface BookingGuestsSelectorProps {
@@ -38,7 +38,7 @@ export function BookingGuestsSelector({
   maxParticipants,
   locale = "en",
 }: BookingGuestsSelectorProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.bookingForm;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
 

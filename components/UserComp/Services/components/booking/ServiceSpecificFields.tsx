@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { ServiceType } from "../../types";
 import {
   ServiceBookingFormData,
@@ -33,7 +33,7 @@ export function ServiceSpecificFields({
   onChange,
   locale = "en",
 }: ServiceSpecificFieldsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

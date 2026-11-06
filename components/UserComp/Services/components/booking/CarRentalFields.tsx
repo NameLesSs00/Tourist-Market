@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import {
   ServiceBookingFormData,
   ServiceFieldErrors,
@@ -25,7 +25,7 @@ export function CarRentalFields({
   onChange,
   locale = "en",
 }: CarRentalFieldsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GroupExcursionFaq } from "../types";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupDetailsFaqListProps {
   faqs: GroupExcursionFaq[];
@@ -15,7 +15,7 @@ export function GroupDetailsFaqList({
   locale = "en",
 }: GroupDetailsFaqListProps) {
   const [openFaqIndex, setOpenFaqIndex] = useState<number>(0);
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.tabs;
 
   return (

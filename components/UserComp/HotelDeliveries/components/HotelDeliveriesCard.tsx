@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import type { ProductListItem } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 import { useFormattedPrice } from "@/features/currencies/useFormattedPrice";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 export interface HotelProduct {
   id: string | number;
@@ -30,7 +30,7 @@ export function HotelDeliveriesCard({
   locale = "en",
   onAddToCart,
 }: HotelDeliveriesCardProps) {
-  const t = getDictionary(locale).hotelDeliveriesPage.products;
+  const t = useClientDictionary().hotelDeliveriesPage.products;
   // Determine if product is ProductListItem or legacy HotelProduct
   const isListItem = "subCategoryId" in product;
 

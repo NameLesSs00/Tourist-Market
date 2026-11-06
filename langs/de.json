@@ -1,7 +1,19 @@
 {
+  "seo": {
+    "destinationName": "Hurghada",
+    "detailTitlePattern": "{title} in Hurghada"
+  },
+  "home": {
+    "metadataTitle": "Ausflüge, Transfers & Services",
+    "metadataDescription": "Planen Sie Ihren Urlaub in Hurghada: geführte Ausflüge, Airport-Transfers, Mietwagen, VIP-Flughafenservice und Lieferungen ins Hotelzimmer."
+  },
+  "privacy": {
+    "metadataTitle": "Datenschutzrichtlinie",
+    "metadataDescription": "Wie Egypt Tourist Market personenbezogene Daten erhebt, nutzt und schützt, wenn Sie Touren, Transfers oder Hotel-Services online buchen."
+  },
   "hero": {
     "tagline": "ENTDECKEN SIE",
-    "headline": "REISEZIELE",
+    "headline": "ÄGYPTEN-REISEN",
     "description": "Planen Sie Ihre perfekte Auszeit. Von antiken Wundern bis hin zu unberührten Küsten – entdecken Sie erstklassige Hotels und Erlebnisse.",
     "buttons": {
       "hotelDeliveries": "Hotellieferungen",
@@ -45,6 +57,8 @@
     "transferServices": "Transferservices"
   },
   "groupExcursions": {
+    "metadataTitle": "Gruppenausflüge ab Hurghada",
+    "metadataDescription": "Gemeinsame Tagesausflüge ab Hurghada: Kairo, Luxor, Delfinshows, Wüstensafari, Tauchen und Bootstouren zu den Inseln – inklusive Transfer.",
     "titlePrefix": "Gruppen-",
     "titleAccent": "Ausflüge",
     "subtitle": "Gruppenabenteuer, endlose Freude",
@@ -118,7 +132,8 @@
       "gallery": {
         "featured": "Empfohlen",
         "prevImage": "Vorheriges Bild",
-        "nextImage": "Nächstes Bild"
+        "nextImage": "Nächstes Bild",
+        "photoCount": "Foto"
       },
       "sidebar": {
         "title": "Diesen Ausflug buchen",
@@ -249,6 +264,8 @@
     }
   },
   "privateExcursions": {
+    "metadataTitle": "Privatausflüge in Hurghada",
+    "metadataDescription": "Stellen Sie Ihre private Tour in Hurghada und am Roten Meer zusammen: historische Ausflüge, Meerestouren, Safari und Stadtrundfahrten.",
     "titlePrefix": "Private",
     "titleAccent": "Ausflüge",
     "subtitle": "Entdecken Sie Privatsphäre, genießen Sie Exklusivität",
@@ -579,8 +596,8 @@
     "ariaViewDetails": "Details ansehen für",
     "errorLoading": "Dienste konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
     "emptyState": "Zurzeit sind keine Dienste verfügbar. Bitte schauen Sie später wieder vorbei.",
-    "metadataTitle": "Touristenservices",
-    "metadataDescription": "Innovative Dienstleistungen und Lösungen, die Ihren Ägypten-Urlaub bequem und frei von jeglichen Sorgen und Stress machen."
+    "metadataTitle": "Touristenservice in Hurghada",
+    "metadataDescription": "Privatguides, Kulturtouren und lokale Erlebnisse in Hurghada, am Roten Meer und darüber hinaus – in wenigen Minuten unverbindlich gebucht."
   },
   "realEstate": {
     "heroAlt": "Rotes Meer Immobilien",
@@ -593,7 +610,7 @@
     "errorLoading": "Immobilienangebote konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
     "emptyState": "Zurzeit sind keine Immobilien verfügbar. Bitte schauen Sie später wieder vorbei.",
     "metadataTitle": "Immobilien am Roten Meer",
-    "metadataDescription": "Träumen Sie davon, ein Stück Paradies am Roten Meer zu besitzen? Wir begleiten Sie bei jedem Schritt."
+    "metadataDescription": "Wohnungen, Villen und Resort-Immobilien am Roten Meer kaufen mit lokalen Beratern, rechtlicher Begleitung und organisierten Besichtigungen."
   },
   "serviceDetail": {
     "back": "Zurück",
@@ -727,6 +744,8 @@
     "rateStarAria": "Mit {n} Sternen bewerten"
   },
   "blogs": {
+    "metadataTitle": "Reiseblog & Ägypten-Guides",
+    "metadataDescription": "Reisegeschichten, praktische Tipps und Guides für Hurghada, das Rote Meer, Kairo, Luxor und die bekanntesten Sehenswürdigkeiten Ägyptens.",
     "titleFrom": "Von",
     "titleDestinations": "Reisezielen",
     "titleTo": "zu",
@@ -755,6 +774,8 @@
       "nextPage": "Nächste Seite"
     },
     "detail": {
+      "metadataTitle": "Reisegeschichte aus Ägypten",
+      "metadataDescription": "Eine Geschichte unseres Teams aus Hurghada mit Hintergrund zum Ziel, Preisen, Zeiten und praktischen Tipps aus eigenen Reisen vor Ort.",
       "tagline": "ENTDECKEN SIE DIE ÄGYPTISCHE SEELE. IHR ABENTEUER WARTET.",
       "coverAlt": "Blog-Cover",
       "share": "TEILEN :",
@@ -771,6 +792,8 @@
     }
   },
   "about": {
+    "metadataTitle": "Über Egypt Tourist Market",
+    "metadataDescription": "Eine Tourismusplattform aus Hurghada: Ausflüge, Transfers, Mietwagen, VIP-Flughafenservice und Beratung zu Immobilien am Roten Meer.",
     "hero": {
       "headingLine1": "Mehr als eine Reise",
       "headingLine2": "Es ist eine ",
@@ -852,6 +875,8 @@
     }
   },
   "hotelDeliveriesPage": {
+    "metadataTitle": "Hotel-Lieferungen in Hurghada",
+    "metadataDescription": "Bestellen Sie Komfort und Alltags essentials direkt aufs Zimmer in Hurghada, Sahl Hasheesh, El Gouna, Makadi Bay und Soma Bay.",
     "hero": {
       "title": "Ihr Aufenthalt, aufgewertet.",
       "tagline": "Alles, was Sie brauchen, geliefert.",
@@ -894,6 +919,8 @@
       "ariaCartCount": "Warenkorb mit {count} Artikeln"
     },
     "details": {
+      "metadataTitle": "Produkt für Hotel-Lieferungen",
+      "metadataDescription": "Frische, authentische Produkte direkt auf Ihr Hotelzimmer in Hurghada – mit schneller Zustellung und geprüfter Qualität aus eigenem Team.",
       "notFoundTitle": "Produkt nicht gefunden",
       "notFoundText": "Das gesuchte Produkt existiert nicht oder wurde möglicherweise entfernt.",
       "backToList": "Zurück zu den Hotel-Lieferungen",
@@ -1099,6 +1126,8 @@
     }
   },
   "contact": {
+    "metadataTitle": "Egypt Tourist Market kontaktieren",
+    "metadataDescription": "Fragen oder ein Wunschprogramm? Unser Team in Hurghada antwortet per Telefon, WhatsApp oder E-Mail und plant Ihre Ägyptenreise sicher.",
     "hero": {
       "headingLine1": "Lassen Sie uns Ihre",
       "headingLine2": "Nächste ",
@@ -1144,12 +1173,15 @@
     }
   },
   "faq": {
+    "metadataTitle": "Häufig gestellte Fragen",
+    "metadataDescription": "Klare Antworten zu Gruppen- und Privattouren, Airport-Transfers, Mietwagen, VIP-Service am Flughafen und Lieferungen in Ihr Hotel.",
     "titlePrefix": "Häufig gestellte",
     "titleAccent": "Fragen",
     "subtitle": "Finden Sie Antworten auf alles, was Sie wissen möchten",
     "helpTitle": "Brauchen Sie noch Hilfe ?",
     "helpButton": "Kontakt",
     "viewAll": "Alle FAQs ansehen",
+    "heroSubtitle": "Alles Wichtige zu unseren Ausflügen, Hotel-Lieferungen, privaten VIP-Erlebnissen und Buchungsrichtlinien - gesammelt an einem Ort.",
     "selectQuestion": "Wählen Sie links eine Frage aus, um die Antwort zu lesen.",
     "error": {
       "title": "Häufig gestellte Fragen konnten nicht geladen werden",
@@ -1191,8 +1223,8 @@
     "poweredBy": "Bereitgestellt von"
   },
   "transfer": {
-    "metadataTitle": "Transferservices",
-    "metadataDescription": "Komfortable und zuverlässige Flughafen-Transfers in Hurghada. Buchen Sie Ihre Fahrt im Voraus und reisen Sie entspannt.",
+    "metadataTitle": "Airport-Transfer in Hurghada",
+    "metadataDescription": "Vorab gebuchte Transfers zwischen dem Flughafen Hurghada und den Hotels am Roten Meer – einweg oder als Hin- und Rückfahrt, ohne Extrakosten.",
     "hero": {
       "title": "Transfer-Services",
       "subtitle": "Komfortable & zuverlässige Flughafentransfers in Hurghada",
@@ -1380,8 +1412,8 @@
     "whatsapp": "WhatsApp",
     "errorLoading": "Mietwagenoptionen konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
     "emptyState": "Derzeit sind keine Mietwagenoptionen verfügbar. Schauen Sie bald wieder vorbei.",
-    "metadataTitle": "Mietwagen",
-    "metadataDescription": "Erleben Sie Ägypten in Ihrem eigenen Tempo mit unserem Mietwagen-Service!"
+    "metadataTitle": "Mietwagen in Hurghada",
+    "metadataDescription": "Mieten Sie ein Auto in Hurghada mit unbegrenzten Kilometern, Abholung am Flughafen, Kindersitzen und Support rund um die Uhr."
   },
   "vipAirport": {
     "heroAlt": "VIP-Dienste Flughafen Hurghada",
@@ -1391,8 +1423,8 @@
     "whatsapp": "WhatsApp",
     "errorLoading": "VIP-Flughafendienste konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
     "emptyState": "Derzeit sind keine VIP-Flughafendienste verfügbar. Schauen Sie bald wieder vorbei.",
-    "metadataTitle": "VIP-Services Flughafen Hurghada",
-    "metadataDescription": "Erleben Sie Ihren Abflug aus Hurghada mit unseren nahtlosen, exklusiven VIP-Flughafendiensten."
+    "metadataTitle": "VIP-Service Flughafen Hurghada",
+    "metadataDescription": "VIP-Empfang und Fast-Track am Flughafen Hurghada: persönliche Begleitung, Gepäckservice, Lounge und unterstützter Check-in bei Ankunft oder Abflug."
   },
   "serviceThankYou": {
     "title": "Vielen Dank für Ihre Buchung!",

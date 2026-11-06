@@ -14,7 +14,7 @@ import {
 } from "@/shared/utils/helpfulReviews";
 import { extractErrorMessage } from "@/shared/utils/errorUtils";
 import { isValidEmail, isValidPhoneNumber } from "@/shared/utils/phoneUtils";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import type { ServiceReviewItem } from "@/models/serviceReview";
 import {
   ServiceReviewRatingSummary,
@@ -29,7 +29,7 @@ export interface ServiceReviewsProps {
 }
 
 export function ServiceReviews({ subServiceId, locale = "en" }: ServiceReviewsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   const { data: reviewsData, isLoading, isError, error: queryError } =

@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FiStar } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 export interface RatingDistributionItem {
   star: number;
@@ -24,7 +24,7 @@ export function ServiceReviewRatingSummary({
   distribution,
   locale = "en",
 }: ServiceReviewRatingSummaryProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

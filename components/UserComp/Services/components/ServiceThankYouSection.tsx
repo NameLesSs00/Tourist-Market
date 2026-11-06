@@ -14,7 +14,7 @@ import {
 } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
 import { useServiceBookingStore } from "@/features/servicesBookings/serviceBookingStore";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ServiceThankYouSectionProps {
   locale?: string;
@@ -24,7 +24,7 @@ export function ServiceThankYouSection({ locale = "en" }: ServiceThankYouSection
   const lastBooking = useServiceBookingStore((s) => s.lastBooking);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceThankYou;
 
   useEffect(() => {

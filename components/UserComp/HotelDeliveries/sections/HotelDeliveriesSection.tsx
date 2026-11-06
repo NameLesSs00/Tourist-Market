@@ -7,14 +7,14 @@ import { HotelDeliveriesHero } from "../components/HotelDeliveriesHero";
 import { HotelDeliveriesCategories } from "../components/HotelDeliveriesCategories";
 import { HotelDeliveriesProducts } from "../components/HotelDeliveriesProducts";
 import { FloatingCartButton } from "../components/FloatingCartButton";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface HotelDeliveriesSectionProps {
   locale?: string;
 }
 
 export function HotelDeliveriesSection({ locale = "en" }: HotelDeliveriesSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.hotelDeliveriesPage.categories;
   const [activeSubcategoryId, setActiveSubcategoryId] = useState<number | null>(null);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);

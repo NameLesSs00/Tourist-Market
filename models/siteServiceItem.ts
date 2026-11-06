@@ -72,6 +72,8 @@ export interface SiteServiceSubItem {
   price?: number;
   currency?: string;
   isActive: boolean;
+  isDeleted?: boolean;
+  deletedAt?: string | null;
   createdAt: string;
   images: SiteServiceItemImage[];
   options: SiteServiceOptionItem[];

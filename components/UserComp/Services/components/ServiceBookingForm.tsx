@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FiSend } from "react-icons/fi";
 import { FaCar, FaConciergeBell, FaBuilding, FaLanguage } from "react-icons/fa";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { ServiceDetailItem } from "../types";
 import {
   useServiceBookingForm,
@@ -18,7 +18,7 @@ interface ServiceBookingFormProps {
 }
 
 export function ServiceBookingForm({ detail, locale = "en" }: ServiceBookingFormProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
   const { serviceType, formTitle, formSubtitle } = detail;
 

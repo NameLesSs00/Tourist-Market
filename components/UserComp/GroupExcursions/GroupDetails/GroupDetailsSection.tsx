@@ -16,7 +16,7 @@ import { GroupDetailsReviews } from "./GroupDetailsReviews";
 import { GroupDetailsBookingSidebar } from "./GroupDetailsBookingSidebar";
 import { GroupDetailsRelated } from "./GroupDetailsRelated";
 import { GroupBookingForm } from "./GroupBookingForm";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupDetailsSectionProps {
   excursionId: string;
@@ -27,7 +27,7 @@ export function GroupDetailsSection({
   excursionId,
   locale = "en",
 }: GroupDetailsSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const heroT = dict.groupExcursions.details.hero;
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
@@ -157,6 +157,7 @@ export function GroupDetailsSection({
                     gallery={detail.gallery}
                     badge={detail.badge}
                     locale={locale}
+                    title={detail.title}
                   />
 
                   {/* Mobile / Tablet Booking Card */}

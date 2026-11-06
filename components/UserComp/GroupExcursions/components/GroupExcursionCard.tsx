@@ -6,7 +6,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { GroupExcursion } from "../types";
 import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
-import { getDictionary, type Dictionary } from "@/shared/utils/getDictionary";
+import { type Dictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface GroupExcursionCardProps {
@@ -39,7 +40,10 @@ export function GroupExcursionCard({
   const [imgSrc, setImgSrc] = React.useState(imageUrl);
   const [prevImageUrl, setPrevImageUrl] = React.useState(imageUrl);
 
-  const activeDict = dict || getDictionary(locale);
+  // the layout already resolved the locale, so the optional `dict` prop only has to
+  // cover the callers that render a card with a dictionary of their own
+  const contextDict = useClientDictionary();
+  const activeDict = dict ?? contextDict;
   const t = activeDict.groupExcursions;
 
   if (prevImageUrl !== imageUrl) {

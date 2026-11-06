@@ -1,21 +1,23 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { HotelDeliveriesSection } from "@/components/UserComp/HotelDeliveries";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { FallbackHeadingScope } from "@/components/UserComp/Shared/ContentHeading";
+import { JsonLd } from "@/components/UserComp/Shared/JsonLd";
+import { listPageGraph } from "@/features/seo/structuredData";
+import { buildMetadata } from "@/shared/utils/localizedMetadata";
 
 export const instant = false;
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ local: string }>;
 }): Promise<Metadata> {
-  return params.then(({ local }) => {
-    const meta = getDictionary(local).hotelDeliveriesPage.meta;
-    return {
-      title: meta.listTitle,
-      description: meta.listDescription,
-    };
+  const { local } = await params;
+  return buildMetadata({
+    locale: local,
+    path: "/hotel-deliveries",
+    section: "hotelDeliveriesPage",
   });
 }
 
@@ -39,10 +41,25 @@ async function HotelDeliveriesResolved({ params }: PageProps) {
   return <HotelDeliveriesSection locale={local} />;
 }
 
-export default function LocalHotelDeliveriesPage(props: PageProps) {
+export default async function LocalHotelDeliveriesPage(props: PageProps) {
+  const { local } = await props.params;
   return (
-    <Suspense fallback={<HotelDeliveriesSection locale="en" />}>
-      <HotelDeliveriesResolved {...props} />
-    </Suspense>
+    <>
+      {/*
+        WebPage + BreadcrumbList; each product is marked up on its own detail page.
+        Rendered in the shell, not in the hole, so a postponed boundary cannot hide it.
+      */}
+      <JsonLd data={listPageGraph(local, "hotelDeliveries")} />
+      <Suspense
+        fallback={
+          // the fallback repeats the hero tree, so its heading is demoted here
+          <FallbackHeadingScope>
+            <HotelDeliveriesSection locale="en" />
+          </FallbackHeadingScope>
+        }
+      >
+        <HotelDeliveriesResolved {...props} />
+      </Suspense>
+    </>
   );
 }

@@ -20,6 +20,20 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Environment variables
+
+| Variable | Where it is read | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_API_URL` | `clientApi/apiConfig.ts` | Backend origin (defaults to `https://touristtt.runasp.net/api`). |
+| `NEXT_PUBLIC_BACKEND_ORIGIN` | `shared/utils/imageUrl.ts` | Origin used to make stored `/uploads/...` image paths absolute. |
+| `NEXT_PUBLIC_SITE_URL` | `shared/utils/siteConfig.ts` | **Canonical public origin.** Feeds every `rel=canonical`, `hreflang`, Open Graph `og:url`, `robots.txt`, `sitemap.xml` and JSON-LD `@id`. |
+
+`NEXT_PUBLIC_SITE_URL` rules:
+
+- Production: set it to `https://touristmarket-egypt.com` (no trailing slash). If it is unset, the code already falls back to that value.
+- Preview, staging and local builds: either leave it unset **and** rely on the `NODE_ENV` guard, or set it to the deployment's own host. `IS_INDEXABLE` is only true when the host really is `touristmarket-egypt.com` **and** the build is production, so a preview deployment must never set `NEXT_PUBLIC_SITE_URL` to the production host - that would make it emit indexable canonicals and an indexable `robots.txt`.
+- When `IS_INDEXABLE` is false, every page gets `noindex, nofollow` and `robots.txt` disallows all crawling.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

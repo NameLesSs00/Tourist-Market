@@ -13,7 +13,7 @@ import {
   FaTiktok,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface FooterProps {
   currentLocale?: string;
@@ -56,7 +56,7 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
       ? segments[0]
       : currentLocale;
 
-  const dict = getDictionary(activeLocale);
+  const dict = useClientDictionary();
   const t = dict.footer;
 
   const quickLinks = [
@@ -76,11 +76,14 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
     { label: t.services.transferService, href: `/${activeLocale}/services/transfer` },
   ];
 
-  const contactItems = [
+  // `href: null` renders as plain text. The location is a description, not a
+  // destination, and an empty `href="#"` anchor is a link a crawler follows back
+  // to the page it is already on.
+  const contactItems: Array<{ label: string; href: string | null }> = [
     { label: "+201036234030", href: "tel:+201036234030" },
     { label: t.contact.whatsAppChat, href: "https://wa.me/201036232021" },
     { label: "info@touristmarket-egypt.com", href: "mailto:info@touristmarket-egypt.com" },
-    { label: t.contact.location, href: "#" },
+    { label: t.contact.location, href: null },
   ];
 
   const socialLinks = [
@@ -198,12 +201,18 @@ export function Footer({ currentLocale = "en" }: FooterProps) {
               {contactItems.map((item) => (
                 <li key={item.label}>
                   <motion.div whileHover={{ x: 4 }} transition={{ duration: 0.2 }}>
-                    <a
-                      href={item.href}
-                      className="font-poppins-semibold-16 text-white transition-colors hover:text-[#F4DAB6]"
-                    >
-                      {item.label}
-                    </a>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        className="font-poppins-semibold-16 text-white transition-colors hover:text-[#F4DAB6]"
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <span className="font-poppins-semibold-16 text-white">
+                        {item.label}
+                      </span>
+                    )}
                   </motion.div>
                 </li>
               ))}

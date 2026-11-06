@@ -17,7 +17,7 @@ import {
 } from "./booking";
 import { isValidPhoneNumber } from "@/shared/utils/phoneUtils";
 import { getTomorrowDateString, isBookingDateValid } from "@/shared/utils/dateAvailability";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateBookingFormProps {
   detail: PrivateExcursionDetail;
@@ -42,7 +42,7 @@ export function PrivateBookingForm({
   selectedExtraServiceIds = [],
   locale = "en",
 }: PrivateBookingFormProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.bookingForm;
   const tomorrowStr = getTomorrowDateString();
 

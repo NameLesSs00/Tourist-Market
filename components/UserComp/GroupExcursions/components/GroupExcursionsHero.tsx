@@ -3,14 +3,15 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { ContentHeading } from "@/components/UserComp/Shared/ContentHeading";
 
 interface GroupExcursionsHeroProps {
   locale?: string;
 }
 
 export function GroupExcursionsHero({ locale = "en" }: GroupExcursionsHeroProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions;
 
   return (
@@ -23,13 +24,13 @@ export function GroupExcursionsHero({ locale = "en" }: GroupExcursionsHeroProps)
           transition={{ duration: 0.5, ease: "easeOut" }}
           className="text-center mb-8 sm:mb-10"
         >
-          <h1
+          <ContentHeading
             className="font-poppins font-semibold text-[32px] sm:text-[36px] md:text-[40px] text-center tracking-normal align-middle"
             style={{ lineHeight: "42px" }}
           >
             <span className="text-[#003D5B]">{t.titlePrefix}</span>{" "}
             <span className="text-[#D48C28]">{t.titleAccent}</span>
-          </h1>
+          </ContentHeading>
           <p className="font-poppins text-sm sm:text-base md:text-[18px] text-[#646464] mt-2 sm:mt-3 max-w-3xl mx-auto">
             {t.catalogHeroSubtitle}
           </p>

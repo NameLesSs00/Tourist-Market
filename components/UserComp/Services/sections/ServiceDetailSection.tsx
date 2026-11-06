@@ -12,17 +12,22 @@ import {
 } from "../components";
 import {
   usePublicServiceSubItemById,
-  isUUID,
   SERVICE_FALLBACK_IMAGE,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { serviceItemSlug } from "@/shared/utils/serviceItemUrl";
 import type { ServiceDetailItem } from "../types";
 import type { SiteServiceSubItem } from "@/models/siteServiceItem";
 
 interface ServiceDetailSectionProps {
   serviceType: "vip-airport" | "real-estate" | "tourist" | "car-rental";
-  slug: string;
+  /**
+   * Backend id of the sub-item, resolved from the URL segment by the page's server
+   * wrapper (which answers 404 for anything unknown) instead of being guessed here.
+   */
+  itemId: string;
   locale?: string;
 }
 
@@ -98,7 +103,7 @@ function mapSubItemToDetail(
 
   return {
     id: item.id,
-    slug: item.id,
+    slug: serviceItemSlug(item),
     title: item.title,
     description: item.description,
     imageUrl: firstImage,
@@ -168,25 +173,24 @@ function DetailSkeleton() {
 
 export function ServiceDetailSection({
   serviceType,
-  slug,
+  itemId,
   locale = "en",
 }: ServiceDetailSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
   const backHref = `/${locale}/services/${serviceType}`;
-  const validId = isUUID(slug);
 
   const {
     data: subItem,
     isLoading,
     isError,
-  } = usePublicServiceSubItemById(slug, locale);
+  } = usePublicServiceSubItemById(itemId, locale);
 
   const detail: ServiceDetailItem | null = subItem
     ? mapSubItemToDetail(subItem, serviceType, t)
     : null;
 
-  const isNotFound = !isLoading && (!subItem || !validId || isError);
+  const isNotFound = !isLoading && (!subItem || isError);
 
   return (
     <motion.div

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { PrivateAttraction, PrivateExtraService } from "../../types";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateSidebarPriceBreakdownProps {
@@ -42,7 +42,7 @@ export function PrivateSidebarPriceBreakdown({
   currency = "$",
   locale = "en",
 }: PrivateSidebarPriceBreakdownProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.sidebar;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
 

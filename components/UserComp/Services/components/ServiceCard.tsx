@@ -7,7 +7,8 @@ import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { ServiceCardItem } from "../types";
 import { SERVICE_FALLBACK_IMAGE } from "@/features/siteServiceItems/usePublicServiceItems";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { serviceItemHref } from "@/shared/utils/serviceItemUrl";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ServiceCardProps {
   item: ServiceCardItem;
@@ -22,8 +23,8 @@ export function ServiceCard({
   viewDetailsText,
   whatsappText,
 }: ServiceCardProps) {
-  const { slug, title, description, imageUrl, badge, serviceType } = item;
-  const dict = getDictionary(locale);
+  const { title, description, imageUrl, badge, serviceType } = item;
+  const dict = useClientDictionary();
   const t = serviceType === "real-estate" ? dict.realEstate : dict.touristServices;
 
   const resolvedViewDetails = viewDetailsText || t?.viewDetails || "View Details";
@@ -31,7 +32,9 @@ export function ServiceCard({
   const resolvedGreeting = t?.whatsappGreeting || "Hello, I am interested in";
   const resolvedAria = t?.ariaViewDetails || "View details for";
 
-  const detailHref = `/${locale}/services/${serviceType}/${slug}`;
+  // built through the shared helper so this link, the sitemap entry and the
+  // JSON-LD url of the same item can never diverge
+  const detailHref = serviceItemHref(locale, serviceType, item);
   const whatsappUrl = `https://wa.me/201289494715?text=${encodeURIComponent(
     `${resolvedGreeting} ${title}`
   )}`;

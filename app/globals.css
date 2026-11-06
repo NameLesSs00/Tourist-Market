@@ -10,7 +10,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-poppins);
   --font-poppins: var(--font-poppins);
-  --font-manrope: var(--font-manrope);
   --font-montserrat: var(--font-montserrat);
   --font-caveat: var(--font-caveat);
 }
@@ -104,6 +103,12 @@ svg {
 
 .font-\[\'Poppins\'\] {
   font-family: var(--font-poppins), "Poppins", sans-serif !important;
+}
+/* Same trap for the two hero headings written as font-['Montserrat']: without
+   this rule the family name matches nothing the app ships and the browser
+   renders its serif default. */
+.font-\[\'Montserrat\'\] {
+  font-family: var(--font-montserrat), "Montserrat", sans-serif !important;
 }
 .font-caveat {
   font-family: var(--font-caveat), 'Caveat', cursive !important;

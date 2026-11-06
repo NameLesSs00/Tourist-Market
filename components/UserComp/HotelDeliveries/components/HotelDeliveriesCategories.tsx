@@ -8,7 +8,7 @@ import {
   useClientProductSubcategoriesQuery,
 } from "@/features/productCategories/useClientProductCategories";
 import type { ProductSubcategoryItem } from "@/models/productSubcategory";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface HotelDeliveriesCategoriesProps {
   activeSubcategoryId: number | null;
@@ -26,7 +26,7 @@ export function HotelDeliveriesCategories({
   const categoriesQuery = useClientProductCategoriesQuery(locale);
   const subcategoriesQuery = useClientProductSubcategoriesQuery(undefined, locale);
 
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.hotelDeliveriesPage.categories;
 
   const categories = categoriesQuery.data || [];

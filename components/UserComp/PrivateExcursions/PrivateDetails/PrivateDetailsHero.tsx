@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary, useDestinationTitle } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateDetailsHeroProps {
   title?: string;
@@ -26,8 +26,10 @@ export function PrivateDetailsHero({
   locale = "en",
   heroImage = "/PrivateExcursions/Privatedetails/Hero-pic.png",
 }: PrivateDetailsHeroProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details;
+  // the <title> of this page names the place, so the heading has to name it too
+  const withPlace = useDestinationTitle();
 
   const targetImage = heroImage || "/PrivateExcursions/Privatedetails/Hero-pic.png";
 
@@ -103,7 +105,7 @@ export function PrivateDetailsHero({
           )}
 
           <h1 className="max-w-[900px] font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-bold text-[#DE7423] leading-[1.18] tracking-tight break-words uppercase">
-            {title}
+            {withPlace(title)}
           </h1>
 
           <p className="mt-3 sm:mt-4 max-w-[680px] font-poppins text-sm sm:text-base md:text-[17px] text-[#0E4A68] leading-relaxed break-words">

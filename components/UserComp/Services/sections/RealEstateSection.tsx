@@ -8,7 +8,7 @@ import {
   mapSubItemToCard,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { SITE_SERVICES_CONFIG } from "../config/siteServicesConfig";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface RealEstateSectionProps {
   locale?: string;
@@ -16,7 +16,7 @@ interface RealEstateSectionProps {
 
 export function RealEstateSection({ locale = "en" }: RealEstateSectionProps) {
   const serviceId = SITE_SERVICES_CONFIG.realEstate.id;
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.realEstate;
   const billingLabels = {
     perHour: dict.serviceDetail.billingPerHour,

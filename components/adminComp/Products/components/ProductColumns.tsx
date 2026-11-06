@@ -1,18 +1,24 @@
 import React from "react";
 import Image from "next/image";
-import { FiImage } from "react-icons/fi";
+import { FiImage, FiRotateCcw } from "react-icons/fi";
 import type { DataTableColumn } from "@/components/adminComp/Shared";
 import type { ProductListItem } from "@/models/product";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 
 interface CreateProductColumnsOptions {
   subCategoryMap: Map<number, string>;
+  isDeletedView?: boolean;
+  onRestore?: (item: ProductListItem) => void;
+  isRestoring?: boolean;
 }
 
 export function createProductColumns({
   subCategoryMap,
+  isDeletedView = false,
+  onRestore,
+  isRestoring,
 }: CreateProductColumnsOptions): DataTableColumn<ProductListItem>[] {
-  return [
+  const baseColumns: DataTableColumn<ProductListItem>[] = [
     {
       key: "thumbnail",
       header: "Photo",
@@ -88,7 +94,49 @@ export function createProductColumns({
         </div>
       ),
     },
-    {
+  ];
+
+  if (isDeletedView) {
+    baseColumns.push({
+      key: "deletedAt",
+      header: "Deleted At",
+      className: "w-[16%]",
+      render: (item) => {
+        const date = item.deletedAt
+          ? new Date(item.deletedAt).toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : "Unknown";
+        return (
+          <span className="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-600 ring-1 ring-red-200">
+            {date}
+          </span>
+        );
+      },
+    });
+
+    baseColumns.push({
+      key: "restore",
+      header: "Restore",
+      className: "w-[80px] text-center",
+      render: (item) => (
+        <button
+          type="button"
+          disabled={isRestoring}
+          onClick={() => onRestore?.(item)}
+          title="Restore product"
+          className="inline-flex items-center justify-center rounded-lg border border-[#CBD5E1] bg-white p-1.5 text-[#0E4A68] transition-colors hover:bg-[#EFF6FF] disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FiRotateCcw className="h-3.5 w-3.5" />
+        </button>
+      ),
+    });
+  } else {
+    baseColumns.push({
       key: "photosCount",
       header: "Gallery",
       className: "w-[12%]",
@@ -100,6 +148,8 @@ export function createProductColumns({
           </span>
         );
       },
-    },
-  ];
+    });
+  }
+
+  return baseColumns;
 }

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiStar } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 export interface RatingDistributionItem {
   star: number;
@@ -23,7 +23,7 @@ export function ReviewRatingOverview({
   distList,
   locale = "en",
 }: ReviewRatingOverviewProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.reviews;
 
   const reviewCountLabel =

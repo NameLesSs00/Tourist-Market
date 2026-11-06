@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { GroupExcursionDetail } from "../types";
 import { GroupDetailsFaqList } from "./GroupDetailsFaqList";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupDetailsTabsProps {
   detail: GroupExcursionDetail;
@@ -24,7 +24,7 @@ export function GroupDetailsTabs({
   locale = "en",
 }: GroupDetailsTabsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("description");
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.tabs;
 
   const {

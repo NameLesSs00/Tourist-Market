@@ -1,20 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ServiceDetailSection } from "@/components/UserComp/Services";
-import { localizedMetadata } from "@/shared/utils/localizedMetadata";
+import { StructuredData } from "@/components/UserComp/Shared/JsonLd";
+import { serviceDetailGraph } from "@/features/seo/structuredData";
+import {
+  resolveServiceDetail,
+  serviceDetailMetadata,
+} from "@/features/siteServiceItems/getServiceItemForPath";
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const { local } = await params;
-  return localizedMetadata(local, "vipAirport");
-}
-
-export function generateStaticParams() {
-  const locales = ["en", "fr", "de", "ru"];
-  const slugs = ["vip-lounge", "vip-lounge-1"];
-  return locales.flatMap((local) => slugs.map((slug) => ({ local, slug })));
-}
+// the URL segment resolves to a backend sub-item at request time, so nothing about
+// this route can be known while it is being built
+export const instant = false;
 
 interface PageProps {
   params: Promise<{
@@ -23,29 +19,28 @@ interface PageProps {
   }>;
 }
 
-async function VipAirportDetailResolved({ params }: PageProps) {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { local, slug } = await params;
-  return (
-    <ServiceDetailSection
-      serviceType="vip-airport"
-      slug={slug}
-      locale={local}
-    />
-  );
+  return serviceDetailMetadata(local, "vip-airport", slug);
 }
 
-export default function VipAirportDetailPage(props: PageProps) {
+// The resolution happens outside the Suspense boundary on purpose: inside the hole of
+// a partial-prerendered route nothing can change the response status any more, because
+// the shell is already on the wire - proxy.ts is what turns an unknown detail URL into
+// a real 404. This call is still what renders the right document, for a visitor who
+// arrives through the router rather than a fresh request.
+export default async function VipAirportDetailPage({ params }: PageProps) {
+  const { local, slug } = await params;
+  // an unknown segment answers 404 instead of the "service not found" panel with HTTP
+  // 200, and a legacy GUID segment redirects to the readable URL
+  const { item } = await resolveServiceDetail(local, "vip-airport", slug);
   return (
-    <Suspense
-      fallback={
-        <ServiceDetailSection
-          serviceType="vip-airport"
-          slug="vip-lounge"
-          locale="en"
-        />
-      }
-    >
-      <VipAirportDetailResolved {...props} />
+    <Suspense fallback={<div className="min-h-screen bg-[#FFF8ED]" aria-hidden="true" />}>
+      <ServiceDetailSection serviceType="vip-airport" itemId={item.id} locale={local} />
+      {/* Service + Offer + rating, built from the item the line above resolved */}
+      <StructuredData graph={serviceDetailGraph(local, "vip-airport", slug)} />
     </Suspense>
   );
 }

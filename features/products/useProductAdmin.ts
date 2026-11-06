@@ -5,23 +5,30 @@ import {
   createProduct,
   deleteProduct,
   deleteProductImage,
+  getDeletedProducts,
   getProductAllLanguages,
   getProductImages,
   getProducts,
   reorderProductImages,
+  restoreProduct,
   updateProduct,
   uploadProductImages,
 } from "@/clientApi/productApi";
 import type {
+  DeletedProductQueryParams,
   ProductImageReorderItem,
   ProductQueryParams,
   ProductUpsertRequest,
 } from "@/models/product";
 
-export function useProductsQuery(params: ProductQueryParams = {}) {
+export function useProductsQuery(
+  params: ProductQueryParams = {},
+  options?: { enabled?: boolean }
+) {
   return useQuery({
     queryKey: ["admin", "products", params],
     queryFn: () => getProducts(params),
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -172,6 +179,33 @@ export function useReorderProductImagesMutation() {
     },
     onError: (err: unknown) => {
       toast.error(extractErrorMessage(err, "Failed to reorder images."));
+    },
+  });
+}
+
+
+export function useDeletedProductsQuery(
+  params: DeletedProductQueryParams = {},
+  options?: { enabled?: boolean }
+) {
+  return useQuery({
+    queryKey: ["admin", "products", "deleted", params],
+    queryFn: () => getDeletedProducts(params),
+    enabled: options?.enabled ?? true,
+  });
+}
+
+export function useRestoreProductMutation() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => restoreProduct(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "products"] });
+      toast.success("Product restored successfully.");
+    },
+    onError: (err: unknown) => {
+      toast.error(extractErrorMessage(err, "Failed to restore product."));
     },
   });
 }

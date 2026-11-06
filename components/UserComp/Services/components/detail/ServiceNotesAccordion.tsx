@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiFileText } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ServiceNotesAccordionProps {
   notes?: string[];
@@ -10,7 +10,7 @@ interface ServiceNotesAccordionProps {
 }
 
 export function ServiceNotesAccordion({ notes, locale = "en" }: ServiceNotesAccordionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   if (!notes || notes.length === 0) return null;

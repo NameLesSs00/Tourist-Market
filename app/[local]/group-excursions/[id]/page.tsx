@@ -1,7 +1,12 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { GroupDetailsSection } from "@/components/UserComp/GroupExcursions";
-import { getGroupExcursionFullDetails } from "@/clientApi/groupExcursionDetailsApi";
+import { StructuredData } from "@/components/UserComp/Shared/JsonLd";
+import { excursionDetailGraph } from "@/features/seo/structuredData";
+import {
+  excursionDetailMetadata,
+  resolveExcursionDetail,
+} from "@/features/excursions/getExcursionForPath";
 
 export const instant = false;
 
@@ -12,21 +17,9 @@ interface PageProps {
   }>;
 }
 
-const FALLBACK_TITLE = "Group Excursion Details | Egypt Tourist Market";
-const FALLBACK_DESCRIPTION =
-  "Discover the timeless wonders of Egypt with our expertly guided group excursions.";
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  try {
-    const { excursion } = await getGroupExcursionFullDetails(id);
-    return {
-      title: excursion.title ? `${excursion.title} | Egypt Tourist Market` : FALLBACK_TITLE,
-      description: excursion.shortDescription || FALLBACK_DESCRIPTION,
-    };
-  } catch {
-    return { title: FALLBACK_TITLE, description: FALLBACK_DESCRIPTION };
-  }
+  const { id, local } = await params;
+  return excursionDetailMetadata(local, "group", id);
 }
 
 function GroupDetailsLoadingFallback() {
@@ -37,15 +30,24 @@ function GroupDetailsLoadingFallback() {
   );
 }
 
-async function GroupDetailsResolved({ params }: PageProps) {
+// The resolution happens outside the Suspense boundary on purpose: inside the hole of
+// a partial-prerendered route nothing can change the response status any more, because
+// the shell is already on the wire - proxy.ts is what turns an unknown detail URL into
+// a real 404. This call is still what renders the right document, for a visitor who
+// arrives through the router rather than a fresh request.
+export default async function LocalGroupExcursionDetailPage({ params }: PageProps) {
   const { local, id } = await params;
-  return <GroupDetailsSection excursionId={id} locale={local} />;
-}
-
-export default function LocalGroupExcursionDetailPage(props: PageProps) {
+  // an unknown excursion answers 404 instead of the client component's "not found"
+  // card with HTTP 200, and a GUID segment redirects onto the stored slug
+  await resolveExcursionDetail(local, "group", id);
   return (
     <Suspense fallback={<GroupDetailsLoadingFallback />}>
-      <GroupDetailsResolved {...props} />
+      <GroupDetailsSection excursionId={id} locale={local} />
+      {/*
+        TouristTrip with the itinerary, price and rating the tabs above show, read
+        from the same cached resolution; a hidden excursion publishes nothing.
+      */}
+      <StructuredData graph={excursionDetailGraph(local, "group", id)} />
     </Suspense>
   );
 }

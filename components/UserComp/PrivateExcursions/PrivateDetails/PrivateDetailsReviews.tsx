@@ -12,7 +12,7 @@ import {
   markReviewSubmitted,
 } from "@/shared/utils/helpfulReviews";
 import { toast, Toaster } from "sonner";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { PrivateReviewRatingOverview } from "./reviews/PrivateReviewRatingOverview";
 import { PrivateReviewOpinionForm } from "./reviews/PrivateReviewOpinionForm";
 import { PrivateReviewCommentItem } from "./reviews/PrivateReviewCommentItem";
@@ -44,7 +44,7 @@ export function PrivateDetailsReviews({
   totalReviews,
   locale = "en",
 }: PrivateDetailsReviewsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.reviews;
 
   const totalReviewsVal = totalReviews ?? detail?.totalReviews ?? 0;

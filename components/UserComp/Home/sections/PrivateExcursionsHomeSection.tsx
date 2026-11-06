@@ -9,7 +9,7 @@ import {
   getBottomPrivateCategories,
   getLocalizedPrivateCategories,
 } from "../config/privateExcursionCategories";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateExcursionsHomeSectionProps {
   locale?: string;
@@ -41,7 +41,7 @@ const cardItemVariants: Variants = {
 export function PrivateExcursionsHomeSection({
   locale = "en",
 }: PrivateExcursionsHomeSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions;
 
   const topCategories = getTopPrivateCategories(locale).map((cat) => ({

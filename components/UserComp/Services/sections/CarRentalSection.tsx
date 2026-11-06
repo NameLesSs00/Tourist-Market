@@ -8,7 +8,7 @@ import {
   mapSubItemToCard,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { SITE_SERVICES_CONFIG } from "../config/siteServicesConfig";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface CarRentalSectionProps {
   locale?: string;
@@ -16,7 +16,7 @@ interface CarRentalSectionProps {
 
 export function CarRentalSection({ locale = "en" }: CarRentalSectionProps) {
   const serviceId = SITE_SERVICES_CONFIG.carRental.id;
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.carRental;
   const billingLabels = {
     perHour: dict.serviceDetail.billingPerHour,

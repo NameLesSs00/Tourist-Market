@@ -4,22 +4,30 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupDetailsGalleryProps {
   gallery: string[];
   badge?: string;
   locale?: string;
+  /** excursion name: every photo of a gallery has to be described by itself */
+  title?: string;
 }
 
 export function GroupDetailsGallery({
   gallery,
   badge,
   locale = "en",
+  title,
 }: GroupDetailsGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.gallery;
+
+  // One alt per photo, never the same sentence repeated for a different image:
+  // an image search can only match a picture whose description names it.
+  const subject = title || t.featured;
+  const photoAlt = (index: number) => `${subject} - ${t.photoCount} ${index + 1}`;
 
   const displayBadge = badge || t.featured;
   const images = gallery.length > 0 ? gallery : [GROUP_EXCURSION_FALLBACK_IMAGE];
@@ -52,7 +60,7 @@ export function GroupDetailsGallery({
             >
               <Image
                 src={images[activeIndex]}
-                alt={`Excursion gallery view ${activeIndex + 1}`}
+                alt={photoAlt(activeIndex)}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 700px"
@@ -130,7 +138,7 @@ export function GroupDetailsGallery({
               >
                 <Image
                   src={thumb}
-                  alt={`Thumbnail ${idx + 1}`}
+                  alt={photoAlt(idx)}
                   fill
                   sizes="160px"
                   className="object-cover object-center"

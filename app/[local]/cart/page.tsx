@@ -2,18 +2,22 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ProductsCartSection } from "@/components/UserComp/Cart";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { buildMetadata } from "@/shared/utils/localizedMetadata";
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ local: string }>;
 }): Promise<Metadata> {
-  return params.then(({ local }) => {
-    const meta = getDictionary(local).cartPage.meta;
-    return {
-      title: meta.title,
-      description: meta.description,
-    };
+  const { local } = await params;
+  const meta = getDictionary(local).cartPage.meta;
+  // a cart is personal and always changing: keep it out of the index
+  return buildMetadata({
+    locale: local,
+    path: "/cart",
+    title: meta.title,
+    description: meta.description,
+    noindex: true,
   });
 }
 

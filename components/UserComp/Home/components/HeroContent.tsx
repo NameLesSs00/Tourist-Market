@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Dictionary } from "@/shared/utils/getDictionary";
+import { useIsFallbackHeading } from "@/components/UserComp/Shared/ContentHeading";
 
 interface HeroContentProps {
   dict: Dictionary;
@@ -13,6 +14,9 @@ interface HeroContentProps {
 
 export function HeroContent({ dict, currentLocale }: HeroContentProps) {
   const { hero } = dict;
+  // the home page ships this tree twice (the shell fallback and the resolved content),
+  // so only the copy outside the fallback may own the document heading
+  const Heading = (useIsFallbackHeading() ? motion.div : motion.h1) as typeof motion.h1;
 
   return (
     <div className="flex flex-col items-start text-left z-20 w-full max-w-[450px] xl:max-w-[540px] 2xl:max-w-[600px] shrink-0">
@@ -27,14 +31,14 @@ export function HeroContent({ dict, currentLocale }: HeroContentProps) {
       </motion.span>
 
       {/* 2. Headline: DESTINATIONS */}
-      <motion.h1
+      <Heading
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.55, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
         className="mt-2.5 font-['Montserrat'] font-bold text-[44px] sm:text-[60px] lg:text-[48px] xl:text-[68px] 2xl:text-[75px] leading-[105%] text-[#0E4A68] tracking-tight"
       >
         {hero.headline}
-      </motion.h1>
+      </Heading>
 
       {/* 3. Description Paragraph */}
       <motion.p

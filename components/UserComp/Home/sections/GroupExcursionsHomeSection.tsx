@@ -6,7 +6,7 @@ import { motion, type Variants } from "framer-motion";
 import { GroupExcursionCard } from "@/components/UserComp/GroupExcursions/components/GroupExcursionCard";
 import { useClientGroupExcursionsQuery } from "@/features/groupExcursions/useClientGroupExcursions";
 import { mapBackendGroupExcursionToCard } from "@/components/UserComp/GroupExcursions/utils/groupExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupExcursionsHomeSectionProps {
   locale?: string;
@@ -43,7 +43,7 @@ const cardItemVariants: Variants = {
 export function GroupExcursionsHomeSection({
   locale = "en",
 }: GroupExcursionsHomeSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions;
 
   // Fetch live group excursions from backend (Top 3)

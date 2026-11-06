@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { PrivateExcursion } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateExcursionCardProps {
@@ -20,7 +20,7 @@ export function PrivateExcursionCard({
   locale = "en",
   index = 0,
 }: PrivateExcursionCardProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.grid;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
 

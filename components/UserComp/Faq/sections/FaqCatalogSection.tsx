@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { FiSearch, FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { getDictionary } from "@/shared/utils/getDictionary";
@@ -47,13 +47,9 @@ export function FaqCatalogSection({
     );
   }, [items, searchQuery]);
 
-  // Keep active selected item valid
-  useEffect(() => {
-    if (filteredItems.length > 0 && !selectedId) {
-      setSelectedId(filteredItems[0].id || filteredItems[0].question);
-    }
-  }, [filteredItems, selectedId]);
-
+  // The first question of the current list is the active one until the visitor
+  // picks another: `activeItem` below derives that, so nothing has to be pushed
+  // into state from an effect (which would render this tree twice per keystroke).
   const activeItem = useMemo(() => {
     if (!selectedId) return filteredItems[0] ?? null;
     return (
@@ -171,7 +167,7 @@ export function FaqCatalogSection({
             </p>
             <div className="mt-5 flex justify-center">
               <Link
-                href={`/${locale}/contact`}
+                href={`/${locale}/Contact`}
                 className="inline-flex items-center justify-center rounded-xl bg-[#0E4A68] px-6 py-2.5 font-poppins text-sm font-medium text-white shadow-sm transition hover:bg-[#083952] active:scale-95 cursor-pointer"
               >
                 Contact Us

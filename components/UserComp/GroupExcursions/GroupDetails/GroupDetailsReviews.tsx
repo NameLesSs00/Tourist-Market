@@ -17,7 +17,7 @@ import {
 } from "./reviews/ReviewRatingOverview";
 import { ReviewOpinionForm } from "./reviews/ReviewOpinionForm";
 import { ReviewCommentItem } from "./reviews/ReviewCommentItem";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 export type { RatingDistributionItem };
 
@@ -46,7 +46,7 @@ export function GroupDetailsReviews({
   totalReviews,
   locale = "en",
 }: GroupDetailsReviewsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.reviews;
 
   const totalReviewsVal = totalReviews ?? detail?.totalReviews ?? 0;

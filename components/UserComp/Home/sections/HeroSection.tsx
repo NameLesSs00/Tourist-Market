@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import {
   HeroBackground,
   HeroContent,
@@ -17,7 +17,7 @@ interface HeroSectionProps {
 }
 
 export function HeroSection({ locale = "en" }: HeroSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const { hero } = dict;
 
   return (

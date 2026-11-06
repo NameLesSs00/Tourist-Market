@@ -7,7 +7,7 @@ import { FiMinus, FiPlus, FiShoppingCart } from "react-icons/fi";
 import { useCart } from "@/features/cart/useCart";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
 import { useFormattedPrice } from "@/features/currencies/useFormattedPrice";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ProductDetailsBookingCardProps {
   productId?: number;
@@ -32,7 +32,7 @@ export function ProductDetailsBookingCard({
 }: ProductDetailsBookingCardProps) {
   const router = useRouter();
   const { addItem } = useCart();
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.hotelDeliveriesPage.bookingCard;
   const itemTitle = itemTitleIn || dict.hotelDeliveriesPage.details.productFallback;
   const category = categoryIn || dict.hotelDeliveriesPage.details.fallbackCategory;

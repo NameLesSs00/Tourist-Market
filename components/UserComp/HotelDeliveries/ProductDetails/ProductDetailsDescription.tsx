@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { ProductKeyItem } from "@/models/product";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ProductDetailsDescriptionProps {
   title?: string;
@@ -17,7 +17,7 @@ export function ProductDetailsDescription({
   keys = [],
   locale = "en",
 }: ProductDetailsDescriptionProps) {
-  const t = getDictionary(locale).hotelDeliveriesPage.details;
+  const t = useClientDictionary().hotelDeliveriesPage.details;
   const displayTitle = title || t.productFallback;
   const hasKeys = Array.isArray(keys) && keys.length > 0;
 

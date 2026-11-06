@@ -5,7 +5,7 @@ import Image from "next/image";
 import { FiPlusCircle, FiCheck } from "react-icons/fi";
 import { PrivateExtraService } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateDetailsExtraServicesProps {
@@ -31,7 +31,7 @@ function ExtraServiceCard({
   currency = "$",
   locale = "en",
 }: ExtraServiceCardProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.extraServices;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
 
@@ -234,7 +234,7 @@ export function PrivateDetailsExtraServices({
   currency = "$",
   locale = "en",
 }: PrivateDetailsExtraServicesProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.extraServices;
 
   return (

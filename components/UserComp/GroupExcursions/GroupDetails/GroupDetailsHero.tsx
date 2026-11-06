@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { GroupExcursionDetail } from "../types";
 import { GROUP_EXCURSION_FALLBACK_IMAGE } from "../utils/groupExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary, useDestinationTitle } from "@/shared/providers/ClientDictionaryContext";
 import {
   formatGroupDuration,
   formatGroupAvailability,
@@ -40,8 +40,10 @@ export function GroupDetailsHero({
   detail,
   locale = "en",
 }: GroupDetailsHeroProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.hero;
+  // the <title> of this page names the place, so the heading has to name it too
+  const withPlace = useDestinationTitle();
 
   const {
     title,
@@ -126,7 +128,7 @@ export function GroupDetailsHero({
           )}
 
           <h1 className="max-w-[900px] font-poppins text-2xl sm:text-3xl md:text-4xl lg:text-[48px] font-bold text-[#0E4A68] leading-[1.18] tracking-tight break-words">
-            {title}
+            {withPlace(title)}
           </h1>
 
           <p className="mt-3 sm:mt-4 max-w-[680px] font-poppins text-sm sm:text-base md:text-[17px] text-[#0E4A68] leading-relaxed break-words">

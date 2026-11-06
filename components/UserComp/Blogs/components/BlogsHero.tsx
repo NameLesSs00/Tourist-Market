@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { useIsFallbackHeading } from "@/components/UserComp/Shared/ContentHeading";
 
 interface BlogsHeroProps {
   locale?: string;
@@ -11,9 +12,12 @@ interface BlogsHeroProps {
 
 export function BlogsHero({ locale = "en" }: BlogsHeroProps) {
   const isRTL = locale === "ar";
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs;
   const h = t.hero;
+  // the archive page ships this tree twice (shell fallback and resolved content), so
+  // only the copy outside the fallback may own the document heading
+  const Heading = (useIsFallbackHeading() ? motion.div : motion.h1) as typeof motion.h1;
 
   return (
     <section
@@ -34,7 +38,7 @@ export function BlogsHero({ locale = "en" }: BlogsHeroProps) {
             className="lg:col-span-6 xl:col-span-6 flex flex-col justify-center"
           >
             {/* Main Heading */}
-            <motion.h1
+            <Heading
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.1, ease: "easeOut" }}
@@ -43,7 +47,7 @@ export function BlogsHero({ locale = "en" }: BlogsHeroProps) {
               {h.headingLine1}
               <br />
               {h.headingLine2} <span className="text-[#D48C28]">{h.headingAccent}</span>
-            </motion.h1>
+            </Heading>
 
             {/* Subtitle */}
             <motion.p

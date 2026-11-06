@@ -8,7 +8,7 @@ import {
   mapSubItemToCard,
 } from "@/features/siteServiceItems/usePublicServiceItems";
 import { SITE_SERVICES_CONFIG } from "../config/siteServicesConfig";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface VipAirportSectionProps {
   locale?: string;
@@ -16,7 +16,7 @@ interface VipAirportSectionProps {
 
 export function VipAirportSection({ locale = "en" }: VipAirportSectionProps) {
   const serviceId = SITE_SERVICES_CONFIG.vipAirport.id;
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.vipAirport;
   const billingLabels = {
     perHour: dict.serviceDetail.billingPerHour,

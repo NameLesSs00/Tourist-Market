@@ -3,7 +3,7 @@
 import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { GroupExcursionDetail } from "../types";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupDetailsIncludesProps {
   detail: GroupExcursionDetail;
@@ -24,7 +24,7 @@ export function GroupDetailsIncludes({
   locale = "en",
 }: GroupDetailsIncludesProps) {
   const { priceIncludes, priceExcludes } = detail;
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.includes;
 
   return (

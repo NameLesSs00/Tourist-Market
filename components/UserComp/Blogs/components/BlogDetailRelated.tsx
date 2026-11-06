@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { BlogItem } from "@/models/blog";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { BlogCard } from "./BlogCard";
 
 interface BlogDetailRelatedProps {
@@ -16,7 +16,7 @@ export function BlogDetailRelated({
 }: BlogDetailRelatedProps) {
   if (!blogs || blogs.length === 0) return null;
 
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs.detail;
 
   return (

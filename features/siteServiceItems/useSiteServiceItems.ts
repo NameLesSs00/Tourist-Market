@@ -5,8 +5,10 @@ import {
   createSiteServiceSubItem,
   deleteSiteServiceItemImage,
   deleteSiteServiceSubItem,
+  getDeletedSiteServiceSubItems,
   getSiteServiceSubItemAllLanguages,
   getSiteServiceSubItems,
+  restoreSiteServiceSubItem,
   updateSiteServiceSubItem,
   uploadSiteServiceItemImages,
 } from "@/clientApi/siteServiceItemApi";
@@ -69,7 +71,8 @@ function sanitizeSubItemPayload(
  * Query hook for paginated site service sub-items.
  */
 export function useSiteServiceSubItemsQuery(
-  params: SiteServiceSubItemQueryParams = {}
+  params: SiteServiceSubItemQueryParams = {},
+  options?: { enabled?: boolean }
 ) {
   return useQuery({
     queryKey: ["admin", "site-service-items", params],
@@ -77,6 +80,24 @@ export function useSiteServiceSubItemsQuery(
       const res = await getSiteServiceSubItems(params);
       return res.data;
     },
+    enabled: options?.enabled ?? true,
+  });
+}
+
+/**
+ * Query hook for paginated soft-deleted site service sub-items.
+ */
+export function useDeletedSiteServiceSubItemsQuery(
+  params: SiteServiceSubItemQueryParams = {},
+  options?: { enabled?: boolean }
+) {
+  return useQuery({
+    queryKey: ["admin", "site-service-items", "deleted", params],
+    queryFn: async () => {
+      const res = await getDeletedSiteServiceSubItems(params);
+      return res.data;
+    },
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -208,6 +229,26 @@ export function useDeleteSiteServiceSubItemMutation() {
     },
     onError: (err) => {
       toast.error(extractErrorMessage(err, "Failed to delete site service item."));
+    },
+  });
+}
+
+/**
+ * Mutation hook for restoring a soft-deleted site service item.
+ */
+export function useRestoreSiteServiceSubItemMutation() {
+  const qc = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return await restoreSiteServiceSubItem(id);
+    },
+    onSuccess: () => {
+      toast.success("Site service item restored successfully.");
+      qc.invalidateQueries({ queryKey: ["admin", "site-service-items"] });
+    },
+    onError: (err) => {
+      toast.error(extractErrorMessage(err, "Failed to restore site service item."));
     },
   });
 }

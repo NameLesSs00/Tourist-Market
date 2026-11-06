@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { useRouter } from "next/navigation";
 import { useClientBlogsQuery } from "@/features/blogs/useClientBlogs";
+import { paginatedHref } from "@/shared/utils/contentUrl";
 import {
   BlogsHero,
   BlogsGrid,
@@ -10,6 +12,7 @@ import {
 
 interface BlogsSectionProps {
   locale?: string;
+  /** the page the URL asks for: `?page=N`, page 1 when the query is absent */
   initialPage?: number;
 }
 
@@ -17,7 +20,12 @@ export function BlogsSection({
   locale = "en",
   initialPage = 1,
 }: BlogsSectionProps) {
-  const [currentPage, setCurrentPage] = useState<number>(initialPage);
+  const router = useRouter();
+
+  // The URL is the only page state this archive keeps. There is no local counter
+  // that could drift away from the address bar, which is what makes /Blogs?page=2
+  // a page a crawler can reach, canonicalise and index on its own.
+  const currentPage = initialPage;
 
   const { data, isLoading, isFetching } = useClientBlogsQuery(
     { pageNumber: currentPage, pageSize: 12 },
@@ -25,7 +33,7 @@ export function BlogsSection({
   );
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
+    router.push(paginatedHref(locale, "/Blogs", newPage), { scroll: false });
 
     // Smooth scroll to top of blogs content
     if (typeof window !== "undefined") {
@@ -60,7 +68,9 @@ export function BlogsSection({
         {/* Blog Cards 3-Column Responsive Grid */}
         <BlogsGrid
           blogs={data?.items ?? []}
-          isLoading={isLoading}
+          // a page change refetches through the URL, so the grid keeps showing its
+          // skeleton for as long as the new page is on its way
+          isLoading={isLoading || isFetching}
           locale={locale}
         />
 
@@ -69,7 +79,6 @@ export function BlogsSection({
           <BlogsPagination
             meta={paginationMeta}
             onPageChange={handlePageChange}
-            disabled={isFetching}
             locale={locale}
           />
         )}

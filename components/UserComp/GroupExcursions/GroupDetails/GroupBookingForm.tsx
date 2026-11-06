@@ -17,7 +17,7 @@ import {
   BookingPickupFields,
 } from "./booking";
 import { isValidPhoneNumber, sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { formatGroupDuration } from "../utils/groupDetailLocalization";
 
 interface GroupBookingFormProps {
@@ -39,7 +39,7 @@ export function GroupBookingForm({
   initialChildren = 0,
   initialInfants = 0,
 }: GroupBookingFormProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.bookingForm;
   const heroT = dict.groupExcursions.details.hero;
 

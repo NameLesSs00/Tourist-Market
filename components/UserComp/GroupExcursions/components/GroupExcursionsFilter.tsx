@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { CustomDropdown, DropdownOption } from "./CustomDropdown";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 export interface ExcursionCategoryOption {
   id: string;
@@ -31,7 +31,7 @@ export function GroupExcursionsFilter({
   disabled = false,
   locale = "en",
 }: GroupExcursionsFilterProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const tf = dict.groupExcursions.filter;
 
   const [search, setSearch] = useState("");

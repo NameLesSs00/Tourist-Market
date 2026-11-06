@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { FiShoppingCart } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { useCart } from "@/features/cart/useCart";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface FloatingCartButtonProps {
   className?: string;
@@ -38,7 +38,7 @@ export function FloatingCartButton({
     (pathname ? pathname.split("/").filter(Boolean)[0] : "en") ||
     "en";
   const cartHref = `/${resolvedLocale}/cart`;
-  const dict = getDictionary(resolvedLocale);
+  const dict = useClientDictionary();
   const ariaLabel = dict.hotelDeliveriesPage.cart.ariaCartCount.replace(
     "{count}",
     String(totalCount)

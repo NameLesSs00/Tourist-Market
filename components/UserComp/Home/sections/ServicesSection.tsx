@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { ServiceCard } from "../components/ServiceCard";
 import { getServicesData, ServiceItem } from "@/shared/utils/servicesData";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ServicesSectionProps {
   locale?: string;
@@ -34,7 +34,7 @@ const cardItemVariants: Variants = {
 };
 
 export function Services({ locale = "en" }: ServicesSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.services;
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);

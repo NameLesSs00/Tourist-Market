@@ -28,13 +28,20 @@ export function ServiceCard({ item, exploreText = "Explore" }: ServiceCardProps)
       >
         {/* Floating Circular Image (Ellipse): Fades out smoothly on hover */}
         <div className="absolute left-1/2 -translate-x-1/2 top-0 -translate-y-1/2 w-[145px] h-[145px] sm:w-[160px] sm:h-[160px] xl:w-[172px] xl:h-[172px] rounded-full border-[4px] sm:border-[5px] border-white shadow-[0_10px_28px_rgba(0,0,0,0.2)] overflow-hidden bg-white z-30 transition-all duration-500 ease-out group-hover:opacity-0 group-hover:scale-95 pointer-events-none">
+          {/*
+            The circular cut-out is an ornament on top of the card photo (it fades
+            out on hover) and the link around both already carries an aria-label, so
+            the photo alone keeps the descriptive alt and this one stays out of the
+            accessibility tree instead of repeating the same words twice.
+          */}
           <Image
             src={item.floatingImage}
-            alt={`${item.title} preview`}
+            alt=""
+            aria-hidden="true"
             width={220}
             height={220}
+            sizes="(max-width: 640px) 145px, (max-width: 1280px) 160px, 172px"
             className="w-full h-full object-cover"
-            priority
           />
         </div>
 
@@ -47,7 +54,6 @@ export function ServiceCard({ item, exploreText = "Explore" }: ServiceCardProps)
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            priority
           />
 
           {/* Default Bottom Gradient Overlay (Subtle) */}

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import { BlogCard } from "@/components/UserComp/Blogs/components/BlogCard";
 import { useClientBlogsQuery } from "@/features/blogs/useClientBlogs";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BlogsHomeSectionProps {
   locale?: string;
@@ -36,7 +36,7 @@ const cardItemVariants: Variants = {
 };
 
 export function BlogsHomeSection({ locale = "en" }: BlogsHomeSectionProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs;
 
   // Fetch only 3 blogs for the home section grid

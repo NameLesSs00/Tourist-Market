@@ -21,12 +21,16 @@ import {
   FiPhone,
   FiArrowLeft,
 } from "react-icons/fi";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivacyPageSectionProps {
   locale?: string;
 }
 
 export function PrivacyPageSection({ locale = "en" }: PrivacyPageSectionProps) {
+  // the heading is the same string the <title> is built from; the body copy below
+  // is still English-only and tracked as follow-up content work
+  const dict = useClientDictionary();
   return (
     <div className="w-full min-h-screen bg-[#FFF8ED] py-10 sm:py-16 font-poppins text-[#1E293B]">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6 lg:px-8">
@@ -57,7 +61,7 @@ export function PrivacyPageSection({ locale = "en" }: PrivacyPageSectionProps) {
           </div>
 
           <h1 className="text-[30px] sm:text-[40px] font-bold text-[#083952] tracking-tight leading-tight">
-            Privacy Policy
+            {dict.privacy.metadataTitle}
           </h1>
 
 

@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { FiStar, FiMessageSquare } from "react-icons/fi";
 import { sanitizePhoneNumber } from "@/shared/utils/phoneUtils";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ServiceReviewFormProps {
   alreadySubmitted: boolean;
@@ -41,7 +41,7 @@ export function ServiceReviewForm({
   onSubmit,
   locale = "en",
 }: ServiceReviewFormProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

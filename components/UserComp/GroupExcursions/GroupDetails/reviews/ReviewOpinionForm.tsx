@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useCreateExcursionReviewMutation } from "@/features/groupExcursions/useCreateExcursionReview";
 import { markReviewSubmitted } from "@/shared/utils/helpfulReviews";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ReviewOpinionFormProps {
   excursionId: string;
@@ -29,7 +29,7 @@ export function ReviewOpinionForm({
   const [userTitle, setUserTitle] = useState<string>("");
   const [userReview, setUserReview] = useState<string>("");
 
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.reviews;
 
   const { mutate: submitReview, isPending: isSubmitting } =

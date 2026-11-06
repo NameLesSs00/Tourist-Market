@@ -6,7 +6,7 @@ import {
   useClientBlogDetailQuery,
   useClientRelatedBlogsQuery,
 } from "@/features/blogs/useClientBlogs";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import {
   BlogDetailHero,
   BlogDetailShare,
@@ -29,7 +29,7 @@ export function BlogDetailSection({
   );
   const { data: relatedBlogs } = useClientRelatedBlogsQuery(blogId, locale);
 
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs.detail;
 
   if (isLoading) {

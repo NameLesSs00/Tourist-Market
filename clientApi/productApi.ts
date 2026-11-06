@@ -3,6 +3,7 @@ import type { ApiResponse } from "@/models/auth";
 import { LANGS, type LangCode, type LocalizedText } from "@/models/localization";
 import {
   fillMissingProductLanguages,
+  type DeletedProductQueryParams,
   type PagedProductsResult,
   type ProductAllLanguagesDetail,
   type ProductDetail,
@@ -173,7 +174,7 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: number): Promise<ApiResponse<null>> {
-  const { data } = await apiClient.delete<ApiResponse<null>>(`/products/${id}`);
+  const { data } = await apiClient.delete<ApiResponse<null>>(`/admin/products/${id}`);
   return data;
 }
 
@@ -220,6 +221,32 @@ export async function deleteProductImage(
 ): Promise<ApiResponse<null>> {
   const { data } = await apiClient.delete<ApiResponse<null>>(
     `/products/${productId}/images/${imageId}`
+  );
+  return data;
+}
+
+export async function getDeletedProducts(
+  params: DeletedProductQueryParams = {}
+): Promise<PagedProductsResult> {
+  const queryParams: Record<string, string | number> = {};
+  if (params.search?.trim()) queryParams.search = params.search.trim();
+  if (params.subCategoryId && Number(params.subCategoryId) > 0) {
+    queryParams.subCategoryId = Number(params.subCategoryId);
+  }
+  if (params.language) queryParams.language = params.language;
+  queryParams.pageNumber = params.pageNumber ?? 1;
+  queryParams.pageSize = params.pageSize ?? 10;
+
+  const { data } = await apiClient.get<PagedProductsResult>(
+    "/admin/products/deleted",
+    { params: queryParams }
+  );
+  return data;
+}
+
+export async function restoreProduct(id: number): Promise<ApiResponse<null>> {
+  const { data } = await apiClient.post<ApiResponse<null>>(
+    `/admin/products/${id}/restore`
   );
   return data;
 }

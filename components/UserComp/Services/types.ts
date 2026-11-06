@@ -1,4 +1,10 @@
-export type ServiceType = "vip-airport" | "real-estate" | "tourist" | "car-rental";
+import type { ServiceSectionSlug } from "@/shared/utils/serviceItemUrl";
+
+/**
+ * The service sections, aliased to the shared route-segment union so a section slug
+ * can be handed to serviceItemHref() without a cast and the two never drift apart.
+ */
+export type ServiceType = ServiceSectionSlug;
 
 export interface ServiceCardItem {
   id: string;

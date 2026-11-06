@@ -3,7 +3,7 @@
 import React from "react";
 import { FiPhone, FiUser } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa6";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BookingContactFieldsProps {
   customerName: string;
@@ -28,7 +28,7 @@ export function BookingContactFields({
   onSameAsPhoneToggle,
   locale = "en",
 }: BookingContactFieldsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.bookingForm;
 
   return (

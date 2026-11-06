@@ -1,29 +1,43 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { BlogPaginationMeta } from "../types";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
+import { paginatedHref } from "@/shared/utils/contentUrl";
 
 interface BlogsPaginationProps {
   meta: BlogPaginationMeta;
+  /** navigates to that page: the URL, not this component, holds the state */
   onPageChange: (page: number) => void;
-  disabled?: boolean;
   locale?: string;
 }
 
 export function BlogsPagination({
   meta,
   onPageChange,
-  disabled = false,
   locale = "en",
 }: BlogsPaginationProps) {
   const { currentPage, totalPages, hasNextPage, hasPrevPage } = meta;
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs.pagination;
 
   if (totalPages <= 1) {
     return null;
   }
+
+  /**
+   * Every control is a real link: page 1 is the clean archive URL and each later
+   * page its own `?page=N`, so the pages beyond the first are reachable without
+   * JavaScript and the crawler follows exactly the URL the canonical declares.
+   * The click still goes through the router (in the parent), which keeps the
+   * transition a client-side one.
+   */
+  const hrefFor = (page: number) => paginatedHref(locale, "/Blogs", page);
+  const goTo = (page: number) => (event: React.MouseEvent) => {
+    event.preventDefault();
+    onPageChange(page);
+  };
 
   // Generate pagination items (e.g. [1, 2, 3, '...', totalPages])
   const getPaginationItems = (): (number | "...")[] => {
@@ -55,10 +69,10 @@ export function BlogsPagination({
     >
       {/* Previous Button */}
       {hasPrevPage && (
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={() => onPageChange(currentPage - 1)}
+        <Link
+          href={hrefFor(currentPage - 1)}
+          scroll={false}
+          onClick={goTo(currentPage - 1)}
           aria-label={t.prevPage}
           style={{
             borderRadius: "15.65px",
@@ -66,7 +80,7 @@ export function BlogsPagination({
             border: "0.39px solid #888888",
             color: "#0E4A68",
           }}
-          className="w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-xs transition-all hover:bg-neutral-50 active:scale-95 disabled:opacity-50 cursor-pointer"
+          className="w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-xs transition-all hover:bg-neutral-50 active:scale-95 cursor-pointer"
         >
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path
@@ -75,7 +89,7 @@ export function BlogsPagination({
               clipRule="evenodd"
             />
           </svg>
-        </button>
+        </Link>
       )}
 
       {/* Page Numbers & Points */}
@@ -100,11 +114,11 @@ export function BlogsPagination({
         const isActive = item === currentPage;
 
         return (
-          <button
+          <Link
             key={`page-${item}`}
-            type="button"
-            disabled={disabled}
-            onClick={() => onPageChange(item)}
+            href={hrefFor(item)}
+            scroll={false}
+            onClick={goTo(item)}
             aria-current={isActive ? "page" : undefined}
             style={{
               borderRadius: "15.65px",
@@ -114,23 +128,23 @@ export function BlogsPagination({
                 : "0.39px solid #888888",
               color: isActive ? "#FFFFFF" : "#000000",
             }}
-            className={`w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-[13px] sm:text-[14px] font-medium transition-all cursor-pointer select-none disabled:opacity-50 ${
+            className={`w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-[13px] sm:text-[14px] font-medium transition-all cursor-pointer select-none ${
               isActive
                 ? "shadow-sm"
                 : "hover:bg-neutral-50 hover:border-black/50 active:scale-95"
             }`}
           >
             {item}
-          </button>
+          </Link>
         );
       })}
 
       {/* Next Button */}
       {hasNextPage && (
-        <button
-          type="button"
-          disabled={disabled}
-          onClick={() => onPageChange(currentPage + 1)}
+        <Link
+          href={hrefFor(currentPage + 1)}
+          scroll={false}
+          onClick={goTo(currentPage + 1)}
           aria-label={t.nextPage}
           style={{
             borderRadius: "15.65px",
@@ -138,7 +152,7 @@ export function BlogsPagination({
             border: "0.39px solid #888888",
             color: "#0E4A68",
           }}
-          className="w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-xs transition-all hover:bg-neutral-50 active:scale-95 disabled:opacity-50 cursor-pointer"
+          className="w-[32px] h-[32px] sm:w-[35px] sm:h-[35px] flex items-center justify-center font-['Poppins'] text-xs transition-all hover:bg-neutral-50 active:scale-95 cursor-pointer"
         >
           <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
             <path
@@ -147,7 +161,7 @@ export function BlogsPagination({
               clipRule="evenodd"
             />
           </svg>
-        </button>
+        </Link>
       )}
     </nav>
   );

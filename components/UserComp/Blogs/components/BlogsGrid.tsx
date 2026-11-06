@@ -3,7 +3,7 @@
 import React from "react";
 import { motion, type Variants } from "framer-motion";
 import type { BlogItem } from "@/models/blog";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { BlogCard } from "./BlogCard";
 
 interface BlogsGridProps {
@@ -33,7 +33,7 @@ const cardVariants: Variants = {
 };
 
 export function BlogsGrid({ blogs, isLoading, locale = "en" }: BlogsGridProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs.grid;
 
   if (isLoading) {

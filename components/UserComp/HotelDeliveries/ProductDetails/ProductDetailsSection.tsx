@@ -9,13 +9,14 @@ import { ProductDetailsNeedHelp } from "./ProductDetailsNeedHelp";
 import { ProductDetailsDescription } from "./ProductDetailsDescription";
 import { ProductDetailsReviews } from "./ProductDetailsReviews";
 import { ProductDetailsRelated } from "./ProductDetailsRelated";
+import { ProductDetailsSkeleton } from "./ProductDetailsSkeleton";
 import { FloatingCartButton } from "../components/FloatingCartButton";
 import {
   useClientProductDetailQuery,
   useClientProductSubcategoryQuery,
 } from "@/features/products/useClientProducts";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ProductDetailsSectionProps {
   slug?: string;
@@ -27,7 +28,7 @@ export function ProductDetailsSection({
   locale = "en",
 }: ProductDetailsSectionProps) {
   const isRTL = locale === "ar";
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.hotelDeliveriesPage.details;
 
   // Parse numeric product ID from slug parameter (e.g. "3" or "ananas-1")
@@ -61,8 +62,13 @@ export function ProductDetailsSection({
     return undefined;
   }, [product?.images]);
 
+  // Show dedicated skeleton while product data is being fetched
+  if (isProductLoading) {
+    return <ProductDetailsSkeleton locale={locale} />;
+  }
+
   // Product not found state after loading finishes
-  if (!isProductLoading && !product) {
+  if (!product) {
     return (
       <div
         dir={isRTL ? "rtl" : "ltr"}
@@ -105,7 +111,11 @@ export function ProductDetailsSection({
             className="lg:col-span-8 flex flex-col gap-8"
           >
             {/* Gallery */}
-            <ProductDetailsGallery images={galleryImages} locale={locale} />
+            <ProductDetailsGallery
+              images={galleryImages}
+              locale={locale}
+              title={product?.title}
+            />
 
             {/* Product Description & Dynamic Specifications */}
             <ProductDetailsDescription

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ServicesMegaMenu } from "./ServicesMegaMenu";
 import { getHeaderServicesData } from "./headerServicesData";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface NavLinksProps {
   currentLocale?: string;
@@ -21,7 +21,7 @@ export function NavLinks({
   const [isServicesOpen, setIsServicesOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const dict = getDictionary(currentLocale);
+  const dict = useClientDictionary();
   const nav = dict.nav;
   const servicesCategories = getHeaderServicesData(currentLocale);
 

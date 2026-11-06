@@ -9,13 +9,14 @@ import { getSiteServices } from "@/clientApi/siteServiceApi";
 import type { SiteServiceSubItem } from "@/models/siteServiceItem";
 import type { ServiceCardItem } from "@/components/UserComp/Services/types";
 import { getBackendImageUrl } from "@/shared/utils/imageUrl";
+import { serviceItemSlug } from "@/shared/utils/serviceItemUrl";
+import { isUUID } from "@/shared/utils/uuid";
 
 // ─── UUID validation ──────────────────────────────────────────────────────────
-const UUID_RE =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-export function isUUID(value: string): boolean {
-  return UUID_RE.test(value);
-}
+// re-exported so existing imports keep working; the implementation lives in
+// shared/utils/uuid.ts because server code cannot call through this file's
+// "use client" boundary.
+export { isUUID };
 
 // ─── Fallback image constant ─────────────────────────────────────────────────
 export const SERVICE_FALLBACK_IMAGE = "/GroupExcursions/HeroLogo.webp";
@@ -39,7 +40,9 @@ export function mapSubItemToCard(
 
   return {
     id: item.id,
-    slug: item.id, // slug IS the UUID — used for navigation to detail page
+    // readable URL segment (the legacy slug, or the slugged title) - the detail route
+    // accepts the old GUID form too and redirects it here
+    slug: serviceItemSlug(item),
     title: item.title,
     description: item.description,
     imageUrl: firstImage,

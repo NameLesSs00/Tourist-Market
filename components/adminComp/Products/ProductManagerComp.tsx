@@ -11,7 +11,9 @@ import type { ProductListItem, ProductUpsertRequest } from "@/models/product";
 import {
   useCreateProductMutation,
   useDeleteProductMutation,
+  useDeletedProductsQuery,
   useProductsQuery,
+  useRestoreProductMutation,
   useUpdateProductMutation,
 } from "@/features/products/useProductAdmin";
 import { useProductSubcategoriesQuery } from "@/features/productSubcategories/useProductSubcategories";
@@ -24,10 +26,14 @@ export function ProductManagerComp() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [subCategoryFilter, setSubCategoryFilter] = useState<number>(0);
+  const [statusFilter, setStatusFilter] = useState<"all" | "deleted">("all");
   const [formTarget, setFormTarget] = useState<
     ProductListItem | null | undefined
   >(undefined);
   const [deleteTarget, setDeleteTarget] = useState<ProductListItem | null>(null);
+  const [restoreTarget, setRestoreTarget] = useState<ProductListItem | null>(null);
+
+  const isDeletedTab = statusFilter === "deleted";
 
   const subcategoriesQuery = useProductSubcategoriesQuery({ pageSize: 100 });
   const subcategories = subcategoriesQuery.data?.items ?? [];
@@ -38,24 +44,46 @@ export function ProductManagerComp() {
     return map;
   }, [subcategories]);
 
-  const listQuery = useProductsQuery({
-    subCategoryId: subCategoryFilter || undefined,
-    search: search.trim() || undefined,
-    pageNumber: page,
-    pageSize: PAGE_SIZE,
-  });
+  const activeQuery = useProductsQuery(
+    {
+      subCategoryId: subCategoryFilter || undefined,
+      search: search.trim() || undefined,
+      pageNumber: page,
+      pageSize: PAGE_SIZE,
+    },
+    { enabled: !isDeletedTab }
+  );
+
+  const deletedQuery = useDeletedProductsQuery(
+    {
+      subCategoryId: subCategoryFilter || undefined,
+      search: search.trim() || undefined,
+      pageNumber: page,
+      pageSize: PAGE_SIZE,
+    },
+    { enabled: isDeletedTab }
+  );
 
   const createMutation = useCreateProductMutation();
   const updateMutation = useUpdateProductMutation();
   const deleteMutation = useDeleteProductMutation();
+  const restoreMutation = useRestoreProductMutation();
 
-  const products = listQuery.data?.data?.items ?? [];
-  const totalCount = listQuery.data?.data?.totalCount ?? 0;
-  const totalPages = listQuery.data?.data?.totalPages ?? 1;
+  const currentQuery = isDeletedTab ? deletedQuery : activeQuery;
+  const pagedData = currentQuery.data?.data;
+  const products = pagedData?.items ?? [];
+  const totalCount = pagedData?.totalCount ?? 0;
+  const totalPages = Math.max(1, pagedData?.totalPages ?? 1);
 
   const columns = useMemo(
-    () => createProductColumns({ subCategoryMap }),
-    [subCategoryMap]
+    () =>
+      createProductColumns({
+        subCategoryMap,
+        isDeletedView: isDeletedTab,
+        onRestore: (item) => setRestoreTarget(item),
+        isRestoring: restoreMutation.isPending,
+      }),
+    [subCategoryMap, isDeletedTab, restoreMutation.isPending]
   );
 
   const handleCreate = (data: {
@@ -85,13 +113,20 @@ export function ProductManagerComp() {
     });
   };
 
+  const handleRestoreConfirm = () => {
+    if (!restoreTarget) return;
+    restoreMutation.mutate(restoreTarget.id, {
+      onSuccess: () => setRestoreTarget(null),
+    });
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Products"
         description="Manage product listings, pricing, subcategory assignment, and photo galleries."
-        actionLabel="Add Product"
-        onAction={() => setFormTarget(null)}
+        actionLabel={isDeletedTab ? undefined : "Add Product"}
+        onAction={isDeletedTab ? undefined : () => setFormTarget(null)}
       />
 
       {/* Toolbar */}
@@ -105,7 +140,7 @@ export function ProductManagerComp() {
           placeholder="Search products by title or subtitle..."
         />
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <select
             value={subCategoryFilter}
             onChange={(e) => {
@@ -121,6 +156,28 @@ export function ProductManagerComp() {
               </option>
             ))}
           </select>
+
+          {/* Status Filter Tabs */}
+          <div className="inline-flex rounded-xl bg-[#F1F5F9] p-1 text-xs font-semibold text-[#64748B]">
+            {(["all", "deleted"] as const).map((filterKey) => (
+              <button
+                key={filterKey}
+                type="button"
+                onClick={() => {
+                  setStatusFilter(filterKey);
+                  setPage(1);
+                }}
+                className={`rounded-lg px-3 py-1.5 capitalize transition-all cursor-pointer ${
+                  statusFilter === filterKey
+                    ? "bg-white text-[#0F172A] shadow-xs"
+                    : "hover:text-[#0F172A]"
+                }`}
+              >
+                {filterKey === "deleted" ? "Deleted" : "All"}
+              </button>
+            ))}
+          </div>
+
           <span className="text-xs text-[#64748B] whitespace-nowrap">
             <strong className="text-[#083952]">{totalCount}</strong> products
           </span>
@@ -132,13 +189,25 @@ export function ProductManagerComp() {
         columns={columns}
         rows={products}
         getRowKey={(row) => String(row.id)}
-        isLoading={listQuery.isLoading}
-        isFetching={listQuery.isFetching}
-        emptyTitle="No products found"
-        emptyDescription="Create a product or adjust your filters."
+        isLoading={currentQuery.isLoading}
+        isFetching={currentQuery.isFetching}
+        emptyTitle={
+          isDeletedTab
+            ? "No deleted products"
+            : search.trim() || subCategoryFilter
+            ? "No products match current filters"
+            : "No products found"
+        }
+        emptyDescription={
+          isDeletedTab
+            ? "There are no deleted products in the trash."
+            : search.trim() || subCategoryFilter
+            ? "Try adjusting search or selecting a different subcategory."
+            : "Create a product or adjust your filters."
+        }
         showRowNumber={true}
-        onEdit={(row) => setFormTarget(row)}
-        onDelete={(row) => setDeleteTarget(row)}
+        onEdit={isDeletedTab ? undefined : (row) => setFormTarget(row)}
+        onDelete={isDeletedTab ? undefined : (row) => setDeleteTarget(row)}
         pagination={{
           pageNumber: page,
           pageSize: PAGE_SIZE,
@@ -171,6 +240,17 @@ export function ProductManagerComp() {
         isLoading={deleteMutation.isPending}
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteTarget(null)}
+      />
+
+      {/* Restore Confirmation */}
+      <ConfirmDialog
+        open={Boolean(restoreTarget)}
+        title="Restore Product"
+        description={`Restore "${restoreTarget?.title}"? The product will be moved back to the main list as inactive and can be re-activated from there.`}
+        confirmLabel="Restore Product"
+        isLoading={restoreMutation.isPending}
+        onConfirm={handleRestoreConfirm}
+        onCancel={() => setRestoreTarget(null)}
       />
     </div>
   );

@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Pyramid3DVisual } from "./Pyramid3DVisual";
-import type { Dictionary } from "@/shared/utils/getDictionary";
+import { Dictionary } from "@/shared/utils/getDictionary";
 
 interface MobileHexGridProps {
   dict?: Dictionary;

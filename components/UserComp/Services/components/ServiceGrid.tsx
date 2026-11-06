@@ -4,6 +4,7 @@ import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { ServiceCardItem } from "../types";
 import { ServiceCard } from "./ServiceCard";
+import { ContentHeading } from "@/components/UserComp/Shared/ContentHeading";
 
 interface ServiceGridProps {
   title: string;
@@ -87,12 +88,12 @@ export function ServiceGrid({
         transition={{ duration: 0.55, ease: "easeOut" }}
         className="text-center max-w-3xl mx-auto mb-6 sm:mb-10 md:mb-12"
       >
-        <h1
+        <ContentHeading
           className="font-poppins font-bold text-xl sm:text-2xl md:text-[32px] tracking-tight uppercase leading-tight"
           style={{ color: "#0E4A68" }}
         >
           {title}
-        </h1>
+        </ContentHeading>
         <p
           className="font-poppins font-normal text-xs sm:text-sm md:text-base mt-2 sm:mt-2.5 leading-relaxed px-2"
           style={{ color: "#646464" }}

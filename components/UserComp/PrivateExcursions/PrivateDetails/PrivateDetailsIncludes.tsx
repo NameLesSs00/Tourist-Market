@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateDetailsIncludesProps {
   includes?: string[];
@@ -16,7 +16,7 @@ export function PrivateDetailsIncludes({
   excludes,
   locale = "en",
 }: PrivateDetailsIncludesProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.includes;
 
   const fallbackIncludes = ((t as any).defaultIncludes as string[]) || [];

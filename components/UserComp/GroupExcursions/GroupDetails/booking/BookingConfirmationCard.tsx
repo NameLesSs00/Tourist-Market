@@ -9,7 +9,7 @@ import {
   GROUP_PAYMENT_METHOD_LABELS,
   GroupPaymentMethod,
 } from "@/models/groupBooking";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface BookingConfirmationCardProps {
@@ -43,7 +43,7 @@ export function BookingConfirmationCard({
   onBack,
   locale = "en",
 }: BookingConfirmationCardProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.bookingForm;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
   const paymentLabel =

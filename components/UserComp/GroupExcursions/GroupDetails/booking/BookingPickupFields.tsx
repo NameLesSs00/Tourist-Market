@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiHome } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BookingPickupFieldsProps {
   hotelName: string;
@@ -19,7 +19,7 @@ export function BookingPickupFields({
   onRoomNumberChange,
   locale = "en",
 }: BookingPickupFieldsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.groupExcursions.details.bookingForm;
 
   return (

@@ -2,20 +2,24 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import { CartThankYouSection } from "@/components/UserComp/Cart/components";
 import { getDictionary } from "@/shared/utils/getDictionary";
+import { buildMetadata } from "@/shared/utils/localizedMetadata";
 
 export const instant = false;
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ local: string }>;
 }): Promise<Metadata> {
-  return params.then(({ local }) => {
-    const meta = getDictionary(local).cartPage.meta;
-    return {
-      title: meta.thankYouTitle,
-      description: meta.thankYouDescription,
-    };
+  const { local } = await params;
+  const meta = getDictionary(local).cartPage.meta;
+  // order-confirmation page: kept out of the index, links still followed
+  return buildMetadata({
+    locale: local,
+    path: "/cart/thank-you",
+    title: meta.thankYouTitle,
+    description: meta.thankYouDescription,
+    noindex: true,
   });
 }
 

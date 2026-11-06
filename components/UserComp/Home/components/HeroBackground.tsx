@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import type { Dictionary } from "@/shared/utils/getDictionary";
+import { Dictionary } from "@/shared/utils/getDictionary";
 
 interface HeroBackgroundProps {
   dict?: Dictionary;

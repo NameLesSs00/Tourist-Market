@@ -4,7 +4,7 @@ import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { GroupExcursion } from "../types";
 import { GroupExcursionCard } from "./GroupExcursionCard";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface GroupExcursionsGridProps {
   excursions: GroupExcursion[];
@@ -40,7 +40,7 @@ export function GroupExcursionsGrid({
   isLoading = false,
   locale = "en",
 }: GroupExcursionsGridProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const gridDict = dict.groupExcursions.grid;
 
   if (isLoading) {

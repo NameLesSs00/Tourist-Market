@@ -3,11 +3,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { FiChevronLeft, FiChevronRight, FiCamera } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ProductDetailsGalleryProps {
   images?: string[];
   locale?: string;
+  /** product name: the same sentence on five different photos describes none of them */
+  title?: string;
 }
 
 const DEFAULT_IMAGES = [
@@ -17,8 +19,9 @@ const DEFAULT_IMAGES = [
 export function ProductDetailsGallery({
   images = DEFAULT_IMAGES,
   locale = "en",
+  title,
 }: ProductDetailsGalleryProps) {
-  const t = getDictionary(locale).hotelDeliveriesPage.gallery;
+  const t = useClientDictionary().hotelDeliveriesPage.gallery;
   const displayImages =
     images && images.length > 0 ? images : DEFAULT_IMAGES;
   const [activeIndex, setActiveIndex] = useState(0);
@@ -71,7 +74,7 @@ export function ProductDetailsGallery({
         <div className="relative w-[78%] h-[78%] transition-transform duration-300">
           <Image
             src={currentImage}
-            alt={t.imageAlt}
+            alt={`${title ? `${title} - ` : ""}${t.imageAlt} ${activeIndex + 1}`}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 550px"
@@ -138,7 +141,7 @@ export function ProductDetailsGallery({
               <div className="relative w-[75%] h-[75%]">
                 <Image
                   src={thumbSrc}
-                  alt={t.thumbnailAlt.replace("{index}", String(idx + 1))}
+                  alt={`${title ? `${title} - ` : ""}${t.thumbnailAlt.replace("{index}", String(idx + 1))}`}
                   fill
                   sizes="135px"
                   className="object-contain"

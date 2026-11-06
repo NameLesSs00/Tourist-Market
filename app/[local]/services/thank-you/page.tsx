@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ServiceThankYouSection } from "@/components/UserComp/Services/components/ServiceThankYouSection";
-import { localizedMetadata } from "@/shared/utils/localizedMetadata";
+import { buildMetadata } from "@/shared/utils/localizedMetadata";
 
 export const instant = false;
 
@@ -24,7 +24,13 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { local } = await params;
-  return localizedMetadata(local, "serviceThankYou");
+  // order-confirmation page: kept out of the index, links still followed
+  return buildMetadata({
+    locale: local,
+    path: "/services/thank-you",
+    section: "serviceThankYou",
+    noindex: true,
+  });
 }
 
 async function ServiceThankYouResolved({ params }: PageProps) {

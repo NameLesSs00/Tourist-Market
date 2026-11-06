@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { FiClock, FiStar } from "react-icons/fi";
 import type { PrivateExcursion } from "../types";
 import { PRIVATE_EXCURSION_FALLBACK_IMAGE } from "../utils/privateExcursionAdapter";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface PrivateDetailsRelatedProps {
@@ -19,7 +19,7 @@ export function PrivateDetailsRelated({
   excursions = [],
   locale = "en",
 }: PrivateDetailsRelatedProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.related;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);
 

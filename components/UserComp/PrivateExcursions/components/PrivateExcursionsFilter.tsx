@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { FiSearch, FiX } from "react-icons/fi";
 import { motion } from "framer-motion";
 import { CustomDropdown, DropdownOption } from "@/components/UserComp/GroupExcursions/components/CustomDropdown";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 export interface PrivateExcursionFilterValues {
   search: string;
@@ -32,7 +32,7 @@ export function PrivateExcursionsFilter({
   selectedCategory,
   locale = "en",
 }: PrivateExcursionsFilterProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.filter;
 
   const durationOptions: DropdownOption[] = useMemo(

@@ -3,14 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaWhatsapp, FaViber, FaTelegramPlane } from "react-icons/fa";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface ServiceContactUsProps {
   locale?: string;
 }
 
 export function ServiceContactUs({ locale = "en" }: ServiceContactUsProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.serviceDetail;
 
   return (

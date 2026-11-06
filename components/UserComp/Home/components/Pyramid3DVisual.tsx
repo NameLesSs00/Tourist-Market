@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import type { Dictionary } from "@/shared/utils/getDictionary";
+import { Dictionary } from "@/shared/utils/getDictionary";
 
 interface Pyramid3DVisualProps {
   className?: string;

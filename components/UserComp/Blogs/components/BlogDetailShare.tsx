@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { FaCheck, FaLink } from "react-icons/fa";
 import { toast } from "sonner";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BlogDetailShareProps {
   title?: string;
@@ -12,7 +12,7 @@ interface BlogDetailShareProps {
 
 export function BlogDetailShare({ title: _title, locale = "en" }: BlogDetailShareProps) {
   const [copied, setCopied] = useState(false);
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs.detail;
 
   const getShareUrl = () => {

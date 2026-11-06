@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { FiCalendar, FiClock } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface PrivateSidebarChecklistProps {
   maxParticipants?: string;
@@ -36,7 +36,7 @@ export function PrivateSidebarChecklist({
   handleBookClick,
   locale = "en",
 }: PrivateSidebarChecklistProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.sidebar;
 
   const resolvedMaxParticipants = maxParticipants || null;

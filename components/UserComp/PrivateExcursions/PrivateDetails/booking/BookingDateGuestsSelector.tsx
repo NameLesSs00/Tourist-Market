@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiCalendar, FiMinus, FiPlus, FiTag } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 
 interface BookingDateGuestsSelectorProps {
   date: string;
@@ -37,7 +37,7 @@ export function BookingDateGuestsSelector({
   selectedServiceNames,
   locale = "en",
 }: BookingDateGuestsSelectorProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.bookingForm;
   const tGrid = dict.privateExcursions.grid;
 

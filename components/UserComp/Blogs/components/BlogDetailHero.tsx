@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import {
   DEFAULT_BLOG_FALLBACK_IMAGE,
   getBlogImageUrl,
@@ -16,7 +16,7 @@ interface BlogDetailHeroProps {
 
 export function BlogDetailHero({ imageUrl, title, locale = "en" }: BlogDetailHeroProps) {
   const [imgSrc, setImgSrc] = useState(() => getBlogImageUrl(imageUrl));
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.blogs.detail;
 
   return (

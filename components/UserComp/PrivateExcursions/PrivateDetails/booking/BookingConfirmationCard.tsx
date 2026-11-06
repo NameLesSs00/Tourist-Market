@@ -8,7 +8,7 @@ import {
   CreatePrivateBookingResponse,
   PrivatePaymentMethod,
 } from "@/models/privateBooking";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import { useCurrencyStore } from "@/features/currencies/currencyStore";
 
 interface BookingConfirmationCardProps {
@@ -46,7 +46,7 @@ export function BookingConfirmationCard({
   onBack,
   locale = "en",
 }: BookingConfirmationCardProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.bookingForm;
   const tGrid = dict.privateExcursions.grid;
   const formatPrice = useCurrencyStore((s) => s.formatPrice);

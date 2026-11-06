@@ -1,20 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { ServiceDetailSection } from "@/components/UserComp/Services";
-import { localizedMetadata } from "@/shared/utils/localizedMetadata";
+import { StructuredData } from "@/components/UserComp/Shared/JsonLd";
+import { serviceDetailGraph } from "@/features/seo/structuredData";
+import {
+  resolveServiceDetail,
+  serviceDetailMetadata,
+} from "@/features/siteServiceItems/getServiceItemForPath";
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
-  const { local } = await params;
-  return localizedMetadata(local, "touristServices");
-}
-
-export function generateStaticParams() {
-  const locales = ["en", "fr", "de", "ru"];
-  const slugs = ["personal-translator", "trusted-legal-support-1"];
-  return locales.flatMap((local) => slugs.map((slug) => ({ local, slug })));
-}
+// the URL segment resolves to a backend sub-item at request time, so nothing about
+// this route can be known while it is being built
+export const instant = false;
 
 interface PageProps {
   params: Promise<{
@@ -23,29 +19,31 @@ interface PageProps {
   }>;
 }
 
-async function TouristDetailResolved({ params }: PageProps) {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { local, slug } = await params;
-  return (
-    <ServiceDetailSection
-      serviceType="tourist"
-      slug={slug}
-      locale={local}
-    />
-  );
+  return serviceDetailMetadata(local, "tourist", slug);
 }
 
-export default function TouristDetailPage(props: PageProps) {
+// The resolution happens outside the Suspense boundary on purpose: inside the hole of
+// a partial-prerendered route nothing can change the response status any more, because
+// the shell is already on the wire - proxy.ts is what turns an unknown detail URL into
+// a real 404. This call is still what renders the right document, for a visitor who
+// arrives through the router rather than a fresh request.
+export default async function TouristDetailPage({ params }: PageProps) {
+  const { local, slug } = await params;
+  // an unknown segment answers 404 instead of the "service not found" panel with HTTP
+  // 200, and a legacy GUID segment redirects to the readable URL
+  const { item } = await resolveServiceDetail(local, "tourist", slug);
   return (
-    <Suspense
-      fallback={
-        <ServiceDetailSection
-          serviceType="tourist"
-          slug="personal-translator"
-          locale="en"
-        />
-      }
-    >
-      <TouristDetailResolved {...props} />
+    <Suspense fallback={<div className="min-h-screen bg-[#FFF8ED]" aria-hidden="true" />}>
+      <ServiceDetailSection serviceType="tourist" itemId={item.id} locale={local} />
+      {/*
+        Service + Offer + rating. The item itself comes from the resolution above
+        (one cached read per request), only the published reviews are read here.
+      */}
+      <StructuredData graph={serviceDetailGraph(local, "tourist", slug)} />
     </Suspense>
   );
 }

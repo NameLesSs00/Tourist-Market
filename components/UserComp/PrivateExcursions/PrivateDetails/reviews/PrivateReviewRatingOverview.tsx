@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FiStar } from "react-icons/fi";
-import { getDictionary } from "@/shared/utils/getDictionary";
+import { useClientDictionary } from "@/shared/providers/ClientDictionaryContext";
 import type { RatingDistribution } from "../../types";
 
 interface PrivateReviewRatingOverviewProps {
@@ -18,7 +18,7 @@ export function PrivateReviewRatingOverview({
   distList,
   locale = "en",
 }: PrivateReviewRatingOverviewProps) {
-  const dict = getDictionary(locale);
+  const dict = useClientDictionary();
   const t = dict.privateExcursions.details.reviews;
 
   const reviewCountLabel =
