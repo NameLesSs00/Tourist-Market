@@ -21,7 +21,7 @@ export function HeroSection({ locale = "en" }: HeroSectionProps) {
   const { hero } = dict;
 
   return (
-    <section className="relative w-full overflow-hidden min-h-[78vh] lg:min-h-[90vh] max-h-[980px] flex items-center justify-center -mt-20 pt-20 pb-8 lg:pt-24 lg:pb-8">
+    <section className="relative w-full overflow-hidden min-h-[78vh] lg:min-h-[90vh] lg:max-h-[980px] flex items-center justify-center -mt-20 pt-20 pb-8 lg:pt-24 lg:pb-8">
       {/* 1. Full-Bleed Background Texture & Centered Watermark Logo */}
       <HeroBackground dict={dict} />
 

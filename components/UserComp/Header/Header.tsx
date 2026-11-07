@@ -33,10 +33,20 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
       }
     };
 
+    const handleResize = () => {
+      if (window.innerWidth >= 1150) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   // Must come after all hooks to keep hook order stable across routes.
@@ -70,7 +80,7 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
         }`}
       />
 
-      <div className="flex h-20 w-full items-center justify-between px-4 sm:px-8 lg:px-12 xl:px-14 2xl:px-16">
+      <div className="flex h-20 w-full items-center justify-between px-4 sm:px-8 lg:px-6 xl:px-10 2xl:px-16">
         {/* Left: Brand Logo with subtle hover interaction */}
         <motion.div
           className="flex shrink-0 items-center"
@@ -90,8 +100,8 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
           </Link>
         </motion.div>
 
-        {/* Center: Desktop Navigation Links */}
-        <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-center px-4">
+        {/* Center: Desktop Navigation Links (1150px and above) */}
+        <div className="hidden min-[1150px]:flex min-[1150px]:flex-1 min-[1150px]:items-center min-[1150px]:justify-center px-2 xl:px-4">
           <NavLinks currentLocale={activeLocale} />
         </div>
 
@@ -100,13 +110,13 @@ export function Header({ currentLocale = "en" }: HeaderProps) {
           <CurrencySelector />
           <LanguageSelector currentLocale={activeLocale} />
 
-          {/* Mobile & Tablet Hamburger Menu Button */}
+          {/* Mobile & Tablet Hamburger Menu Button (< 1150px) */}
           <motion.button
             type="button"
             onClick={() => setIsMobileMenuOpen(true)}
             whileTap={{ scale: 0.9 }}
             aria-label="Open Navigation Menu"
-            className="flex lg:hidden rounded-xl p-1.5 sm:p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer shrink-0"
+            className="flex min-[1150px]:hidden rounded-xl p-1.5 sm:p-2.5 text-[#083952] hover:bg-[#FFFFFF33] focus:outline-none cursor-pointer shrink-0"
           >
             <svg
               className="h-6 w-6"

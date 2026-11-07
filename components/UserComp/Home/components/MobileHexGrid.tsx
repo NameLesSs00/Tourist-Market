@@ -18,10 +18,10 @@ export function MobileHexGrid({ dict }: MobileHexGridProps) {
       initial={{ opacity: 0, y: 16, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.25, ease: "easeOut" }}
-      className="relative flex lg:hidden flex-col items-center justify-center w-full max-w-[360px] sm:max-w-[400px] mx-auto select-none mt-4 mb-6"
+      className="relative flex lg:hidden flex-col items-center justify-center w-full max-w-[360px] sm:max-w-[400px] mx-auto select-none mt-2 mb-5"
     >
-      {/* 3D Pyramid Visual positioned at the top of the mobile cluster */}
-      <div className="relative z-20 mb-[-70px] sm:mb-[-80px]">
+      {/* 3D Pyramid Visual positioned cleanly above the mobile cluster */}
+      <div className="relative z-20 mb-[-25px] sm:mb-[-30px]">
         <Pyramid3DVisual size="sm" dict={dict} />
       </div>
 

@@ -150,7 +150,7 @@ export function MobileMenu({ isOpen, onClose, currentLocale = "en" }: MobileMenu
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: "100%" }}
           transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
-          className="fixed inset-0 z-[9999] flex flex-col bg-[#FFF4E5] text-[#083952] lg:hidden"
+          className="fixed inset-0 z-[9999] flex flex-col bg-[#FFF4E5] text-[#083952] min-[1150px]:hidden"
         >
           {/* Top Bar with Brand Logo and Close button */}
           <div className="flex h-20 shrink-0 items-center justify-between border-b border-[#08395215] px-4 sm:px-6">
