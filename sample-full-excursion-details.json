@@ -1,0 +1,423 @@
+﻿{
+    "fullProgram":  "",
+    "videoUrl":  "",
+    "heroImage":  "/uploads/excursions/hero/0d87b0ad2f79442db8544cffba1ab8a8.webp",
+    "primaryImageUrl":  null,
+    "imageList":  [
+                      {
+                          "id":  "e9f44a84-50fb-4a20-9dec-1890fe656790",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/f66e270aa2a84420a82ad6261145d58c.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "0e56cb8e-29e5-4471-b2e5-1fd78a1d78ae",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/c6cb96b989d749d49229bad73f9b3d3c.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "0fe25849-81b5-4209-b01c-37eaffe5e259",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/3b979d2ff0814afb9de71f647c0d192f.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "79141cef-c660-4bb0-a126-466e3df540d4",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/3f608657aad84e5285a6bb205b33ce45.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "4da558f9-be1c-4b0e-9288-50274dc3d0f9",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/20f8d848cd0e42d6afec3c09e0704005.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "8d802135-a5a0-4582-908d-524ffa7faf0c",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/007563ec5fc94a60bab4bbebd80a5a37.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "b0223e3d-dc51-427f-b2b1-74de6f2972af",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/e359769a20be49a2ae349ae8d18c4f43.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "ae1050cd-15f2-468a-baca-797e0b83c278",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/401851a00c5d4fd6890ea5a1f4c3de6b.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "cfb8064b-47e4-46b0-bc2d-9156f7053866",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/aabed1841f2e42cfbcf8c7141e373858.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "ffd3dd6e-0c75-4ad3-a40e-9fb1299c56ae",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/9e4df114a4a94cab84214f7bfef115da.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "fd81dd67-2628-48e8-a3c6-b7bcd0f24a50",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/26ef2c79a0984965a3671de238cb9e33.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "86388990-ae43-4fc2-898e-e0f380fecf64",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/491f9ebe5e684c2a87041ea0317fba96.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "7f5ca3dc-02e3-4d9e-b59c-ef9783ca4373",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/17f26b5466084964b458987557b79ae6.webp",
+                          "isPrimary":  false
+                      },
+                      {
+                          "id":  "7df4cf03-47b3-4be8-a713-fda6ba53a1bd",
+                          "excursionId":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+                          "imageUrl":  "/uploads/executions/0ed0afb17d254fcb93edef5c6ce55931.webp",
+                          "isPrimary":  false
+                      }
+                  ],
+    "faqs":  [
+
+             ],
+    "attractions":  [
+                        {
+                            "id":  "da8f11c1-ed49-4ec5-887a-819c5cb19d72",
+                            "title":  "GIZA PLATEAU (THE GREAT PYRAMIDS AND SPHINX)",
+                            "description":  "The Giza plateau in Cairo is home to the iconic Great Pyramids of Giza, which were built over 4,500 years ago and still stand as remarkable architectural achievements.\n2. Among the three pyramids at the Giza plateau, the largest is the Great Pyramid of Khufu, also known as the Pyramid of Cheops, which is considered one of the Seven Wonders of the Ancient World.\nAdjacent to the pyramids is the enigmatic Sphinx, a limestone statue with the body of a lion and the head of a human, shrouded in mystery and serving as a symbol of Egypt.\n4. The Giza plateau is a treasure trove of ancient tombs and burial sites, including the mastabas, underground burial chambers of the nobles, often containing intricate reliefs and hieroglyphics.\nThe discovery of the Solar Barque Museum near the Great Pyramid provided incredible insight into Pharaonic burial rituals, as the boat was intended to transport the pharaoh\u0027s soul to the afterlife.\nThe Giza plateau offers visitors the opportunity to explore the hidden passages and chambers of the pyramids through special tours, allowing them to witness the engineering marvels of Ancient Egypt up close.\nThese pyramids were constructed using advanced mathematical and astronomical knowledge, aligning with the stars and serving as complex celestial markers for various religious and agricultural purposes.\nThe imposing size of the three pyramids at Giza is still awe-inspiring, with the Great Pyramid of Khufu standing at a staggering height of approximately 481 feet (147 meters).\nThe UNESCO World Heritage Site designation emphasizes the outstanding universal value of the Giza plateau, recognizing its historical significance and ensuring its preservation for future generations.",
+                            "heroImage":  "/uploads/attractions/hero/fe6c5bc0e3414234806329118a82efe6.webp",
+                            "displayOrder":  1,
+                            "adultPriceUsd":  10.00,
+                            "childPriceUsd":  8.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  10.00,
+                            "childPrice":  8.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  10.00,
+                                               "childPrice":  8.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "c600ce5d-c1fa-4f54-ac54-f41a7a1f8623",
+                            "title":  "THE EGYPTIAN MUSEUM (OLD MUSEUM IN CAIRO)",
+                            "description":  "The Egyptian Museum in Cairo is a treasure trove of ancient artifacts and a must-visit for anyone interested in the rich history of Egypt. Established in 1902, the museum holds a collection of over 120,000 items, including the famous treasures of Tutankhamun.\nThe museum\u0027s history dates back to the era of Khedive Ismail, who envisioned a place to store and display Egypt\u0027s historical treasures. The renowned French architect Marcel Dourgnon designed the building, which showcases a blend of Neoclassical and Islamic architectural styles.\nVisitors to the Egyptian Museum can marvel at the vast array of artifacts spanning over 5,000 years of Egyptian history. From intricately carved statues and funerary objects to mummies and papyrus scrolls, the museum offers a glimpse into the daily life, religious beliefs, and artistic achievements of Ancient Egyptians.\nOne of the highlights of the museum is the collection of Tutankhamun\u0027s tomb, discovered by Howard Carter in 1922. The treasures found in the tomb, including the iconic golden mask of the boy king, provide invaluable insights into Ancient Egyptian burial customs and beliefs.\nVisiting the Egyptian Museum is a unique opportunity to immerse yourself in the wonders of Ancient Egypt and witness firsthand the civilization that has captivated the world for centuries. It is a journey through time that offers a deeper understanding of Egypt\u0027s cultural heritage and its enduring legacy in the modern world.",
+                            "heroImage":  "/uploads/attractions/hero/c10dd69a7c75410d93615556295e1823.webp",
+                            "displayOrder":  2,
+                            "adultPriceUsd":  12.00,
+                            "childPriceUsd":  6.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  12.00,
+                            "childPrice":  6.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  12.00,
+                                               "childPrice":  6.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "e2b5fad7-8394-487a-b658-9b05d37b1558",
+                            "title":  "THE GRAND EGYPTIAN MUSEUM (THE NEW MUSEUM IN GIZA)",
+                            "description":  "The new Grand Egyptian Museum in Cairo is set to be a groundbreaking addition to the country\u0027s cultural landscape. With state-of-the-art facilities and a modern design, it aims to showcase Egypt\u0027s historical treasures in an engaging and informative way. The museum\u0027s construction began in 2016 and was completed in 2022, with the grand opening ceremony attracting visitors and dignitaries from around the world.\nWith its state-of-the-art facilities, the New Egyptian Museum offers visitors a unique and immersive experience. Spanning over 110,000 square meters, it houses more than 100,000 artifacts, making it the largest museum in the world dedicated to Egyptian history and civilization.\nThe museum\u0027s collection is a journey through time, encompassing artifacts from the prehistoric era to the Greco-Roman period. Visitors can marvel at the exquisite statues, finely crafted jewelry, intricately painted pottery, and the iconic golden treasures of Tutankhamun, including his renowned funerary mask.\nOne of the most notable features of the new Egyptian Museum is its impressive collection of artifacts, including the famous treasures of King Tutankhamun, such as his golden mask, throne, and other precious belongings. These artifacts offer a glimpse into the life and beliefs of Ancient Egyptians, shedding light on their customs, artistry, and achievements.\nVisiting the new Egyptian Museum is a truly enriching experience for history enthusiasts, scholars, and tourists alike. It allows visitors to immerse themselves in the wonders of Ancient Egypt, marvel at the intricate craftsmanship of the artifacts, and gain a deeper understanding of this fascinating civilization. The museum\u0027s interactive exhibits and multimedia presentations make learning about Egypt\u0027s past engaging and accessible to people of all ages and backgrounds.",
+                            "heroImage":  "/uploads/attractions/hero/13bccbc24e0d4e5ca33344bde71cd27c.webp",
+                            "displayOrder":  3,
+                            "adultPriceUsd":  35.00,
+                            "childPriceUsd":  18.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  35.00,
+                            "childPrice":  18.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  35.00,
+                                               "childPrice":  18.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "d6a78b0d-980a-40c2-b221-8262f9576640",
+                            "title":  "THE MUSEUM OF EGYPTIAN CIVILIZATION (THE MUSEUM OF THE ROYAL MUMMIES)",
+                            "description":  "The recently opened Museum of Civilization in Cairo is a treasure trove that showcases the rich history and legacy of the Pharaonic civilization. This magnificent museum houses an impressive collection of mummies belonging to the Pharaonic kings and queens.\nLocated in the heart of Cairo, the Museum of Civilization offers visitors a unique opportunity to delve into the mysteries of Ancient Egypt. The mummy collection takes center stage, with each mummy carefully preserved and displayed in a state-of-the-art setting. These mummies provide a glimpse into the lives and rituals of the Pharaohs, offering an extraordinary experience for history enthusiasts.\nThe museum\u0027s design combines modern architecture with elements inspired by Ancient Egyptian temples, creating a seamless blend of the past and the present. Upon entering the museum, visitors are greeted by grand halls adorned with towering statues, hieroglyphic engravings, and captivating artifacts.\nIn addition to the mummy collection, the museum also displays a vast array of artifacts, including statues, jewelry, pottery, and papyrus scrolls. These objects bear witness to the ingenuity and artistic prowess of the Ancient Egyptians. Each artifact tells a story, allowing visitors to immerse themselves in the daily lives, religious beliefs, and cultural practices of this remarkable civilization.\nThe Museum of Civilization aims to educate and inspire visitors of all ages. It offers interactive exhibits, educational programs, and guided tours to enhance visitors\u0027 understanding and appreciation of Ancient Egypt. The museum also houses a library, research center, and a conservation laboratory, promoting further exploration and study of Egypt\u0027s cultural heritage.\nThe opening of the Museum of Civilization is a significant milestone in preserving and showcasing Egypt\u0027s rich history. It not only celebrates the achievements of the Pharaohs but also serves as a testament to the enduring legacy of the Ancient Egyptian civilization. With its remarkable collection and immersive exhibits, the museum invites visitors on a fascinating journey through time, unraveling the mysteries of one of the world\u0027s greatest ancient civilizations.",
+                            "heroImage":  "/uploads/attractions/hero/e2286ba48ee14b71972e2576c94a2483.webp",
+                            "displayOrder":  4,
+                            "adultPriceUsd":  7.00,
+                            "childPriceUsd":  4.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  7.00,
+                            "childPrice":  4.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  7.00,
+                                               "childPrice":  4.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "f2ae213e-f676-42fb-a968-036a0f650451",
+                            "title":  "THE CITADEL OF SALAH EL-DIN",
+                            "description":  "Salah El-Din Citadel in Cairo is a historic fortress that holds great significance in Egyptian history. Built by Salah El-Din in the 12th century to protect the city from Crusaders, the citadel has witnessed centuries of political and military events.\nThe fortress is a remarkable example of Islamic architecture, characterized by its massive walls and strategic location overlooking Cairo. Within the citadel, visitors can explore several structures, including mosques, museums, and palaces.\nOne of the most notable buildings is the Mosque of Muhammad Ali, also known as the Alabaster Mosque, which stands out with its Ottoman design and grandeur.\nThe citadel also houses the National Military Museum, offering insights into Egypt\u0027s military history. Visiting Salah El-Din Citadel provides a deep dive into Egypt\u0027s past, offering a blend of architectural beauty, historical significance, and panoramic views of Cairo. It is a must-visit destination for those interested in both history and architecture, offering a unique perspective on Egypt\u0027s rich cultural heritage.",
+                            "heroImage":  "/uploads/attractions/hero/6ae763afbff643c3b781109e4934c8a1.webp",
+                            "displayOrder":  5,
+                            "adultPriceUsd":  10.00,
+                            "childPriceUsd":  6.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  10.00,
+                            "childPrice":  6.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  10.00,
+                                               "childPrice":  6.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "918438e7-bd4f-4419-ad56-112630c232e8",
+                            "title":  "THE ISLAMIC OLD CAIRO",
+                            "description":  "Uncover the golden age of architecture in the heart of Old Cairo, a living museum where history breathes through towering minarets and intricate stone carvings. This isn\u0027t just a tour; it’s a journey into the soul of Egypt’s Islamic heritage.\nThe Crown Jewels of the District:\nMosque-Madrasa of Sultan Hassan: A 14th-century Mamluk masterpiece. Marvel at its soaring walls and world-renowned proportions that make it one of the most significant Islamic monuments globally.\nAl-Rifa’i Mosque: Located directly opposite Sultan Hassan, this \"Royal Mosque\" is an architectural gem of the 19th century. Explore its expansive interiors and the opulent tombs of Egypt’s last monarchs, including King Farouk.\nA Vibrant Atmosphere: Beyond the monuments, wander through bustling streets where modern Egyptian life blends seamlessly with ancient traditions.\nWhy Visit?\nFrom the rhythmic beauty of Kufic calligraphy to the peaceful grandeur of marble courtyards, Islamic Cairo offers an immersive experience for history buffs and photography enthusiasts alike. Witness the majestic scale of a bygone era and the authentic warmth of the local community.",
+                            "heroImage":  "/uploads/attractions/hero/28c48c1c46f841d7bec3cd5060be47f1.webp",
+                            "displayOrder":  6,
+                            "adultPriceUsd":  5.00,
+                            "childPriceUsd":  2.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  5.00,
+                            "childPrice":  2.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  5.00,
+                                               "childPrice":  2.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "05033ed6-cfa1-40e8-935a-bbff07984b6e",
+                            "title":  "THE COPTIC OLD CAIRO",
+                            "description":  "Step into a world where history and spirituality intertwine. Nestled in Old Cairo, the Coptic Cairo complex is a breathtaking testament to Egypt’s diverse religious tapestry, offering a journey through centuries of faith and artistry.\nWhy You Can’t Miss It:\nThe Hanging Church: Suspended over a Roman gatehouse, this 7th-century masterpiece features stunning ancient icons and intricate woodwork that will leave you in awe.\nThe Coptic Museum: Home to the world’s most significant collection of Coptic artifacts, from vibrant textiles to sacred manuscripts.\nBen Ezra Synagogue: A site of profound legends, believed to be where baby Moses was found, showcasing a beautiful legacy of coexistence.\nA Living Heritage: Beyond the stone walls, experience a vibrant, active community where ancient traditions are still practiced today.\nExperience the Soul of Egypt\nWhether you are a history buff, an art lover, or a spiritual seeker, Coptic Cairo offers a peaceful escape into the past. Wander through narrow alleys, breathe in the incense-scented air, and witness the harmonious blend of cultures that shaped a nation.",
+                            "heroImage":  "/uploads/attractions/hero/63df8efac7344db99b6867603d7101c7.webp",
+                            "displayOrder":  7,
+                            "adultPriceUsd":  2.00,
+                            "childPriceUsd":  1.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  2.00,
+                            "childPrice":  1.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  2.00,
+                                               "childPrice":  1.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "ce8aa48c-cf0c-4fcc-9ed9-e39f75b955c5",
+                            "title":  "The Pharaonic Village",
+                            "description":  "The Pharaonic Village in Cairo is a unique cultural and historical attraction that offers visitors a glimpse into Ancient Egyptian life and civilization. Located on an island in the Nile River, this living museum showcases various aspects of Pharaonic history, art, and daily life through interactive exhibits and demonstrations.\nAs visitors explore the Pharaonic Village, they are transported back in time to experience the daily activities, traditions, and customs of Ancient Egyptians. The village features reconstructed ancient structures, such as temples, houses, workshops, and tombs, providing a realistic portrayal of how Ancient Egyptians lived, worked, and worshipped.\nVisitors can witness demonstrations of ancient crafts and techniques, such as pottery making, weaving, and hieroglyphic writing, offering insights into the skills and ingenuity of Ancient Egyptian artisans. The village also hosts performances and reenactments that showcase aspects of Ancient Egyptian culture, including music, dance, and religious ceremonies.\nOne of the highlights of the Pharaonic Village is the replica of King Tutankhamun\u0027s tomb, which allows visitors to explore the tomb\u0027s intricate murals, artifacts, and treasures, providing a fascinating insight into the life and beliefs of Ancient Egyptian royalty.\nOverall, the Pharaonic Village in Cairo serves as a captivating educational experience that immerses visitors in the rich history and culture of Ancient Egypt, offering a unique opportunity to step back in time and appreciate the enduring legacy of one of the world\u0027s greatest civilizations.",
+                            "heroImage":  "/uploads/attractions/hero/6694045dd53d4cbf8897fc713095e3aa.webp",
+                            "displayOrder":  8,
+                            "adultPriceUsd":  11.00,
+                            "childPriceUsd":  6.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  11.00,
+                            "childPrice":  6.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  11.00,
+                                               "childPrice":  6.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "56f035de-be78-43c7-aede-1b4272df12a2",
+                            "title":  "The Cairo Tower",
+                            "description":  "Cairo Tower, located in the heart of Cairo, Egypt, is a famous landmark that stands at a height of 187 meters. It was built between 1956 and 1961 by renowned Egyptian architect Naoum Shebib.\nThe tower offers panoramic views of the city and the Nile River, making it a popular tourist attraction. Visitors can enjoy stunning views of Cairo\u0027s skyline from the observatory deck at the top of the tower.\nThe Cairo Tower has become an iconic symbol of the city and is a must-visit for anyone exploring Cairo. Its unique design and historical significance make it a captivating destination for tourists and locals alike.",
+                            "heroImage":  "/uploads/attractions/hero/91c80e73687f47dd8895c6414e6304a5.webp",
+                            "displayOrder":  9,
+                            "adultPriceUsd":  6.00,
+                            "childPriceUsd":  3.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  6.00,
+                            "childPrice":  3.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  6.00,
+                                               "childPrice":  3.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        },
+                        {
+                            "id":  "0d507d27-ea07-4f0c-99d2-0efa3beef879",
+                            "title":  "The oriental Bazaar Khan El Khalili",
+                            "description":  "Khan El Khalili Bazaar in Cairo is a vibrant marketplace that encapsulates the rich history and culture of Egypt. Spanning centuries, this historic bazaar has been a hub for trade, commerce, and cultural exchange. With its narrow winding lanes, it offers a captivating maze of shops, showcasing a diverse array of traditional crafts, spices, jewelry, and textiles.\nVisiting Khan El Khalili is a unique experience for tourists, providing a glimpse into the heart of Cairo\u0027s bustling life. The bazaar serves as a microcosm of Egypt\u0027s heritage, where ancient traditions meet modern craftsmanship. Tourists can immerse themselves in the lively atmosphere, bargaining with local vendors, and sampling authentic Egyptian cuisine in nearby cafés.\nBeyond its role as a shopping destination, Khan El Khalili holds historical significance, with landmarks like the Al-Azhar Mosque and the Hussein Mosque in close proximity. These architectural gems add depth to the visitor\u0027s experience, connecting them with the city\u0027s religious and cultural roots.",
+                            "heroImage":  "/uploads/attractions/hero/c863c0f892814cc58b08a06566205642.webp",
+                            "displayOrder":  10,
+                            "adultPriceUsd":  3.00,
+                            "childPriceUsd":  1.00,
+                            "infantPriceUsd":  0.00,
+                            "adultPrice":  3.00,
+                            "childPrice":  1.00,
+                            "infantPrice":  0.00,
+                            "currency":  "USD",
+                            "images":  [
+
+                                       ],
+                            "prices":  [
+                                           {
+                                               "currencyCode":  "USD",
+                                               "adultPrice":  3.00,
+                                               "childPrice":  1.00,
+                                               "infantPrice":  0.00
+                                           }
+                                       ]
+                        }
+                    ],
+    "services":  [
+                     {
+                         "id":  "bfbd20bc-7c45-454a-9b5f-ae43a79105f2",
+                         "title":  "A BOAT TRIP BY THE RIVER NILE",
+                         "description":  "A boat trip on the Nile in Cairo is a must-do activity for visitors to the city. The Nile River, known as the lifeline of Egypt, offers stunning views and a unique perspective of Cairo\u0027s iconic landmarks. The Nile is the longest river in the world, stretching over 6,650 kilometers from its headwaters in East Africa to its delta in the Mediterranean Sea. It has played a crucial role in the history and civilization of Egypt, providing water for agriculture, transportation, and sustenance for thousands of years. Taking a boat tour on the Nile will give you a majestic feeling as if a time machine has transported you back thousands of years to the era of the great Pharaohs, where their boats sailed on this same waterway to transport stones and goods and to build one of the greatest civilizations on Earth.",
+                         "heroImage":  "/uploads/excursion-services/hero/f5b05ff9d0804e1f82d3359d5a5ddbf9.webp",
+                         "displayOrder":  1,
+                         "adultPriceUsd":  10.00,
+                         "childPriceUsd":  5.00,
+                         "infantPriceUsd":  0.00,
+                         "adultPrice":  10.00,
+                         "childPrice":  5.00,
+                         "infantPrice":  0.00,
+                         "currency":  "USD",
+                         "imageUrls":  [
+
+                                       ],
+                         "images":  [
+
+                                    ],
+                         "prices":  [
+                                        {
+                                            "currencyCode":  "USD",
+                                            "adultPrice":  10.00,
+                                            "childPrice":  5.00,
+                                            "infantPrice":  0.00
+                                        }
+                                    ]
+                     },
+                     {
+                         "id":  "6307bcf9-ea5e-4277-a299-522891641f12",
+                         "title":  "LUNCH AT A LOCAL RESTAURANT",
+                         "description":  "During your sightseeing adventure, enjoy a delicious lunch at a charming local restaurant. Taste authentic flavors prepared with fresh ingredients that reflect the region’s culinary traditions. Relax in a welcoming atmosphere where travelers can share stories and savor every bite. This lunch experience adds a delightful cultural touch to your journey, making your trip truly unforgettable.",
+                         "heroImage":  "/uploads/excursion-services/hero/03ae8e6c73ca4d07af6cbb1db9993471.webp",
+                         "displayOrder":  2,
+                         "adultPriceUsd":  12.00,
+                         "childPriceUsd":  6.00,
+                         "infantPriceUsd":  0.00,
+                         "adultPrice":  12.00,
+                         "childPrice":  6.00,
+                         "infantPrice":  0.00,
+                         "currency":  "USD",
+                         "imageUrls":  [
+
+                                       ],
+                         "images":  [
+
+                                    ],
+                         "prices":  [
+                                        {
+                                            "currencyCode":  "USD",
+                                            "adultPrice":  12.00,
+                                            "childPrice":  6.00,
+                                            "infantPrice":  0.00
+                                        }
+                                    ]
+                     }
+                 ],
+    "id":  "6f96e0c4-2ca5-47b1-bfe7-4339e8d98c25",
+    "slug":  "private-1-day-trip-to-cairo",
+    "title":  "PRIVATE 1-DAY TRIP TO CAIRO",
+    "subtitle":  "Cairo Private Day Tour from Hurghada — Timeless Wonders Await",
+    "shortDescription":  "Explore the ancient and modern wonders of Egypt on a private one-day trip to Cairo.",
+    "excursionType":  "PRIVATE HISTORICAL TRIPS",
+    "durationHours":  19.00,
+    "stars":  "5",
+    "maxAttractions":  10,
+    "maxParticipants":  null,
+    "heroImageUrl":  "/uploads/excursions/hero/0d87b0ad2f79442db8544cffba1ab8a8.webp",
+    "isFeatured":  false,
+    "rating":  0,
+    "category":  {
+                     "id":  "b2258b31-35db-4a1d-b57e-0d7ac43b15a7",
+                     "categoryTitle":  "Private Historical Trips"
+                 },
+    "price":  null
+}
